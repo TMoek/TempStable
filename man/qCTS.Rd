@@ -35,12 +35,15 @@ qCTS(
 }
 \value{
 Gap holder for return.
-
-TODO: Examples
 }
 \description{
 Gap holder for description.
 }
 \details{
 Gap holder for details.
+}
+\examples{
+qCTS(0.5,1.5,10,10,10,10,10)
+qCTS(0.5,1.5,1,1,1,1,1)
+
 }

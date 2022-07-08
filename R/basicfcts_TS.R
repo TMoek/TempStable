@@ -530,19 +530,19 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @param method A String. Either "aAR" or "SR".
 #' @param k integer: the number of replications, if \code{method == "SR"}. 100
 #' by default.
+#' @param c A real number. Only relevant for \code{method == "aAR"}.
+#' TODO(Till): Choose a suitable default value.
 #'
 #' @return Gap holder for return.
 #'
 #' @examples
 #' rCTS(10,0.5,1,1,1,1,1,NULL,"SR",10)
-#'
-#' TODO: function does not run for aAR, as param c is null
-#' TODO: Examples for "aAR" as method
+#' rCTS(10,0.5,1,1,1,1,1,NULL,"aAR")
 #'
 #' @export
 rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
                  lambdam = NULL, mu = NULL, theta = NULL, method = "SR",
-                 k = 100, ...) {
+                 k = 100, c = 0.1) {
     if ((missing(alpha) | missing(deltap) | missing(deltam) | missing(lambdap) |
          missing(lambdam) | missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -562,10 +562,11 @@ rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
     }
     stopifnot(0 < alpha, alpha < 2, 0 < deltap, 0 < deltam, 0 < lambdap, 0 <
                 lambdam)
+
     x <- switch(method,
                 aAR = rCTS_aAR(n = n, alpha = alpha, deltap = deltap,
                                        deltam = deltam, lambdap = lambdap,
-                                       lambdam = lambdam, mu = mu, ...),
+                                       lambdam = lambdam, mu = mu, c = c),
                 SR = rCTS_SR(n = n, alpha = alpha, deltap = deltap,
                              deltam = deltam, lambdap = lambdap,
                              lambdam = lambdam, mu = mu, k = k))
@@ -657,7 +658,9 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
 #'
 #' @return Gap holder for return.
 #'
-#' TODO: Examples
+#' @examples
+#' qCTS(0.5,1.5,10,10,10,10,10)
+#' qCTS(0.5,1.5,1,1,1,1,1)
 #'
 #' @importFrom stabledist qstable
 #' @export
@@ -1086,12 +1089,12 @@ dCGMY <- function(x, C, G, M, Y, dens_method = "FFT", a = -20, b = 20,
 #'
 #' @examples
 #' rCGMY(100,1,1,1,0.5)
-#' rCGMY(100,1,1,1,0.5, "SR", k= 100, a = -20, b = 20, nf = 2048)
+#' rCGMY(100,1,1,1,0.5, "SR", k= 100)
 #'
 #' @export
 rCGMY <- function(n, C, G, M, Y, method = "SR", k = 100, ...) {
     rCTS(n = n, alpha = Y, deltap = C, deltam = C, lambdap = G, lambdam = M,
-         mu = 0, method = method, k = k, a = a, b = b, nf = 2048, ...)
+         mu = 0, method = method, k = k, ...)
 }
 
 

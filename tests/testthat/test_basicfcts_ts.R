@@ -220,9 +220,10 @@ test_that("rCTS_gives_correct_return", {
     expect_equal(length(rCTS(10,0.5,1,1,1,1,1,NULL,"SR",10)),10)
     expect_equal(rCTS(1,1,1,1,1,1,0,NULL,"SR",100), Inf)
 
-    #TODO: Fix rCTS_aAR and find test cases for aAR-Method
+    expect_equal(length(rCTS(10,0.5,1,1,1,1,1,NULL,"aAR")), 10)
 
     expect_error(rCTS(1,2.5,1,1,1,1,0,NULL,"SR",100))
+    expect_error(rCTS(1,1,1,1,1,1,0,NULL,"aAR"))
 
   })
 })
@@ -230,10 +231,15 @@ test_that("rCTS_gives_correct_return", {
 test_that("qCTS_gives_correct_return", {
 
   suppressWarnings({
+    expect_equal(qCTS(0.5,1.5,10,10,10,10,10),9.9881757)
+    expect_equal(qCTS(0.5,1.5,1,1,1,1,1),0.99999507)
+    expect_equal(qCTS(0.9,1.5,1,1,1,1,1),3.3867687)
+    expect_equal(qCTS(0.9,1.5,1,1,1,1,100),19.532134)
+    expect_equal(qCTS(0.000001,1.5,1,1,1,1,1),-9.974504)
 
-
-    #TODO: Find test cases.
-
+    expect_error(qCTS(1.9,1.5,1,1,1,1,1))
+    expect_error(qCTS(0.1,1,1,1,1,1,1))
+    expect_error(qCTS(0.1,2,1,1,1,1,1))
   })
 })
 

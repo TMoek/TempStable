@@ -31,6 +31,6 @@ Gap holder for details.
 }
 \examples{
 rCGMY(100,1,1,1,0.5)
-rCGMY(100,1,1,1,0.5, "SR", k= 100, a = -20, b = 20, nf = 2048)
+rCGMY(100,1,1,1,0.5, "SR", k= 100)
 
 }

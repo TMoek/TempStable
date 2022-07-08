@@ -4,10 +4,10 @@ CumFinder_STS <- function(x, jmax = 3) {
     cumfrommom(raw.moments)[-1]
 }
 
-
+#' @importFrom moments raw2central
 cumfrommom <- function(moms) {
     mu.raw <- moms
-    mu.central <- raw2central(mu.raw)
+    mu.central <- moments::raw2central(mu.raw)
     order.max <- length(mu.raw) - 1
     kappa <- rep(0, order.max + 1)
     kappa[2] <- mu.raw[2]
@@ -28,13 +28,14 @@ cumfrommom <- function(moms) {
 }
 
 MoCObjective_STS <- function(x, parms) {
-    c(F1 = gamma(1 - x[1]) * x[2]/x[3]^(1 - x[1]) - parms[1], F2 = gamma(2 - x[1]) * x[2]/x[3]^(2 - x[1]) - parms[2], F3 = gamma(3 -
-        x[1]) * x[2]/x[3]^(3 - x[1]) - parms[3])
+    c(F1 = gamma(1 - x[1]) * x[2]/x[3]^(1 - x[1]) - parms[1],
+      F2 = gamma(2 - x[1]) * x[2]/x[3]^(2 - x[1]) - parms[2],
+      F3 = gamma(3 - x[1]) * x[2]/x[3]^(3 - x[1]) - parms[3])
 }
-
+#' @importFrom rootSolve multiroot
 MoC_STS <- function(x, theta0 = c(0.5, 1, 1), eps = 1e-06) {
     cumulants <- CumFinder_STS(x)
-    parroot <- multiroot(MoCObjective_STS, theta0, parms = cumulants)
+    parroot <- rootSolve::multiroot(MoCObjective_STS, theta0, parms = cumulants)
     theta <- parroot$root
     if (theta[1] < 0) {
         theta <- theta0

@@ -15,7 +15,7 @@ rCTS(
   theta = NULL,
   method = "SR",
   k = 100,
-  ...
+  c = 0.1
 )
 }
 \arguments{
@@ -35,6 +35,9 @@ rCTS(
 
 \item{k}{integer: the number of replications, if \code{method == "SR"}. 100
 by default.}
+
+\item{c}{A real number. Only relevant for \code{method == "aAR"}.
+TODO(Till): Choose a suitable default value.}
 }
 \value{
 Gap holder for return.
@@ -47,8 +50,6 @@ Gap holder for details.
 }
 \examples{
 rCTS(10,0.5,1,1,1,1,1,NULL,"SR",10)
-
-TODO: function does not run for aAR, as param c is null
-TODO: Examples for "aAR" as method
+rCTS(10,0.5,1,1,1,1,1,NULL,"aAR")
 
 }
