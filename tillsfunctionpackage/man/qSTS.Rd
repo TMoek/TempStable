@@ -4,7 +4,16 @@
 \alias{qSTS}
 \title{Title}
 \usage{
-qSTS(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL, ...)
+qSTS(
+  p,
+  alpha = NULL,
+  delta = NULL,
+  lambda = NULL,
+  theta = NULL,
+  qmin = NULL,
+  qmax = NULL,
+  ...
+)
 }
 \arguments{
 \item{p}{A gap holder.}
@@ -16,6 +25,8 @@ qSTS(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL, ...)
 \item{lambda}{A  real number > 0.}
 
 \item{theta}{A vector of all other arguments.}
+
+\item{qmin, qmax}{Limits of the interval.}
 }
 \value{
 Gap holder for return.

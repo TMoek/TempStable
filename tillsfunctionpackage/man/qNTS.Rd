@@ -12,6 +12,8 @@ qNTS(
   lambda = NULL,
   mu = NULL,
   theta = NULL,
+  qmin = NULL,
+  qmax = NULL,
   ...
 )
 }
@@ -29,6 +31,8 @@ qNTS(
 \item{mu}{A location parameter, any real number.}
 
 \item{theta}{A vector of all other arguments.}
+
+\item{qmin, qmax}{Limits of the interval.}
 }
 \value{
 Gap holder for return.

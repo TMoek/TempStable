@@ -13,6 +13,8 @@ qCTS(
   lambdam = NULL,
   mu = NULL,
   theta = NULL,
+  qmin = NULL,
+  qmax = NULL,
   ...
 )
 }
@@ -26,6 +28,8 @@ qCTS(
 \item{mu}{A location parameter, any real number.}
 
 \item{theta}{A vector of all other arguments.}
+
+\item{qmin, qmax}{Limits of the interval.}
 
 \item{q}{A gap holder.}
 }

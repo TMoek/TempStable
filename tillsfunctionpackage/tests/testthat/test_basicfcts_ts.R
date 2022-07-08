@@ -318,11 +318,11 @@ test_that("rNTS_gives_correct_return", {
 
 test_that("qNTS_gives_correct_return", {
 
-  expect_equal(qNTS(0.1,0.5,1,1,1,1),0.9383045)
-  expect_equal(qNTS(0.3,0.6,1,1,1,1),2.2334246)
-  expect_equal(qNTS(0.6,0.6,1,1,1,1),3.4634664)
-  expect_equal(qNTS(0.6,0.6,10,1,1,1),11.745017)
-  expect_equal(qNTS(0.6,0.6,1,10,1,1),-9.8800127)
+  expect_equal(qNTS(0.1,0.5,1,1,1,1),0.93829102)
+  expect_equal(qNTS(0.3,0.6,1,1,1,1), NA)
+  expect_equal(qNTS(0.6,0.6,1,1,1,1),NA)
+  expect_equal(qNTS(0.6,0.6,10,1,1,10),-7.1174734)
+  expect_equal(qNTS(0.6,0.6,1,10,1,1),-9.8799707)
 
   suppressWarnings({
     expect_error(qNTS(0.1,1.5,1,1,1,1))

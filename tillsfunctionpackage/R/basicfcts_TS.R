@@ -131,6 +131,7 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
       lambda <- theta[3]
     }
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
+
     if(pmethod =="integrate"){
     p <- sapply(q, function(z) min(integrate(dSTS, 0, z, alpha = alpha,
                                          delta = delta, lambda = lambda)$value,
@@ -245,6 +246,7 @@ rSTS_SR1 <- function(alpha, delta, lambda, k) {
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
 #' @param theta A vector of all other arguments.
+#' @param qmin,qmax Limits of the interval.
 #'
 #' @return Gap holder for return.
 #'
@@ -255,7 +257,7 @@ rSTS_SR1 <- function(alpha, delta, lambda, k) {
 #' @importFrom stabledist qstable
 #' @export
 qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
-                   ...) {
+                 qmin = NULL, qmax = NULL, ...) {
     if (missing(alpha) & missing(delta) & missing(lambda) & is.null(theta))
       stop("No parameters supplied")
     theta0 <- c(alpha, delta, lambda)
@@ -269,17 +271,20 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
       lambda <- theta[3]
     }
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
+
     froot <- function(x, y){
       pSTS(q = x, alpha = alpha, delta = delta, lambda = lambda, ...) - y
     }
 
-    qroot <- function(y) {
-      xmin <- 0
-      xmax <- qstable(y, alpha = alpha, beta = 1,
-                      gamma = ((1/alpha*gamma(1-alpha)*delta*
-                                  cos(alpha*pi/2))^(1/alpha)),
-                      delta = 0, pm = 1)
-      uniroot(froot,interval = c(xmin,xmax), y = y)$root}
+    qroot <- function(y, qmin = qmin, qmax = qmax) {
+      if(missing(qmin)|missing(qmax)){
+        qmin <- 0
+        qmax <- qcauchy(y, location = mu,
+                        scale = min(((1/alpha*gamma(1-alpha)*(delta)*
+                                        cos(alpha*pi/2))^(1/alpha)),100))
+      }
+      stabledist:::.unirootNA(froot,interval = c(qmin,qmax),
+                              extendInt = "yes", y = y)}
 
     q <- sapply(p, qroot)
     return(q)
@@ -648,6 +653,7 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
 #' @param lambdap,lambdap A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
+#' @param qmin,qmax Limits of the interval.
 #'
 #' @return Gap holder for return.
 #'
@@ -656,7 +662,8 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
 #' @importFrom stabledist qstable
 #' @export
 qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
-                 lambdam = NULL, mu = NULL, theta = NULL, ...) {
+                 lambdam = NULL, mu = NULL, theta = NULL, qmin = NULL,
+                 qmax = NULL, ...) {
     if ((missing(alpha) | missing(deltap) | missing(deltam) | missing(lambdap) |
          missing(lambdam) | missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -681,14 +688,16 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
            lambdap = lambdap, lambdam = lambdam, mu = mu, ...) - y
     }
 
-    qroot <- function(y) {
-      x1 <- qstable(y, alpha = alpha, beta = (deltap-deltam)/(deltap+deltam),
-                    gamma = ((1/alpha*gamma(1-alpha)*(deltap+deltam)*
-                                cos(alpha*pi/2))^(1/alpha)),
-                    delta = mu, pm = 1)
-      xmin <- min(c(x1,-x1, mu-1, mu+1))
-      xmax <- max(c(x1,-x1, mu-1, mu+1))
-      uniroot(froot,interval = c(xmin,xmax), y = y)$root}
+    qroot <- function(y, qmin = qmin, qmax = qmax) {
+      if(missing(qmin)|missing(qmax)){
+        x1 <- qcauchy(y, location = mu,
+                      scale = min(((1/alpha*gamma(1-alpha)*(deltap+deltam)*
+                                      cos(alpha*pi/2))^(1/alpha)),100))
+        qmin <- min(c(x1,-x1, mu-1, mu+1))
+        qmax <- max(c(x1,-x1, mu-1, mu+1))
+      }
+      stabledist:::.unirootNA(froot, interval = c(qmin,qmax), extendInt = "yes",
+                              y = y, ...)}
 
     q <- sapply(p, qroot)
     return(q)
@@ -957,6 +966,7 @@ rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
 #' @param lambda A  real number >= 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
+#' @param qmin,qmax Limits of the interval.
 #'
 #' @return Gap holder for return.
 #'
@@ -966,7 +976,7 @@ rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
 #'
 #' @export
 qNTS <- function(p, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
-                 mu = NULL, theta = NULL, ...) {
+                 mu = NULL, theta = NULL, qmin = NULL, qmax = NULL, ...) {
     if ((missing(alpha) | missing(beta) | missing(delta) | missing(lambda) |
          missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -990,14 +1000,14 @@ qNTS <- function(p, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
            lambda = lambda, mu = mu, ...) - y
     }
 
-    qroot <- function(y) {
-      x1 <- qstable(y, alpha = alpha, beta = 1,
-                    gamma = ((1/alpha*gamma(1-alpha)*(delta)*
-                                cos(alpha*pi/2))^(1/alpha)),
-                    delta = mu, pm = 1)
-      xmin <- min(c(x1,-x1, mu-1, mu+1))
-      xmax <- max(c(x1,-x1, mu-1, mu+1))
-      uniroot(froot,interval = c(xmin,xmax), y = y)$root}
+    qroot <- function(y, qmin = qmin, qmax = qmax) {
+      x1 <- qcauchy(y, location = mu,
+                    scale = min(((1/alpha*gamma(1-alpha)*(delta)*
+                                    cos(alpha*pi/2))^(1/alpha)),100))
+      qmin <- min(c(x1,-x1, mu-1, mu+1))
+      qmax <- max(c(x1,-x1, mu-1, mu+1))
+      stabledist:::.unirootNA(froot,interval = c(qmin,qmax),
+                              extendInt = "yes", y = y, ...)}
 
     q <- sapply(p, qroot)
     return(q)
