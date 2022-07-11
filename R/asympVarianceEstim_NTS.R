@@ -1,10 +1,16 @@
 ##### ML#####
-.asymptoticVarianceEstimML_NTS <- function(data, EstimObj, type = "Subordinator", ...) {
-    asymptoticVarianceEstimML_NTS(thetaEst = EstimObj$Estim$par, n_sample = length(data), type = type, ...)
+.asymptoticVarianceEstimML_NTS <- function(data, EstimObj,
+                                           type = "Subordinator", ...) {
+    asymptoticVarianceEstimML_NTS(thetaEst = EstimObj$Estim$par,
+                                  n_sample = length(data), type = type, ...)
 }
 
-asymptoticVarianceEstimML_NTS <- function(thetaEst, n_sample, type = "Subordinator", subdivisions = 100, ...) {
-    NameParamsObjectsTemp(invFisherMatrix_NTS(as.numeric(thetaEst), subdivisions)/n_sample, type = type)
+asymptoticVarianceEstimML_NTS <- function(thetaEst, n_sample,
+                                          type = "Subordinator",
+                                          subdivisions = 100, ...) {
+    NameParamsObjectsTemp(invFisherMatrix_NTS(as.numeric(thetaEst),
+                                              subdivisions)/n_sample,
+                          type = type)
 }
 
 
@@ -17,7 +23,9 @@ invFisherMatrix_NTS <- function(theta, subdivisions = 100) {
     }
     for (i in 1:5) {
         for (j in 1:i) {
-            mat[i, j] <- integrate(f = integrand, lower = -Inf, upper = Inf, i = i, j = j, subdivisions = subdivisions)$value
+            mat[i, j] <- integrate(f = integrand, lower = -Inf, upper = Inf,
+                                   i = i, j = j,
+                                   subdivisions = subdivisions)$value
             mat[j, i] <- mat[i, j]
         }
     }
@@ -29,32 +37,48 @@ VectorialDensity_NTS <- function(theta, xi) {
 }
 
 jacVectorialDensity_NTS <- function(theta, xi) {
-    NumDeriv_jacobian_NTS(fctToDeriv = VectorialDensity_NTS, WhereFctIsEvaluated = theta, xi = xi)
+    NumDeriv_jacobian_NTS(fctToDeriv = VectorialDensity_NTS,
+                          WhereFctIsEvaluated = theta, xi = xi)
 }
 
 NumDeriv_jacobian_NTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
-    jacobian(fctToDeriv, WhereFctIsEvaluated, method = "Richardson", method.args = list(), ...)
+    jacobian(fctToDeriv, WhereFctIsEvaluated, method = "Richardson",
+             method.args = list(), ...)
 }
 
 ##### GMM#####
-.asymptoticVarianceEstimGMM_NTS <- function(data, EstimObj, type = "Subordinator", eps, ...) {
-    V <- solve(GMMasymptoticVarianceEstim_NTS(theta = EstimObj$Estim$par, t = EstimObj$tEstim, x = data, eps = eps, ...))/length(data)
+.asymptoticVarianceEstimGMM_NTS <- function(data, EstimObj,
+                                            type = "Subordinator", eps, ...) {
+    V <- solve(GMMasymptoticVarianceEstim_NTS(theta = EstimObj$Estim$par,
+                                              t = EstimObj$tEstim, x = data,
+                                              eps = eps, ...))/length(data)
     NameParamsObjects(V, type = type)
 }
 
 ##### CGMM#####
-.asymptoticVarianceEstimCgmm_NTS <- function(data, EstimObj, type = "Subordinator", ...) {
-    V <- ComputeCovarianceCgmm_NTS(theta = EstimObj$Estim$par, thetaHat = EstimObj$Estim$par, x = data, ...)
+.asymptoticVarianceEstimCgmm_NTS <- function(data, EstimObj,
+                                             type = "Subordinator", ...) {
+    V <- ComputeCovarianceCgmm_NTS(theta = EstimObj$Estim$par,
+                                   thetaHat = EstimObj$Estim$par, x = data, ...)
     NameParamsObjects(Mod(ComputeCutOffInverse(V))/length(data), type = type)
 }
 
-ComputeCovarianceCgmm_NTS <- function(theta, Cmat = NULL, x, alphaReg, thetaHat, s_min, s_max, subdivisions = 50, IntegrationMethod = c("Uniform",
-    "Simpson"), randomIntegrationLaw = c("norm", "unif"), ...) {
+ComputeCovarianceCgmm_NTS <- function(theta, Cmat = NULL, x, alphaReg,
+                                      thetaHat, s_min, s_max, subdivisions = 50,
+                                      IntegrationMethod = c("Uniform",
+                                                            "Simpson"),
+                                      randomIntegrationLaw = c("norm",
+                                                               "unif"), ...) {
     n <- length(x)
     IntegrationMethod <- match.arg(IntegrationMethod)
     randomIntegrationLaw <- match.arg(randomIntegrationLaw)
-    CovMat <- ComputeCgmmFcts_NTS(Fct = "Covariance", theta = theta, Cmat = Cmat, x = x, Weighting = "optimal", alphaReg = alphaReg,
-        thetaHat = thetaHat, s_min = s_min, s_max = s_max, subdivisions = subdivisions, IntegrationMethod = IntegrationMethod,
-        randomIntegrationLaw = randomIntegrationLaw, ...)
+    CovMat <- ComputeCgmmFcts_NTS(Fct = "Covariance", theta = theta,
+                                  Cmat = Cmat, x = x, Weighting = "optimal",
+                                  alphaReg = alphaReg, thetaHat = thetaHat,
+                                  s_min = s_min, s_max = s_max,
+                                  subdivisions = subdivisions,
+                                  IntegrationMethod = IntegrationMethod,
+                                  randomIntegrationLaw = randomIntegrationLaw,
+                                  ...)
     CovMat/(n - 5)
 }

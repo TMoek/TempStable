@@ -114,13 +114,13 @@ TemperedEstim_v2 <- function(TemperedType = c("Classic", "Subordinator",
         stop("data not provided !")
     if (is.null(theta0)) {
         if (TemperedType == "Classic") {
-            theta0 <- MoC_CTS(x, c(1.5, 1, 1, 1, 1, 0), eps = eps)
+            theta0 <- MoC_CTS(x = data, c(1.5, 1, 1, 1, 1, 0), eps = eps)
         } else if (TemperedType == "Subordinator") {
-            theta0 <- MoC_STS(x, c(0.5, 1, 1), eps = eps)
+            theta0 <- MoC_STS(x = data, c(0.5, 1, 1), eps = eps)
         } else if (TemperedType == "Normal") {
-            theta0 <- MoC_NTS(x, c(0.5, 0, 1, 1, 0), eps = eps)
+            theta0 <- MoC_NTS(x = data, c(0.5, 0, 1, 1, 0), eps = eps)
         } else {
-            theta0 <- MoC_CGMY(x, c(1, 1, 1, 1.5), eps = eps)
+            theta0 <- MoC_CGMY(x = data, c(1, 1, 1, 1.5), eps = eps)
         }
     }
     if (TemperedType == "Classic") {
