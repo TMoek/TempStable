@@ -279,7 +279,7 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
     qroot <- function(y, qmin = qmin, qmax = qmax) {
       if(missing(qmin)|missing(qmax)){
         qmin <- 0
-        qmax <- abs(qcauchy(y, location = mu,
+        qmax <- abs(qcauchy(y, location = 0,
                         scale = min(((1/alpha*gamma(1-alpha)*(delta)*
                                         cos(alpha*pi/2))^(1/alpha)),100)))
       }
