@@ -133,7 +133,7 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
 
     if(pmethod =="integrate"){
-    p <- sapply(q, function(z) min(integrate(dSTS, 0, z, alpha = alpha,
+    p <- sapply(q, function(z, ...) min(integrate(dSTS, 0, z, alpha = alpha,
                                          delta = delta, lambda = lambda, ...)$value,
                                    1 - 1e-07))
 
