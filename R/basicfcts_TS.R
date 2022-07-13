@@ -117,7 +117,7 @@ dSTS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 #'
 #' @export
 pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
-                   pmethod = "integrate", N = 10000) {
+                   pmethod = "integrate", N = 10000, ...) {
     if ((missing(alpha) | missing(delta) | missing(lambda)) & is.null(theta))
       stop("No or not enough parameters supplied")
     theta0 <- c(alpha, delta, lambda)
@@ -134,7 +134,7 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 
     if(pmethod =="integrate"){
     p <- sapply(q, function(z) min(integrate(dSTS, 0, z, alpha = alpha,
-                                         delta = delta, lambda = lambda)$value,
+                                         delta = delta, lambda = lambda, ...)$value,
                                    1 - 1e-07))
 
   } else {
@@ -272,16 +272,16 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
     }
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
 
-    froot <- function(x, y){
+    froot <- function(x, y, ...){
       pSTS(q = x, alpha = alpha, delta = delta, lambda = lambda, ...) - y
     }
 
     qroot <- function(y, qmin = qmin, qmax = qmax) {
       if(missing(qmin)|missing(qmax)){
         qmin <- 0
-        qmax <- qcauchy(y, location = mu,
+        qmax <- abs(qcauchy(y, location = mu,
                         scale = min(((1/alpha*gamma(1-alpha)*(delta)*
-                                        cos(alpha*pi/2))^(1/alpha)),100))
+                                        cos(alpha*pi/2))^(1/alpha)),100)))
       }
       stabledist:::.unirootNA(froot,interval = c(qmin,qmax),
                               extendInt = "yes", y = y)}
@@ -686,7 +686,7 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
     }
     stopifnot(0 < alpha, alpha < 2, 0 < deltap, 0 < deltam, 0 < lambdap, 0 <
                 lambdam)
-    froot <- function(x, y){
+    froot <- function(x, y, ...){
       pCTS(q = x, alpha = alpha, deltap = deltap, deltam = deltam,
            lambdap = lambdap, lambdam = lambdam, mu = mu, ...) - y
     }
@@ -882,7 +882,7 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
                 (z>b) 1
                 else min(integrate(dNTS, lower = a, upper = z, alpha = alpha,
                                beta = beta, delta = delta, lambda = lambda,
-                               mu = mu)$value, 1-1e-7)})
+                               mu = mu, ...)$value, 1-1e-7)})
 
     return(p)
 }
@@ -998,7 +998,7 @@ qNTS <- function(p, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
     }
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
 
-    froot <- function(x, y){
+    froot <- function(x, y, ...){
       pNTS(q = x, alpha = alpha, beta = beta, delta = delta,
            lambda = lambda, mu = mu, ...) - y
     }
