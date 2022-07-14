@@ -544,8 +544,8 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #'
 #' @export
 rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
-                 lambdam = NULL, mu = NULL, theta = NULL, method = "SR",
-                 k = 100, c = 0.1) {
+                 lambdam = NULL, mu = NULL, theta = NULL, method = "aAR",
+                 k = 100, c = 1) {
     if ((missing(alpha) | missing(deltap) | missing(deltam) | missing(lambdap) |
          missing(lambdam) | missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -578,8 +578,8 @@ rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 
 #' No export.
 rCTS_aAR <- function(n, alpha, deltap, deltam, lambdap, lambdam, mu, c) {
-    mu + rCTS_aARp(n, alpha = alpha, delta = deltap, lambda = lambdap, c = c)
-    -rCTS_aARp(n, alpha = alpha, delta = deltam, lambda = lambdam, c = c)
+    return(mu + rCTS_aARp(n, alpha = alpha, delta = deltap, lambda = lambdap, c = c)
+    -rCTS_aARp(n, alpha = alpha, delta = deltam, lambda = lambdam, c = c))
 }
 
 #' No export.
@@ -620,17 +620,17 @@ rCTS_SR <- function(n, alpha, deltap, deltam, lambdap, lambdam, mu, k) {
 
 #' No export.
 rCTS_SR1 <- function(alpha, deltap, deltam, lambdap, lambdam, mu, k) {
-    x <- rCTS_SRp(alpha = alpha, delta = deltap, lambda = lambdap, k = k)
-    -rCTS_SRp(alpha = alpha, delta = deltam, lambda = lambdam, k = k)
-    +mu
-    return(x)
+    return(rCTS_SRp(alpha = alpha, delta = deltap, lambda = lambdap, k = k)
+           -rCTS_SRp(alpha = alpha, delta = deltam, lambda = lambdam, k = k)
+           +mu)
 }
+
 
 
 #' No export.
 #' @importFrom VGAM zeta
 rCTS_SRp <- function(alpha, delta, lambda, k) {
-    parrivalslong <- cumsum(rexp(k * 1.5))
+    parrivalslong <- cumsum(rexp(k * 2))
     parrivals <- parrivalslong[parrivalslong <= k]
     n <- length(parrivals)
     E1 <- rexp(n)
@@ -643,7 +643,7 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
     x <- sum(jumps) + gam
     return(x)
 }
-
+                
 #' Function title
 #'
 #' Gap holder for description.
