@@ -636,8 +636,7 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
     E1 <- rexp(n)
     U <- stats::runif(n)
     cntr <- ((1:n) * alpha/delta)^(-1/alpha)
-    gam <- (delta/alpha)^(1/alpha) * VGAM::zeta(1/alpha)
-    -gamma(1 - alpha) * delta * lambda^(alpha - 1)
+    gam <- (delta/alpha)^(1/alpha) * VGAM::zeta(1/alpha) - gamma(1 - alpha) * delta * lambda^(alpha - 1)
     xBig <- base::cbind((alpha * parrivals/delta)^(-1/alpha),
                         E1 * U^(1/alpha)/lambda)
     jumps <- apply(xBig, 1, FUN = min) - cntr
