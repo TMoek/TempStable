@@ -256,8 +256,8 @@ rSTS_SR1 <- function(alpha, delta, lambda, k) {
 #'
 #' @importFrom stabledist qstable
 #' @export
-qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
-                 qmin = NULL, qmax = NULL, ...) {
+qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL, 
+                  qmin = NULL, qmax = NULL, ...) {
     if (missing(alpha) & missing(delta) & missing(lambda) & is.null(theta))
       stop("No parameters supplied")
     theta0 <- c(alpha, delta, lambda)
@@ -276,17 +276,20 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
       pSTS(q = x, alpha = alpha, delta = delta, lambda = lambda, ...) - y
     }
 
-    qroot <- function(y, qmin = qmin, qmax = qmax) {
-      if(missing(qmin)|missing(qmax)){
-        qmin <- 0
-        qmax <- abs(qcauchy(y, location = 0,
-                        scale = min(((1/alpha*gamma(1-alpha)*(delta)*
-                                        cos(alpha*pi/2))^(1/alpha)),100)))
+    qroot <- function(y, qmin, qmax) {
+      if(is.null(qmin)|is.null(qmax)){
+        qmini <- 0
+        qmaxi <-  abs(qstable(y, alpha = alpha, beta = 1,
+                        gamma = min(((1/alpha*gamma(1-alpha)*(delta)*
+                                        cos(alpha*pi/2))^(1/alpha)),100), delta = 0, pm = 1))
+      } else {
+        qmini <- qmin
+        qmaxi <- qmax
       }
-      stabledist:::.unirootNA(froot,interval = c(qmin,qmax),
+      stabledist:::.unirootNA(froot,interval = c(qmini,qmaxi),
                               extendInt = "yes", y = y)}
 
-    q <- sapply(p, qroot)
+    q <- sapply(p, qroot, qmin = qmin, qmax = qmax)
     return(q)
 }
 
@@ -691,18 +694,21 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
            lambdap = lambdap, lambdam = lambdam, mu = mu, ...) - y
     }
 
-    qroot <- function(y, qmin = qmin, qmax = qmax) {
-      if(missing(qmin)|missing(qmax)){
+    qroot <- function(y, qmin, qmax) {
+      if(is.null(qmin)|is.null(qmax)){
         x1 <- qcauchy(y, location = mu,
                       scale = min(((1/alpha*gamma(1-alpha)*(deltap+deltam)*
                                       cos(alpha*pi/2))^(1/alpha)),100))
-        qmin <- min(c(x1,-x1, mu-1, mu+1))
-        qmax <- max(c(x1,-x1, mu-1, mu+1))
+        qmini <- min(c(x1,-x1, mu-1, mu+1))
+        qmaxi <- max(c(x1,-x1, mu-1, mu+1))
+      } else {
+        qmini <- qmin
+        qmaxi <- qmax
       }
-      stabledist:::.unirootNA(froot, interval = c(qmin,qmax), extendInt = "yes",
+      stabledist:::.unirootNA(froot, interval = c(qmini,qmaxi), extendInt = "yes",
                               y = y, ...)}
 
-    q <- sapply(p, qroot)
+    q <- sapply(p, qroot, qmin = qmin, qmax = qmax)
     return(q)
 }
 
@@ -1003,16 +1009,21 @@ qNTS <- function(p, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
            lambda = lambda, mu = mu, ...) - y
     }
 
-    qroot <- function(y, qmin = qmin, qmax = qmax) {
-      x1 <- qcauchy(y, location = mu,
-                    scale = min(((1/alpha*gamma(1-alpha)*(delta)*
-                                    cos(alpha*pi/2))^(1/alpha)),100))
-      qmin <- min(c(x1,-x1, mu-1, mu+1))
-      qmax <- max(c(x1,-x1, mu-1, mu+1))
-      stabledist:::.unirootNA(froot,interval = c(qmin,qmax),
+    qroot <- function(y, qmin, qmax) {
+      if(is.null(qmin)|is.null(qmax)){
+        x1 <- qcauchy(y, location = mu,
+                      scale = min(((1/alpha*gamma(1-alpha)*(delta)*
+                                      cos(alpha*pi/2))^(1/alpha)),100))
+        qmini <- min(c(x1,-x1, mu-1, mu+1))
+        qmaxi <- max(c(x1,-x1, mu-1, mu+1))
+      } else {
+        qmini <- qmin
+        qmaxi <- qmax
+      }
+      stabledist:::.unirootNA(froot,interval = c(qmini,qmaxi),
                               extendInt = "yes", y = y, ...)}
 
-    q <- sapply(p, qroot)
+    q <- sapply(p, qroot, qmin = qmin, qmax = qmax)
     return(q)
 }
 
