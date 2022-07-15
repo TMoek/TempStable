@@ -18,7 +18,8 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' On simulation of tempered stable random variates.
 #' Journal of Computational and Applied Mathematics, 235(8), 2873-2887.
 #' https://doi.org/10.1016/j.cam.2010.12.014
-#' @seealso(\url{https://www.sciencedirect.com/science/article/pii/S0377042710006643})
+#' @seealso(
+#' \url{https://www.sciencedirect.com/science/article/pii/S0377042710006643})
 #'
 #' @param t A positive integer.
 #' @param alpha A real number between 0 and 1.
@@ -106,8 +107,8 @@ dSTS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 #' @param lambda A  real number > 0.
 #' @param theta A vector of all other arguments.
 #' @param pmethod A gap holder.
-#' @param N integer: the number of replications, if \code{pmethod != "integrate"}. 10000
-#' by default.
+#' @param N integer: the number of replications, if
+#' \code{pmethod != "integrate"}. 10000 by default.
 #'
 #' @return A gap holder.
 #'
@@ -134,8 +135,8 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 
     if(pmethod =="integrate"){
     p <- sapply(q, function(z, ...) min(integrate(dSTS, 0, z, alpha = alpha,
-                                         delta = delta, lambda = lambda, ...)$value,
-                                   1 - 1e-07))
+                                         delta = delta, lambda = lambda,
+                                         ...)$value, 1 - 1e-07))
 
   } else {
     m <- gamma(1 - alpha)*delta/lambda^(1-alpha)
@@ -256,7 +257,7 @@ rSTS_SR1 <- function(alpha, delta, lambda, k) {
 #'
 #' @importFrom stabledist qstable
 #' @export
-qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL, 
+qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
                   qmin = NULL, qmax = NULL, ...) {
     if (missing(alpha) & missing(delta) & missing(lambda) & is.null(theta))
       stop("No parameters supplied")
@@ -281,7 +282,8 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
         qmini <- 0
         qmaxi <-  abs(qstable(y, alpha = alpha, beta = 1,
                         gamma = min(((1/alpha*gamma(1-alpha)*(delta)*
-                                        cos(alpha*pi/2))^(1/alpha)),100), delta = 0, pm = 1))
+                                        cos(alpha*pi/2))^(1/alpha)),100),
+                        delta = 0, pm = 1))
       } else {
         qmini <- qmin
         qmaxi <- qmax
@@ -578,8 +580,11 @@ rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 
 #' No export.
 rCTS_aAR <- function(n, alpha, deltap, deltam, lambdap, lambdam, mu, c) {
-    return(mu + rCTS_aARp(n, alpha = alpha, delta = deltap, lambda = lambdap, c = c)
-    -rCTS_aARp(n, alpha = alpha, delta = deltam, lambda = lambdam, c = c))
+    return(mu +
+             rCTS_aARp(n, alpha = alpha, delta = deltap, lambda = lambdap,
+                       c = c) -
+             rCTS_aARp(n, alpha = alpha, delta = deltam, lambda = lambdam,
+                       c = c))
 }
 
 #' No export.
@@ -636,14 +641,15 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
     E1 <- rexp(n)
     U <- stats::runif(n)
     cntr <- ((1:n) * alpha/delta)^(-1/alpha)
-    gam <- (delta/alpha)^(1/alpha) * VGAM::zeta(1/alpha) - gamma(1 - alpha) * delta * lambda^(alpha - 1)
+    gam <- (delta/alpha)^(1/alpha) * VGAM::zeta(1/alpha) - gamma(1 - alpha) *
+      delta * lambda^(alpha - 1)
     xBig <- base::cbind((alpha * parrivals/delta)^(-1/alpha),
                         E1 * U^(1/alpha)/lambda)
     jumps <- apply(xBig, 1, FUN = min) - cntr
     x <- sum(jumps) + gam
     return(x)
 }
-                
+
 #' Function title
 #'
 #' Gap holder for description.
@@ -704,8 +710,8 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
         qmini <- qmin
         qmaxi <- qmax
       }
-      stabledist:::.unirootNA(froot, interval = c(qmini,qmaxi), extendInt = "yes",
-                              y = y, ...)}
+      stabledist:::.unirootNA(froot, interval = c(qmini,qmaxi),
+                              extendInt = "yes", y = y, ...)}
 
     q <- sapply(p, qroot, qmin = qmin, qmax = qmax)
     return(q)

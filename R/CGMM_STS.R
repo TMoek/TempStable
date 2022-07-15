@@ -9,7 +9,7 @@ CgmmParametersEstim_STS <- function(x, algo = c("2S", "IT", "Cue"),
     if (is.null(theta0))
         theta0 <- MoC_STS(x, c(0.5, 1, 1), eps = eps)
     algo <- match.arg(algo)
-    t_init <- getTime_()
+    t_init <- StableEstim::getTime_()
     method <- getCgmmMethodName_STS(algo = algo, alphaReg = alphaReg,
                                     subdivisions = subdivisions,
                                     IntegrationMethod = IntegrationMethod,
@@ -47,10 +47,12 @@ CgmmParametersEstim_STS <- function(x, algo = c("2S", "IT", "Cue"),
     if (PrintTime) {
         CallingFct <- paste("Subordinator", "CgmmParametersEstim", algo,
                             sep = "_")
-        PrintDuration(ComputeDuration(t_init, getTime_()), CallingFct)
+        StableEstim::PrintDuration(
+          StableEstim::ComputeDuration(t_init, StableEstim::getTime_()),
+          CallingFct)
     }
-    list(Estim = Estim,
-         duration = as.numeric(ComputeDuration(t_init, getTime_(), TRUE)),
+    list(Estim = Estim, duration = as.numeric(
+      StableEstim::ComputeDuration(t_init, StableEstim::getTime_(), TRUE)),
          method = method)
 }
 

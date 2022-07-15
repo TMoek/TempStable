@@ -13,9 +13,9 @@ rCTS(
   lambdam = NULL,
   mu = NULL,
   theta = NULL,
-  method = "SR",
+  method = "aAR",
   k = 100,
-  c = 0.1
+  c = 1
 )
 }
 \arguments{

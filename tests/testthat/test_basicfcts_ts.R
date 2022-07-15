@@ -218,7 +218,7 @@ test_that("rCTS_gives_correct_return", {
   suppressWarnings({
 
     expect_equal(length(rCTS(10,0.5,1,1,1,1,1,NULL,"SR",10)),10)
-    expect_equal(rCTS(1,1,1,1,1,1,0,NULL,"SR",100), Inf)
+    expect_equal(rCTS(1,1,1,1,1,1,0,NULL,"SR",100), NaN)
 
     expect_equal(length(rCTS(10,0.5,1,1,1,1,1,NULL,"aAR")), 10)
 
@@ -391,7 +391,7 @@ test_that("rCGMY_gives_correct_return", {
 
   suppressWarnings({
     expect_equal(length(rCGMY(100,1,1,1,0.5)),100)
-    expect_equal(rCGMY(1,1,1,1,1),Inf)
+    expect_equal(rCGMY(1,1,1,1,1),NaN)
     expect_equal(rCGMY(0,1,1,1,0.5),list())
 
     expect_error(rCGMY(1,1,1,1,2.5))

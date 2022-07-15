@@ -42,7 +42,7 @@ jacVectorialDensity_NTS <- function(theta, xi) {
 }
 
 NumDeriv_jacobian_NTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
-    jacobian(fctToDeriv, WhereFctIsEvaluated, method = "Richardson",
+    numDeriv::jacobian(fctToDeriv, WhereFctIsEvaluated, method = "Richardson",
              method.args = list(), ...)
 }
 

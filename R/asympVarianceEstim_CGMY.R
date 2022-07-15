@@ -41,7 +41,7 @@ jacVectorialDensity_CGMY <- function(theta, xi) {
 }
 
 NumDeriv_jacobian_CGMY <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
-    jacobian(fctToDeriv, WhereFctIsEvaluated, method = "Richardson",
+    numDeriv::jacobian(fctToDeriv, WhereFctIsEvaluated, method = "Richardson",
              method.args = list(), ...)
 }
 

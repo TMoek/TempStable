@@ -43,5 +43,6 @@ charSTS(500,0.9,1,0.3)
 
 }
 \seealso{
-(\url{https://www.sciencedirect.com/science/article/pii/S0377042710006643})
+(
+\url{https://www.sciencedirect.com/science/article/pii/S0377042710006643})
 }

@@ -32,6 +32,7 @@ MoCObjective_STS <- function(x, parms) {
       F2 = gamma(2 - x[1]) * x[2]/x[3]^(2 - x[1]) - parms[2],
       F3 = gamma(3 - x[1]) * x[2]/x[3]^(3 - x[1]) - parms[3])
 }
+
 #' @importFrom rootSolve multiroot
 MoC_STS <- function(x, theta0 = c(0.5, 1, 1), eps = 1e-06) {
     cumulants <- CumFinder_STS(x)

@@ -11,7 +11,8 @@ pSTS(
   lambda = NULL,
   theta = NULL,
   pmethod = "integrate",
-  N = 10000
+  N = 10000,
+  ...
 )
 }
 \arguments{
@@ -27,8 +28,8 @@ pSTS(
 
 \item{pmethod}{A gap holder.}
 
-\item{N}{integer: the number of replications, if \code{pmethod != "integrate"}. 10000
-by default.}
+\item{N}{integer: the number of replications, if
+\code{pmethod != "integrate"}. 10000 by default.}
 }
 \value{
 A gap holder.
