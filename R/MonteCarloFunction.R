@@ -80,13 +80,15 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                      MCparam, ...)
     if (StatSummary)
         return(NameStatOutput(FctsToApply, StatOutput))
+    #TODO: Woher kommt die Funktion NameStatOutput(...)? Es gibt die Funktion weder im Package, noch in den anderen
+
 }
 
 #' No export.
 getSeedVector <- function(Outputsize, SeedOptions = NULL) {
     set.seed(345)
     if (is.null(SeedOptions))
-        vec <- as.vector(sample.int(n = 3 * Outputsize, size = Outputsize))  ###check the number 3!!!!
+        vec <- as.vector(sample.int(n = 3 * Outputsize, size = Outputsize))
  else {
         MCtot <- SeedOptions$MCtot
         seedStart <- SeedOptions$seedStart
@@ -175,7 +177,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
             }
 
             # if (SaveOutput) updateOutputFile(alphaT, betaT, MCparam, Estim)
-            PrintEstimatedRemainingTime(iter, tIter, Nrow)
+            StableEstim::PrintEstimatedRemainingTime(iter, tIter, Nrow)
         }
     }
     list(outputMat = Output, file = file)
@@ -408,6 +410,7 @@ ComputeStatOutput <- function(EstimOutput, FctsToApply, SampleSizes, CheckMat,
 #' @export
 initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
     method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
+    #TODO: get_filename(...) is not defined
     fileName <- get_filename(thetaT, MCparam, method)
     if (!file.exists(fileName)) {
         write(x = paste("alphaT", "delta+T", "delta-T", "lambda+T", "lambda-T",

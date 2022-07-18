@@ -16,7 +16,7 @@ GMCParametersEstim_CGMY <- function(x, algo = c("2SGMC", "ITGMC", "CueGMC"),
     algo <- match.arg(algo)
     regularization <- match.arg(regularization)
     WeightingMatrix <- match.arg(WeightingMatrix)
-    t_init <- getTime_()
+    t_init <- StableEstim::getTime_()
     method <- getGMCmethodName_CGMY(algo = algo, ncond = ncondfl,
                                     alphaReg = alphaReg,
                                     regularization = regularization,
@@ -45,10 +45,14 @@ GMCParametersEstim_CGMY <- function(x, algo = c("2SGMC", "ITGMC", "CueGMC"),
     if (PrintTime) {
         CallingFct <- paste("CGMY", "GMCParametersEstim", algo, "ncond=",
                             ncondfl, sep = "_")
-        PrintDuration(ComputeDuration(t_init, getTime_()), CallingFct)
+        StableEstim::PrintDuration(
+          StableEstim::ComputeDuration(t_init, StableEstim::getTime_()),
+          CallingFct)
     }
     list(Estim = Estim$Estim,
-         duration = ComputeDuration(t_init, getTime_(), TRUE), method = method,
+         duration = StableEstim::ComputeDuration(t_init,
+                                                 StableEstim::getTime_(), TRUE),
+         method = method,
          ncond = ncondfl)
 }
 
