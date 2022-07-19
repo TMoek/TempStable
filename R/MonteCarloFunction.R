@@ -239,8 +239,11 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
 #'
 #' @return Gap holder for return.
 #'
-#' @example
-#' Look in Archive for examples.
+#' @examples
+#' ComputeMCSimForTempered_parallel(1,c(1.5, 1, 1, 1, 1, 0),10,"Classic","ML")
+#' ComputeMCSimForTempered_parallel(1,c(0.5, 1, 1),10,"Subordinator","Cgmm",
+#'                                  IntegrationMethod = "Simpson",
+#'                                  randomIntegrationLaw = "unif")
 #'
 #' @export
 ComputeMCSimForTempered_parallel <- function(MCparam, thetaT, size,

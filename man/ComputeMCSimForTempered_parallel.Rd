@@ -40,3 +40,10 @@ Gap holder for description.
 \details{
 Gap holder for details.
 }
+\examples{
+ComputeMCSimForTempered_parallel(1,c(1.5, 1, 1, 1, 1, 0),10,"Classic","ML")
+ComputeMCSimForTempered_parallel(1,c(0.5, 1, 1),10,"Subordinator","Cgmm",
+                                 IntegrationMethod = "Simpson",
+                                 randomIntegrationLaw = "unif")
+
+}

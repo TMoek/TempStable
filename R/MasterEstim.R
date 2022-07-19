@@ -17,6 +17,13 @@
 #'
 #' @return Gap holder for return.
 #'
+#' @examples
+#' testData <- c(1.8873152, -0.4843727,  0.4755897, -0.1257814,  1.3484823,
+#'              -0.3866821, -0.4258380, -0.4658479, -2.9774961,  0.9646364,
+#'              -0.5875601, -2.0316790,  0.3641900,  1.1882307,  1.6635770,
+#'              -0.0554876,  0.4005471,  0.7820444, -0.3786902,  1.5131663)
+#' TemperedEstim("Classic","ML",testData)
+#'
 #' @export
 TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal",
                                            "CGMY"),
