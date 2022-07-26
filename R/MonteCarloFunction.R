@@ -46,16 +46,36 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                        nab, npar, lS, MCparam, ...)
     updatedCheckPointValues <- updateCheckPointValues(CheckPointValues, MCparam,
                                                       lS, nab)
-    # if (updatedCheckPointValues$mc_start != 1 && StatSummary) { print('Can't Compute Stat summary when the process
-    # doesn't start from the beginning!!') StatSummary = FALSE } if (StatSummary) { if(npar == 6){ StatOutputLength
-    # <- length(FctsToApply) + 5 } else { } StatOutputLength <- length(FctsToApply) + 5 StatOutput <- list(alpha =
-    # matrix(data = NA, ncol = StatOutputLength, nrow = nRowOutput), beta = matrix(data = NA, ncol =
-    # StatOutputLength, nrow = nRowOutput), gamma = matrix(data = NA, ncol = StatOutputLength, nrow = nRowOutput),
-    # delta = matrix(data = NA, ncol = StatOutputLength, nrow = nRowOutput)) }
+
+    #TODO: All green parts needs to be adapted.
+    #     StatOutput needs to match FctToApply in return.
+    #     seeAlso: https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R
+    #
+    #if (updatedCheckPointValues$mc_start != 1 && StatSummary){
+    #  print("'Can't Compute Stat summary when the process doesn't
+    #        start from the beginning!!")
+    #  StatSummary = FALSE }
+    #if (StatSummary){
+    #  if(npar == 6){
+    #  StatOutputLength <- length(FctsToApply) + 5
+    #  }
+    #  else {
+    #    StatOutputLength <- length(FctsToApply) + 5
+    #    StatOutput <- list(
+    #      alpha = matrix(data = NA, ncol = StatOutputLength, nrow = nRowOutput),
+    #      beta = matrix(data = NA, ncol = StatOutputLength, nrow = nRowOutput),
+    #      gamma = matrix(data = NA, ncol = StatOutputLength, nrow = nRowOutput),
+    #      delta = matrix(data = NA, ncol = StatOutputLength, nrow = nRowOutput))
+    #  }
+    #}
+
     for (ab in updatedCheckPointValues$ab_start:nab) {
         thetaT <- ParameterMatrix[ab, ]
         cat("---------------- theta=", thetaT, sep = "")
-        # if (saveOutput) initOutputFile(thetaT, MCparam, TemperedType, Estimfct, ...)
+
+        # if (saveOutput) initOutputFile(thetaT, MCparam,
+        #                                TemperedType, Estimfct, ...)
+
         EstimOutput <- ComputeMCSimForTempered(thetaT = thetaT,
                                                MCparam = MCparam,
                                                SampleSizes =
@@ -69,18 +89,31 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                                CheckPointValues =
                                                  updatedCheckPointValues,
                                                saveOutput = saveOutput,eps, ...)
-        # if (StatSummary) { res <- ComputeStatOutput(EstimOutput = EstimOutput$outputMat, FctsToApply = FctsToApply,
-        # SampleSizes = SampleSizes, CheckMat = CheckMat, tolFailCheck = tolFailCheck, MCparam = MCparam, ...)
-        # IndexSec <- seq(indexStatOutput, indexStatOutput + (lS - 1), 1) StatOutput$alpha[IndexSec, ] <- res$alpha
-        # StatOutput$beta[IndexSec, ] <- res$beta StatOutput$gamma[IndexSec, ] <- res$gamma
-        # StatOutput$delta[IndexSec, ] <- res$delta indexStatOutput <- indexStatOutput + lS }
+
+
+        #if (StatSummary) {
+        #   res <- ComputeStatOutput(EstimOutput = EstimOutput$outputMat,
+        #                            FctsToApply = FctsToApply,
+        #                            SampleSizes = SampleSizes,
+        #                            CheckMat = CheckMat,
+        #                            tolFailCheck = tolFailCheck,
+        #                            MCparam = MCparam, ...)
+        #   IndexSec <- seq(indexStatOutput, indexStatOutput + (lS - 1), 1)
+        #   StatOutput$alpha[IndexSec, ] <- res$alpha
+        #   StatOutput$beta[IndexSec, ] <- res$beta
+        #   StatOutput$gamma[IndexSec, ] <- res$gamma
+        #   StatOutput$delta[IndexSec, ] <- res$delta
+        #   indexStatOutput <- indexStatOutput + lS
+        #}
+
         OutputCollection <- EstimOutput
     }
     deleteCheckPoint(ParameterMatrix, TemperedType, Estimfct, nab, npar, lS,
                      MCparam, ...)
     if (StatSummary)
+        #TODO: Function NameStatOutput is copied from StableEstim now. Adapt it.
         return(NameStatOutput(FctsToApply, StatOutput))
-    #TODO: Woher kommt die Funktion NameStatOutput(...)? Es gibt die Funktion weder im Package, noch in den anderen
+
 
 }
 
@@ -618,3 +651,13 @@ writeCheckPoint <- function(ParameterMatrix, Estimfct, ab, nab, npar, sample,
     line[2] = paste("--", ab, nab, npar, sample, nSS, mc, MCparam, sep = ";")
     writeLines(line, fileName)
 }
+
+#Added by Cedric 20220726
+NameStatOutput <- function(FctsToApply, StatOutput) {
+  Names <- c("alpha", "beta", "n", names(FctsToApply), "failure", "time")
+  lapply(StatOutput, function(x) {
+    colnames(x) <- Names
+    return(x)
+  })
+}
+
