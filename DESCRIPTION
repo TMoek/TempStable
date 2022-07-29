@@ -4,29 +4,29 @@ Title: What the Package Does (Title Case)
 Version: 0.0.0.9000
 Authors@R: c(
     person("Cedric", "Juessen", email = "cedric.juessen@vwl.uni-due.de", role = "cre"),
-    person("Till", "Massing", email = "till.massing@uni-due.de", role = "aut"))
+    person("Till", "Massing", email = "till.massing@uni-due.de", role = "aut", "cre"))
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
+URL: TODO: Link to GitHub project, when project is public
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Imports:
-    doParallel,
-    doRNG,
-    foreach,
-    moments,
-    numDeriv,
-    parallel,
-    pracma,
-    StableEstim,
-    stabledist,
-    stats,
-    rootSolve,
-    VGAM
+    doParallel (>= 1.0.17),
+    doRNG (>= 1.8.2),
+    foreach (>= 1.5.2),
+    moments (>= 0.14.1),
+    numDeriv (>= 2016.8-1.1),
+    parallel (>= 4.2.1),
+    pracma (>= 2.3.8),
+    stabledist (>= 0.7-1),
+    StableEstim (>= 2.1),
+    rootSolve (>= 1.8.2.3),
+    VGAM (>= 1.1-7)
 RoxygenNote: 7.2.0
 Suggests: 
-    knitr,
-    rmarkdown,
+    knitr (>= 1.39),
+    rmarkdown (>= 2.14),
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3

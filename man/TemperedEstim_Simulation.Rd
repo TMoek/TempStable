@@ -2,7 +2,7 @@
 % Please edit documentation in R/MonteCarloFunction.R
 \name{TemperedEstim_Simulation}
 \alias{TemperedEstim_Simulation}
-\title{Function title}
+\title{Monte Carlo Simulation}
 \usage{
 TemperedEstim_Simulation(
   ParameterMatrix,
@@ -24,28 +24,41 @@ TemperedEstim_Simulation(
 \arguments{
 \item{ParameterMatrix}{A gap holder.}
 
-\item{SampleSizes}{A gap holder.}
+\item{SampleSizes}{Sample sizes to be used to simulate the data. By default,
+we use 200 (small sample size) and 1600 (large sample size);
+vector of integer.}
 
-\item{MCparam}{A gap holder.}
+\item{MCparam}{Number of Monte Carlo simulation for each couple of parameter,
+default=100; integer}
 
 \item{TemperedType}{A String. Either "Classic", "Subordinator", "Normal", or
 "CGMY".}
 
-\item{Estimfct}{A String. Either "ML", "GMM", "Cgmm", or "GMC".}
+\item{Estimfct}{The estimation function to be used. A String.
+Either "ML", "GMM", "Cgmm", or "GMC".}
 
-\item{HandleError}{A Boolean. \code{TRUE} by default.}
+\item{HandleError}{Logical flag: if set to TRUE, the simulation doesn't stop
+when an error in the estimation function is encountered. A vector of
+(size 4) NA is saved and the the simulation carries on. See details.}
 
-\item{FctsToApply}{A gap holder.}
+\item{FctsToApply}{Functions used to produce the statistical summary. See
+details; vector of character.}
 
-\item{saveOutput}{A gap holder.}
+\item{saveOutput}{Logical flag: if set to TRUE, a csv file (for each couple
+of parameter \code{Alpha} and \code{Beta}) with the the estimation
+information is saved in the current directory. See details.}
 
-\item{StatSummary}{A gap holder.}
+\item{StatSummary}{Logical flag: if set to TRUE, a statistical summary
+(using \code{FctsToApply}) is returned. See details.}
 
-\item{CheckMat}{A gap holder.}
+\item{CheckMat}{Logical flag: if set to TRUE, an estimation is declared
+failed if the squared error of the estimation is larger than tolFailCheck;
+default TRUE}
 
-\item{tolFailCheck}{A gap holder.}
+\item{tolFailCheck}{Tolerance on the squared error of the estimation to be
+declared failed; default 1.5}
 
-\item{SeedOptions}{A gap holder.}
+\item{SeedOptions}{List to control the seed generation. See details.}
 
 \item{eps}{A gap holder.}
 }
@@ -56,5 +69,17 @@ Gap holder for return.
 Gap holder for description.
 }
 \details{
-Gap holder for details.
+Gap holder for details. Check detail here:
+ \code{?StableEstim::Estim_Simulation}
+}
+\examples{
+TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
+                                                c(0.5,1,1,1,1,0)),
+                        SampleSizes = 10, MCparam = 10,
+                        TemperedType = "Classic", Estimfct = "ML" )
+
+}
+\seealso{
+(
+\url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R})
 }

@@ -1,26 +1,49 @@
 
-#' Function title
+#' Monte Carlo Simulation
 #'
 #' Gap holder for description.
 #'
-#' Gap holder for details.
+#' Gap holder for details. Check detail here:
+#'  \code{?StableEstim::Estim_Simulation}
+#'
+#' @seealso(
+#' \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R})
 #'
 #' @param ParameterMatrix A gap holder.
-#' @param SampleSizes A gap holder.
-#' @param MCparam A gap holder.
+#' @param SampleSizes Sample sizes to be used to simulate the data. By default,
+#'  we use 200 (small sample size) and 1600 (large sample size);
+#'  vector of integer.
+#' @param MCparam Number of Monte Carlo simulation for each couple of parameter,
+#'  default=100; integer
 #' @param TemperedType A String. Either "Classic", "Subordinator", "Normal", or
-#' "CGMY".
-#' @param Estimfct A String. Either "ML", "GMM", "Cgmm", or "GMC".
-#' @param HandleError A Boolean. \code{TRUE} by default.
-#' @param FctsToApply A gap holder.
-#' @param saveOutput A gap holder.
-#' @param StatSummary A gap holder.
-#' @param CheckMat A gap holder.
-#' @param tolFailCheck A gap holder.
-#' @param SeedOptions A gap holder.
+#'  "CGMY".
+#' @param Estimfct The estimation function to be used. A String.
+#'  Either "ML", "GMM", "Cgmm", or "GMC".
+#' @param HandleError Logical flag: if set to TRUE, the simulation doesn't stop
+#'  when an error in the estimation function is encountered. A vector of
+#'  (size 4) NA is saved and the the simulation carries on. See details.
+#' @param FctsToApply Functions used to produce the statistical summary. See
+#'  details; vector of character.
+#' @param saveOutput Logical flag: if set to TRUE, a csv file (for each couple
+#'  of parameter \code{Alpha} and \code{Beta}) with the the estimation
+#'  information is saved in the current directory. See details.
+#' @param StatSummary Logical flag: if set to TRUE, a statistical summary
+#'  (using \code{FctsToApply}) is returned. See details.
+#' @param CheckMat Logical flag: if set to TRUE, an estimation is declared
+#'  failed if the squared error of the estimation is larger than tolFailCheck;
+#'  default TRUE
+#' @param tolFailCheck Tolerance on the squared error of the estimation to be
+#'  declared failed; default 1.5
+#' @param SeedOptions List to control the seed generation. See details.
 #' @param eps A gap holder.
 #'
 #' @return Gap holder for return.
+#'
+#' @examples
+#' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
+#'                                                 c(0.5,1,1,1,1,0)),
+#'                         SampleSizes = 10, MCparam = 10,
+#'                         TemperedType = "Classic", Estimfct = "ML" )
 #'
 #' @export
 TemperedEstim_Simulation <- function(ParameterMatrix,
@@ -71,7 +94,7 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 
     for (ab in updatedCheckPointValues$ab_start:nab) {
         thetaT <- ParameterMatrix[ab, ]
-        cat("---------------- theta=", thetaT, sep = "")
+        cat("---------------- theta=", thetaT, " --------------- \n", sep = "")
 
         # if (saveOutput) initOutputFile(thetaT, MCparam,
         #                                TemperedType, Estimfct, ...)
@@ -205,8 +228,9 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
             Output[iter, ] <- Estim$outputMat
             file <- Estim$file
             if (!is.null(CheckPointValues)) {
-                writeCheckPoint(ParameterMatrix, Estimfct, ab_current, nab,
-                                npar, sample, nSS, mc, MCparam, ...)
+                writeCheckPoint(ParameterMatrix, TemperedType, Estimfct,
+                                ab_current, nab, npar, sample, nSS, mc,
+                                MCparam, ...)
             }
 
             # if (SaveOutput) updateOutputFile(alphaT, betaT, MCparam, Estim)
@@ -469,11 +493,12 @@ initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
 #' @return Gap holder for return.
 #'
 #' @export
-Estim_Des_Temp <- function(TemperedType = c("Classic", "Subordinator"),
+Estim_Des_Temp <- function(TemperedType = c("Classic", "Subordinator",
+                                            "Normal", "CGMY"),
                            EstimMethod = c("ML", "GMM", "Cgmm", "Kout"), ...) {
-    type <- match.arg(TemperedType)
-    method <- match.arg(EstimMethod)
-    EstimFcts <- getTempEstimFcts(type, method)
+    TemperedType <- match.arg(TemperedType)
+    EstimMethod <- match.arg(EstimMethod)
+    EstimFcts <- getTempEstimFcts(TemperedType, EstimMethod)
     EstimFcts$methodDes(...)
 }
 
@@ -642,8 +667,8 @@ deleteCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
 #' @return Gap holder for return.
 #'
 #' @export
-writeCheckPoint <- function(ParameterMatrix, Estimfct, ab, nab, npar, sample,
-                            nSS, mc, MCparam, ...) {
+writeCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, ab, nab,
+                            npar, sample, nSS, mc, MCparam, ...) {
     method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
     fileName <- get_filename_checkPoint_Temp(ParameterMatrix, nab, npar,
                                              MCparam, method)
@@ -660,4 +685,16 @@ NameStatOutput <- function(FctsToApply, StatOutput) {
     return(x)
   })
 }
+
+#Added by Cedric 20220729
+get_filename <- function(ThetaT, MCparam, method, extension = ".csv") {
+    MC <- paste(
+      paste("Alpha=", ThetaT[1], sep = ""),
+      paste("BetaT=", ThetaT[2], sep = ""),
+      paste("MCparam", MCparam, sep = ""),
+      sep = "_"
+    )
+    fileName <- paste(MC, method, extension, sep = "")
+    fileName
+  }
 
