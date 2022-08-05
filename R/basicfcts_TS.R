@@ -592,7 +592,7 @@ rCTS_aAR <- function(n, alpha, deltap, deltam, lambdap, lambdam, mu, c) {
 rCTS_aARp <- function(n, alpha, delta, lambda, c) {
     sigma <- ((1/alpha * gamma(1 - alpha) * delta *
                  cos(alpha * pi/2))^(1/alpha))
-
+    cc <- ifelse(alpha < 1, 0, c)
     returnVector <- c()
 
     i <- 0
@@ -601,7 +601,7 @@ rCTS_aARp <- function(n, alpha, delta, lambda, c) {
         V <- 0
         Y <- 0
 
-        while (U > exp(-min(c(lambda * (V + c), 700)))) {
+        while (U > exp(-min(c(lambda * (V + cc), 700)))) {
             U <- runif(1, 0, 1)
             V <- rstable(1, alpha, 1, sigma, 0, pm = 1)
             Y <- V - gamma(1 - alpha) * delta * lambda^(alpha - 1)
