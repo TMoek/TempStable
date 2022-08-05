@@ -55,7 +55,8 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                      HandleError = TRUE, FctsToApply = StatFcts,
                                      saveOutput = TRUE, StatSummary = FALSE,
                                      CheckMat = TRUE, tolFailCheck = tolFailure,
-                                     SeedOptions = NULL, eps, ...) {
+                                     SeedOptions = NULL, eps = 1e-06, ...) {
+    #seeAlso: https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R
     SeedVector <- getSeedVector(MCparam, SeedOptions)
     Estimfct <- match.arg(Estimfct)
     TemperedType <- match.arg(TemperedType)
@@ -70,14 +71,21 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     updatedCheckPointValues <- updateCheckPointValues(CheckPointValues, MCparam,
                                                       lS, nab)
 
-    #TODO: All green parts needs to be adapted.
-    #     StatOutput needs to match FctToApply in return.
-    #     seeAlso: https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R
+
+    # Ist im Zielordner bereits eine csv-Datei mit dem gleichen Namen (thetaT
+    # und MCparam sind gleich), wird die Datei aktuell um die weiteren
+    # Ergebnisse aktualisiert.
+    # Wird dieser Code aktiviert, würde das Überschreiben einer Datei verboten
+    # werden.
     #
     #if (updatedCheckPointValues$mc_start != 1 && StatSummary){
     #  print("'Can't Compute Stat summary when the process doesn't
     #        start from the beginning!!")
     #  StatSummary = FALSE }
+
+
+
+
     #if (StatSummary){
     #  if(npar == 6){
     #  StatOutputLength <- length(FctsToApply) + 5
@@ -94,10 +102,32 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 
     for (ab in updatedCheckPointValues$ab_start:nab) {
         thetaT <- ParameterMatrix[ab, ]
-        cat("---------------- theta=", thetaT, " --------------- \n", sep = "")
 
-        # if (saveOutput) initOutputFile(thetaT, MCparam,
-        #                                TemperedType, Estimfct, ...)
+        outputString <- switch(TemperedType,
+                               Classic = paste("Alpha=", thetaT[1] ,
+                                               " *** DeltaP=", thetaT[2],
+                                               " *** DeltaM=", thetaT[3],
+                                               " *** LambdaP=", thetaT[4],
+                                               " *** LambdaM=", thetaT[5],
+                                               " *** mu=", thetaT[6], sep = ""),
+                               Subordinator = paste("Alpha=", thetaT[1] ,
+                                                    " *** Delta=", thetaT[2],
+                                                    " *** Lambda=", thetaT[3],
+                                                    sep = ""),
+                               Normal = paste("Alpha=", thetaT[1] ,
+                                              " *** Beta=", thetaT[2],
+                                              " *** Delta=", thetaT[3],
+                                              " *** Lambda=", thetaT[4],
+                                              " *** mu=", thetaT[5], sep = ""),
+                               CGMY = paste("C=", thetaT[1] ,
+                                            " *** G=", thetaT[2],
+                                            " *** M=", thetaT[3],
+                                            " *** Y=", thetaT[4], sep = ""))
+
+        cat("---------------- ", outputString, " --------------- \n", sep = "")
+
+        if (saveOutput) initOutputFile(thetaT, MCparam, TemperedType,
+                                      Estimfct, ...)
 
         EstimOutput <- ComputeMCSimForTempered(thetaT = thetaT,
                                                MCparam = MCparam,
@@ -134,9 +164,7 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     deleteCheckPoint(ParameterMatrix, TemperedType, Estimfct, nab, npar, lS,
                      MCparam, ...)
     if (StatSummary)
-        #TODO: Function NameStatOutput is copied from StableEstim now. Adapt it.
         return(NameStatOutput(FctsToApply, StatOutput))
-
 
 }
 
@@ -233,7 +261,10 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                 MCparam, ...)
             }
 
-            # if (SaveOutput) updateOutputFile(alphaT, betaT, MCparam, Estim)
+            #TODO
+            if (SaveOutput) updateOutputFile(thetaT, MCparam, TemperedType,
+                                             Estim)
+
             StableEstim::PrintEstimatedRemainingTime(iter, tIter, Nrow)
         }
     }
@@ -469,16 +500,30 @@ ComputeStatOutput <- function(EstimOutput, FctsToApply, SampleSizes, CheckMat,
 #'
 #' @export
 initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
-    method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
-    #TODO: get_filename(...) is not defined
-    fileName <- get_filename(thetaT, MCparam, method)
-    if (!file.exists(fileName)) {
-        write(x = paste("alphaT", "delta+T", "delta-T", "lambda+T", "lambda-T",
-                        "muT", "data size", "seed", "alphaE", "delta+E",
-                        "delta-E", "lambda+E", "lambda-E", "muE", "failure",
-                        "time", sep = ","),
-              file = fileName, sep = "\n")
-    }
+
+  method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
+  fileName <- get_filename(thetaT, MCparam, TemperedType, method)
+  if (!file.exists(fileName)) {
+    x <- switch(TemperedType,
+                Classic = paste("alphaT", "delta+T", "delta-T", "lambda+T",
+                                "lambda-T", "muT", "data size", "seed",
+                                "alphaE", "delta+E", "delta-E", "lambda+E",
+                                "lambda-E", "muE", "failure", "time",
+                                sep = ","),
+                Subordinator =  paste("alphaT", "deltaT", "lambdaT",
+                                      "data size", "seed", "alphaE", "deltaE",
+                                      "lambdaE", "failure", "time",
+                                      sep = ","),
+                Normal = paste("alphaT", "betaT", "deltaT", "lambdaT", "muT",
+                               "data size", "seed", "alphaE", "betaE", "deltaE",
+                               "lambdaE", "muE", "failure", "time",
+                               sep = ","),
+                CGMY = paste("CT", "GT", "MT", "YT", "data size", "seed", "CE",
+                             "GE", "ME", "YE","failure", "time",
+                             sep = ","))
+
+    write(x, file = fileName, sep = "\n")
+  }
 }
 
 #' Function title
@@ -571,9 +616,9 @@ get_filename_checkPoint_Temp <- function(ParameterMatrix, nab, npar, MCparam,
                     paste("delta0=", ParameterMatrix[1, 2], sep = ""),
                     paste("lambda0=", ParameterMatrix[1, 3], sep = ""),
                     paste("alphan=", ParameterMatrix[nab, 1], sep = ""),
-                    paste("deltan=",ParameterMatrix[nab, 2], sep = ""),
+                    paste("deltan=", ParameterMatrix[nab, 2], sep = ""),
                     paste("lambdan=", ParameterMatrix[nab, 3], sep = ""),
-                    paste("MCparam",MCparam, sep = ""), sep = "_")
+                    paste("MCparam", MCparam, sep = ""), sep = "_")
     } else {
         MC <- paste(paste("alpha0=", ParameterMatrix[1, 1], sep = ""),
                     paste("delta+0=", ParameterMatrix[1, 2], sep = ""),
@@ -687,14 +732,64 @@ NameStatOutput <- function(FctsToApply, StatOutput) {
 }
 
 #Added by Cedric 20220729
-get_filename <- function(ThetaT, MCparam, method, extension = ".csv") {
-    MC <- paste(
-      paste("Alpha=", ThetaT[1], sep = ""),
-      paste("BetaT=", ThetaT[2], sep = ""),
-      paste("MCparam", MCparam, sep = ""),
-      sep = "_"
-    )
-    fileName <- paste(MC, method, extension, sep = "")
-    fileName
+get_filename <- function(thetaT, MCparam, TemperedType, method,
+                         extension = ".csv") {
+  MC <- switch(TemperedType,
+               Classic = paste(paste("Alpha=", thetaT[1]),
+                               paste("DeltaP=", thetaT[2]),
+                               paste("DeltaM=", thetaT[3]),
+                               paste("LambdaP=", thetaT[4]),
+                               paste("LambdaM=", thetaT[5]),
+                               paste("mu=", thetaT[6]),
+                               "MCparam", MCparam, sep = "_"),
+               Subordinator = paste(paste("Alpha=", thetaT[1]),
+                                    paste("Delta=", thetaT[2]),
+                                    paste("Lambda=", thetaT[3]),
+                                    "MCparam", MCparam,  sep = "_"),
+               Normal = paste(paste("Alpha=", thetaT[1]),
+                              paste("Beta=", thetaT[2]),
+                              paste("Delta=", thetaT[3]),
+                              paste("Lambda=", thetaT[4]),
+                              paste("mu=", thetaT[5]),
+                              "MCparam", MCparam, sep = "_"),
+               CGMY = paste(paste("C=", thetaT[1]),
+                            paste("G=", thetaT[2]),
+                            paste("M=", thetaT[3]),
+                            paste("Y=", thetaT[4]),
+                            "MCparam", MCparam, sep = "_"))
+
+  fileName <- paste(MC, method, extension, sep = "")
+  fileName
+}
+
+#Added by Cedric 20220805
+updateOutputFile <- function(thetaT, MCparam, TemperedType, Output){
+  method <- Output$file
+  fileName <- get_filename(thetaT, MCparam, TemperedType, method)
+
+  if (!file.exists(fileName)) {
+    x <- switch(TemperedType,
+                Classic = paste("alphaT", "delta+T", "delta-T", "lambda+T",
+                                "lambda-T", "muT", "data size", "seed",
+                                "alphaE", "delta+E", "delta-E", "lambda+E",
+                                "lambda-E", "muE", "failure", "time",
+                                sep = ","),
+                Subordinator =  paste("alphaT", "deltaT", "lambdaT",
+                                      "data size", "seed", "alphaE", "deltaE",
+                                      "lambdaE", "failure", "time",
+                                      sep = ","),
+                Normal = paste("alphaT", "betaT", "deltaT", "lambdaT", "muT",
+                               "data size", "seed", "alphaE", "betaE", "deltaE",
+                               "lambdaE", "muE", "failure", "time",
+                               sep = ","),
+                CGMY = paste("CT", "GT", "MT", "YT", "data size", "seed", "CE",
+                             "GE", "ME", "YE","failure", "time",
+                             sep = ","))
+
+    write(x, file = fileName, sep = "\n")
   }
+
+  write(x = paste(as.character(Output$outputMat), collapse=","),
+        file = fileName, sep="\n", append=TRUE)
+}
 

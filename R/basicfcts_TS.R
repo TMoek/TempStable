@@ -425,7 +425,6 @@ dCTS_FFT <- function(x, alpha, deltap, deltam, lambdap, lambdam,
 
     # fast Fourier transform
     y <- stats::fft(tX, inverse = FALSE)
-    de
 
     densityW <- Re((dt/(2 * pi)) * exp(-imagN * (nf/2 * dt) * xgrid) * y)
 
