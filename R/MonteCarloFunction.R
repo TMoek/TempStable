@@ -22,13 +22,9 @@
 #' @param HandleError Logical flag: if set to TRUE, the simulation doesn't stop
 #'  when an error in the estimation function is encountered. A vector of
 #'  (size 4) NA is saved and the the simulation carries on. See details.
-#' @param FctsToApply Functions used to produce the statistical summary. See
-#'  details; vector of character.
 #' @param saveOutput Logical flag: if set to TRUE, a csv file (for each couple
-#'  of parameter \code{Alpha} and \code{Beta}) with the the estimation
+#'  of parameter) with the the estimation
 #'  information is saved in the current directory. See details.
-#' @param StatSummary Logical flag: if set to TRUE, a statistical summary
-#'  (using \code{FctsToApply}) is returned. See details.
 #' @param CheckMat Logical flag: if set to TRUE, an estimation is declared
 #'  failed if the squared error of the estimation is larger than tolFailCheck;
 #'  default TRUE
@@ -52,8 +48,7 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                      TemperedType = c("Classic", "Subordinator",
                                                       "Normal", "CGMY"),
                                      Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
-                                     HandleError = TRUE, FctsToApply = StatFcts,
-                                     saveOutput = TRUE, StatSummary = FALSE,
+                                     HandleError = TRUE, saveOutput = TRUE,
                                      CheckMat = TRUE, tolFailCheck = tolFailure,
                                      SeedOptions = NULL, eps = 1e-06, ...) {
     #seeAlso: https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R
@@ -65,12 +60,12 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     lS <- length(SampleSizes)
     nRowOutput <- nab * lS
     OutputCollection <- empty_list <- vector(mode = "list", length = nab)
+    returnList <- empty_list <- vector(mode = "list")
     indexStatOutput <- 1
     CheckPointValues <- readCheckPoint(ParameterMatrix, TemperedType, Estimfct,
                                        nab, npar, lS, MCparam, ...)
     updatedCheckPointValues <- updateCheckPointValues(CheckPointValues, MCparam,
                                                       lS, nab)
-
 
     # Ist im Zielordner bereits eine csv-Datei mit dem gleichen Namen (thetaT
     # und MCparam sind gleich), wird die Datei aktuell um die weiteren
@@ -78,26 +73,9 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     # Wird dieser Code aktiviert, würde das Überschreiben einer Datei verboten
     # werden.
     #
-    #if (updatedCheckPointValues$mc_start != 1 && StatSummary){
+    #if (updatedCheckPointValues$mc_start != 1){
     #  print("'Can't Compute Stat summary when the process doesn't
     #        start from the beginning!!")
-    #  StatSummary = FALSE }
-
-
-
-
-    #if (StatSummary){
-    #  if(npar == 6){
-    #  StatOutputLength <- length(FctsToApply) + 5
-    #  }
-    #  else {
-    #    StatOutputLength <- length(FctsToApply) + 5
-    #    StatOutput <- list(
-    #      alpha = matrix(data = NA, ncol = StatOutputLength, nrow = nRowOutput),
-    #      beta = matrix(data = NA, ncol = StatOutputLength, nrow = nRowOutput),
-    #      gamma = matrix(data = NA, ncol = StatOutputLength, nrow = nRowOutput),
-    #      delta = matrix(data = NA, ncol = StatOutputLength, nrow = nRowOutput))
-    #  }
     #}
 
     for (ab in updatedCheckPointValues$ab_start:nab) {
@@ -143,28 +121,23 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                                  updatedCheckPointValues,
                                                saveOutput = saveOutput,eps, ...)
 
-
-        #if (StatSummary) {
-        #   res <- ComputeStatOutput(EstimOutput = EstimOutput$outputMat,
-        #                            FctsToApply = FctsToApply,
-        #                            SampleSizes = SampleSizes,
-        #                            CheckMat = CheckMat,
-        #                            tolFailCheck = tolFailCheck,
-        #                            MCparam = MCparam, ...)
-        #   IndexSec <- seq(indexStatOutput, indexStatOutput + (lS - 1), 1)
-        #   StatOutput$alpha[IndexSec, ] <- res$alpha
-        #   StatOutput$beta[IndexSec, ] <- res$beta
-        #   StatOutput$gamma[IndexSec, ] <- res$gamma
-        #   StatOutput$delta[IndexSec, ] <- res$delta
-        #   indexStatOutput <- indexStatOutput + lS
-        #}
-
         OutputCollection <- EstimOutput
+
+        # Fuer den Fall, dass keine csv erstellt werden soll
+        if (saveOutput == FALSE) returnList <- append(returnList, EstimOutput)
+
+        # Leider mapt R hier falsch...
+        # if (length(returnList) == 0) returnList <- EstimOutput
+        # else returnList <- Map(c,returnList, EstimOutput)
+
     }
+
     deleteCheckPoint(ParameterMatrix, TemperedType, Estimfct, nab, npar, lS,
                      MCparam, ...)
-    if (StatSummary)
-        return(NameStatOutput(FctsToApply, StatOutput))
+
+    if (saveOutput == FALSE){
+      return(returnList)
+    }
 
 }
 
@@ -187,7 +160,7 @@ getSeedVector <- function(Outputsize, SeedOptions = NULL) {
 ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                     TemperedType, Estimfct, HandleError,
                                     ab_current,nab, npar, ParameterMatrix,
-                                    CheckPointValues = NULL, SaveOutput = TRUE,
+                                    CheckPointValues = NULL, saveOutput,
                                     eps, ...) {
     if (TemperedType == "Classic") {
         Ncol <- 16
@@ -261,8 +234,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                 MCparam, ...)
             }
 
-            #TODO
-            if (SaveOutput) updateOutputFile(thetaT, MCparam, TemperedType,
+            if (saveOutput) updateOutputFile(thetaT, MCparam, TemperedType,
                                              Estim)
 
             StableEstim::PrintEstimatedRemainingTime(iter, tIter, Nrow)
@@ -454,33 +426,33 @@ getTempEstimation_parallel <- function(thetaT, x, size, Ncol, TemperedType,
 #' @return Gap holder for return.
 #'
 #' @export
-ComputeStatOutput <- function(EstimOutput, FctsToApply, SampleSizes, CheckMat,
-                              tolFailCheck, MCparam, ...) {
-    list(alpha = ComputeStatOutputPar(EstimOutput = EstimOutput,
-                                      FctsToApply = FctsToApply, par = "alpha",
-                                      SampleSizes = SampleSizes,
-                                      CheckMat = CheckMat,
-                                      tolFailCheck = tolFailCheck,
-                                      MCparam = MCparam, ...),
-         beta = ComputeStatOutputPar(EstimOutput = EstimOutput,
-                                     FctsToApply = FctsToApply, par = "beta",
-                                     SampleSizes = SampleSizes,
-                                     CheckMat = CheckMat,
-                                     tolFailCheck = tolFailCheck,
-                                     MCparam = MCparam, ...),
-         gamma = ComputeStatOutputPar(EstimOutput = EstimOutput,
-                                      FctsToApply = FctsToApply, par = "gamma",
-                                      SampleSizes = SampleSizes,
-                                      CheckMat = CheckMat,
-                                      tolFailCheck = tolFailCheck,
-                                      MCparam = MCparam, ...),
-         delta = ComputeStatOutputPar(EstimOutput = EstimOutput,
-                                      FctsToApply = FctsToApply, par = "delta",
-                                      SampleSizes = SampleSizes,
-                                      CheckMat = CheckMat,
-                                      tolFailCheck = tolFailCheck,
-                                      MCparam = MCparam, ...))
-}
+# ComputeStatOutput <- function(EstimOutput, FctsToApply, SampleSizes, CheckMat,
+#                               tolFailCheck, MCparam, ...) {
+#     list(alpha = ComputeStatOutputPar(EstimOutput = EstimOutput,
+#                                       FctsToApply = FctsToApply, par = "alpha",
+#                                       SampleSizes = SampleSizes,
+#                                       CheckMat = CheckMat,
+#                                       tolFailCheck = tolFailCheck,
+#                                       MCparam = MCparam, ...),
+#          beta = ComputeStatOutputPar(EstimOutput = EstimOutput,
+#                                      FctsToApply = FctsToApply, par = "beta",
+#                                      SampleSizes = SampleSizes,
+#                                      CheckMat = CheckMat,
+#                                      tolFailCheck = tolFailCheck,
+#                                      MCparam = MCparam, ...),
+#          gamma = ComputeStatOutputPar(EstimOutput = EstimOutput,
+#                                       FctsToApply = FctsToApply, par = "gamma",
+#                                       SampleSizes = SampleSizes,
+#                                       CheckMat = CheckMat,
+#                                       tolFailCheck = tolFailCheck,
+#                                       MCparam = MCparam, ...),
+#          delta = ComputeStatOutputPar(EstimOutput = EstimOutput,
+#                                       FctsToApply = FctsToApply, par = "delta",
+#                                       SampleSizes = SampleSizes,
+#                                       CheckMat = CheckMat,
+#                                       tolFailCheck = tolFailCheck,
+#                                       MCparam = MCparam, ...))
+# }
 
 
 ##### for Output File#####
@@ -723,13 +695,14 @@ writeCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, ab, nab,
 }
 
 #Added by Cedric 20220726
-NameStatOutput <- function(FctsToApply, StatOutput) {
-  Names <- c("alpha", "beta", "n", names(FctsToApply), "failure", "time")
-  lapply(StatOutput, function(x) {
-    colnames(x) <- Names
-    return(x)
-  })
-}
+# Currently not necessary. Not even adatpted
+#NameStatOutput <- function(FctsToApply, StatOutput) {
+#  Names <- c("alpha", "beta", "n", names(FctsToApply), "failure", "time")
+#  lapply(StatOutput, function(x) {
+#    colnames(x) <- Names
+#    return(x)
+#  })
+#}
 
 #Added by Cedric 20220729
 get_filename <- function(thetaT, MCparam, TemperedType, method,
