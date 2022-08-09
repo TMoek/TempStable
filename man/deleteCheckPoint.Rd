@@ -2,7 +2,7 @@
 % Please edit documentation in R/MonteCarloFunction.R
 \name{deleteCheckPoint}
 \alias{deleteCheckPoint}
-\title{Function title}
+\title{No export.}
 \usage{
 deleteCheckPoint(
   ParameterMatrix,
@@ -15,27 +15,6 @@ deleteCheckPoint(
   ...
 )
 }
-\arguments{
-\item{ParameterMatrix}{A gap holder.}
-
-\item{TemperedType}{A gap holder.}
-
-\item{Estimfct}{A gap holder.}
-
-\item{nab}{A gap holder.}
-
-\item{npar}{A gap holder.}
-
-\item{nSS}{A gap holder.}
-
-\item{MCparam}{A gap holder.}
-}
-\value{
-Gap holder for return.
-}
 \description{
-Gap holder for description.
-}
-\details{
-Gap holder for details.
+No export.
 }

@@ -5,7 +5,7 @@
 \title{Function title}
 \usage{
 Estim_Des_Temp(
-  TemperedType = c("Classic", "Subordinator"),
+  TemperedType = c("Classic", "Subordinator", "Normal", "CGMY"),
   EstimMethod = c("ML", "GMM", "Cgmm", "Kout"),
   ...
 )
@@ -13,10 +13,9 @@ Estim_Des_Temp(
 \arguments{
 \item{TemperedType}{A String. Either "Classic", "Subordinator", or "Normal".}
 
-\item{EstimMethod}{A String. Either "ML", "GMM", "Cgmm", or "Kout".}
-}
-\value{
-Gap holder for return.
+\item{EstimMethod}{A String. Either "ML", "GMM", "Cgmm", or "Kout".
+
+No export.}
 }
 \description{
 Gap holder for description.

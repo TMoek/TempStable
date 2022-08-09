@@ -1,13 +1,46 @@
 
 #' Monte Carlo Simulation
 #'
-#' Gap holder for description.
+#' @description
+#' Runs Monte Carlo simulation for a selected estimation method. The function
+#' can save results in a file.
 #'
-#' Gap holder for details. Check detail here:
-#'  \code{?StableEstim::Estim_Simulation}
+#' @details
+#' \strong{Error Handling} It is advisable to set it to TRUE when user is
+#' planning to launch long simulations as it will prevent the procedure to stop
+#' if an error occurs for one sample data. The estimation function will produce
+#' a vector of NA as estimated parameters related to this (error generating)
+#' sample data and move on to the next Monte Carlo step.
 #'
-#' @seealso(
-#' \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R})
+#' \strong{Output file} Setting \code{saveOutput} to \code{TRUE} will have the
+#' side effect of saving a csv file in the working directory. This file will
+#' have \code{MCparam*length(SampleSizes)} lines and its columns will be:
+#' \describe{
+#'   \item{alphaT, ...:}{the true value of the parameters.}
+#'   \item{data size:}{the sample size used to generate the simulated data.}
+#'   \item{seed:}{the seed value used to generate the simulated data.}
+#'   \item{alphaE, ...:}{the estimate of the 4 parameters.}
+#'   \item{failure:}{binary: 0 for success, 1 for failure.}
+#'   \item{time:}{estimation running time in seconds.}
+#' }
+#' The file name is informative to let the user identify the value of the true
+#' parameters, the MC parameters as well as the options selected for the
+#' estimation method. The csv file is updated after each MC estimation which is
+#' useful when the simulation stops before it finishes.
+#'
+#' \strong{SeedOptions} If user does not want to control the seed generation,
+#' he could ignore this argument (default value NULL). This argument can be
+#' more useful when one wants to cut the simulation (even for one parameter
+#' value) into pieces. In that case, he can control which part of the seed
+#' vector he wants to use.
+#' \describe{
+#'   \item{MCtot:}{total values of MC simulations in the entire process.}
+#'   \item{seedStart:}{starting index in the seed vector. The vector extracted
+#'   will be of size MCparam.}
+#' }
+#'
+#' @seealso
+#' \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R}
 #'
 #' @param ParameterMatrix A gap holder.
 #' @param SampleSizes Sample sizes to be used to simulate the data. By default,
@@ -25,11 +58,6 @@
 #' @param saveOutput Logical flag: if set to TRUE, a csv file (for each couple
 #'  of parameter) with the the estimation
 #'  information is saved in the current directory. See details.
-#' @param CheckMat Logical flag: if set to TRUE, an estimation is declared
-#'  failed if the squared error of the estimation is larger than tolFailCheck;
-#'  default TRUE
-#' @param tolFailCheck Tolerance on the squared error of the estimation to be
-#'  declared failed; default 1.5
 #' @param SeedOptions List to control the seed generation. See details.
 #' @param eps A gap holder.
 #'
@@ -49,7 +77,6 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                                       "Normal", "CGMY"),
                                      Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
                                      HandleError = TRUE, saveOutput = TRUE,
-                                     CheckMat = TRUE, tolFailCheck = tolFailure,
                                      SeedOptions = NULL, eps = 1e-06, ...) {
     #seeAlso: https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R
     SeedVector <- getSeedVector(MCparam, SeedOptions)
@@ -69,7 +96,7 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 
     # Ist im Zielordner bereits eine csv-Datei mit dem gleichen Namen (thetaT
     # und MCparam sind gleich), wird die Datei aktuell um die weiteren
-    # Ergebnisse aktualisiert.
+    # Ergebnisse aktualisiert. Mention in Details
     # Wird dieser Code aktiviert, würde das Überschreiben einer Datei verboten
     # werden.
     #
@@ -123,12 +150,10 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 
         OutputCollection <- EstimOutput
 
-        # Fuer den Fall, dass keine csv erstellt werden soll
-        if (saveOutput == FALSE) returnList <- append(returnList, EstimOutput)
-
-        # Leider mapt R hier falsch...
-        # if (length(returnList) == 0) returnList <- EstimOutput
-        # else returnList <- Map(c,returnList, EstimOutput)
+        if (saveOutput == FALSE){
+          if (length(returnList) == 0) returnList <- EstimOutput
+          else returnList <- Map(rbind,returnList, EstimOutput)
+        }
 
     }
 
@@ -228,6 +253,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                        eps = eps, ...)
             Output[iter, ] <- Estim$outputMat
             file <- Estim$file
+
             if (!is.null(CheckPointValues)) {
                 writeCheckPoint(ParameterMatrix, TemperedType, Estimfct,
                                 ab_current, nab, npar, sample, nSS, mc,
@@ -240,7 +266,8 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
             StableEstim::PrintEstimatedRemainingTime(iter, tIter, Nrow)
         }
     }
-    list(outputMat = Output, file = file)
+
+    return(list(outputMat = Output, file = file))
 }
 
 #' No export.
@@ -282,150 +309,137 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
     list(outputMat = output, file = EstimRes@method)
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param MCparam A gap holder.
-#' @param thetaT A gap holder.
-#' @param size A gap holder.
-#' @param TemperedType A String. Either "Classic", "Subordinator", "Normal", or
-#' "CGMY".
-#' @param Estimfct A String. Either "ML", "GMM", "Cgmm", or "GMC".
-#' @param HandleError A Boolean. \code{TRUE} by default.
-#' @param eps A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @examples
-#' ComputeMCSimForTempered_parallel(1,c(1.5, 1, 1, 1, 1, 0),10,"Classic","ML")
-#' ComputeMCSimForTempered_parallel(1,c(0.5, 1, 1),10,"Subordinator","Cgmm",
-#'                                  IntegrationMethod = "Simpson",
-#'                                  randomIntegrationLaw = "unif")
-#'
-#' @export
-ComputeMCSimForTempered_parallel <- function(MCparam, thetaT, size,
-                                             TemperedType = c("Classic",
-                                                              "Subordinator",
-                                                              "Normal","CGMY"),
-                                             Estimfct = c("ML", "GMM", "Cgmm",
-                                                          "GMC"),
-                                             HandleError = TRUE, eps, ...) {
-    Estimfct <- match.arg(Estimfct)
-    TemperedType <- match.arg(TemperedType)
-    Ncol <- ifelse(TemperedType == "Classic", 15, 9)
-    if (TemperedType == "Classic") {
-        Ncol <- 15
-    } else if (TemperedType == "Subordinator") {
-        Ncol <- 9
-    } else if (TemperedType == "Normal") {
-        Ncol <- 13
-    } else {
-        Ncol <- 11
-    }
-    Output <- numeric(Ncol)
-    if (TemperedType == "Classic") {
-        names(Output) <- c("alphaT", "delta+T", "delta-T", "lambda+T",
-                           "lambda-T", "muT", "data size", "alphaE", "delta+E",
-                           "delta-E", "lambda+E", "lambda-E", "muE", "failure",
-                           "time")
-    } else if (TemperedType == "Subordinator") {
-        names(Output) <- c("alphaT", "deltaT", "lambdaT", "data size", "alphaE",
-                           "deltaE", "lambdaE", "failure", "time")
-    } else if (TemperedType == "Normal") {
-        names(Output) <- c("alphaT", "betaT", "deltaT", "lambdaT", "muT",
-                           "data size", "alphaE", "betaE", "deltaE", "lambdaE",
-                           "muE", "failure", "time")
-    } else {
-        names(Output) <- c("C.T", "G.T", "M.T", "Y.T", "data size", "C.E",
-                           "G.E", "M.E", "Y.E", "failure", "time")
-    }
+# Function title
+# Merge with EstimSimulation
+#
+# @examples
+# ComputeMCSimForTempered_parallel(1,c(1.5, 1, 1, 1, 1, 0),10,"Classic","ML")
+# ComputeMCSimForTempered_parallel(1,c(0.5, 1, 1),10,"Subordinator","Cgmm",
+#                                  IntegrationMethod = "Simpson",
+#                                  randomIntegrationLaw = "unif")
+#
+# No export.
+# ComputeMCSimForTempered_parallel <- function(MCparam, thetaT, size,
+#                                              TemperedType = c("Classic",
+#                                                               "Subordinator",
+#                                                               "Normal","CGMY"),
+#                                              Estimfct = c("ML", "GMM", "Cgmm",
+#                                                           "GMC"),
+#                                              HandleError = TRUE, eps, ...) {
+#     Estimfct <- match.arg(Estimfct)
+#     TemperedType <- match.arg(TemperedType)
+#     Ncol <- ifelse(TemperedType == "Classic", 15, 9)
+#     if (TemperedType == "Classic") {
+#         Ncol <- 15
+#     } else if (TemperedType == "Subordinator") {
+#         Ncol <- 9
+#     } else if (TemperedType == "Normal") {
+#         Ncol <- 13
+#     } else {
+#         Ncol <- 11
+#     }
+#     Output <- numeric(Ncol)
+#     if (TemperedType == "Classic") {
+#         names(Output) <- c("alphaT", "delta+T", "delta-T", "lambda+T",
+#                            "lambda-T", "muT", "data size", "alphaE", "delta+E",
+#                            "delta-E", "lambda+E", "lambda-E", "muE", "failure",
+#                            "time")
+#     } else if (TemperedType == "Subordinator") {
+#         names(Output) <- c("alphaT", "deltaT", "lambdaT", "data size", "alphaE",
+#                            "deltaE", "lambdaE", "failure", "time")
+#     } else if (TemperedType == "Normal") {
+#         names(Output) <- c("alphaT", "betaT", "deltaT", "lambdaT", "muT",
+#                            "data size", "alphaE", "betaE", "deltaE", "lambdaE",
+#                            "muE", "failure", "time")
+#     } else {
+#         names(Output) <- c("C.T", "G.T", "M.T", "Y.T", "data size", "C.E",
+#                            "G.E", "M.E", "Y.E", "failure", "time")
+#     }
+#
+#     if (TemperedType == "Classic") {
+#         x <- rCTS(n = size, alpha = thetaT[1], deltap = thetaT[2],
+#                   deltam = thetaT[3], lambdap = thetaT[4], lambdam = thetaT[5],
+#                   mu = thetaT[6])
+#     } else if (TemperedType == "Subordinator") {
+#         x <- rSTS(n = size, alpha = thetaT[1], delta = thetaT[2],
+#                   lambda = thetaT[3])
+#     } else if (TemperedType == "Normal") {
+#         x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
+#                   delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5])
+#     } else {
+#         x <- rCGMY(n = size, C = theta[1], G = theta[2], G = theta[3],
+#                    Y = theta[4])
+#     }
+#     Estim <- getTempEstimation_parallel(thetaT = thetaT, x = x, size = size,
+#                                         Ncol = Ncol,
+#                                         TemperedType = TemperedType,
+#                                         Estimfct = Estimfct,
+#                                         HandleError = HandleError,
+#                                         eps = eps, ...)
+#     Output <- c(MCparam, Estim)
+#
+#     return(Output)
+# }
 
-    if (TemperedType == "Classic") {
-        x <- rCTS(n = size, alpha = thetaT[1], deltap = thetaT[2],
-                  deltam = thetaT[3], lambdap = thetaT[4], lambdam = thetaT[5],
-                  mu = thetaT[6])
-    } else if (TemperedType == "Subordinator") {
-        x <- rSTS(n = size, alpha = thetaT[1], delta = thetaT[2],
-                  lambda = thetaT[3])
-    } else if (TemperedType == "Normal") {
-        x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
-                  delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5])
-    } else {
-        x <- rCGMY(n = size, C = theta[1], G = theta[2], G = theta[3],
-                   Y = theta[4])
-    }
-    Estim <- getTempEstimation_parallel(thetaT = thetaT, x = x, size = size,
-                                        Ncol = Ncol,
-                                        TemperedType = TemperedType,
-                                        Estimfct = Estimfct,
-                                        HandleError = HandleError,
-                                        eps = eps, ...)
-    Output <- c(MCparam, Estim)
-
-    return(Output)
-}
 
 #' No export.
-getTempEstimation_parallel <- function(thetaT, x, size, Ncol, TemperedType,
-                                       Estimfct, HandleError, eps, ...) {
-    output <- vector(length = Ncol)
-    if (TemperedType == "Classic") {
-        output[1:7] <- c(thetaT, size)
-    } else if (TemperedType == "Subordinator") {
-        output[1:4] <- c(thetaT, size)
-    } else if (TemperedType == "Normal") {
-        output[1:6] <- c(thetaT, size)
-    } else {
-        output[1:5] <- c(thetaT, size)
-    }
-    theta0 <- thetaT - 0.1  #noise
-    EstimRes <- TemperedEstim_v2(TemperedType = TemperedType,
-                                 EstimMethod = Estimfct, data = x,
-                                 theta0 = theta0, ComputeCov = FALSE,
-                                 HandleError = HandleError, eps = eps, ...)
-    if (TemperedType == "Classic") {
-        output[8:13] <- EstimRes$par
-    } else if (TemperedType == "Subordinator") {
-        output[5:7] <- EstimRes$par
-    } else if (TemperedType == "Normal") {
-        output[7:11] <- EstimRes$par
-    } else {
-        output[6:9] <- EstimRes$par
-    }
-    if (TemperedType == "Classic") {
-        output[14:15] <- c(EstimRes$failure, EstimRes$duration)
-    } else if (TemperedType == "Subordinator") {
-        output[8:9] <- c(EstimRes$failure, EstimRes$duration)
-    } else if (TemperedType == "Normal") {
-        output[12:13] <- c(EstimRes$failure, EstimRes$duration)
-    } else {
-        output[10:11] <- c(EstimRes$failure, EstimRes$duration)
-    }
-    return(output)
-}
+# getTempEstimation_parallel <- function(thetaT, x, size, Ncol, TemperedType,
+#                                        Estimfct, HandleError, eps, ...) {
+#     output <- vector(length = Ncol)
+#     if (TemperedType == "Classic") {
+#         output[1:7] <- c(thetaT, size)
+#     } else if (TemperedType == "Subordinator") {
+#         output[1:4] <- c(thetaT, size)
+#     } else if (TemperedType == "Normal") {
+#         output[1:6] <- c(thetaT, size)
+#     } else {
+#         output[1:5] <- c(thetaT, size)
+#     }
+#     theta0 <- thetaT - 0.1  #noise
+#     EstimRes <- TemperedEstim_v2(TemperedType = TemperedType,
+#                                  EstimMethod = Estimfct, data = x,
+#                                  theta0 = theta0, ComputeCov = FALSE,
+#                                  HandleError = HandleError, eps = eps, ...)
+#     if (TemperedType == "Classic") {
+#         output[8:13] <- EstimRes$par
+#     } else if (TemperedType == "Subordinator") {
+#         output[5:7] <- EstimRes$par
+#     } else if (TemperedType == "Normal") {
+#         output[7:11] <- EstimRes$par
+#     } else {
+#         output[6:9] <- EstimRes$par
+#     }
+#     if (TemperedType == "Classic") {
+#         output[14:15] <- c(EstimRes$failure, EstimRes$duration)
+#     } else if (TemperedType == "Subordinator") {
+#         output[8:9] <- c(EstimRes$failure, EstimRes$duration)
+#     } else if (TemperedType == "Normal") {
+#         output[12:13] <- c(EstimRes$failure, EstimRes$duration)
+#     } else {
+#         output[10:11] <- c(EstimRes$failure, EstimRes$duration)
+#     }
+#     return(output)
+# }
 
 
 ##### for statistical summary#####
 
-#' Function title
-#'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param EstimOutput A gap holder.
-#' @param FctsToApply A gap holder.
-#' @param SampleSizes A gap holder.
-#' @param CheckMat A gap holder.
-#' @param tolFailCheck A gap holder.
-#' @param MCparam A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+# Function title
+#
+# Gap holder for description.
+#
+# Gap holder for details.
+#
+# @param EstimOutput A gap holder.
+# @param FctsToApply A gap holder.
+# @param SampleSizes A gap holder.
+# @param CheckMat A gap holder.
+# @param tolFailCheck A gap holder.
+# @param MCparam A gap holder.
+#
+# @return Gap holder for return.
+#
+# @export
 # ComputeStatOutput <- function(EstimOutput, FctsToApply, SampleSizes, CheckMat,
 #                               tolFailCheck, MCparam, ...) {
 #     list(alpha = ComputeStatOutputPar(EstimOutput = EstimOutput,
@@ -457,20 +471,8 @@ getTempEstimation_parallel <- function(thetaT, x, size, Ncol, TemperedType,
 
 ##### for Output File#####
 
-#' Function title
 #'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param thetaT A gap holder.
-#' @param MCparam A gap holder.
-#' @param TemperedType A gap holder.
-#' @param Estimfct A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+#'  No export.
 initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
 
   method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
@@ -507,9 +509,7 @@ initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
 #' @param TemperedType A String. Either "Classic", "Subordinator", or "Normal".
 #' @param EstimMethod A String. Either "ML", "GMM", "Cgmm", or "Kout".
 #'
-#' @return Gap holder for return.
-#'
-#' @export
+#' No export.
 Estim_Des_Temp <- function(TemperedType = c("Classic", "Subordinator",
                                             "Normal", "CGMY"),
                            EstimMethod = c("ML", "GMM", "Cgmm", "Kout"), ...) {
@@ -521,23 +521,8 @@ Estim_Des_Temp <- function(TemperedType = c("Classic", "Subordinator",
 
 ##### for Checkpoints#####
 
-#' Function title
 #'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param ParameterMatrix A gap holder.
-#' @param TemperedType A gap holder.
-#' @param Estimfct A gap holder.
-#' @param nab A gap holder.
-#' @param npar A gap holder.
-#' @param nSS A gap holder.
-#' @param MCparam A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+#' No export.
 readCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
                            nSS, MCparam, ...) {
     method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
@@ -566,21 +551,8 @@ readCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
          MCparam = MCparam)
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param ParameterMatrix A gap holder.
-#' @param nab A gap holder.
-#' @param npar A gap holder.
-#' @param MCparam A gap holder.
-#' @param method A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+
+#' No export.
 get_filename_checkPoint_Temp <- function(ParameterMatrix, nab, npar, MCparam,
                                          method) {
     if (npar == 3) {
@@ -610,20 +582,8 @@ get_filename_checkPoint_Temp <- function(ParameterMatrix, nab, npar, MCparam,
     fileName
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param CheckPointValues A gap holder.
-#' @param MCparam A gap holder.
-#' @param lS A gap holder.
-#' @param nab A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+
+#' No export.
 updateCheckPointValues <- function(CheckPointValues, MCparam, lS, nab) {
     ab_start <- CheckPointValues$ab
     sample_start <- CheckPointValues$sample
@@ -640,23 +600,7 @@ updateCheckPointValues <- function(CheckPointValues, MCparam, lS, nab) {
     list(ab_start = ab_start, sample_start = sample_start, mc_start = mc_start)
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param ParameterMatrix A gap holder.
-#' @param TemperedType A gap holder.
-#' @param Estimfct A gap holder.
-#' @param nab A gap holder.
-#' @param npar A gap holder.
-#' @param nSS A gap holder.
-#' @param MCparam A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+#' No export.
 deleteCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
                              nSS, MCparam, ...) {
     method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
@@ -665,25 +609,7 @@ deleteCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
     unlink(x = fileName, force = TRUE)
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param ParameterMatrix A gap holder.
-#' @param Estimfct A gap holder.
-#' @param ab A gap holder.
-#' @param nab A gap holder.
-#' @param npar A gap holder.
-#' @param sample A gap holder.
-#' @param nSS A gap holder.
-#' @param mc A gap holder.
-#' @param MCparam A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+#' No export.
 writeCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, ab, nab,
                             npar, sample, nSS, mc, MCparam, ...) {
     method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
@@ -705,6 +631,7 @@ writeCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, ab, nab,
 #}
 
 #Added by Cedric 20220729
+#' No export.
 get_filename <- function(thetaT, MCparam, TemperedType, method,
                          extension = ".csv") {
   MC <- switch(TemperedType,
@@ -735,7 +662,9 @@ get_filename <- function(thetaT, MCparam, TemperedType, method,
   fileName
 }
 
+
 #Added by Cedric 20220805
+#' No export.
 updateOutputFile <- function(thetaT, MCparam, TemperedType, Output){
   method <- Output$file
   fileName <- get_filename(thetaT, MCparam, TemperedType, method)

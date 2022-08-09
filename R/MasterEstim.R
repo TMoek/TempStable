@@ -34,13 +34,13 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal",
         stop("data not provided !")
     if (is.null(theta0)) {
         if (TemperedType == "Classic") {
-            theta0 <- MoC_CTS(x = data, c(1.5, 1, 1, 1, 1, 0), eps = eps)
+            theta0 <- MoC_CTS(x <- data, c(1.5, 1, 1, 1, 1, 0), eps = eps)
         } else if (TemperedType == "Subordinator") {
-            theta0 <- MoC_STS(x = data, c(0.5, 1, 1), eps = eps)
+            theta0 <- MoC_STS(x <- data, c(0.5, 1, 1), eps = eps)
         } else if (TemperedType == "Normal") {
-            theta0 <- MoC_NTS(x = data, c(0.5, 0, 1, 1, 0), eps = eps)
+            theta0 <- MoC_NTS(x <- data, c(0.5, 0, 1, 1, 0), eps = eps)
         } else {
-            theta0 <- MoC_CGMY(x = data, c(1, 1, 1, 1.5), eps = eps)
+            theta0 <- MoC_CGMY(x <- data, c(1, 1, 1, 1.5), eps = eps)
         }
     }
     if (TemperedType == "Classic") {
@@ -94,88 +94,88 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal",
     OutputObj
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param TemperedType A String. Either "Classic", "Subordinator", "Normal", or
-#' "CGMY".
-#' @param EstimMethod A String. Either "ML", "GMM", "Cgmm", or "GMC".
-#' @param data A gap holder.
-#' @param theta0 A gap holder. \code{NULL} by default.
-#' @param ComputeCov A Boolean. \code{FALSE} by default.
-#' @param HandleError A Boolean. \code{TRUE} by default.
-#' @param eps A gap holder. \code{1e-06} by default.
-#'
-#' @return Gap holder for return.
-#'
-#' @export
-TemperedEstim_v2 <- function(TemperedType = c("Classic", "Subordinator",
-                                              "Normal", "CGMY"),
-                             EstimMethod = c("ML", "GMM", "Cgmm", "GMC"), data,
-                             theta0 = NULL, ComputeCov = FALSE,
-                             HandleError = TRUE, eps = 1e-06, ...) {
-    if (missing(data))
-        stop("data not provided !")
-    if (is.null(theta0)) {
-        if (TemperedType == "Classic") {
-            theta0 <- MoC_CTS(x = data, c(1.5, 1, 1, 1, 1, 0), eps = eps)
-        } else if (TemperedType == "Subordinator") {
-            theta0 <- MoC_STS(x = data, c(0.5, 1, 1), eps = eps)
-        } else if (TemperedType == "Normal") {
-            theta0 <- MoC_NTS(x = data, c(0.5, 0, 1, 1, 0), eps = eps)
-        } else {
-            theta0 <- MoC_CGMY(x = data, c(1, 1, 1, 1.5), eps = eps)
-        }
-    }
-    if (TemperedType == "Classic") {
-        OutputObj <- list(par = numeric(6), par0 = theta0,
-                          vcov = matrix(0, 6, 6), confint = matrix(0, 6, 2),
-                          data = data, failure = 1)
-    } else if (TemperedType == "Subordinator") {
-        OutputObj <- list(par = numeric(3), par0 = theta0,
-                          vcov = matrix(0, 3, 3), confint = matrix(0, 3, 2),
-                          data = data, failure = 1)
-    } else if (TemperedType == "Normal") {
-        OutputObj <- list(par = numeric(5), par0 = theta0,
-                          vcov = matrix(0, 5, 5), confint = matrix(0, 5, 2),
-                          data = data, failure = 1)
-    } else {
-        OutputObj <- list(par = numeric(4), par0 = theta0,
-                          vcov = matrix(0, 4, 4), confint = matrix(0, 4, 2),
-                          data = data, failure = 1)
-    }
-    type <- match.arg(TemperedType)
-    method <- match.arg(EstimMethod)
-    EstimFcts <- getTempEstimFcts(type, method)
-    res <- .initResTemp(type, method)
-    if (HandleError) {
-        tr <- tryCatch(EstimFcts$Params(x = data, theta0 = theta0, ...),
-                       error = function(e) e)
-        err <- inherits(tr, "error")
-        if (!err) {
-            res <- tr
-            OutputObj$failure <- 0
-        }
-    } else {
-        res <- EstimFcts$Params(x = data, theta0 = theta0, ...)
-        OutputObj$failure <- 0
-    }
-    OutputObj$par <- NameParamsObjectsTemp(res$Estim$par, type)
-    OutputObj$others <- res$Estim
-    OutputObj$duration <- as.numeric(res$duration)
-    OutputObj$method <- res$method
-    if (ComputeCov) {
-        OutputObj$vcov <- EstimFcts$CovarianceMat(data = OutputObj$data,
-                                                  EstimObj = res, ...)
-        OutputObj$confint <- AsymptoticConfidenceInterval(
-          thetaEst = OutputObj$par, n_sample = OutputObj$sampleSize,
-          Cov = OutputObj$vcov, qLaw = qnorm, type = type, ...)
-    }
-    OutputObj
-}
+# Function title
+#
+# Gap holder for description.
+#
+# Gap holder for details.
+#
+# @param TemperedType A String. Either "Classic", "Subordinator", "Normal", or
+# "CGMY".
+# @param EstimMethod A String. Either "ML", "GMM", "Cgmm", or "GMC".
+# @param data A gap holder.
+# @param theta0 A gap holder. \code{NULL} by default.
+# @param ComputeCov A Boolean. \code{FALSE} by default.
+# @param HandleError A Boolean. \code{TRUE} by default.
+# @param eps A gap holder. \code{1e-06} by default.
+#
+# @return Gap holder for return.
+#
+# @export
+# TemperedEstim_v2 <- function(TemperedType = c("Classic", "Subordinator",
+#                                               "Normal", "CGMY"),
+#                              EstimMethod = c("ML", "GMM", "Cgmm", "GMC"), data,
+#                              theta0 = NULL, ComputeCov = FALSE,
+#                              HandleError = TRUE, eps = 1e-06, ...) {
+#     if (missing(data))
+#         stop("data not provided !")
+#     if (is.null(theta0)) {
+#         if (TemperedType == "Classic") {
+#             theta0 <- MoC_CTS(x = data, c(1.5, 1, 1, 1, 1, 0), eps = eps)
+#         } else if (TemperedType == "Subordinator") {
+#             theta0 <- MoC_STS(x = data, c(0.5, 1, 1), eps = eps)
+#         } else if (TemperedType == "Normal") {
+#             theta0 <- MoC_NTS(x = data, c(0.5, 0, 1, 1, 0), eps = eps)
+#         } else {
+#             theta0 <- MoC_CGMY(x = data, c(1, 1, 1, 1.5), eps = eps)
+#         }
+#     }
+#     if (TemperedType == "Classic") {
+#         OutputObj <- list(par = numeric(6), par0 = theta0,
+#                           vcov = matrix(0, 6, 6), confint = matrix(0, 6, 2),
+#                           data = data, failure = 1)
+#     } else if (TemperedType == "Subordinator") {
+#         OutputObj <- list(par = numeric(3), par0 = theta0,
+#                           vcov = matrix(0, 3, 3), confint = matrix(0, 3, 2),
+#                           data = data, failure = 1)
+#     } else if (TemperedType == "Normal") {
+#         OutputObj <- list(par = numeric(5), par0 = theta0,
+#                           vcov = matrix(0, 5, 5), confint = matrix(0, 5, 2),
+#                           data = data, failure = 1)
+#     } else {
+#         OutputObj <- list(par = numeric(4), par0 = theta0,
+#                           vcov = matrix(0, 4, 4), confint = matrix(0, 4, 2),
+#                           data = data, failure = 1)
+#     }
+#     type <- match.arg(TemperedType)
+#     method <- match.arg(EstimMethod)
+#     EstimFcts <- getTempEstimFcts(type, method)
+#     res <- .initResTemp(type, method)
+#     if (HandleError) {
+#         tr <- tryCatch(EstimFcts$Params(x = data, theta0 = theta0, ...),
+#                        error = function(e) e)
+#         err <- inherits(tr, "error")
+#         if (!err) {
+#             res <- tr
+#             OutputObj$failure <- 0
+#         }
+#     } else {
+#         res <- EstimFcts$Params(x = data, theta0 = theta0, ...)
+#         OutputObj$failure <- 0
+#     }
+#     OutputObj$par <- NameParamsObjectsTemp(res$Estim$par, type)
+#     OutputObj$others <- res$Estim
+#     OutputObj$duration <- as.numeric(res$duration)
+#     OutputObj$method <- res$method
+#     if (ComputeCov) {
+#         OutputObj$vcov <- EstimFcts$CovarianceMat(data = OutputObj$data,
+#                                                   EstimObj = res, ...)
+#         OutputObj$confint <- AsymptoticConfidenceInterval(
+#           thetaEst = OutputObj$par, n_sample = OutputObj$sampleSize,
+#           Cov = OutputObj$vcov, qLaw = qnorm, type = type, ...)
+#     }
+#     OutputObj
+# }
 
 ##### auxiliaries#####
 
@@ -291,20 +291,7 @@ getTempEstimFcts <- function(
     }
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#' Not sure, if export is really necessary.
-#'
-#' Gap holder for details.
-#'
-#' @param mat A positive integer.
-#' @param type A String. Either "Classic", "Subordinator", "Normal", or
-#' "CGMY".
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+#' No export.
 NameParamsObjectsTemp <- function(mat, type = c("Classic", "Subordinator",
                                                 "Normal")) {
     if (type == "Classic") {
@@ -357,18 +344,7 @@ NameParamsObjectsTemp <- function(mat, type = c("Classic", "Subordinator",
     mat
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#' Not sure, if export is really necessary.
-#'
-#' Gap holder for details.
-#'
-#' @param theta A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+#' No Export.
 CheckParametersRange_STS <- function(theta) {
     alpha <- theta[1]
     delta <- theta[2]
@@ -382,18 +358,7 @@ CheckParametersRange_STS <- function(theta) {
     lapply(checkParams, .printErr)
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#' Not sure, if export is really necessary.
-#'
-#' Gap holder for details.
-#'
-#' @param theta A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+#' No Export.
 CheckParametersRange_CTS <- function(theta) {
     alpha <- theta[1]
     deltap <- theta[2]
@@ -412,18 +377,7 @@ CheckParametersRange_CTS <- function(theta) {
     lapply(checkParams, .printErr)
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#' Not sure, if export is really necessary.
-#'
-#' Gap holder for details.
-#'
-#' @param theta A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+#' No Export.
 CheckParametersRange_NTS <- function(theta) {
     alpha <- theta[1]
     beta <- theta[2]
@@ -440,18 +394,7 @@ CheckParametersRange_NTS <- function(theta) {
     lapply(checkParams, .printErr)
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#' Not sure, if export is really necessary.
-#'
-#' Gap holder for details.
-#'
-#' @param theta A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+#' No Export.
 CheckParametersRange_CGMY <- function(theta) {
     C <- theta[1]
     G <- theta[2]
@@ -499,6 +442,7 @@ AsymptoticConfidenceInterval <- function(thetaEst, n_sample, Cov, qLaw = qnorm,
 }
 
 ##### Classes#####
+
 #' No export.
 EstimSubClass <- setClass("EstimSubClass",
                           slots = list(par = "numeric", par0 = "numeric",

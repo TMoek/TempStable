@@ -17,7 +17,7 @@ ComputeMCSimForTempered(
   npar,
   ParameterMatrix,
   CheckPointValues = NULL,
-  SaveOutput = TRUE,
+  saveOutput,
   eps,
   ...
 )

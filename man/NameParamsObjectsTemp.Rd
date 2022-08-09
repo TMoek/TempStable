@@ -2,23 +2,10 @@
 % Please edit documentation in R/MasterEstim.R
 \name{NameParamsObjectsTemp}
 \alias{NameParamsObjectsTemp}
-\title{Function title}
+\title{No export.}
 \usage{
 NameParamsObjectsTemp(mat, type = c("Classic", "Subordinator", "Normal"))
 }
-\arguments{
-\item{mat}{A positive integer.}
-
-\item{type}{A String. Either "Classic", "Subordinator", "Normal", or
-"CGMY".}
-}
-\value{
-Gap holder for return.
-}
 \description{
-Gap holder for description.
-Not sure, if export is really necessary.
-}
-\details{
-Gap holder for details.
+No export.
 }

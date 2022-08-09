@@ -2,27 +2,10 @@
 % Please edit documentation in R/MonteCarloFunction.R
 \name{get_filename_checkPoint_Temp}
 \alias{get_filename_checkPoint_Temp}
-\title{Function title}
+\title{No export.}
 \usage{
 get_filename_checkPoint_Temp(ParameterMatrix, nab, npar, MCparam, method)
 }
-\arguments{
-\item{ParameterMatrix}{A gap holder.}
-
-\item{nab}{A gap holder.}
-
-\item{npar}{A gap holder.}
-
-\item{MCparam}{A gap holder.}
-
-\item{method}{A gap holder.}
-}
-\value{
-Gap holder for return.
-}
 \description{
-Gap holder for description.
-}
-\details{
-Gap holder for details.
+No export.
 }

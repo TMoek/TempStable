@@ -2,20 +2,10 @@
 % Please edit documentation in R/MasterEstim.R
 \name{CheckParametersRange_CTS}
 \alias{CheckParametersRange_CTS}
-\title{Function title}
+\title{No Export.}
 \usage{
 CheckParametersRange_CTS(theta)
 }
-\arguments{
-\item{theta}{A gap holder.}
-}
-\value{
-Gap holder for return.
-}
 \description{
-Gap holder for description.
-Not sure, if export is really necessary.
-}
-\details{
-Gap holder for details.
+No Export.
 }

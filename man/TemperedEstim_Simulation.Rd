@@ -11,13 +11,9 @@ TemperedEstim_Simulation(
   TemperedType = c("Classic", "Subordinator", "Normal", "CGMY"),
   Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
   HandleError = TRUE,
-  FctsToApply = StatFcts,
   saveOutput = TRUE,
-  StatSummary = FALSE,
-  CheckMat = TRUE,
-  tolFailCheck = tolFailure,
   SeedOptions = NULL,
-  eps,
+  eps = 1e-06,
   ...
 )
 }
@@ -41,22 +37,9 @@ Either "ML", "GMM", "Cgmm", or "GMC".}
 when an error in the estimation function is encountered. A vector of
 (size 4) NA is saved and the the simulation carries on. See details.}
 
-\item{FctsToApply}{Functions used to produce the statistical summary. See
-details; vector of character.}
-
 \item{saveOutput}{Logical flag: if set to TRUE, a csv file (for each couple
-of parameter \code{Alpha} and \code{Beta}) with the the estimation
+of parameter) with the the estimation
 information is saved in the current directory. See details.}
-
-\item{StatSummary}{Logical flag: if set to TRUE, a statistical summary
-(using \code{FctsToApply}) is returned. See details.}
-
-\item{CheckMat}{Logical flag: if set to TRUE, an estimation is declared
-failed if the squared error of the estimation is larger than tolFailCheck;
-default TRUE}
-
-\item{tolFailCheck}{Tolerance on the squared error of the estimation to be
-declared failed; default 1.5}
 
 \item{SeedOptions}{List to control the seed generation. See details.}
 
@@ -66,11 +49,42 @@ declared failed; default 1.5}
 Gap holder for return.
 }
 \description{
-Gap holder for description.
+Runs Monte Carlo simulation for a selected estimation method. The function
+can save results in a file.
 }
 \details{
-Gap holder for details. Check detail here:
- \code{?StableEstim::Estim_Simulation}
+\strong{Error Handling} It is advisable to set it to TRUE when user is
+planning to launch long simulations as it will prevent the procedure to stop
+if an error occurs for one sample data. The estimation function will produce
+a vector of NA as estimated parameters related to this (error generating)
+sample data and move on to the next Monte Carlo step.
+
+\strong{Output file} Setting \code{saveOutput} to \code{TRUE} will have the
+side effect of saving a csv file in the working directory. This file will
+have \code{MCparam*length(SampleSizes)} lines and its columns will be:
+\describe{
+  \item{alphaT, ...:}{the true value of the parameters.}
+  \item{data size:}{the sample size used to generate the simulated data.}
+  \item{seed:}{the seed value used to generate the simulated data.}
+  \item{alphaE, ...:}{the estimate of the 4 parameters.}
+  \item{failure:}{binary: 0 for success, 1 for failure.}
+  \item{time:}{estimation running time in seconds.}
+}
+The file name is informative to let the user identify the value of the true
+parameters, the MC parameters as well as the options selected for the
+estimation method. The csv file is updated after each MC estimation which is
+useful when the simulation stops before it finishes.
+
+\strong{SeedOptions} If user does not want to control the seed generation,
+he could ignore this argument (default value NULL). This argument can be
+more useful when one wants to cut the simulation (even for one parameter
+value) into pieces. In that case, he can control which part of the seed
+vector he wants to use.
+\describe{
+  \item{MCtot:}{total values of MC simulations in the entire process.}
+  \item{seedStart:}{starting index in the seed vector. The vector extracted
+  will be of size MCparam.}
+}
 }
 \examples{
 TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
@@ -80,6 +94,5 @@ TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
 
 }
 \seealso{
-(
-\url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R})
+\url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R}
 }
