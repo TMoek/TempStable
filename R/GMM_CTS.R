@@ -283,7 +283,7 @@ ComputeCurrentEstim_CTS <-
         ...
       )
     optOutput <-
-      nlminb(
+      stats::nlminb(
         start = theta0,
         objective = ComputeObjective_CTS,
         gradient = NULL,
@@ -643,7 +643,7 @@ ComputeOptimisedPoints_CTS <-
       # not done yet!
       if (FastOptim)
         t <-
-          optim(
+          stats::optim(
             par = t0,
             fn = ObjectiveFctToMinIn_t_CTS,
             gr = NULL,
@@ -651,7 +651,7 @@ ComputeOptimisedPoints_CTS <-
             method = "Nelder-Mead"
           )$par
       else
-        t <- nlminb(start = t0, objective = ObjectiveFctToMinIn_t_CTS, ...)
+        t <- stats::nlminb(start = t0, objective = ObjectiveFctToMinIn_t_CTS, ...)
     }
     t
   }
@@ -668,7 +668,7 @@ ComputeApproxOptSpacing_CTS <-
     if (Constrained) {
       Bands <- Compute_tauBands_CTS(tScheme, eps, nb_t, An)
       tauInfo <-
-        nlminb(
+        stats::nlminb(
           start = tau0,
           objective = ObjectiveFctToMinIn_tau_CTS,
           gradient = NULL,
@@ -682,7 +682,7 @@ ComputeApproxOptSpacing_CTS <-
         )
     } else {
       tauInfo <-
-        nlminb(
+        stats::nlminb(
           start = tau0,
           objective = ObjectiveFctToMinIn_tau_CTS,
           gradient = NULL,

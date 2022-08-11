@@ -29,6 +29,6 @@ Gap holder for details.
 }
 \examples{
 dSTS(1000,0.5,1,0.3)
-dSTS(1,0.5,1,0.3) <-- Warnings will show up.
+dSTS(1,0.5,1,0.3) #<-- Warnings will show up.
 
 }

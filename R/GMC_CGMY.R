@@ -163,7 +163,8 @@ ComputeCueGMCParametersEstim_CGMY <- function(x, ncond, theta0, alphaReg,
 ##### current step####
 ComputeCurrentGMC_CGMY <- function(theta0, x, ncond, alphaReg, regularization,
                                    WeightingMatrix, eps, ...) {
-    optOutput <- nlminb(start = theta0, objective = ComputeGMCObjective_CGMY,
+    optOutput <- stats::nlminb(start = theta0,
+                               objective = ComputeGMCObjective_CGMY,
                         gradient = NULL, hessian = NULL, x = x, ncond = ncond,
                         alphaReg = alphaReg, regularization = regularization,
                         WeightingMatrix = WeightingMatrix, eps = eps, ...,

@@ -283,7 +283,7 @@ ComputeCurrentEstim_CGMY <-
         ...
       )
     optOutput <-
-      nlminb(
+      stats::nlminb(
         start = theta0,
         objective = ComputeObjective_CGMY,
         gradient = NULL,
@@ -641,7 +641,7 @@ ComputeOptimisedPoints_CGMY <-
       # not done yet!
       if (FastOptim)
         t <-
-          optim(
+          stats::optim(
             par = t0,
             fn = ObjectiveFctToMinIn_t_CGMY,
             gr = NULL,
@@ -650,7 +650,7 @@ ComputeOptimisedPoints_CGMY <-
           )$par
       else
         t <-
-          nlminb(start = t0, objective = ObjectiveFctToMinIn_t_CGMY, ...)
+          stats::nlminb(start = t0, objective = ObjectiveFctToMinIn_t_CGMY, ...)
     }
     t
   }
@@ -667,7 +667,7 @@ ComputeApproxOptSpacing_CGMY <-
     if (Constrained) {
       Bands <- Compute_tauBands_CGMY(tScheme, eps, nb_t, An)
       tauInfo <-
-        nlminb(
+        stats::nlminb(
           start = tau0,
           objective = ObjectiveFctToMinIn_tau_CGMY,
           gradient = NULL,
@@ -681,7 +681,7 @@ ComputeApproxOptSpacing_CGMY <-
         )
     } else {
       tauInfo <-
-        nlminb(
+        stats::nlminb(
           start = tau0,
           objective = ObjectiveFctToMinIn_tau_CGMY,
           gradient = NULL,

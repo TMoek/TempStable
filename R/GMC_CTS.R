@@ -183,7 +183,7 @@ ComputeCurrentGMC_CTS <-
            eps,
            ...) {
     optOutput <-
-      nlminb(
+      stats::nlminb(
         start = theta0,
         objective = ComputeGMCObjective_CTS,
         gradient = NULL,

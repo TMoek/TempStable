@@ -421,8 +421,9 @@ checkRange <- function(Parameter, min = -Inf, max = Inf, ParamName) {
 ##### Asymptotic Confidence Interval#####
 
 #' No export.
-AsymptoticConfidenceInterval <- function(thetaEst, n_sample, Cov, qLaw = qnorm,
-                                         level = 0.95, type, ...) {
+AsymptoticConfidenceInterval <- function(thetaEst, n_sample, Cov,
+                                         qLaw = stats::qnorm, level = 0.95,
+                                         type, ...) {
     if (type == "Classic") {
         nr <- 6
     } else if (type == "Subordinator") {
@@ -440,6 +441,47 @@ AsymptoticConfidenceInterval <- function(thetaEst, n_sample, Cov, qLaw = qnorm,
     mat[, 2] <- thetaEst + V
     NameParamsObjectsTemp(mat, type = type)
 }
+
+
+#' No export.
+#' Added by Cedric 20220811
+NameParamsObjects <- function(mat, type = NULL) {
+
+  parNames <- c("alpha", "beta", "gamma", "delta")
+
+  if (!is.null(type)){
+    outputString <- switch(type,
+                           Classic = c("Alpha", "DeltaP", "DeltaM", "LambdaP",
+                                       "LambdaM", "mu"),
+                           Subordinator = c("Alpha=", "Delta", "Lambda"),
+                           Normal = c("Alpha", "Beta", "Delta", "Lambda",
+                                      "mu"),
+                           CGMY = c("C", "G", "M", "Y"))
+  }
+  else {
+    if(length(mat) == 6) parNames = c("Alpha", "DeltaP", "DeltaM", "LambdaP",
+                                      "LambdaM", "mu")
+    else if(length(mat) == 3) parNames = c("Alpha=", "Delta", "Lambda")
+    else if(length(mat) == 5) parNames  = c("Alpha", "Beta", "Delta", "Lambda",
+                                            "mu")
+    else if(length(mat) == 4) parNames = c("C", "G", "M", "Y")
+  }
+
+  minMaxCol <- c("min", "max")
+
+  if (length(mat) > 2 && length(mat) < 7) {
+    names(mat) <- parNames
+  }
+  else if (is.matrix(mat) && nrow(mat) > 2 && is.matrix(mat) && nrow(mat) < 7) {
+    rownames(mat) <- parNames
+    if (ncol(mat) == 2)
+      colnames(mat) <- minMaxCol
+    else if (ncol(mat) > 2 && ncol(mat) < 7)
+      colnames(mat) <- parNames
+  }
+  mat
+}
+
 
 ##### Classes#####
 

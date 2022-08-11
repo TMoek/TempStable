@@ -82,7 +82,7 @@ Compute2SCgmmParametersEstim_CTS <- function(x, theta0, alphaReg, eps, s_min,
     if (is.null(dots$control)) {
         control <- list(abs.tol = 1e-15, rel.tol = 1e-07, x.tol = 1.5e-05,
                         xf.tol = 2.2e-10)
-        thetaHat <- as.numeric(nlminb(start = theta0,
+        thetaHat <- as.numeric(stats::nlminb(start = theta0,
                                       objective = ComputeObjectiveCgmm_CTS,
                                       gradient = NULL, hessian = NULL,
                                       Weighting = "Id", x = x,
@@ -97,7 +97,7 @@ Compute2SCgmmParametersEstim_CTS <- function(x, theta0, alphaReg, eps, s_min,
                                       upper = c(2 - eps, Inf, Inf, Inf,
                                                 Inf, Inf))$par)
     } else {
-        thetaHat <- as.numeric(nlminb(start = theta0,
+        thetaHat <- as.numeric(stats::nlminb(start = theta0,
                                       objective = ComputeObjectiveCgmm_CTS,
                                       gradient = NULL, hessian = NULL,
                                       Weighting = "Id", x = x,
@@ -120,7 +120,7 @@ Compute2SCgmmParametersEstim_CTS <- function(x, theta0, alphaReg, eps, s_min,
     if (is.null(dots$control)) {
         control <- list(abs.tol = 1e-15, rel.tol = 1e-07, x.tol = 1.5e-05,
                         xf.tol = 2.2e-10)
-        res <- nlminb(start = theta0, objective = ComputeObjectiveCgmm_CTS,
+        res <- stats::nlminb(start = theta0, objective = ComputeObjectiveCgmm_CTS,
                       Weighting = "optimal", Cmat = Cmat, x = x,
                       alphaReg = alphaReg, thetaHat = thetaHat, s_min = s_min,
                       s_max = s_max, IntegrationMethod = IntegrationMethod,
@@ -129,7 +129,7 @@ Compute2SCgmmParametersEstim_CTS <- function(x, theta0, alphaReg, eps, s_min,
                       lower = c(eps, eps, eps, eps, eps, -Inf),
                       upper = c(2 - eps, Inf, Inf, Inf, Inf, Inf))
     } else {
-        res <- nlminb(start = theta0, objective = ComputeObjectiveCgmm_CTS,
+        res <- stats::nlminb(start = theta0, objective = ComputeObjectiveCgmm_CTS,
                       Weighting = "optimal", Cmat = Cmat, x = x,
                       alphaReg = alphaReg, thetaHat = thetaHat, s_min = s_min,
                       s_max = s_max, IntegrationMethod = IntegrationMethod,
@@ -148,7 +148,7 @@ ComputeITCgmmParametersEstim_CTS <- function(x, theta0, alphaReg, eps,
                                              IterationControl, ...) {
     iter = 0
     IterationControl <- checkIterationControl(IterationControl)
-    theta1 <- as.numeric(nlminb(start = theta0,
+    theta1 <- as.numeric(stats::nlminb(start = theta0,
                                 objective = ComputeObjectiveCgmm_CTS,
                                 Weighting = "Id", x = x, alphaReg = alphaReg,
                                 thetaHat = NULL, s_min = s_min, s_max = s_max,
@@ -171,7 +171,7 @@ ComputeITCgmmParametersEstim_CTS <- function(x, theta0, alphaReg, eps,
         if (is.null(dots$control)) {
             control <- list(abs.tol = 1e-15, rel.tol = 1e-07, x.tol = 1.5e-05,
                             xf.tol = 2.2e-10)
-            CurrentEstimAllInfo <- nlminb(start = PrevEstimParVal,
+            CurrentEstimAllInfo <- stats::nlminb(start = PrevEstimParVal,
                                           objective = ComputeObjectiveCgmm_CTS,
                                           Weighting = "optimal", Cmat = Cmat,
                                           alphaReg = alphaReg, x = x,
@@ -187,7 +187,7 @@ ComputeITCgmmParametersEstim_CTS <- function(x, theta0, alphaReg, eps,
                                           upper = c(2 - eps, Inf, Inf, Inf,
                                                     Inf, Inf))
         } else {
-            CurrentEstimAllInfo <- nlminb(start = PrevEstimParVal,
+            CurrentEstimAllInfo <- stats::nlminb(start = PrevEstimParVal,
                                           objective = ComputeObjectiveCgmm_CTS,
                                           Weighting = "optimal", Cmat = Cmat,
                                           alphaReg = alphaReg, x = x,
@@ -219,7 +219,7 @@ ComputeCueCgmmParametersEstim_CTS <- function(x, theta0, alphaReg, eps, s_min,
                                               ...) {
     iter = 0
     IterationControl <- checkIterationControl(IterationControl)
-    theta1 <- as.numeric(nlminb(start = theta0,
+    theta1 <- as.numeric(stats::nlminb(start = theta0,
                                 objective = ComputeObjectiveCgmm_CTS,
                                 Weighting = "Id", x = x, alphaReg = alphaReg,
                                 thetaHat = NULL, s_min = s_min, s_max = s_max,
@@ -237,7 +237,7 @@ ComputeCueCgmmParametersEstim_CTS <- function(x, theta0, alphaReg, eps, s_min,
         if (is.null(dots$control)) {
             control <- list(abs.tol = 1e-15, rel.tol = 1e-07, x.tol = 1.5e-05,
                             xf.tol = 2.2e-10)
-            CurrentEstimAllInfo <- nlminb(start = PrevEstimParVal,
+            CurrentEstimAllInfo <- stats::nlminb(start = PrevEstimParVal,
                                           objective = ComputeObjectiveCgmm_CTS,
                                           Cmat = NULL, Weighting = "optimal",
                                           alphaReg = alphaReg, x = x,
@@ -253,7 +253,7 @@ ComputeCueCgmmParametersEstim_CTS <- function(x, theta0, alphaReg, eps, s_min,
                                           upper = c(2 - eps, Inf, Inf, Inf,
                                                     Inf, Inf))
         } else {
-            CurrentEstimAllInfo <- nlminb(start = PrevEstimParVal,
+            CurrentEstimAllInfo <- stats::nlminb(start = PrevEstimParVal,
                                           objective = ComputeObjectiveCgmm_CTS,
                                           Cmat = NULL, Weighting = "optimal",
                                           alphaReg = alphaReg, x = x,

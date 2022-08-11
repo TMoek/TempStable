@@ -98,6 +98,24 @@ ComputeCutOffInverse <- function(X, alphaReg = 0.001) {
     Invmat
 }
 
+# Added by Cedric 20220811
+## if Kn is a symmetric matrix, we use eigenvalues analysis
+getSingularValueDecomposition <- function(Kn){
+  if (isSymmetric(Kn)){
+    SingularValuesDecomposition <- eigen(x=Kn, symmetric=TRUE)
+    phi <- SingularValuesDecomposition$vectors
+    ksi <- SingularValuesDecomposition$vectors
+    lambda <- SingularValuesDecomposition$values
+  }
+  else {
+    SingularValuesDecomposition <- svd(Kn)
+    phi <- SingularValuesDecomposition$v
+    ksi <- SingularValuesDecomposition$u
+    lambda <- SingularValuesDecomposition$d
+  }
+  return(list(lambda=lambda,phi=phi,ksi=ksi))
+}
+
 
 ##### GMC#####
 .asymptoticVarianceEstimGMC_STS <- function(data, EstimObj,
