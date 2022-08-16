@@ -1,11 +1,11 @@
 #' @importFrom moments all.moments
-CumFinder_CMGY <- function(x, jmax = 5) {
+CumFinder_CGMY <- function(x, jmax = 5) {
     raw.moments <- moments::all.moments(x, order.max = jmax)
     cumfrommom(raw.moments)[-1]
 }
 
 
-MoCObjective_CMGY <- function(x, parms) {
+MoCObjective_CGMY <- function(x, parms) {
     c(F1 = gamma(2 - x[4]) * (x[1]/x[3]^(2 - x[4]) + x[1]/x[4]^(2 - x[4])) -
         parms[2],
       F2 = gamma(3 - x[4]) * (x[1]/x[3]^(3 - x[4]) - x[1]/x[4]^(3 - x[4])) -
@@ -18,8 +18,8 @@ MoCObjective_CMGY <- function(x, parms) {
 
 #' @importFrom rootSolve multiroot
 MoC_CGMY <- function(x, theta0 = c(1, 1, 1, 1.5), eps = 1e-06) {
-    cumulants <- CumFinder_CMGY(x)
-    parroot <- rootSolve::multiroot(MoCObjective_CMGY, theta0, parms = cumulants)
+    cumulants <- CumFinder_CGMY(x)
+    parroot <- rootSolve::multiroot(MoCObjective_CGMY, theta0, parms = cumulants)
     theta <- parroot$root
     if (theta[4] < 0) {
         theta <- theta0

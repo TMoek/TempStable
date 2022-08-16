@@ -411,7 +411,7 @@ asymVarRealCFMoment_CTS <- function(t, theta) {
 DataVarRealCFMoment_CTS <- function(t, theta, x) {
   gt <-
     DataMatrixRealCFMomentCondition_CTS(t = t, theta = theta, x = x)
-  var(gt)
+  stats::var(gt)
 }
 
 DataMatrixRealCFMomentCondition_CTS <- function(t, theta, x) {

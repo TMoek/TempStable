@@ -30,6 +30,8 @@ TemperedEstim(
 \item{HandleError}{A Boolean. \code{TRUE} by default.}
 
 \item{eps}{A gap holder. \code{1e-06} by default.}
+
+\item{...}{A gap holder.}
 }
 \value{
 Gap holder for return.

@@ -12,7 +12,7 @@ MLParametersEstim_NTS <-
     if (is.null(dots$control)) {
       control <- list(factr = 1e+05, pgtol = 1e-05)
       Estim <-
-        optim(
+        stats::optim(
           par = theta0,
           fn = SumLogDensity_NTS,
           gr = NULL,
@@ -25,7 +25,7 @@ MLParametersEstim_NTS <-
         )
     } else {
       Estim <-
-        optim(
+        stats::optim(
           par = theta0,
           fn = SumLogDensity_NTS,
           gr = NULL,

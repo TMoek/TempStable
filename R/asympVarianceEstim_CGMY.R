@@ -22,7 +22,7 @@ invFisherMatrix_CGMY <- function(theta, subdivisions = 100) {
     }
     for (i in 1:4) {
         for (j in 1:i) {
-            mat[i, j] <- integrate(f = integrand, lower = -Inf, upper = Inf,
+            mat[i, j] <- stats::integrate(f = integrand, lower = -Inf, upper = Inf,
                                    i = i, j = j,
                                    subdivisions = subdivisions)$value
             mat[j, i] <- mat[i, j]

@@ -33,6 +33,8 @@ qNTS(
 \item{theta}{A vector of all other arguments.}
 
 \item{qmin, qmax}{Limits of the interval.}
+
+\item{...}{A gap holder.}
 }
 \value{
 Gap holder for return.

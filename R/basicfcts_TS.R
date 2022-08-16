@@ -69,7 +69,7 @@ charSTS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
 #'
 #' @examples
 #' dSTS(1000,0.5,1,0.3)
-#' dSTS(1,0.5,1,0.3) #<-- Warnings will show up.
+#' dSTS(1,0.5,1,0.3)
 #'
 #' @importFrom stabledist dstable
 #' @export
@@ -109,11 +109,12 @@ dSTS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 #' @param pmethod A gap holder.
 #' @param N integer: the number of replications, if
 #' \code{pmethod != "integrate"}. 10000 by default.
+#' @param ... A gap holder.
 #'
 #' @return A gap holder.
 #'
 #' @examples
-#' pSTS(3,0.7,1.354,0.3) <-- Warnings will show up.
+#' pSTS(3,0.7,1.354,0.3)
 #' pSTS(1,0.5,10,300,NULL,"")
 #'
 #' @export
@@ -134,7 +135,7 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
 
     if(pmethod =="integrate"){
-    p <- sapply(q, function(z, ...) min(integrate(dSTS, 0, z, alpha = alpha,
+    p <- sapply(q, function(z, ...) min(stats::integrate(dSTS, 0, z, alpha = alpha,
                                          delta = delta, lambda = lambda,
                                          ...)$value, 1 - 1e-07))
 
@@ -162,6 +163,7 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' @param method A String. Either "AR" or "SR".
 #' @param k integer: the number of replications, if \code{method == "SR"}. 100
 #' by default.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
@@ -193,7 +195,7 @@ rSTS <- function(n, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
     return(x)
 }
 
-#' No export.
+# No export.
 #' @importFrom stabledist rstable
 rSTS_AR <- function(n, alpha, delta, lambda) {
     sigma <- ((1/alpha * gamma(1 - alpha) * delta *
@@ -207,7 +209,7 @@ rSTS_AR <- function(n, alpha, delta, lambda) {
         V <- 0
 
         while (U > exp(-min(c(lambda * V, 700)))) {
-            U <- runif(1, 0, 1)
+            U <- stats::runif(1, 0, 1)
             V <- rstable(1, alpha, 1, sigma, 0, pm = 1)
         }
 
@@ -219,19 +221,19 @@ rSTS_AR <- function(n, alpha, delta, lambda) {
 
 }
 
-#' No export.
+# No export.
 rSTS_SR <- function(n, alpha, delta, lambda, k) {
     base::replicate(n = n, rSTS_SR1(alpha = alpha, delta = delta,
                                     lambda = lambda, k = k))
 
 }
 
-#' No export.
+# No export.
 rSTS_SR1 <- function(alpha, delta, lambda, k) {
-    parrivalslong <- cumsum(rexp(k * 1.1))
+    parrivalslong <- cumsum(stats::rexp(k * 1.1))
     parrivals <- parrivalslong[parrivalslong <= k]
-    E1 <- rexp(length(parrivals))
-    U <- runif(length(parrivals))
+    E1 <- stats::rexp(length(parrivals))
+    U <- stats::runif(length(parrivals))
     X <- cbind((alpha * parrivals/delta)^(-1/alpha), E1 * U^(1/alpha)/lambda)
     return(sum(apply(X, 1, FUN = min)))
 }
@@ -248,12 +250,13 @@ rSTS_SR1 <- function(alpha, delta, lambda, k) {
 #' @param lambda A  real number > 0.
 #' @param theta A vector of all other arguments.
 #' @param qmin,qmax Limits of the interval.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
 #' @examples
-#' pSTS(0.5,0.5,5,0.01) <-- Warnings will show up.
-#' pSTS(1,0.9,1,10,NULL) <-- Warnings will show up.
+#' pSTS(0.5,0.5,5,0.01)
+#' pSTS(1,0.9,1,10,NULL)
 #'
 #' @importFrom stabledist qstable
 #' @export
@@ -365,12 +368,13 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
 #' @param b A gap holder, if \code{dens_method == "FFT"}. 20
 #' by default.
 #' @param nf A gap holder.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
 #' @examples
 #' dCTS(1,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048)
-#' dCTS(1,0.6,1,1,1,1,1,NULL,"Conv") <-- Warnings will show up.
+#' dCTS(1,0.6,1,1,1,1,1,NULL,"Conv")
 #'
 #' @export
 dCTS <- function(x, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
@@ -409,7 +413,7 @@ dCTS <- function(x, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 }
 
 
-#' No export.
+# No export.
 dCTS_FFT <- function(x, alpha, deltap, deltam, lambdap, lambdam,
                           mu, a, b, nf) {
     dx <- ((b - a)/nf)
@@ -428,11 +432,11 @@ dCTS_FFT <- function(x, alpha, deltap, deltam, lambdap, lambdam,
 
     densityW <- Re((dt/(2 * pi)) * exp(-imagN * (nf/2 * dt) * xgrid) * y)
 
-    return (as.numeric(approx(xgrid, densityW, xout=x,
+    return (as.numeric(stats::approx(xgrid, densityW, xout=x,
                               yleft = 1e-18, yright = 1e-18)[2]))
 }
 
-#' No export.
+# No export.
 #' @importFrom stabledist dstable
 dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
     integrandDTSclass <- function(y) {
@@ -468,12 +472,13 @@ dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
 #' @param q A gap holder.
 #' @param alpha A real number between 0 and 2.
 #' @param deltap,deltam  A real number > 0.
-#' @param lambdap,lambdap A  real number > 0.
+#' @param lambdap,lambdam A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
 #' @param a A gap holder. -20 by default.
 #' @param b A gap holder. 20 by default.
 #' @param nf A gap holder.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
@@ -511,7 +516,7 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
                 function(z) {
                   if(z<a) 0
                   else if (z>b) 1
-                  else min(integrate(dCTS, lower = a, upper = z, alpha = alpha,
+                  else min(stats::integrate(dCTS, lower = a, upper = z, alpha = alpha,
                                  deltap = deltap, deltam = deltam,
                                  lambdap = lambdap, lambdam = lambdam,
                                  mu = mu,...)$value, 1 - 1e-07)})
@@ -528,7 +533,7 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @param n A gap holder.
 #' @param alpha A real number between 0 and 2.
 #' @param deltap,deltam  A real number > 0.
-#' @param lambdap,lambdap A  real number > 0.
+#' @param lambdap,lambdam A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
 #' @param method A String. Either "aAR" or "SR".
@@ -577,7 +582,7 @@ rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
     return(x)
 }
 
-#' No export.
+# No export.
 rCTS_aAR <- function(n, alpha, deltap, deltam, lambdap, lambdam, mu, c) {
     return(mu +
              rCTS_aARp(n, alpha = alpha, delta = deltap, lambda = lambdap,
@@ -586,7 +591,7 @@ rCTS_aAR <- function(n, alpha, deltap, deltam, lambdap, lambdam, mu, c) {
                        c = c))
 }
 
-#' No export.
+# No export.
 #' @importFrom stabledist rstable
 rCTS_aARp <- function(n, alpha, delta, lambda, c) {
     sigma <- ((1/alpha * gamma(1 - alpha) * delta *
@@ -601,7 +606,7 @@ rCTS_aARp <- function(n, alpha, delta, lambda, c) {
         Y <- 0
 
         while (U > exp(-min(c(lambda * (V + cc), 700)))) {
-            U <- runif(1, 0, 1)
+            U <- stats::runif(1, 0, 1)
             V <- rstable(1, alpha, 1, sigma, 0, pm = 1)
             Y <- V - gamma(1 - alpha) * delta * lambda^(alpha - 1)
         }
@@ -614,7 +619,7 @@ rCTS_aARp <- function(n, alpha, delta, lambda, c) {
 
 }
 
-#' No export.
+# No export.
 rCTS_SR <- function(n, alpha, deltap, deltam, lambdap, lambdam, mu, k) {
     replicate(n = n, rCTS_SR1(alpha = alpha, deltap = deltap, deltam = deltam,
                               lambdap = lambdap, lambdam = lambdam,
@@ -622,7 +627,7 @@ rCTS_SR <- function(n, alpha, deltap, deltam, lambdap, lambdam, mu, k) {
 
 }
 
-#' No export.
+# No export.
 rCTS_SR1 <- function(alpha, deltap, deltam, lambdap, lambdam, mu, k) {
     return(rCTS_SRp(alpha = alpha, delta = deltap, lambda = lambdap, k = k)
            -rCTS_SRp(alpha = alpha, delta = deltam, lambda = lambdam, k = k)
@@ -631,13 +636,13 @@ rCTS_SR1 <- function(alpha, deltap, deltam, lambdap, lambdam, mu, k) {
 
 
 
-#' No export.
+# No export.
 #' @importFrom VGAM zeta
 rCTS_SRp <- function(alpha, delta, lambda, k) {
-    parrivalslong <- cumsum(rexp(k * 2))
+    parrivalslong <- cumsum(stats::rexp(k * 2))
     parrivals <- parrivalslong[parrivalslong <= k]
     n <- length(parrivals)
-    E1 <- rexp(n)
+    E1 <- stats::rexp(n)
     U <- stats::runif(n)
     cntr <- ((1:n) * alpha/delta)^(-1/alpha)
     gam <- (delta/alpha)^(1/alpha) * VGAM::zeta(1/alpha) - gamma(1 - alpha) *
@@ -655,13 +660,14 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
 #'
 #' Gap holder for details.
 #'
-#' @param q A gap holder.
+#' @param p A gap holder.
 #' @param alpha A real number between 0 and 2.
 #' @param deltap,deltam  A real number > 0.
-#' @param lambdap,lambdap A  real number > 0.
+#' @param lambdap,lambdam A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
 #' @param qmin,qmax Limits of the interval.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
@@ -700,7 +706,7 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 
     qroot <- function(y, qmin, qmax) {
       if(is.null(qmin)|is.null(qmax)){
-        x1 <- qcauchy(y, location = mu,
+        x1 <- stats::qcauchy(y, location = mu,
                       scale = min(((1/alpha*gamma(1-alpha)*(deltap+deltam)*
                                       cos(alpha*pi/2))^(1/alpha)),100))
         qmini <- min(c(x1,-x1, mu-1, mu+1))
@@ -781,6 +787,7 @@ charNTS <- function(t, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' @param a A gap holder. -20 by default.
 #' @param b A gap holder. 20 by default.
 #' @param nf A gap holder. 2048 by default.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
@@ -815,8 +822,8 @@ dNTS <- function(x, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
     return(d)
 }
 
-#' @seealso{dNTS}
-#' No export
+
+# No export
 dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
     dx <- ((b - a)/nf)
     dt <- (2 * pi/(nf * dx))
@@ -832,9 +839,9 @@ dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
 
     densityW <- Re((dt/(2 * pi)) * exp(-(1i) * (nf/2 * dt) * xgrid) * y)
 
-    # The return value of approx (RStudio) and Interpolation (Wolfram
+    # The return value of stats::approx (RStudio) and Interpolation (Wolfram
     # Mathematica) differ slightly. The larger nf, the smaller the difference.
-    return (as.numeric(approx(xgrid, densityW, xout=x,
+    return (as.numeric(stats::approx(xgrid, densityW, xout=x,
                               yleft = 1e-18, yright = 1e-18)[2]))
 }
 
@@ -855,6 +862,7 @@ dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
 #' @param b A gap holder. 20 by default.
 #' @param nf A gap holder. 2048 by default. I don't know if this param is used
 #' in this function.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
@@ -890,7 +898,7 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
                 if(z<a) 0
                 else if
                 (z>b) 1
-                else min(integrate(dNTS, lower = a, upper = z, alpha = alpha,
+                else min(stats::integrate(dNTS, lower = a, upper = z, alpha = alpha,
                                beta = beta, delta = delta, lambda = lambda,
                                mu = mu, ...)$value, 1-1e-7)})
 
@@ -913,6 +921,7 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' @param method A String. Either "AR" or "SR". "AR" by default.
 #' @param k integer: the number of replications, if \code{method == "SR"}. 100
 #' by default.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
@@ -949,18 +958,18 @@ rNTS <- function(n, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
     return(x)
 }
 
-#' No export.
+# No export.
 rNTS_AR <- function(n, alpha, beta, delta, lambda, mu) {
-    z <- rnorm(n = n)
+    z <- stats::rnorm(n = n)
     y <- rSTS_AR(n = n, alpha = alpha, delta = delta, lambda = lambda)
     x <- sqrt(y) * z + beta * y + mu
     return(x)
 }
 
 
-#' No export.
+# No export.
 rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
-    z <- rnorm(n = n)
+    z <- stats::rnorm(n = n)
     y <- rSTS_SR(n = n, alpha = alpha, delta = delta, lambda = lambda, k = k)
     x <- sqrt(y) * z + beta * y + mu
     return(x)
@@ -980,6 +989,7 @@ rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
 #' @param qmin,qmax Limits of the interval.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
@@ -1015,7 +1025,7 @@ qNTS <- function(p, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 
     qroot <- function(y, qmin, qmax) {
       if(is.null(qmin)|is.null(qmax)){
-        x1 <- qcauchy(y, location = mu,
+        x1 <- stats::qcauchy(y, location = mu,
                       scale = min(((1/alpha*gamma(1-alpha)*(delta)*
                                       cos(alpha*pi/2))^(1/alpha)),100))
         qmini <- min(c(x1,-x1, mu-1, mu+1))
@@ -1072,6 +1082,7 @@ charCGMY <- function(t, C, G, M, Y) {
 #' @param b A gap holder, if \code{dens_method == "FFT"}. 20
 #' by default.
 #' @param nf A gap holder.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
@@ -1099,6 +1110,7 @@ dCGMY <- function(x, C, G, M, Y, dens_method = "FFT", a = -20, b = 20,
 #' @param method A String. Either "aAR" or "SR". "SR" by default.
 #' @param k integer: the number of replications, if \code{method == "SR"}. 100
 #' by default.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
@@ -1126,6 +1138,7 @@ rCGMY <- function(n, C, G, M, Y, method = "SR", k = 100, ...) {
 #' @param m A gap holder.
 #' @param s A gap holder.
 #' @param char A gap holder.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
@@ -1151,5 +1164,5 @@ chartocdf <- function(q, N, m , s, char, ...){
 }
 
 
-#' No export.
+# No export.
 c_err <- function(t) {if(abs(t)<1){(1-t)*cos(pi*t)+1/pi*abs(sin(pi*t))} else 0}

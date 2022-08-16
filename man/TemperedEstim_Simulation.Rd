@@ -44,6 +44,8 @@ information is saved in the current directory. See details.}
 \item{SeedOptions}{List to control the seed generation. See details.}
 
 \item{eps}{A gap holder.}
+
+\item{...}{A gap holder.}
 }
 \value{
 Gap holder for return.
@@ -90,7 +92,8 @@ vector he wants to use.
 TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
                                                 c(0.5,1,1,1,1,0)),
                         SampleSizes = 10, MCparam = 10,
-                        TemperedType = "Classic", Estimfct = "ML" )
+                        TemperedType = "Classic", Estimfct = "ML",
+                        saveOutput = FALSE)
 
 }
 \seealso{

@@ -42,6 +42,8 @@ by default.}
 by default.}
 
 \item{nf}{A gap holder.}
+
+\item{...}{A gap holder.}
 }
 \value{
 Gap holder for return.
@@ -54,6 +56,6 @@ Gap holder for details.
 }
 \examples{
 dCTS(1,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048)
-dCTS(1,0.6,1,1,1,1,1,NULL,"Conv") <-- Warnings will show up.
+dCTS(1,0.6,1,1,1,1,1,NULL,"Conv")
 
 }

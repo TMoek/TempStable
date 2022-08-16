@@ -24,6 +24,8 @@ by default.}
 by default.}
 
 \item{nf}{A gap holder.}
+
+\item{...}{A gap holder.}
 }
 \value{
 Gap holder for return.

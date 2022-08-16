@@ -16,6 +16,8 @@ chartocdf(q, N, m, s, char, ...)
 \item{s}{A gap holder.}
 
 \item{char}{A gap holder.}
+
+\item{...}{A gap holder.}
 }
 \value{
 Gap holder for return.

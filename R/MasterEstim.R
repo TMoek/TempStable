@@ -14,6 +14,8 @@
 #' @param ComputeCov A Boolean. \code{FALSE} by default.
 #' @param HandleError A Boolean. \code{TRUE} by default.
 #' @param eps A gap holder. \code{1e-06} by default.
+#' @param ... A gap holder.
+#'
 #'
 #' @return Gap holder for return.
 #'
@@ -44,25 +46,25 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal",
         }
     }
     if (TemperedType == "Classic") {
-        OutputObj <- EstimClassicClass(par = numeric(6), par0 = theta0,
-                                       vcov = matrix(0, 6, 6),
-                                       confint = matrix(0, 6,2), data = data,
-                                       failure = 1)
+        OutputObj <- methods::new(Class="EstimClassicClass",par = numeric(6),
+                                  par0 = theta0, vcov = matrix(0, 6, 6),
+                                  confint = matrix(0, 6,2), data = data,
+                                  failure = 1)
     } else if (TemperedType == "Subordinator") {
-        OutputObj <- EstimSubClass(par = numeric(3), par0 = theta0,
-                                   vcov = matrix(0, 3, 3),
-                                   confint = matrix(0, 3, 2), data = data,
-                                   failure = 1)
+        OutputObj <- methods::new(Class = "EstimSubClass", par = numeric(3),
+                                  par0 = theta0, vcov = matrix(0, 3, 3),
+                                  confint = matrix(0, 3, 2), data = data,
+                                  failure = 1)
     } else if (TemperedType == "Normal") {
-        OutputObj <- EstimNormalClass(par = numeric(5), par0 = theta0,
-                                      vcov = matrix(0, 5, 5),
-                                      confint = matrix(0, 5, 2), data = data,
-                                      failure = 1)
+        OutputObj <- methods::new(Class = "EstimNormalClass", par = numeric(5),
+                                  par0 = theta0, vcov = matrix(0, 5, 5),
+                                  confint = matrix(0, 5, 2), data = data,
+                                  failure = 1)
     } else {
-        OutputObj <- EstimCGMYClass(par = numeric(4), par0 = theta0,
-                                    vcov = matrix(0, 4, 4),
-                                    confint = matrix(0, 4, 2), data = data,
-                                    failure = 1)
+        OutputObj <- methods::new(Class = "EstimCGMYClass", par = numeric(4),
+                                  par0 = theta0, vcov = matrix(0, 4, 4),
+                                  confint = matrix(0, 4, 2), data = data,
+                                  failure = 1)
     }
     type <- match.arg(TemperedType)
     method <- match.arg(EstimMethod)
@@ -89,7 +91,7 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal",
                                                   EstimObj = res, ...)
         OutputObj@confint <- AsymptoticConfidenceInterval(
           thetaEst = OutputObj@par, n_sample = OutputObj@sampleSize,
-          Cov = OutputObj@vcov, qLaw = qnorm, type = type, ...)
+          Cov = OutputObj@vcov, qLaw = stats::qnorm, type = type, ...)
     }
     OutputObj
 }
@@ -270,7 +272,7 @@ getTempEstimFcts <- function(
     }
 }
 
-#' No export.
+# No export.
 .initResTemp <- function(type, method) {
     if (type == "Classic") {
         npar <- 6
@@ -291,7 +293,7 @@ getTempEstimFcts <- function(
     }
 }
 
-#' No export.
+# No export.
 NameParamsObjectsTemp <- function(mat, type = c("Classic", "Subordinator",
                                                 "Normal")) {
     if (type == "Classic") {
@@ -344,7 +346,7 @@ NameParamsObjectsTemp <- function(mat, type = c("Classic", "Subordinator",
     mat
 }
 
-#' No Export.
+# No Export.
 CheckParametersRange_STS <- function(theta) {
     alpha <- theta[1]
     delta <- theta[2]
@@ -358,7 +360,7 @@ CheckParametersRange_STS <- function(theta) {
     lapply(checkParams, .printErr)
 }
 
-#' No Export.
+# No Export.
 CheckParametersRange_CTS <- function(theta) {
     alpha <- theta[1]
     deltap <- theta[2]
@@ -377,7 +379,7 @@ CheckParametersRange_CTS <- function(theta) {
     lapply(checkParams, .printErr)
 }
 
-#' No Export.
+# No Export.
 CheckParametersRange_NTS <- function(theta) {
     alpha <- theta[1]
     beta <- theta[2]
@@ -394,7 +396,7 @@ CheckParametersRange_NTS <- function(theta) {
     lapply(checkParams, .printErr)
 }
 
-#' No Export.
+# No Export.
 CheckParametersRange_CGMY <- function(theta) {
     C <- theta[1]
     G <- theta[2]
@@ -409,7 +411,7 @@ CheckParametersRange_CGMY <- function(theta) {
     lapply(checkParams, .printErr)
 }
 
-#' No export.
+# No export.
 checkRange <- function(Parameter, min = -Inf, max = Inf, ParamName) {
   if ((Parameter >= min) && (Parameter <= max))
     return(list(bool = TRUE, msg = "valid"))
@@ -420,7 +422,7 @@ checkRange <- function(Parameter, min = -Inf, max = Inf, ParamName) {
 
 ##### Asymptotic Confidence Interval#####
 
-#' No export.
+# No export.
 AsymptoticConfidenceInterval <- function(thetaEst, n_sample, Cov,
                                          qLaw = stats::qnorm, level = 0.95,
                                          type, ...) {
@@ -443,8 +445,8 @@ AsymptoticConfidenceInterval <- function(thetaEst, n_sample, Cov,
 }
 
 
-#' No export.
-#' Added by Cedric 20220811
+# No export.
+# Added by Cedric 20220811
 NameParamsObjects <- function(mat, type = NULL) {
 
   parNames <- c("alpha", "beta", "gamma", "delta")
@@ -485,7 +487,7 @@ NameParamsObjects <- function(mat, type = NULL) {
 
 ##### Classes#####
 
-#' No export.
+# No export.
 EstimSubClass <- setClass("EstimSubClass",
                           slots = list(par = "numeric", par0 = "numeric",
                                        vcov = "matrix", confint = "matrix",
@@ -525,7 +527,7 @@ EstimSubClass <- setClass("EstimSubClass",
         res
     })
 
-#' No export.
+# No export.
 EstimClassicClass <- setClass("EstimClassicClass",
                               slots = list(par = "numeric", par0 = "numeric",
                                            vcov = "matrix", confint = "matrix",
@@ -567,7 +569,7 @@ EstimClassicClass <- setClass("EstimClassicClass",
         res
     })
 
-#' No export.
+# No export.
 EstimNormalClass <- setClass("EstimNormalClass",
                              slots = list(par = "numeric", par0 = "numeric",
                                           vcov = "matrix", confint = "matrix",
@@ -608,7 +610,7 @@ EstimNormalClass <- setClass("EstimNormalClass",
         res
     })
 
-#' No export.
+# No export.
 EstimCGMYClass <- setClass("EstimCGMYClass",
                            slots = list(par = "numeric", par0 = "numeric",
                                         vcov = "matrix", confint = "matrix",

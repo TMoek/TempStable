@@ -36,6 +36,8 @@ rNTS(
 
 \item{k}{integer: the number of replications, if \code{method == "SR"}. 100
 by default.}
+
+\item{...}{A gap holder.}
 }
 \value{
 Gap holder for return.

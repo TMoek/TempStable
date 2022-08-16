@@ -30,6 +30,8 @@ pSTS(
 
 \item{N}{integer: the number of replications, if
 \code{pmethod != "integrate"}. 10000 by default.}
+
+\item{...}{A gap holder.}
 }
 \value{
 A gap holder.
@@ -41,7 +43,7 @@ Gap holder for description.
 Gap holder for details.
 }
 \examples{
-pSTS(3,0.7,1.354,0.3) <-- Warnings will show up.
+pSTS(3,0.7,1.354,0.3)
 pSTS(1,0.5,10,300,NULL,"")
 
 }

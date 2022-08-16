@@ -42,6 +42,8 @@ default.}
 \item{b}{A gap holder. 20 by default.}
 
 \item{nf}{A gap holder. 2048 by default.}
+
+\item{...}{A gap holder.}
 }
 \value{
 Gap holder for return.

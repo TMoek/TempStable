@@ -25,7 +25,7 @@ rCTS(
 
 \item{deltap, deltam}{A real number > 0.}
 
-\item{lambdap, lambdap}{A  real number > 0.}
+\item{lambdap, lambdam}{A  real number > 0.}
 
 \item{mu}{A location parameter, any real number.}
 

@@ -206,7 +206,7 @@ ComputeITGMCParametersEstim_STS <-
       CurrentEstimOptInfo <- AllCurrentEstim$OptInfo
       CurrentEstimParVal <- CurrentEstimOptInfo$par
       if (Control$PrintIter)
-        PrintIteration_STS(CurrentEstimParVal, iter, Control$NbIter)
+        PrintIteration(CurrentEstimParVal, iter, Control$NbIter)
       RelativeErr <- abs(CurrentEstimParVal - PrevEstimParVal)
       PrevEstimParVal <- CurrentEstimParVal
       iter = iter + 1

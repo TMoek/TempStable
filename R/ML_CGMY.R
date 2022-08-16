@@ -10,7 +10,7 @@ MLParametersEstim_CGMY <- function (x,
   dots <- list(...)
   if (is.null(dots$control)) {
     control <- list(factr = 1e+05, pgtol = 1e-05)
-    Estim <- optim(
+    Estim <- stats::optim(
       par = theta0,
       fn = SumLogDensity_CGMY,
       gr = NULL,
@@ -23,7 +23,7 @@ MLParametersEstim_CGMY <- function (x,
     )
   }
   else {
-    Estim <- optim(
+    Estim <- stats::optim(
       par = theta0,
       fn = SumLogDensity_CGMY,
       gr = NULL,

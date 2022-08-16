@@ -27,6 +27,8 @@ qSTS(
 \item{theta}{A vector of all other arguments.}
 
 \item{qmin, qmax}{Limits of the interval.}
+
+\item{...}{A gap holder.}
 }
 \value{
 Gap holder for return.
@@ -38,7 +40,7 @@ Gap holder for description.
 Gap holder for details.
 }
 \examples{
-pSTS(0.5,0.5,5,0.01) <-- Warnings will show up.
-pSTS(1,0.9,1,10,NULL) <-- Warnings will show up.
+pSTS(0.5,0.5,5,0.01)
+pSTS(1,0.9,1,10,NULL)
 
 }

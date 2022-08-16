@@ -19,11 +19,13 @@ qCTS(
 )
 }
 \arguments{
+\item{p}{A gap holder.}
+
 \item{alpha}{A real number between 0 and 2.}
 
 \item{deltap, deltam}{A real number > 0.}
 
-\item{lambdap, lambdap}{A  real number > 0.}
+\item{lambdap, lambdam}{A  real number > 0.}
 
 \item{mu}{A location parameter, any real number.}
 
@@ -31,7 +33,7 @@ qCTS(
 
 \item{qmin, qmax}{Limits of the interval.}
 
-\item{q}{A gap holder.}
+\item{...}{A gap holder.}
 }
 \value{
 Gap holder for return.

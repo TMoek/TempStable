@@ -39,6 +39,8 @@ pNTS(
 
 \item{nf}{A gap holder. 2048 by default. I don't know if this param is used
 in this function.}
+
+\item{...}{A gap holder.}
 }
 \value{
 Gap holder for return.

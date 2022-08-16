@@ -1,4 +1,3 @@
-#library(tillsfunctionpackage)
 
 test_that("TemperedEstim_with_Classic_ML_gives_correct_return", {
   testData <- c(1.8873152, -0.4843727,  0.4755897, -0.1257814,  1.3484823,

@@ -60,6 +60,7 @@
 #'  information is saved in the current directory. See details.
 #' @param SeedOptions List to control the seed generation. See details.
 #' @param eps A gap holder.
+#' @param ... A gap holder.
 #'
 #' @return Gap holder for return.
 #'
@@ -67,7 +68,8 @@
 #' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
 #'                                                 c(0.5,1,1,1,1,0)),
 #'                         SampleSizes = 10, MCparam = 10,
-#'                         TemperedType = "Classic", Estimfct = "ML" )
+#'                         TemperedType = "Classic", Estimfct = "ML",
+#'                         saveOutput = FALSE)
 #'
 #' @export
 TemperedEstim_Simulation <- function(ParameterMatrix,
@@ -166,7 +168,7 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 
 }
 
-#' No export.
+# No export.
 getSeedVector <- function(Outputsize, SeedOptions = NULL) {
     set.seed(345)
     if (is.null(SeedOptions))
@@ -181,7 +183,7 @@ getSeedVector <- function(Outputsize, SeedOptions = NULL) {
     vec
 }
 
-#' No export.
+# No export.
 ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                     TemperedType, Estimfct, HandleError,
                                     ab_current,nab, npar, ParameterMatrix,
@@ -242,8 +244,8 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                 x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
                           delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5])
             } else {
-                x <- rCGMY(n = size, C = theta[1], G = theta[2], G = theta[3],
-                           Y = theta[4])
+                x <- rCGMY(n = size, C = thetaT[1], M = thetaT[2],
+                           G = thetaT[3], Y = thetaT[4])
             }
             Estim <- getTempEstimation(thetaT = thetaT, x = x, seed = seed,
                                        size = size, Ncol = Ncol,
@@ -270,7 +272,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
     return(list(outputMat = Output, file = file))
 }
 
-#' No export.
+# No export.
 getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
                               Estimfct, HandleError, eps, ...) {
     output <- vector(length = Ncol)
@@ -382,7 +384,7 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
 # }
 
 
-#' No export.
+# No export.
 # getTempEstimation_parallel <- function(thetaT, x, size, Ncol, TemperedType,
 #                                        Estimfct, HandleError, eps, ...) {
 #     output <- vector(length = Ncol)
@@ -471,8 +473,8 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
 
 ##### for Output File#####
 
-#'
-#'  No export.
+
+#  No export.
 initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
 
   method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
@@ -500,16 +502,8 @@ initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
   }
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param TemperedType A String. Either "Classic", "Subordinator", or "Normal".
-#' @param EstimMethod A String. Either "ML", "GMM", "Cgmm", or "Kout".
-#'
-#' No export.
+
+# No export.
 Estim_Des_Temp <- function(TemperedType = c("Classic", "Subordinator",
                                             "Normal", "CGMY"),
                            EstimMethod = c("ML", "GMM", "Cgmm", "Kout"), ...) {
@@ -521,8 +515,8 @@ Estim_Des_Temp <- function(TemperedType = c("Classic", "Subordinator",
 
 ##### for Checkpoints#####
 
-#'
-#' No export.
+
+# No export.
 readCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
                            nSS, MCparam, ...) {
     method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
@@ -537,7 +531,8 @@ readCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
         write(x = paste("--", ab, nab, npar, sample, nSS, mc, MCparam,
                         sep = ";"), file = fileName, sep = "\n", append = TRUE)
     } else {
-        tab <- as.numeric(read.table(file = fileName, header = F, sep = ";"))
+        tab <- as.numeric(utils::read.table(file = fileName,
+                                            header = F, sep = ";"))
         ab <- tab[2]
         sample <- tab[5]
         mc <- tab[7]
@@ -552,7 +547,7 @@ readCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
 }
 
 
-#' No export.
+# No export.
 get_filename_checkPoint_Temp <- function(ParameterMatrix, nab, npar, MCparam,
                                          method) {
     if (npar == 3) {
@@ -583,7 +578,7 @@ get_filename_checkPoint_Temp <- function(ParameterMatrix, nab, npar, MCparam,
 }
 
 
-#' No export.
+# No export.
 updateCheckPointValues <- function(CheckPointValues, MCparam, lS, nab) {
     ab_start <- CheckPointValues$ab
     sample_start <- CheckPointValues$sample
@@ -600,7 +595,7 @@ updateCheckPointValues <- function(CheckPointValues, MCparam, lS, nab) {
     list(ab_start = ab_start, sample_start = sample_start, mc_start = mc_start)
 }
 
-#' No export.
+# No export.
 deleteCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
                              nSS, MCparam, ...) {
     method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
@@ -609,7 +604,7 @@ deleteCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
     unlink(x = fileName, force = TRUE)
 }
 
-#' No export.
+# No export.
 writeCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, ab, nab,
                             npar, sample, nSS, mc, MCparam, ...) {
     method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
@@ -631,7 +626,7 @@ writeCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, ab, nab,
 #}
 
 #Added by Cedric 20220729
-#' No export.
+# No export.
 get_filename <- function(thetaT, MCparam, TemperedType, method,
                          extension = ".csv") {
   MC <- switch(TemperedType,
@@ -664,7 +659,7 @@ get_filename <- function(thetaT, MCparam, TemperedType, method,
 
 
 #Added by Cedric 20220805
-#' No export.
+# No export.
 updateOutputFile <- function(thetaT, MCparam, TemperedType, Output){
   method <- Output$file
   fileName <- get_filename(thetaT, MCparam, TemperedType, method)

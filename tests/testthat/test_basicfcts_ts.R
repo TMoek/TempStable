@@ -1,4 +1,3 @@
-#library(tillsfunctionpackage)
 
 test_that("charSTS_gives_correct_return", {
   expect_equal(charSTS(1000,0.5,1,0.3),-1.954837e-34-1.69676e-34i)

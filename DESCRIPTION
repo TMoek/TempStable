@@ -15,15 +15,16 @@ Imports:
     doParallel (>= 1.0.17),
     doRNG (>= 1.8.2),
     foreach (>= 1.5.2),
+    methods (>= 4.1.2),
     moments (>= 0.14.1),
     numDeriv (>= 2016.8-1.1),
-    parallel (>= 4.2.1),
+    parallel (>= 4.1.2),
     pracma (>= 2.3.8),
     stabledist (>= 0.7-1),
     StableEstim (>= 2.1),
     rootSolve (>= 1.8.2.3),
     VGAM (>= 1.1-7)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Suggests: 
     knitr (>= 1.39),
     rmarkdown (>= 2.14),

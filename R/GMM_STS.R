@@ -454,7 +454,7 @@ crossSum <- function(X, Y) {
 DataVarRealCFMoment_STS <- function(t, theta, x) {
   gt <-
     DataMatrixRealCFMomentCondition_STS(t = t, theta = theta, x = x)
-  var(gt)
+  stats::var(gt)
 }
 
 DataMatrixRealCFMomentCondition_STS <- function(t, theta, x) {
