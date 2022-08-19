@@ -65,12 +65,14 @@
 #' @return Gap holder for return.
 #'
 #' @examples
-#' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
-#'                                                 c(0.5,1,1,1,1,0)),
-#'                         SampleSizes = 10, MCparam = 10,
-#'                         TemperedType = "Classic", Estimfct = "ML",
-#'                         saveOutput = FALSE)
-#'
+#' \donttest{
+#'   TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
+#'                                                    c(0.5,1,1,1,1,0)),
+#'                            SampleSizes = 10, MCparam = 10,
+#'                            TemperedType = "Classic", Estimfct = "ML",
+#'                            saveOutput = FALSE)
+#' }
+
 #' @export
 TemperedEstim_Simulation <- function(ParameterMatrix,
                                      SampleSizes = c(200, 1600),

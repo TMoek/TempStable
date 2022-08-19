@@ -672,8 +672,10 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
 #' @return Gap holder for return.
 #'
 #' @examples
-#' qCTS(0.5,1.5,10,10,10,10,10)
-#' qCTS(0.5,1.5,1,1,1,1,1)
+#' \donttest{
+#'   qCTS(0.5,1.5,10,10,10,10,10)
+#'   qCTS(0.5,1.5,1,1,1,1,1)
+#' }
 #'
 #' @importFrom stabledist qstable
 #' @export

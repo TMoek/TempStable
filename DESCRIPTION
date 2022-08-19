@@ -2,13 +2,16 @@ Package: tillsfunctionpackage
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.0.0.9000
-Authors@R: c(
-    person("Cedric", "Juessen", email = "cedric.juessen@vwl.uni-due.de", role = "cre"),
-    person("Till", "Massing", email = "till.massing@uni-due.de", role = "aut", "cre"))
-Description: More about what it does (maybe more than one line)
+Authors@R: c( person(given = "Till", family = "Massing",
+                     email = "till.massing@uni-due.de",
+                     role = "aut", "cre"),
+              person(given = "Cedric", family = "Juessen",
+                     email = "cedric.juessen@vwl.uni-due.de",
+                     role = "cre"))
+Description: TODO: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 URL: TODO: Link to GitHub project, when project is public
-License: What license is it under?
+License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 Imports:

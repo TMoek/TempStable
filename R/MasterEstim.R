@@ -20,11 +20,13 @@
 #' @return Gap holder for return.
 #'
 #' @examples
-#' testData <- c(1.8873152, -0.4843727,  0.4755897, -0.1257814,  1.3484823,
-#'              -0.3866821, -0.4258380, -0.4658479, -2.9774961,  0.9646364,
-#'              -0.5875601, -2.0316790,  0.3641900,  1.1882307,  1.6635770,
-#'              -0.0554876,  0.4005471,  0.7820444, -0.3786902,  1.5131663)
-#' TemperedEstim("Classic","ML",testData)
+#' \donttest{
+#'   testData <- c(1.8873152, -0.4843727,  0.4755897, -0.1257814,  1.3484823,
+#'                 -0.3866821, -0.4258380, -0.4658479, -2.9774961,  0.9646364,
+#'                 -0.5875601, -2.0316790,  0.3641900,  1.1882307,  1.6635770,
+#'                 -0.0554876,  0.4005471,  0.7820444, -0.3786902,  1.5131663)
+#'   TemperedEstim("Classic","ML",testData)
+#' }
 #'
 #' @export
 TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal",
@@ -48,7 +50,7 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal",
     if (TemperedType == "Classic") {
         OutputObj <- methods::new(Class="EstimClassicClass",par = numeric(6),
                                   par0 = theta0, vcov = matrix(0, 6, 6),
-                                  confint = matrix(0, 6,2), data = data,
+                                  confint = matrix(0, 6, 2), data = data,
                                   failure = 1)
     } else if (TemperedType == "Subordinator") {
         OutputObj <- methods::new(Class = "EstimSubClass", par = numeric(3),
@@ -452,7 +454,7 @@ NameParamsObjects <- function(mat, type = NULL) {
   parNames <- c("alpha", "beta", "gamma", "delta")
 
   if (!is.null(type)){
-    outputString <- switch(type,
+    parNames <- switch(type,
                            Classic = c("Alpha", "DeltaP", "DeltaM", "LambdaP",
                                        "LambdaM", "mu"),
                            Subordinator = c("Alpha=", "Delta", "Lambda"),
@@ -488,6 +490,7 @@ NameParamsObjects <- function(mat, type = NULL) {
 ##### Classes#####
 
 # No export.
+#' @importFrom methods new
 EstimSubClass <- setClass("EstimSubClass",
                           slots = list(par = "numeric", par0 = "numeric",
                                        vcov = "matrix", confint = "matrix",
@@ -527,7 +530,82 @@ EstimSubClass <- setClass("EstimSubClass",
         res
     })
 
+## Init method
+
+setMethod("initialize", "EstimSubClass",
+          function(.Object, par, par0, vcov, confint, method, level, others,
+                   data, duration, failure, ...) {
+            ## handle missing
+            if (missing(par))
+              par        <- numeric(3)
+            if (missing(par0))
+              par0       <- numeric(3)
+            if (missing(vcov))
+              vcov       <- matrix(nrow = 3, ncol = 3)
+            if (missing(confint))
+              confint    <- matrix(nrow = 3, ncol = 2)
+            if (missing(data))
+              data       <- numeric(100)
+            sampleSize <- length(data)
+            if (missing(method))
+              method     <- "Default"
+            if (missing(others))
+              others     <- list()
+            if (missing(level))
+              level      <- 0
+            if (missing(duration))
+              duration   <- 0
+            if (missing(failure))
+              failure    <- 0
+
+            ## set up names
+            NameParamsObjects(par, "Sub")
+            NameParamsObjects(par0, "Sub")
+            NameParamsObjects(vcov, "Sub")
+            NameParamsObjects(confint, "Sub")
+            attr(confint, "level") <- level
+
+            methods::callNextMethod(
+              .Object,
+              par = par,
+              par0 = par0,
+              vcov = vcov,
+              confint = confint,
+              data = data,
+              sampleSize = sampleSize,
+              method = method,
+              others = others,
+              duration = duration,
+              failure = failure,
+              ...
+            )
+          })
+
+setMethod("show", "EstimSubClass",
+          function(object) {
+            cat("*** Tempered Estim Sub, method Show *** \n")
+            cat("** Method ** \n")
+            print(object@method)
+            cat("** Parameters Estimation ** \n")
+            print(object@par)
+            cat("** Covariance Matrix Estimation ** \n")
+            print(object@vcov)
+            cat("** Confidence interval Estimation ** \n")
+            print(paste("Confidence level=", attributes(object@confint)$level))
+            print(paste("data length=", object@sampleSize))
+            print(object@confint)
+            cat("** Estimation time ** \n")
+            PrintDuration(object@duration)
+            cat("** Estimation status ** \n")
+            if (object@failure == 0)
+              cat("success")
+            else
+              cat("failure")
+            cat("\n ******* End Show (Tempered Estim Sub) ******* \n")
+          })
+
 # No export.
+#' @importFrom methods new
 EstimClassicClass <- setClass("EstimClassicClass",
                               slots = list(par = "numeric", par0 = "numeric",
                                            vcov = "matrix", confint = "matrix",
@@ -569,7 +647,83 @@ EstimClassicClass <- setClass("EstimClassicClass",
         res
     })
 
+## Init method
+
+setMethod("initialize", "EstimClassicClass",
+          function(.Object, par, par0, vcov, confint, method, level, others,
+                   data, duration, failure, ...) {
+            ## handle missing
+            if (missing(par))
+              par        <- numeric(6)
+            if (missing(par0))
+              par0       <- numeric(6)
+            if (missing(vcov))
+              vcov       <- matrix(0, nrow = 6, ncol = 6)
+            if (missing(confint))
+              confint    <- matrix(0, nrow = 6, ncol = 2)
+            if (missing(data))
+              data       <- numeric(100)
+            sampleSize <- length(data)
+            if (missing(method))
+              method     <- "Default"
+            if (missing(others))
+              others     <- list()
+            if (missing(level))
+              level      <- 0
+            if (missing(duration))
+              duration   <- 0
+            if (missing(failure))
+              failure    <- 0
+
+            ## set up names
+            NameParamsObjects(par, "Classic")
+            NameParamsObjects(par0, "Classic")
+            NameParamsObjects(vcov, "Classic")
+            NameParamsObjects(confint, "Classic")
+            attr(confint, "level") <- level
+
+            methods::callNextMethod(
+              .Object,
+              par = par,
+              par0 = par0,
+              vcov = vcov,
+              confint = confint,
+              data = data,
+              sampleSize = sampleSize,
+              method = method,
+              others = others,
+              duration = duration,
+              failure = failure,
+              ...
+            )
+          })
+
+setMethod("show", "EstimClassicClass",
+          function(object) {
+            cat("*** Tempered Estim Classic, method Show *** \n")
+            cat("** Method ** \n")
+            print(object@method)
+            cat("** Parameters Estimation ** \n")
+            print(object@par)
+            cat("** Covariance Matrix Estimation ** \n")
+            print(object@vcov)
+            cat("** Confidence interval Estimation ** \n")
+            print(paste("Confidence level=", attributes(object@confint)$level))
+            print(paste("data length=", object@sampleSize))
+            print(object@confint)
+            cat("** Estimation time ** \n")
+            PrintDuration(object@duration)
+            cat("** Estimation status ** \n")
+            if (object@failure == 0)
+              cat("success")
+            else
+              cat("failure")
+            cat("\n ******* End Show (Tempered Estim Classic) ******* \n")
+          })
+
+
 # No export.
+#' @importFrom methods new
 EstimNormalClass <- setClass("EstimNormalClass",
                              slots = list(par = "numeric", par0 = "numeric",
                                           vcov = "matrix", confint = "matrix",
@@ -610,7 +764,83 @@ EstimNormalClass <- setClass("EstimNormalClass",
         res
     })
 
+## Init method
+
+setMethod("initialize", "EstimNormalClass",
+          function(.Object, par, par0, vcov, confint, method, level, others,
+                   data, duration, failure, ...) {
+            ## handle missing
+            if (missing(par))
+              par        <- numeric(5)
+            if (missing(par0))
+              par0       <- numeric(5)
+            if (missing(vcov))
+              vcov       <- matrix(nrow = 5, ncol = 5)
+            if (missing(confint))
+              confint    <- matrix(nrow = 5, ncol = 2)
+            if (missing(data))
+              data       <- numeric(100)
+            sampleSize <- length(data)
+            if (missing(method))
+              method     <- "Default"
+            if (missing(others))
+              others     <- list()
+            if (missing(level))
+              level      <- 0
+            if (missing(duration))
+              duration   <- 0
+            if (missing(failure))
+              failure    <- 0
+
+            ## set up names
+            NameParamsObjects(par, "Normal")
+            NameParamsObjects(par0, "Normal")
+            NameParamsObjects(vcov, "Normal")
+            NameParamsObjects(confint, "Normal")
+            attr(confint, "level") <- level
+
+            methods::callNextMethod(
+              .Object,
+              par = par,
+              par0 = par0,
+              vcov = vcov,
+              confint = confint,
+              data = data,
+              sampleSize = sampleSize,
+              method = method,
+              others = others,
+              duration = duration,
+              failure = failure,
+              ...
+            )
+          })
+
+setMethod("show", "EstimNormalClass",
+          function(object) {
+            cat("*** Tempered Estim Normal, method Show *** \n")
+            cat("** Method ** \n")
+            print(object@method)
+            cat("** Parameters Estimation ** \n")
+            print(object@par)
+            cat("** Covariance Matrix Estimation ** \n")
+            print(object@vcov)
+            cat("** Confidence interval Estimation ** \n")
+            print(paste("Confidence level=", attributes(object@confint)$level))
+            print(paste("data length=", object@sampleSize))
+            print(object@confint)
+            cat("** Estimation time ** \n")
+            PrintDuration(object@duration)
+            cat("** Estimation status ** \n")
+            if (object@failure == 0)
+              cat("success")
+            else
+              cat("failure")
+            cat("\n ******* End Show (Tempered Estim Normal) ******* \n")
+          })
+
+
 # No export.
+#' @importFrom methods new
 EstimCGMYClass <- setClass("EstimCGMYClass",
                            slots = list(par = "numeric", par0 = "numeric",
                                         vcov = "matrix", confint = "matrix",
@@ -650,3 +880,77 @@ EstimCGMYClass <- setClass("EstimCGMYClass",
             res <- ansconfint
         res
     })
+
+## Init method
+
+setMethod("initialize", "EstimCGMYClass",
+          function(.Object, par, par0, vcov, confint, method, level, others,
+                   data, duration, failure, ...) {
+            ## handle missing
+            if (missing(par))
+              par        <- numeric(4)
+            if (missing(par0))
+              par0       <- numeric(4)
+            if (missing(vcov))
+              vcov       <- matrix(nrow = 4, ncol = 4)
+            if (missing(confint))
+              confint    <- matrix(nrow = 4, ncol = 2)
+            if (missing(data))
+              data       <- numeric(100)
+            sampleSize <- length(data)
+            if (missing(method))
+              method     <- "Default"
+            if (missing(others))
+              others     <- list()
+            if (missing(level))
+              level      <- 0
+            if (missing(duration))
+              duration   <- 0
+            if (missing(failure))
+              failure    <- 0
+
+            ## set up names
+            NameParamsObjects(par, "CGMY")
+            NameParamsObjects(par0, "CGMY")
+            NameParamsObjects(vcov, "CGMY")
+            NameParamsObjects(confint, "CGMY")
+            attr(confint, "level") <- level
+
+            methods::callNextMethod(
+              .Object,
+              par = par,
+              par0 = par0,
+              vcov = vcov,
+              confint = confint,
+              data = data,
+              sampleSize = sampleSize,
+              method = method,
+              others = others,
+              duration = duration,
+              failure = failure,
+              ...
+            )
+          })
+
+setMethod("show", "EstimCGMYClass",
+          function(object) {
+            cat("*** Tempered Estim CGMY, method Show *** \n")
+            cat("** Method ** \n")
+            print(object@method)
+            cat("** Parameters Estimation ** \n")
+            print(object@par)
+            cat("** Covariance Matrix Estimation ** \n")
+            print(object@vcov)
+            cat("** Confidence interval Estimation ** \n")
+            print(paste("Confidence level=", attributes(object@confint)$level))
+            print(paste("data length=", object@sampleSize))
+            print(object@confint)
+            cat("** Estimation time ** \n")
+            PrintDuration(object@duration)
+            cat("** Estimation status ** \n")
+            if (object@failure == 0)
+              cat("success")
+            else
+              cat("failure")
+            cat("\n ******* End Show (Tempered Estim CGMY) ******* \n")
+          })

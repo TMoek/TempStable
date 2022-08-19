@@ -89,12 +89,13 @@ vector he wants to use.
 }
 }
 \examples{
-TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
-                                                c(0.5,1,1,1,1,0)),
-                        SampleSizes = 10, MCparam = 10,
-                        TemperedType = "Classic", Estimfct = "ML",
-                        saveOutput = FALSE)
-
+\donttest{
+  TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
+                                                   c(0.5,1,1,1,1,0)),
+                           SampleSizes = 10, MCparam = 10,
+                           TemperedType = "Classic", Estimfct = "ML",
+                           saveOutput = FALSE)
+}
 }
 \seealso{
 \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R}
