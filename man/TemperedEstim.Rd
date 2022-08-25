@@ -23,7 +23,8 @@ TemperedEstim(
 
 \item{data}{A gap holder.}
 
-\item{theta0}{A gap holder. \code{NULL} by default.}
+\item{theta0}{A gap holder. \code{NULL} by default. Must not be NULL, if
+data comes from function like \code{rCTS(...)}}
 
 \item{ComputeCov}{A Boolean. \code{FALSE} by default.}
 
@@ -49,6 +50,10 @@ Gap holder for details.
                 -0.5875601, -2.0316790,  0.3641900,  1.1882307,  1.6635770,
                 -0.0554876,  0.4005471,  0.7820444, -0.3786902,  1.5131663)
   TemperedEstim("Classic","ML",testData)
+  TemperedEstim( TemperedType = "Classic", EstimMethod = "ML",
+                  data = rCTS(2,1.5,1,1,1,1,0),
+                  theta0 = c(1.5,1,1,1,1,0) - 0.1)
+
 }
 
 }

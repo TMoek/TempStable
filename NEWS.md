@@ -1,3 +1,3 @@
-# tillsfunctionpackage 0.0.0.9000
+# tillsfunctionpackage 0.1.0
 
-* Added a `NEWS.md` file to track changes to the package.
+* Each change should be included in a bulleted list.

@@ -24,15 +24,18 @@ GMMParametersEstim_STS <-
     WeightingMatrix <- match.arg(WeightingMatrix)
     t_scheme <- match.arg(t_scheme)
     t_init <- StableEstim::getTime_()
-    method <-
-      getGMMmethodName_STS(
-        algo = algo,
-        alphaReg = alphaReg,
-        regularization = regularization,
-        WeightingMatrix = WeightingMatrix,
-        t_scheme = t_scheme,
-        ...
-      )
+
+    method <- .methodDesGMM_STS()
+    #Change 240822
+    # method <-
+    #   getGMMmethodName_STS(
+    #     algo = algo,
+    #     alphaReg = alphaReg,
+    #     regularization = regularization,
+    #     WeightingMatrix = WeightingMatrix,
+    #     t_scheme = t_scheme,
+    #     ...
+    #   )
     Estim <- switch(algo,
                     `2SGMM` = {
                       Compute2SGMMParametersEstim_STS(
@@ -916,3 +919,10 @@ NumDeriv_jacobian_STS <-
       ...
     )
   }
+
+.methodDesGMM_STS <- function(...) {
+  l <- list(...)
+  paste("GMM", paste("OptimAlgo=", "L-BFGS-B", sep = ""), sep = "_")
+}
+
+

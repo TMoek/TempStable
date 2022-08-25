@@ -10,7 +10,8 @@
 #' "CGMY".
 #' @param EstimMethod A String. Either "ML", "GMM", "Cgmm", or "GMC".
 #' @param data A gap holder.
-#' @param theta0 A gap holder. \code{NULL} by default.
+#' @param theta0 A gap holder. \code{NULL} by default. Must not be NULL, if
+#' data comes from function like \code{rCTS(...)}
 #' @param ComputeCov A Boolean. \code{FALSE} by default.
 #' @param HandleError A Boolean. \code{TRUE} by default.
 #' @param eps A gap holder. \code{1e-06} by default.
@@ -26,6 +27,10 @@
 #'                 -0.5875601, -2.0316790,  0.3641900,  1.1882307,  1.6635770,
 #'                 -0.0554876,  0.4005471,  0.7820444, -0.3786902,  1.5131663)
 #'   TemperedEstim("Classic","ML",testData)
+#'   TemperedEstim( TemperedType = "Classic", EstimMethod = "ML",
+#'                   data = rCTS(2,1.5,1,1,1,1,0),
+#'                   theta0 = c(1.5,1,1,1,1,0) - 0.1)
+#'
 #' }
 #'
 #' @export
@@ -226,7 +231,7 @@ getTempEstimFcts <- function(
         }, GMM = {
             list(Params = GMMParametersEstim_STS,
                  CovarianceMat = .asymptoticVarianceEstimGMM_STS,
-                 methodDes = getGMMmethodName_STS)
+                 methodDes = .methodDesGMM_STS())
         }, Cgmm = {
             list(Params = CgmmParametersEstim_STS,
                  CovarianceMat = .asymptoticVarianceEstimCgmm_STS,
