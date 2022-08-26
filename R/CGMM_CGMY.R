@@ -1,5 +1,5 @@
 ##### main function#####
-CgmmParametersEstim_CGMY <- function(x, algo = c("2S", "IT", "Cue"),
+CgmmParametersEstim_CGMY <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
                                      alphaReg = 0.01, subdivisions = 50,
                                      IntegrationMethod = c("Uniform",
                                                            "Simpson"),
@@ -17,7 +17,7 @@ CgmmParametersEstim_CGMY <- function(x, algo = c("2S", "IT", "Cue"),
                                      randomIntegrationLaw =
                                        randomIntegrationLaw,
                                      s_min = s_min, s_max = s_max)
-    Estim <- switch(algo, `2S` = {
+    Estim <- switch(algo, `2SCgmm` = {
         Compute2SCgmmParametersEstim_CGMY(x = x, theta0 = theta0,
                                           alphaReg = alphaReg, eps = eps,
                                           s_min = s_min, s_max = s_max,
@@ -25,7 +25,7 @@ CgmmParametersEstim_CGMY <- function(x, algo = c("2S", "IT", "Cue"),
                                           randomIntegrationLaw =
                                             randomIntegrationLaw,
                                           subdivisions = subdivisions, ...)
-    }, IT = {
+    }, ITCgmm = {
         ComputeITCgmmParametersEstim_CGMY(x = x, theta0 = theta0,
                                           alphaReg = alphaReg, eps = eps,
                                           s_min = s_min, s_max = s_max,
@@ -35,7 +35,7 @@ CgmmParametersEstim_CGMY <- function(x, algo = c("2S", "IT", "Cue"),
                                           subdivisions = subdivisions,
                                           IterationControl = IterationControl,
                                           ...)
-    }, Cue = {
+    }, CueCgmm = {
         ComputeCueCgmmParametersEstim_CGMY(x = x, theta0 = theta0,
                                            alphaReg = alphaReg, eps = eps,
                                            s_min = s_min, s_max = s_max,

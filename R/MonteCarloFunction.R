@@ -39,6 +39,16 @@
 #'   will be of size MCparam.}
 #' }
 #'
+#' \strong{Estimfct} Detailed documentation of the individual parameters
+#' of the various estimate functions is available in the package
+#' \code{StableEstim}.
+#' \describe{
+#'   \item{For ML:} use \code{?StableEstim::MLParametersEstim}
+#'   \item{For GMM:} use \code{?StableEstim::GMMParametersEstim}
+#'   \item{For Cgmm:} use \code{?StableEstim::CgmmParametersEstim}
+#'   \item{For GMC:} TODO
+#' }
+#'
 #' @seealso
 #' \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R}
 #'
@@ -66,13 +76,38 @@
 #'
 #' @examples
 #' \donttest{
-#'   TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
-#'                                                    c(0.5,1,1,1,1,0)),
-#'                            SampleSizes = 10, MCparam = 10,
-#'                            TemperedType = "Classic", Estimfct = "ML",
-#'                            saveOutput = FALSE)
+#' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
+#'                                                  c(0.5,1,1,1,1,0)),
+#'                          SampleSizes = 10, MCparam = 10,
+#'                          TemperedType = "Classic", Estimfct = "ML",
+#'                          saveOutput = FALSE)
+#'
+#' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0)),
+#'                          SampleSizes = 40, MCparam = 40,
+#'                          TemperedType = "Classic", Estimfct = "GMM",
+#'                          saveOutput = FALSE, algo = "2SGMM",
+#'                          regularization = "cut-off",
+#'                          WeightingMatrix = "OptAsym", t_scheme = "free",
+#'                          alphaReg = 0.005,
+#'                          t_free = seq(0.1,2,length.out=12))
+#'
+#' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
+#'                          SampleSizes = 4, MCparam = 4,
+#'                          TemperedType = "Classic", Estimfct = "Cgmm",
+#'                          saveOutput = FALSE, algo = "2SCgmm",
+#'                          alphaReg = 0.01, subdivisions = 20,
+#'                          IntegrationMethod = "Uniform",
+#'                          randomIntegrationLaw = "unif",
+#'                          s_min = 0, s_max= 1)
+#'
+#' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
+#'                          SampleSizes = 4, MCparam = 4,
+#'                          TemperedType = "Classic", Estimfct = "GMC",
+#'                          saveOutput = FALSE, algo = "2SGMC",
+#'                          alphaReg = 0.01, WeightingMatrix = "OptAsym",
+#'                          regularization = "cut-off", ncond = 8)
 #' }
-
+#'
 #' @export
 TemperedEstim_Simulation <- function(ParameterMatrix,
                                      SampleSizes = c(200, 1600),
@@ -93,6 +128,7 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     OutputCollection <- empty_list <- vector(mode = "list", length = nab)
     returnList <- empty_list <- vector(mode = "list")
     indexStatOutput <- 1
+
     CheckPointValues <- readCheckPoint(ParameterMatrix, TemperedType, Estimfct,
                                        nab, npar, lS, MCparam, ...)
     updatedCheckPointValues <- updateCheckPointValues(CheckPointValues, MCparam,
@@ -508,7 +544,7 @@ initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
 # No export.
 Estim_Des_Temp <- function(TemperedType = c("Classic", "Subordinator",
                                             "Normal", "CGMY"),
-                           EstimMethod = c("ML", "GMM", "Cgmm", "Kout"), ...) {
+                           EstimMethod = c("ML", "GMM", "Cgmm", "GMC"), ...) {
     TemperedType <- match.arg(TemperedType)
     EstimMethod <- match.arg(EstimMethod)
     EstimFcts <- getTempEstimFcts(TemperedType, EstimMethod)
@@ -550,31 +586,43 @@ readCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
 
 
 # No export.
+# This function writes every value of the current checkpoint in a string as
+# return.
 get_filename_checkPoint_Temp <- function(ParameterMatrix, nab, npar, MCparam,
                                          method) {
-    if (npar == 3) {
-        MC <- paste(paste("alpha0=", ParameterMatrix[1, 1], sep = ""),
-                    paste("delta0=", ParameterMatrix[1, 2], sep = ""),
-                    paste("lambda0=", ParameterMatrix[1, 3], sep = ""),
-                    paste("alphan=", ParameterMatrix[nab, 1], sep = ""),
-                    paste("deltan=", ParameterMatrix[nab, 2], sep = ""),
-                    paste("lambdan=", ParameterMatrix[nab, 3], sep = ""),
-                    paste("MCparam", MCparam, sep = ""), sep = "_")
-    } else {
-        MC <- paste(paste("alpha0=", ParameterMatrix[1, 1], sep = ""),
-                    paste("delta+0=", ParameterMatrix[1, 2], sep = ""),
-                    paste("delta-0=", ParameterMatrix[1, 3], sep = ""),
-                    paste("lambda+0=", ParameterMatrix[1, 4], sep = ""),
-                    paste("lambda-0=",ParameterMatrix[1, 5], sep = ""),
-                    paste("mu0=", ParameterMatrix[1, 6], sep = ""),
-                    paste("alphan=", ParameterMatrix[nab,1], sep = ""),
-                    paste("delta+n=", ParameterMatrix[nab, 2], sep = ""),
-                    paste("delta-n=", ParameterMatrix[nab,3], sep = ""),
-                    paste("lambda+n=", ParameterMatrix[nab, 4], sep = ""),
-                    paste("lambda-n=", ParameterMatrix[nab,5], sep = ""),
-                    paste("mun=", ParameterMatrix[nab, 5], sep = ""),
-                    paste("MCparam", MCparam, sep = ""), sep = "_")
-    }
+
+    # This should be adapted for every Tempered Type.
+    # BUT: The filenames are getting too long and this results in errors.
+    # Version 0.1.0 will not feature checkpoints during calculation.
+    #
+    # case: StableEstim
+    # if (npar == 3) {
+    #     MC <- paste(paste("alpha0=", ParameterMatrix[1, 1], sep = ""),
+    #                 paste("delta0=", ParameterMatrix[1, 2], sep = ""),
+    #                 paste("lambda0=", ParameterMatrix[1, 3], sep = ""),
+    #                 paste("alphan=", ParameterMatrix[nab, 1], sep = ""),
+    #                 paste("deltan=", ParameterMatrix[nab, 2], sep = ""),
+    #                 paste("lambdan=", ParameterMatrix[nab, 3], sep = ""),
+    #                 paste("MCparam", MCparam, sep = ""), sep = "_")
+    # } else {
+    # case: "Classic"
+    #     MC <- paste(paste("alpha0=", ParameterMatrix[1, 1], sep = ""),
+    #                 paste("delta+0=", ParameterMatrix[1, 2], sep = ""),
+    #                 paste("delta-0=", ParameterMatrix[1, 3], sep = ""),
+    #                 paste("lambda+0=", ParameterMatrix[1, 4], sep = ""),
+    #                 paste("lambda-0=",ParameterMatrix[1, 5], sep = ""),
+    #                 paste("mu0=", ParameterMatrix[1, 6], sep = ""),
+    #                 paste("alphan=", ParameterMatrix[nab,1], sep = ""),
+    #                 paste("delta+n=", ParameterMatrix[nab, 2], sep = ""),
+    #                 paste("delta-n=", ParameterMatrix[nab,3], sep = ""),
+    #                 paste("lambda+n=", ParameterMatrix[nab, 4], sep = ""),
+    #                 paste("lambda-n=", ParameterMatrix[nab,5], sep = ""),
+    #                 paste("mun=", ParameterMatrix[nab, 5], sep = ""),
+    #                 paste("MCparam", MCparam, sep = ""), sep = "_")
+    # }
+
+    MC <- paste("Test", sep = "")
+
     fileName <- paste(MC, method, "_CHECKPOINT.txt", sep = "")
     fileName
 }

@@ -1,5 +1,5 @@
 ##### main function#####
-CgmmParametersEstim_NTS <- function(x, algo = c("2S", "IT", "Cue"),
+CgmmParametersEstim_NTS <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
                                     alphaReg = 0.01, subdivisions = 50,
                                     IntegrationMethod = c("Uniform", "Simpson"),
                                     randomIntegrationLaw = c("unif", "norm"),
@@ -15,7 +15,7 @@ CgmmParametersEstim_NTS <- function(x, algo = c("2S", "IT", "Cue"),
                                     IntegrationMethod = IntegrationMethod,
                                     randomIntegrationLaw = randomIntegrationLaw,
                                     s_min = s_min, s_max = s_max)
-    Estim <- switch(algo, `2S` = {
+    Estim <- switch(algo, `2SCgmm` = {
         Compute2SCgmmParametersEstim_NTS(x = x, theta0 = theta0,
                                          alphaReg = alphaReg, eps = eps,
                                          s_min = s_min, s_max = s_max,
@@ -23,7 +23,7 @@ CgmmParametersEstim_NTS <- function(x, algo = c("2S", "IT", "Cue"),
                                          randomIntegrationLaw =
                                            randomIntegrationLaw,
                                          subdivisions = subdivisions, ...)
-    }, IT = {
+    }, ITCgmm = {
         ComputeITCgmmParametersEstim_NTS(x = x, theta0 = theta0,
                                          alphaReg = alphaReg, eps = eps,
                                          s_min = s_min, s_max = s_max,
@@ -33,7 +33,7 @@ CgmmParametersEstim_NTS <- function(x, algo = c("2S", "IT", "Cue"),
                                          subdivisions = subdivisions,
                                          IterationControl = IterationControl,
                                          ...)
-    }, Cue = {
+    }, CueCgmm = {
         ComputeCueCgmmParametersEstim_NTS(x = x, theta0 = theta0,
                                           alphaReg = alphaReg, eps = eps,
                                           s_min = s_min, s_max = s_max,
