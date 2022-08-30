@@ -40,7 +40,7 @@ Gap holder for description.
 Gap holder for details.
 }
 \examples{
-pSTS(0.5,0.5,5,0.01)
-pSTS(1,0.9,1,10,NULL)
+qSTS(0.5,0.5,5,0.01)
+qSTS(0.5,0.9,1,10,NULL)
 
 }

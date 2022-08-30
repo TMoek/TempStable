@@ -231,7 +231,7 @@ getTempEstimFcts <- function(
         }, GMM = {
             list(Params = GMMParametersEstim_STS,
                  CovarianceMat = .asymptoticVarianceEstimGMM_STS,
-                 methodDes = .methodDesGMM_STS())
+                 methodDes = getGMMmethodName_STS)
         }, Cgmm = {
             list(Params = CgmmParametersEstim_STS,
                  CovarianceMat = .asymptoticVarianceEstimCgmm_STS,
@@ -509,9 +509,9 @@ EstimSubClass <- setClass("EstimSubClass",
             ansp <- TRUE
         else ansp <- "Parameter of length different of 3"
         par0 <- object@par0
-        if (length(par0) == 3)
+        if (length(par0) == 6)
             ansp0 <- TRUE
-        else ansp0 <- "Initial Parameter of length different of 3"
+        else ansp0 <- "Initial Parameter of length different of 6"
         vcov <- object@vcov
         if (ncol(vcov) == 3 && nrow(vcov) == 3)
             anscov <- TRUE
@@ -544,9 +544,9 @@ setMethod("initialize", "EstimSubClass",
             if (missing(par))
               par        <- numeric(3)
             if (missing(par0))
-              par0       <- numeric(3)
+              par0       <- numeric(6)
             if (missing(vcov))
-              vcov       <- matrix(nrow = 3, ncol = 3)
+              vcov       <- matrix(nrow = 3, ncol = 6)
             if (missing(confint))
               confint    <- matrix(nrow = 3, ncol = 2)
             if (missing(data))
@@ -743,9 +743,9 @@ EstimNormalClass <- setClass("EstimNormalClass",
             ansp <- TRUE
         else ansp <- "Parameter of length different of 5"
         par0 <- object@par0
-        if (length(par0) == 5)
+        if (length(par0) == 6)
             ansp0 <- TRUE
-        else ansp0 <- "Initial Parameter of length different of 5"
+        else ansp0 <- "Initial Parameter of length different of 6"
         vcov <- object@vcov
         if (ncol(vcov) == 5 && nrow(vcov) == 5)
             anscov <- TRUE
@@ -778,7 +778,7 @@ setMethod("initialize", "EstimNormalClass",
             if (missing(par))
               par        <- numeric(5)
             if (missing(par0))
-              par0       <- numeric(5)
+              par0       <- numeric(6)
             if (missing(vcov))
               vcov       <- matrix(nrow = 5, ncol = 5)
             if (missing(confint))

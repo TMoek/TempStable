@@ -255,8 +255,8 @@ rSTS_SR1 <- function(alpha, delta, lambda, k) {
 #' @return Gap holder for return.
 #'
 #' @examples
-#' pSTS(0.5,0.5,5,0.01)
-#' pSTS(1,0.9,1,10,NULL)
+#' qSTS(0.5,0.5,5,0.01)
+#' qSTS(0.5,0.9,1,10,NULL)
 #'
 #' @importFrom stabledist qstable
 #' @export
@@ -291,7 +291,7 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
         qmini <- qmin
         qmaxi <- qmax
       }
-      stabledist:::.unirootNA(froot,interval = c(qmini,qmaxi),
+      .unirootNA(froot,interval = c(qmini,qmaxi),
                               extendInt = "yes", y = y)}
 
     q <- sapply(p, qroot, qmin = qmin, qmax = qmax)
@@ -1168,3 +1168,50 @@ chartocdf <- function(q, N, m , s, char, ...){
 
 # No export.
 c_err <- function(t) {if(abs(t)<1){(1-t)*cos(pi*t)+1/pi*abs(sin(pi*t))} else 0}
+
+
+.unirootNA <-
+  function(f,
+           interval,
+           ...,
+           lower = min(interval),
+           upper = max(interval),
+           f.lower = f(lower, ...),
+           f.upper = f(upper, ...),
+           extendInt = c("no", "yes", "downX", "upX"),
+           check.conv = FALSE,
+           tol = .Machine$double.eps ^ 0.25,
+           maxiter = 1000,
+           trace = 0)
+  {
+    # Arguments:
+    #   see 'uniroot'
+
+    # Value:
+    #   Returns the x value of f where the root is located. If
+    #   no root exists,  NA will be returned instead. In that case,
+    #   the function doesn't terminate with an error  as
+    #   the standard function uniroot().
+
+    # Example:
+    #   .unirootNA(sin, c(1, 2)); .unirootNA(sin, c(-1, 1))
+
+    # If there is no Root:
+    if (is.na(f.lower) || is.na(f.upper) || f.lower * f.upper > 0)
+      return(NA)
+    ## else there is one :
+    uniroot(
+      f,
+      interval = interval,
+      ...,
+      lower = lower,
+      upper = upper,
+      f.lower = f.lower,
+      f.upper = f.upper,
+      extendInt = extendInt,
+      check.conv = check.conv,
+      tol = tol,
+      maxiter = maxiter,
+      trace = trace
+    )$root
+  }
