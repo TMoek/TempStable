@@ -339,71 +339,71 @@ test_that("qNTS_gives_correct_return", {
   })
 })
 
-test_that("charCGMY_gives_correct_return", {
+# test_that("charCGMY_gives_correct_return", {
+#
+#   suppressWarnings({
+#     expect_equal(charCGMY(1,1,1,1,1),NaN*(1+1i))
+#     expect_equal(charCGMY(1,1,1,1,1.5),0.18552469+0i)
+#     expect_equal(charCGMY(1,1,1,1,0.5),0.49675807+0i)
+#     expect_equal(charCGMY(10,1,1,1,0.5),6.9448315e-05+0i)
+#     expect_equal(charCGMY(-0.1,1,1,1,0.5),0.9912042+0i)
+#     expect_equal(charCGMY(-1,1,1,1,0.5), 0.49675807+0i)
+#     expect_equal(charCGMY(1,10,10,10,0.6),0.70310998+0i)
+#
+#     #Failure: actual != expected but don't know how to show the difference
+#     #expect_equal(charCGMY(1,10,1000,1,0.6),0.001452764+0.02770579i)
+#     #expect_equal(charCGMY(1,10,10,1,0.6),0.001409213+0.02322749i)
+#     #expect_equal(charCGMY(1,1,1,10,0.6),0.67874801-0.103291i)
+#     #expect_equal(charCGMY(1,10,10,1,0.6),0.001409213+0.02322749i)
+#
+#     expect_error(charCGMY(1,1,1,1,-0.5))
+#     expect_error(charCGMY(1,1,1,1,025))
+#     expect_error(charCGMY(1,0,0,0,0.6))
+#   })
+# })
 
-  suppressWarnings({
-    expect_equal(charCGMY(1,1,1,1,1),NaN*(1+1i))
-    expect_equal(charCGMY(1,1,1,1,1.5),0.18552469+0i)
-    expect_equal(charCGMY(1,1,1,1,0.5),0.49675807+0i)
-    expect_equal(charCGMY(10,1,1,1,0.5),6.9448315e-05+0i)
-    expect_equal(charCGMY(-0.1,1,1,1,0.5),0.9912042+0i)
-    expect_equal(charCGMY(-1,1,1,1,0.5), 0.49675807+0i)
-    expect_equal(charCGMY(1,10,10,10,0.6),0.70310998+0i)
+# test_that("dCGMY_gives_correct_return", {
+#
+#   suppressWarnings({
+#     expect_equal(dCGMY(1,1,1,1,0.5),0.20822584)
+#     expect_equal(dCGMY(1,1,1,1,1.5),0.18593011)
+#     expect_equal(dCGMY(1,1,1,1,0.5,""),0.20822206)
+#     expect_equal(dCGMY(1,1,1,1,0.5,"", -2, 2, 2^4),0.20822206)
+#
+#     expect_error(dCGMY(1,1,1,1,1))
+#   })
+# })
 
-    #Failure: actual != expected but don't know how to show the difference
-    #expect_equal(charCGMY(1,10,1000,1,0.6),0.001452764+0.02770579i)
-    #expect_equal(charCGMY(1,10,10,1,0.6),0.001409213+0.02322749i)
-    #expect_equal(charCGMY(1,1,1,10,0.6),0.67874801-0.103291i)
-    #expect_equal(charCGMY(1,10,10,1,0.6),0.001409213+0.02322749i)
+# test_that("dCGMY_gives_correct_return", {
+#
+#   suppressWarnings({
+#     expect_equal(dCGMY(1,1,1,1,0.5),0.20822584)
+#     expect_equal(dCGMY(1,1,1,1,1.5),0.18593011)
+#     expect_equal(dCGMY(1,1,1,1,0.5,""),0.20822206)
+#     expect_equal(dCGMY(1,1,1,1,0.5,"", -2, 2, 2^4),0.20822206)
+#
+#     expect_error(dCGMY(1,1,1,1,1))
+#   })
+# })
 
-    expect_error(charCGMY(1,1,1,1,-0.5))
-    expect_error(charCGMY(1,1,1,1,025))
-    expect_error(charCGMY(1,0,0,0,0.6))
-  })
-})
-
-test_that("dCGMY_gives_correct_return", {
-
-  suppressWarnings({
-    expect_equal(dCGMY(1,1,1,1,0.5),0.20822584)
-    expect_equal(dCGMY(1,1,1,1,1.5),0.18593011)
-    expect_equal(dCGMY(1,1,1,1,0.5,""),0.20822206)
-    expect_equal(dCGMY(1,1,1,1,0.5,"", -2, 2, 2^4),0.20822206)
-
-    expect_error(dCGMY(1,1,1,1,1))
-  })
-})
-
-test_that("dCGMY_gives_correct_return", {
-
-  suppressWarnings({
-    expect_equal(dCGMY(1,1,1,1,0.5),0.20822584)
-    expect_equal(dCGMY(1,1,1,1,1.5),0.18593011)
-    expect_equal(dCGMY(1,1,1,1,0.5,""),0.20822206)
-    expect_equal(dCGMY(1,1,1,1,0.5,"", -2, 2, 2^4),0.20822206)
-
-    expect_error(dCGMY(1,1,1,1,1))
-  })
-})
-
-test_that("rCGMY_gives_correct_return", {
-
-  suppressWarnings({
-    expect_equal(length(rCGMY(100,1,1,1,0.5)),100)
-    expect_equal(rCGMY(1,1,1,1,1),NaN)
-    expect_equal(rCGMY(0,1,1,1,0.5),list())
-
-    expect_error(rCGMY(1,1,1,1,2.5))
-  })
-})
+# test_that("rCGMY_gives_correct_return", {
+#
+#   suppressWarnings({
+#     expect_equal(length(rCGMY(100,1,1,1,0.5)),100)
+#     expect_equal(rCGMY(1,1,1,1,1),NaN)
+#     expect_equal(rCGMY(0,1,1,1,0.5),list())
+#
+#     expect_error(rCGMY(1,1,1,1,2.5))
+#   })
+# })
 
 test_that("chartocdf_gives_correct_return", {
 
   suppressWarnings({
     expect_equal(chartocdf(0.5,10,1,1,charNTS, alpha=0.5, beta = 1, delta = 1,
                            lambda = 1, mu = 1), 0.053609065)
-    expect_equal(chartocdf(0.5,10,1,1,charCGMY, Y=0.5, C = 1, G = 1, M = 1),
-                 0.3212782)
+    # expect_equal(chartocdf(0.5,10,1,1,charCGMY, Y=0.5, C = 1, G = 1, M = 1),
+    #              0.3212782)
     expect_equal(chartocdf(0.5,10,1,1,charSTS, alpha=0.5, delta = 1,
                            lambda = 1), 0.0730034)
     expect_equal(chartocdf(0.5,10,1,1,charCTS, alpha=0.5, deltap = 1,

@@ -2,11 +2,12 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 
 ####Subordinator Tempered Stable (STS)####
 
-#' Function title.
+#' Characteristic function of the tempered stable subordinator
 #'
-#' When \code{alpha} is a real number between 0 and 1, the tempered stable
-#' distribution TS'(\code{alpha}, \code{delta}, \code{lambda}) can be simulated
-#' exactly through acceptance-rejection sampling.
+#' When \code{alpha} is a real number between 0 and 1, the characterisic
+#' function of the tempered stable distribution (\code{alpha}, \code{delta},
+#' \code{lambda}) can be simulated exactly through acceptance-rejection
+#' sampling.
 #'
 #' For whole derivation and meaning of single letters see also Kawai et. Masuda
 #' (2011).
@@ -52,7 +53,7 @@ charSTS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
                  ((lambda - t * imagN)^alpha - lambda^alpha)))
 }
 
-#' PDF TS subordinator by Stable subordinator
+#' Density function of the tempered stable subordinator distribution
 #'
 #' Gap holder for description.
 #'
@@ -1045,82 +1046,32 @@ qNTS <- function(p, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 
 ##### CGMY#####
 
-#' Function title
-#'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param t A gap holder.
-#' @param C  A real number > 0.
-#' @param G,M A  real number > 0.
-#' @param Y A real number between 0 and 2.
-#'
-#' @return Gap holder for return.
-#'
-#' @examples
-#' charCGMY(1,1,1,1,0.5)
-#' charCGMY(10,1,1,1,0.5)
-#'
-#' @export
+# param t A gap holder.
+# param C  A real number > 0.
+# param G,M A  real number > 0.
+# param Y A real number between 0 and 2.
+# examples
+# charCGMY(1,1,1,1,0.5)
+# charCGMY(10,1,1,1,0.5)
 charCGMY <- function(t, C, G, M, Y) {
     charCTS(t = t, alpha = Y, deltap = C, deltam = C, lambdap = G, lambdam = M,
             mu = 0)
 }
 
-#' Title
-#'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param x A gap holder.
-#' @param C  A real number > 0.
-#' @param G,M A  real number > 0.
-#' @param Y A real number between 0 and 2.
-#' @param dens_method A gap holder. "FFT" by default.
-#' @param a A gap holder, if \code{dens_method == "FFT"}. -20
-#' by default.
-#' @param b A gap holder, if \code{dens_method == "FFT"}. 20
-#' by default.
-#' @param nf A gap holder.
-#' @param ... A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @examples
-#' dCGMY(1,1,1,1,0.5)
-#' dCGMY(1,1,1,1,0.5,"", -2, 2, 2^4)
-#'
-#' @export
+# examples
+# dCGMY(1,1,1,1,0.5)
+# dCGMY(1,1,1,1,0.5,"", -2, 2, 2^4)
 dCGMY <- function(x, C, G, M, Y, dens_method = "FFT", a = -20, b = 20,
                   nf = 2048, ...) {
     dCTS(x = x, alpha = Y, deltap = C, deltam = C, lambdap = G, lambdam = M,
          mu = 0, dens_method = dens_method, a = a, b = b, nf = 2048, ...)
 }
 
-#' Function title
-#'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param n A gap holder.
-#' @param Y A real number between 0 and 2.
-#' @param C  A real number > 0.
-#' @param G,M A  real number > 0.
-#' @param method A String. Either "aAR" or "SR". "SR" by default.
-#' @param k integer: the number of replications, if \code{method == "SR"}. 100
-#' by default.
-#' @param ... A gap holder.
-#'
-#' @return Gap holder for return.
-#'
-#' @examples
-#' rCGMY(100,1,1,1,0.5)
-#' rCGMY(100,1,1,1,0.5, "SR", k= 100)
-#'
-#' @export
+
+
+# examples
+# rCGMY(100,1,1,1,0.5)
+# rCGMY(100,1,1,1,0.5, "SR", k= 100)
 rCGMY <- function(n, C, G, M, Y, method = "SR", k = 100, ...) {
     rCTS(n = n, alpha = Y, deltap = C, deltam = C, lambdap = G, lambdam = M,
          mu = 0, method = method, k = k, ...)

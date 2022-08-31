@@ -4,10 +4,17 @@
 #'
 #' Gap holder for description.
 #'
-#' Gap holder for details.
+#' \strong{Estimfct} Detailed documentation of the individual parameters
+#' of the various estimate functions is available in the package
+#' \code{StableEstim}.
+#' \describe{
+#'   \item{For ML:} use \code{?StableEstim::MLParametersEstim}
+#'   \item{For GMM:} use \code{?StableEstim::GMMParametersEstim}
+#'   \item{For Cgmm:} use \code{?StableEstim::CgmmParametersEstim}
+#'   \item{For GMC:} TODO
+#' }
 #'
-#' @param TemperedType A String. Either "Classic", "Subordinator", "Normal", or
-#' "CGMY".
+#' @param TemperedType A String. Either "Classic", "Subordinator", or "Normal"
 #' @param EstimMethod A String. Either "ML", "GMM", "Cgmm", or "GMC".
 #' @param data A gap holder.
 #' @param theta0 A gap holder. \code{NULL} by default. Must not be NULL, if
@@ -22,20 +29,25 @@
 #'
 #' @examples
 #' \donttest{
-#'   testData <- c(1.8873152, -0.4843727,  0.4755897, -0.1257814,  1.3484823,
-#'                 -0.3866821, -0.4258380, -0.4658479, -2.9774961,  0.9646364,
-#'                 -0.5875601, -2.0316790,  0.3641900,  1.1882307,  1.6635770,
-#'                 -0.0554876,  0.4005471,  0.7820444, -0.3786902,  1.5131663)
-#'   TemperedEstim("Classic","ML",testData)
-#'   TemperedEstim( TemperedType = "Classic", EstimMethod = "ML",
-#'                   data = rCTS(2,1.5,1,1,1,1,0),
-#'                   theta0 = c(1.5,1,1,1,1,0) - 0.1)
+#' TemperedEstim( TemperedType = "Classic", EstimMethod = "ML",
+#'                data = rCTS(2,1.5,1,1,1,1,0),
+#'                theta0 = c(1.5,1,1,1,1,0) - 0.1)
+#' TemperedEstim("Subordinator", "GMM", rSTS(20,0.5,1,1), algo = "2SGMM",
+#'               alphaReg = 0.01, regularization = "cut-off",
+#'               WeightingMatrix = "OptAsym", t_scheme = "free",
+#'               t_free = seq(0.1,2,length.out = 12))
+#' TemperedEstim("Normal", "Cgmm", rNTS(20,0.5,1,1,1,0), algo = "2SCgmm",
+#'               alphaReg = 0.01, subdivisions = 20,
+#'               IntegrationMethod = "Uniform", randomIntegrationLaw = "unif",
+#'               s_min = 0, s_max= 1)
+#' TemperedEstim("Subordinator", "GMC", rSTS(20, 0.5, 1, 1), algo = "2SGMC",
+#'               alphaReg = 0.01, WeightingMatrix = "OptAsym",
+#'               regularization = "cut-off", ncond = 8)
 #'
 #' }
 #'
 #' @export
-TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal",
-                                           "CGMY"),
+TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
                           EstimMethod = c("ML", "GMM", "Cgmm", "GMC"), data,
                           theta0 = NULL, ComputeCov = FALSE, HandleError = TRUE,
                           eps = 1e-06, ...) {
@@ -48,9 +60,10 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal",
             theta0 <- MoC_STS(x <- data, c(0.5, 1, 1), eps = eps)
         } else if (TemperedType == "Normal") {
             theta0 <- MoC_NTS(x <- data, c(0.5, 0, 1, 1, 0), eps = eps)
-        } else {
-            theta0 <- MoC_CGMY(x <- data, c(1, 1, 1, 1.5), eps = eps)
         }
+      # else {
+      #       theta0 <- MoC_CGMY(x <- data, c(1, 1, 1, 1.5), eps = eps)
+      #   }
     }
     if (TemperedType == "Classic") {
         OutputObj <- methods::new(Class="EstimClassicClass",par = numeric(6),
@@ -67,12 +80,13 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal",
                                   par0 = theta0, vcov = matrix(0, 5, 5),
                                   confint = matrix(0, 5, 2), data = data,
                                   failure = 1)
-    } else {
-        OutputObj <- methods::new(Class = "EstimCGMYClass", par = numeric(4),
-                                  par0 = theta0, vcov = matrix(0, 4, 4),
-                                  confint = matrix(0, 4, 2), data = data,
-                                  failure = 1)
     }
+    # else {
+    #     OutputObj <- methods::new(Class = "EstimCGMYClass", par = numeric(4),
+    #                               par0 = theta0, vcov = matrix(0, 4, 4),
+    #                               confint = matrix(0, 4, 2), data = data,
+    #                               failure = 1)
+    # }
     type <- match.arg(TemperedType)
     method <- match.arg(EstimMethod)
     EstimFcts <- getTempEstimFcts(type, method)
@@ -202,7 +216,7 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal",
 #'
 #' @export
 getTempEstimFcts <- function(
-    type = c("Classic", "Subordinator", "Normal", "CGMY"),
+    type = c("Classic", "Subordinator", "Normal"),
     method = c("ML", "GMM", "Cgmm", "GMC")) {
     if (type == "Classic") {
         Output <- switch(method, ML = {
@@ -257,26 +271,27 @@ getTempEstimFcts <- function(
                  methodDes = getCgmmMethodName_NTS)
         }, stop(paste(method, " not taken into account !")))
         Output
-    } else {
-        Output <- switch(method, ML = {
-            list(Params = MLParametersEstim_CGMY,
-                 CovarianceMat = .asymptoticVarianceEstimML_CGMY,
-                 methodDes = .methodDesML_CGMY)
-        }, GMM = {
-            list(Params = GMMParametersEstim_CGMY,
-                 CovarianceMat = .asymptoticVarianceEstimGMM_CGMY,
-                 methodDes = getGMMmethodName_CGMY)
-        }, Cgmm = {
-            list(Params = CgmmParametersEstim_CGMY,
-                 CovarianceMat = .asymptoticVarianceEstimCgmm_CGMY,
-                 methodDes = getCgmmMethodName_CGMY)
-        }, GMC = {
-            list(Params = GMCParametersEstim_CGMY,
-                 CovarianceMat = .asymptoticVarianceEstimGMC_CGMY,
-                 methodDes = getGMCmethodName_CGMY)
-        }, stop(paste(method, " not taken into account !")))
-        Output
     }
+  # else {
+  #       Output <- switch(method, ML = {
+  #           list(Params = MLParametersEstim_CGMY,
+  #                CovarianceMat = .asymptoticVarianceEstimML_CGMY,
+  #                methodDes = .methodDesML_CGMY)
+  #       }, GMM = {
+  #           list(Params = GMMParametersEstim_CGMY,
+  #                CovarianceMat = .asymptoticVarianceEstimGMM_CGMY,
+  #                methodDes = getGMMmethodName_CGMY)
+  #       }, Cgmm = {
+  #           list(Params = CgmmParametersEstim_CGMY,
+  #                CovarianceMat = .asymptoticVarianceEstimCgmm_CGMY,
+  #                methodDes = getCgmmMethodName_CGMY)
+  #       }, GMC = {
+  #           list(Params = GMCParametersEstim_CGMY,
+  #                CovarianceMat = .asymptoticVarianceEstimGMC_CGMY,
+  #                methodDes = getGMCmethodName_CGMY)
+  #       }, stop(paste(method, " not taken into account !")))
+  #       Output
+  #   }
 }
 
 # No export.
@@ -293,11 +308,12 @@ getTempEstimFcts <- function(
         npar <- 5
         list(Estim = list(par = rep(NaN, npar)), duration = 0,
              method = paste(type, method, "failed", sep = "_"))
-    } else {
-        npar <- 4
-        list(Estim = list(par = rep(NaN, npar)), duration = 0,
-             method = paste(type, method, "failed", sep = "_"))
     }
+    # else {
+    #     npar <- 4
+    #     list(Estim = list(par = rep(NaN, npar)), duration = 0,
+    #          method = paste(type, method, "failed", sep = "_"))
+    # }
 }
 
 # No export.
@@ -337,19 +353,20 @@ NameParamsObjectsTemp <- function(mat, type = c("Classic", "Subordinator",
                 colnames(mat) <- minMaxCol else if (ncol(mat) == 5)
                 colnames(mat) <- parNames
         }
-    } else {
-        parNames <- c("C", "G", "M", "Y")
-        minMaxCol <- c("min", "max")
-        if (length(mat) == 4) {
-            names(mat) <- parNames
-        } else if (is.matrix(mat) && nrow(mat) == 4) {
-            rownames(mat) <- parNames
-            if (ncol(mat) == 2)
-                colnames(mat) <- minMaxCol else if (ncol(mat) == 4)
-                colnames(mat) <- parNames
-        }
-
     }
+    # else {
+    #     parNames <- c("C", "G", "M", "Y")
+    #     minMaxCol <- c("min", "max")
+    #     if (length(mat) == 4) {
+    #         names(mat) <- parNames
+    #     } else if (is.matrix(mat) && nrow(mat) == 4) {
+    #         rownames(mat) <- parNames
+    #         if (ncol(mat) == 2)
+    #             colnames(mat) <- minMaxCol else if (ncol(mat) == 4)
+    #             colnames(mat) <- parNames
+    #     }
+    #
+    # }
     mat
 }
 
@@ -439,9 +456,10 @@ AsymptoticConfidenceInterval <- function(thetaEst, n_sample, Cov,
         nr <- 3
     } else if (type == "Normal") {
         nr <- 5
-    } else {
-        nr <- 4
     }
+    # else {
+    #     nr <- 4
+    # }
     mat <- matrix(NaN, ncol = 2, nrow = nr)
     attr(mat, "level") <- level
     z <- qLaw(level)
@@ -509,9 +527,9 @@ EstimSubClass <- setClass("EstimSubClass",
             ansp <- TRUE
         else ansp <- "Parameter of length different of 3"
         par0 <- object@par0
-        if (length(par0) == 6)
+        if (length(par0) == 3)
             ansp0 <- TRUE
-        else ansp0 <- "Initial Parameter of length different of 6"
+        else ansp0 <- "Initial Parameter of length different of 3"
         vcov <- object@vcov
         if (ncol(vcov) == 3 && nrow(vcov) == 3)
             anscov <- TRUE
@@ -544,9 +562,9 @@ setMethod("initialize", "EstimSubClass",
             if (missing(par))
               par        <- numeric(3)
             if (missing(par0))
-              par0       <- numeric(6)
+              par0       <- numeric(3)
             if (missing(vcov))
-              vcov       <- matrix(nrow = 3, ncol = 6)
+              vcov       <- matrix(nrow = 3, ncol = 3)
             if (missing(confint))
               confint    <- matrix(nrow = 3, ncol = 2)
             if (missing(data))
@@ -743,9 +761,9 @@ EstimNormalClass <- setClass("EstimNormalClass",
             ansp <- TRUE
         else ansp <- "Parameter of length different of 5"
         par0 <- object@par0
-        if (length(par0) == 6)
+        if (length(par0) == 5)
             ansp0 <- TRUE
-        else ansp0 <- "Initial Parameter of length different of 6"
+        else ansp0 <- "Initial Parameter of length different of 5"
         vcov <- object@vcov
         if (ncol(vcov) == 5 && nrow(vcov) == 5)
             anscov <- TRUE
@@ -778,7 +796,7 @@ setMethod("initialize", "EstimNormalClass",
             if (missing(par))
               par        <- numeric(5)
             if (missing(par0))
-              par0       <- numeric(6)
+              par0       <- numeric(5)
             if (missing(vcov))
               vcov       <- matrix(nrow = 5, ncol = 5)
             if (missing(confint))

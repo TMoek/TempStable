@@ -5,7 +5,7 @@
 \title{Function title}
 \usage{
 TemperedEstim(
-  TemperedType = c("Classic", "Subordinator", "Normal", "CGMY"),
+  TemperedType = c("Classic", "Subordinator", "Normal"),
   EstimMethod = c("ML", "GMM", "Cgmm", "GMC"),
   data,
   theta0 = NULL,
@@ -16,8 +16,7 @@ TemperedEstim(
 )
 }
 \arguments{
-\item{TemperedType}{A String. Either "Classic", "Subordinator", "Normal", or
-"CGMY".}
+\item{TemperedType}{A String. Either "Classic", "Subordinator", or "Normal"}
 
 \item{EstimMethod}{A String. Either "ML", "GMM", "Cgmm", or "GMC".}
 
@@ -41,18 +40,32 @@ Gap holder for return.
 Gap holder for description.
 }
 \details{
-Gap holder for details.
+\strong{Estimfct} Detailed documentation of the individual parameters
+of the various estimate functions is available in the package
+\code{StableEstim}.
+\describe{
+  \item{For ML:} use \code{?StableEstim::MLParametersEstim}
+  \item{For GMM:} use \code{?StableEstim::GMMParametersEstim}
+  \item{For Cgmm:} use \code{?StableEstim::CgmmParametersEstim}
+  \item{For GMC:} TODO
+}
 }
 \examples{
 \donttest{
-  testData <- c(1.8873152, -0.4843727,  0.4755897, -0.1257814,  1.3484823,
-                -0.3866821, -0.4258380, -0.4658479, -2.9774961,  0.9646364,
-                -0.5875601, -2.0316790,  0.3641900,  1.1882307,  1.6635770,
-                -0.0554876,  0.4005471,  0.7820444, -0.3786902,  1.5131663)
-  TemperedEstim("Classic","ML",testData)
-  TemperedEstim( TemperedType = "Classic", EstimMethod = "ML",
-                  data = rCTS(2,1.5,1,1,1,1,0),
-                  theta0 = c(1.5,1,1,1,1,0) - 0.1)
+TemperedEstim( TemperedType = "Classic", EstimMethod = "ML",
+               data = rCTS(2,1.5,1,1,1,1,0),
+               theta0 = c(1.5,1,1,1,1,0) - 0.1)
+TemperedEstim("Subordinator", "GMM", rSTS(20,0.5,1,1), algo = "2SGMM",
+              alphaReg = 0.01, regularization = "cut-off",
+              WeightingMatrix = "OptAsym", t_scheme = "free",
+              t_free = seq(0.1,2,length.out = 12))
+TemperedEstim("Normal", "Cgmm", rNTS(20,0.5,1,1,1,0), algo = "2SCgmm",
+              alphaReg = 0.01, subdivisions = 20,
+              IntegrationMethod = "Uniform", randomIntegrationLaw = "unif",
+              s_min = 0, s_max= 1)
+TemperedEstim("Subordinator", "GMC", rSTS(20, 0.5, 1, 1), algo = "2SGMC",
+              alphaReg = 0.01, WeightingMatrix = "OptAsym",
+              regularization = "cut-off", ncond = 8)
 
 }
 

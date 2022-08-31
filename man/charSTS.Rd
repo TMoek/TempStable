@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{charSTS}
 \alias{charSTS}
-\title{Function title.}
+\title{Characteristic function of the tempered stable subordinator}
 \usage{
 charSTS(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL)
 }
@@ -21,9 +21,10 @@ charSTS(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL)
 The result of spectral positive tempered stable process
 }
 \description{
-When \code{alpha} is a real number between 0 and 1, the tempered stable
-distribution TS'(\code{alpha}, \code{delta}, \code{lambda}) can be simulated
-exactly through acceptance-rejection sampling.
+When \code{alpha} is a real number between 0 and 1, the characterisic
+function of the tempered stable distribution (\code{alpha}, \code{delta},
+\code{lambda}) can be simulated exactly through acceptance-rejection
+sampling.
 }
 \details{
 For whole derivation and meaning of single letters see also Kawai et. Masuda

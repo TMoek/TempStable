@@ -107,40 +107,109 @@ test_that("TemperedEstim_with_Normal_ML_gives_correct_return", {
 
 })
 
-test_that("TemperedEstim_with_CGMY_ML_gives_correct_return", {
-  testData <- c(1.20268116, 2.47354907, 1.50248870, 2.53324346, 4.57237410,
-                1.31064953, 2.74788769, 3.27900386, 0.15987725, 2.94092597,
-                0.06321566, 0.86256026, 0.97488549, 0.20086994, 1.21891900,
-                5.60468051, 2.12527944, 0.24420841, 2.08260240, 1.74097067)
+# test_that("TemperedEstim_with_CGMY_ML_gives_correct_return", {
+#   testData <- c(1.20268116, 2.47354907, 1.50248870, 2.53324346, 4.57237410,
+#                 1.31064953, 2.74788769, 3.27900386, 0.15987725, 2.94092597,
+#                 0.06321566, 0.86256026, 0.97488549, 0.20086994, 1.21891900,
+#                 5.60468051, 2.12527944, 0.24420841, 2.08260240, 1.74097067)
+#
+#   suppressWarnings({
+#     TestObject <- TemperedEstim("CGMY","ML",testData)
+#
+#
+#     expect_equal(TestObject@par[["C"]],0.330860591)
+#     expect_equal(TestObject@par[["G"]],0.140881690)
+#     expect_equal(TestObject@par[["M"]],0.0000010)
+#     expect_equal(TestObject@par[["Y"]],1.126007266)
+#
+#     expect_equal(TestObject@par0,c(1,1,1,1.5))
+#
+#     expect_equal(TestObject@others$par, c(0.330860591, 0.140881690, 0.0000010,
+#                                           1.126007266))
+#
+#     expect_equal(TestObject@others$value, 37.15274)
+#
+#     expect_equal(TestObject@others$counts[["function"]], 101)
+#     expect_equal(TestObject@others$counts[["gradient"]], 101)
+#
+#     expect_equal(TestObject@others$message,
+#                  "CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH")
+#
+#     expect_equal(TestObject@method,
+#                  "ML_OptimAlgo=L-BFGS-B")
+#   })
+#
+#   expect_error(TemperedEstim("CGMY","ML"))
+#
+# })
+
+test_that("TemperedEstim_with_Subordinator_GMM_gives_correct_return", {
+  testData <- c(1.0306890, 1.5027451, 1.5030160, 1.5891460, 0.9589073,
+                0.7129186, 1.0200448, 3.4584815, 1.1106868, 0.7493848,
+                1.1104505, 2.4100007, 0.9076451, 4.2011003, 0.7050829,
+                2.3226794, 2.2397202, 1.0066137, 1.1703344, 0.7563997)
 
   suppressWarnings({
-    TestObject <- TemperedEstim("CGMY","ML",testData)
+    TestObject <- TemperedEstim("Subordinator", "GMM",testData, algo = "2SGMM",
+                                alphaReg = 0.01, regularization = "cut-off",
+                                WeightingMatrix = "OptAsym", t_scheme = "free",
+                                t_free = seq(0.1,2,length.out = 12))
 
 
-    expect_equal(TestObject@par[["C"]],0.330860591)
-    expect_equal(TestObject@par[["G"]],0.140881690)
-    expect_equal(TestObject@par[["M"]],0.0000010)
-    expect_equal(TestObject@par[["Y"]],1.126007266)
+    expect_equal(TestObject@par[["alpha"]],0.76122136)
+    expect_equal(TestObject@par[["delta"]],0.29746717 )
+    expect_equal(TestObject@par[["lambda"]],0.270527991 )
 
-    expect_equal(TestObject@par0,c(1,1,1,1.5))
+    expect_equal(TestObject@par0,c(0.35491567, 1.18635803, 1.13613704))
 
-    expect_equal(TestObject@others$par, c(0.330860591, 0.140881690, 0.0000010,
-                                          1.126007266))
-
-    expect_equal(TestObject@others$value, 37.15274)
-
-    expect_equal(TestObject@others$counts[["function"]], 101)
-    expect_equal(TestObject@others$counts[["gradient"]], 101)
-
-    expect_equal(TestObject@others$message,
-                 "CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH")
-
-    expect_equal(TestObject@method,
-                 "ML_OptimAlgo=L-BFGS-B")
+    expect_equal(TestObject@others$par, c(0.761221359, 0.297467167, 0.270527991))
   })
-
-  expect_error(TemperedEstim("CGMY","ML"))
-
 })
 
+test_that("TemperedEstim_with_Normal_Cgmm_gives_correct_return", {
+  testData <- c(-0.48187163, 6.71812753, -0.48640565, 2.92431562, 3.61830684,
+                4.45014798, 1.28346323, 3.06967044, -0.61520167, 2.29961823,
+                0.32348759, -0.96483995, 3.44698766, 0.04735393, 1.11814035,
+                5.49385211, 3.00778039, 2.31281466, 0.34080925, 1.67412363)
+
+  suppressWarnings({
+    TestObject <- TemperedEstim("Normal", "Cgmm", testData,
+                                algo = "2SCgmm", alphaReg = 0.01,
+                                subdivisions = 20,
+                                IntegrationMethod = "Uniform",
+                                randomIntegrationLaw = "unif",
+                                s_min = 0, s_max= 1)
+
+
+    expect_equal(TestObject@par[["alpha"]], 0.00000100527107)
+    expect_equal(TestObject@par[["beta"]], 4.209540e+00)
+    expect_equal(TestObject@par[["delta"]], 8.0388993 )
+    expect_equal(TestObject@par[["lambda"]],6.106399e+00 )
+    expect_equal(TestObject@par[["mu"]],-3.5626797 )
+
+    expect_equal(TestObject@par0,c(0.5,0,1,1,0))
+  })
+})
+
+
+test_that("TemperedEstim_with_Subordinator_GMC_gives_correct_return", {
+  testData <- c(2.7875940, 0.6474977, 3.6280734, 2.2341773, 2.9577528,
+                1.5241392, 3.6102109, 1.9597134, 2.8262536, 2.1545273,
+                1.5342798, 0.7227840, 2.9183721, 5.3106484, 0.8756254,
+                0.6537854, 2.1774635, 2.3642591, 1.2595214, 2.1125328)
+
+  suppressWarnings({
+    TestObject <- TemperedEstim("Subordinator", "GMC", testData,
+                                algo = "2SGMC", alphaReg = 0.01,
+                                WeightingMatrix = "OptAsym",
+                                regularization = "cut-off", ncond = 8)
+
+
+    expect_equal(TestObject@par[["alpha"]], 0.99999894)
+    expect_equal(TestObject@par[["delta"]], 0.0000021782686 )
+    expect_equal(TestObject@par[["lambda"]], 6.3841874  )
+
+    expect_equal(TestObject@par0,c(0.5,1,1))
+  })
+})
 

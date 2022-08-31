@@ -61,16 +61,14 @@ getCgmmMethodName_CTS <- function(algo, alphaReg, subdivisions,
                                   IntegrationMethod, randomIntegrationLaw,
                                   s_min, s_max, ...) {
     args <- list(...)
-    paste("Cgmm",
-          paste("algo=", algo, sep = ""),
+    paste("Cgmm", paste("algo=", algo, sep = ""),
           paste("alphaReg=", alphaReg, sep = ""),
           paste("OptimAlgo=", "nlminb", sep = ""),
-          paste("subdivisions=", subdivisions, sep = ""),
-          paste("IntegrationMethod=", IntegrationMethod, sep = ""),
-          paste("randomIntegrationLaw=", randomIntegrationLaw, sep = ""),
+          paste("sd=", subdivisions, sep = ""),
+          paste("IM=", IntegrationMethod, sep = ""),
+          paste("RIL=", randomIntegrationLaw, sep = ""),
           paste("s_min=", s_min, sep = ""),
-          paste("s_max=", s_max, sep = ""),
-          sep = "_")
+          paste("s_max=",s_max, sep = ""), sep = "_")
 }
 
 ##### CGMM methods#####

@@ -5,7 +5,7 @@
 \title{Function title}
 \usage{
 getTempEstimFcts(
-  type = c("Classic", "Subordinator", "Normal", "CGMY"),
+  type = c("Classic", "Subordinator", "Normal"),
   method = c("ML", "GMM", "Cgmm", "GMC")
 )
 }

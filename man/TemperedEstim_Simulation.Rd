@@ -8,7 +8,7 @@ TemperedEstim_Simulation(
   ParameterMatrix,
   SampleSizes = c(200, 1600),
   MCparam = 100,
-  TemperedType = c("Classic", "Subordinator", "Normal", "CGMY"),
+  TemperedType = c("Classic", "Subordinator", "Normal"),
   Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
   HandleError = TRUE,
   saveOutput = TRUE,
@@ -27,8 +27,7 @@ vector of integer.}
 \item{MCparam}{Number of Monte Carlo simulation for each couple of parameter,
 default=100; integer}
 
-\item{TemperedType}{A String. Either "Classic", "Subordinator", "Normal", or
-"CGMY".}
+\item{TemperedType}{A String. Either "Classic", "Subordinator", or "Normal".}
 
 \item{Estimfct}{The estimation function to be used. A String.
 Either "ML", "GMM", "Cgmm", or "GMC".}
@@ -68,7 +67,7 @@ have \code{MCparam*length(SampleSizes)} lines and its columns will be:
   \item{alphaT, ...:}{the true value of the parameters.}
   \item{data size:}{the sample size used to generate the simulated data.}
   \item{seed:}{the seed value used to generate the simulated data.}
-  \item{alphaE, ...:}{the estimate of the 4 parameters.}
+  \item{alphaE, ...:}{the estimate of the parameters.}
   \item{failure:}{binary: 0 for success, 1 for failure.}
   \item{time:}{estimation running time in seconds.}
 }

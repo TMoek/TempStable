@@ -19,7 +19,7 @@
 #'   \item{alphaT, ...:}{the true value of the parameters.}
 #'   \item{data size:}{the sample size used to generate the simulated data.}
 #'   \item{seed:}{the seed value used to generate the simulated data.}
-#'   \item{alphaE, ...:}{the estimate of the 4 parameters.}
+#'   \item{alphaE, ...:}{the estimate of the parameters.}
 #'   \item{failure:}{binary: 0 for success, 1 for failure.}
 #'   \item{time:}{estimation running time in seconds.}
 #' }
@@ -58,8 +58,7 @@
 #'  vector of integer.
 #' @param MCparam Number of Monte Carlo simulation for each couple of parameter,
 #'  default=100; integer
-#' @param TemperedType A String. Either "Classic", "Subordinator", "Normal", or
-#'  "CGMY".
+#' @param TemperedType A String. Either "Classic", "Subordinator", or "Normal".
 #' @param Estimfct The estimation function to be used. A String.
 #'  Either "ML", "GMM", "Cgmm", or "GMC".
 #' @param HandleError Logical flag: if set to TRUE, the simulation doesn't stop
@@ -113,7 +112,7 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                      SampleSizes = c(200, 1600),
                                      MCparam = 100,
                                      TemperedType = c("Classic", "Subordinator",
-                                                      "Normal", "CGMY"),
+                                                      "Normal"),
                                      Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
                                      HandleError = TRUE, saveOutput = TRUE,
                                      SeedOptions = NULL, eps = 1e-06, ...) {
@@ -163,11 +162,12 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                               " *** Beta=", thetaT[2],
                                               " *** Delta=", thetaT[3],
                                               " *** Lambda=", thetaT[4],
-                                              " *** mu=", thetaT[5], sep = ""),
-                               CGMY = paste("C=", thetaT[1] ,
-                                            " *** G=", thetaT[2],
-                                            " *** M=", thetaT[3],
-                                            " *** Y=", thetaT[4], sep = ""))
+                                              " *** mu=", thetaT[5], sep = "")
+                               # ,CGMY = paste("C=", thetaT[1] ,
+                               #              " *** G=", thetaT[2],
+                               #              " *** M=", thetaT[3],
+                               #              " *** Y=", thetaT[4], sep = "")
+                               )
 
         cat("---------------- ", outputString, " --------------- \n", sep = "")
 
@@ -233,9 +233,10 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         Ncol <- 10
     } else if (TemperedType == "Normal") {
         Ncol <- 14
-    } else {
-        Ncol <- 12
     }
+  # else {
+  #       Ncol <- 12
+  #   }
     nSS <- length(SampleSizes)
     Nrow <- nSS * MCparam
     Output <- matrix(data = NA, ncol = Ncol, nrow = Nrow)
@@ -252,10 +253,11 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         colnames(Output) <- c("alphaT", "betaT", "deltaT", "lambdaT", "muT",
                               "data size", "seed", "alphaE", "betaE", "deltaE",
                               "lambdaE", "muE", "failure", "time")
-    } else {
-        colnames(Output) <- c("C.T", "G.T", "M.T", "Y.T", "data size", "seed",
-                              "C.E", "G.E", "M.E", "Y.E", "failure", "time")
     }
+    # else {
+    #     colnames(Output) <- c("C.T", "G.T", "M.T", "Y.T", "data size", "seed",
+    #                           "C.E", "G.E", "M.E", "Y.E", "failure", "time")
+    # }
     if (ab_current == CheckPointValues$ab_start) {
         sample_start = CheckPointValues$sample_start
         mc_start = CheckPointValues$mc_start
@@ -281,10 +283,11 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
             } else if (TemperedType == "Normal") {
                 x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
                           delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5])
-            } else {
-                x <- rCGMY(n = size, C = thetaT[1], M = thetaT[2],
-                           G = thetaT[3], Y = thetaT[4])
             }
+            # else {
+            #     x <- rCGMY(n = size, C = thetaT[1], M = thetaT[2],
+            #                G = thetaT[3], Y = thetaT[4])
+            # }
             Estim <- getTempEstimation(thetaT = thetaT, x = x, seed = seed,
                                        size = size, Ncol = Ncol,
                                        TemperedType = TemperedType,
@@ -320,9 +323,10 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
         output[1:5] <- c(thetaT, size, seed)
     } else if (TemperedType == "Normal") {
         output[1:7] <- c(thetaT, size, seed)
-    } else {
-        output[1:6] <- c(thetaT, size, seed)
     }
+    # else {
+    #     output[1:6] <- c(thetaT, size, seed)
+    # }
     theta0 <- thetaT - 0.1  #noise
     EstimRes <- TemperedEstim(TemperedType = TemperedType,
                               EstimMethod = Estimfct,
@@ -334,18 +338,20 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
         output[6:8] <- EstimRes@par
     } else if (TemperedType == "Normal") {
         output[8:12] <- EstimRes@par
-    } else {
-        output[7:10] <- EstimRes@par
     }
+    # else {
+    #     output[7:10] <- EstimRes@par
+    # }
     if (TemperedType == "Classic") {
         output[15:16] <- c(EstimRes@failure, EstimRes@duration)
     } else if (TemperedType == "Subordinator") {
         output[9:10] <- c(EstimRes@failure, EstimRes@duration)
     } else if (TemperedType == "Normal") {
         output[13:14] <- c(EstimRes@failure, EstimRes@duration)
-    } else {
-        output[11:12] <- c(EstimRes@failure, EstimRes@duration)
     }
+    # else {
+    #     output[11:12] <- c(EstimRes@failure, EstimRes@duration)
+    # }
     list(outputMat = output, file = EstimRes@method)
 }
 
@@ -531,10 +537,11 @@ initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
                 Normal = paste("alphaT", "betaT", "deltaT", "lambdaT", "muT",
                                "data size", "seed", "alphaE", "betaE", "deltaE",
                                "lambdaE", "muE", "failure", "time",
-                               sep = ","),
-                CGMY = paste("CT", "GT", "MT", "YT", "data size", "seed", "CE",
-                             "GE", "ME", "YE","failure", "time",
-                             sep = ","))
+                               sep = ",")
+                # ,CGMY = paste("CT", "GT", "MT", "YT", "data size", "seed", "CE",
+                #              "GE", "ME", "YE","failure", "time",
+                #              sep = ",")
+                )
 
     write(x, file = fileName, sep = "\n")
   }
@@ -543,7 +550,7 @@ initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
 
 # No export.
 Estim_Des_Temp <- function(TemperedType = c("Classic", "Subordinator",
-                                            "Normal", "CGMY"),
+                                            "Normal"),
                            EstimMethod = c("ML", "GMM", "Cgmm", "GMC"), ...) {
     TemperedType <- match.arg(TemperedType)
     EstimMethod <- match.arg(EstimMethod)
@@ -696,12 +703,13 @@ get_filename <- function(thetaT, MCparam, TemperedType, method,
                               paste("Delta=", thetaT[3]),
                               paste("Lambda=", thetaT[4]),
                               paste("mu=", thetaT[5]),
-                              "MCparam", MCparam, sep = "_"),
-               CGMY = paste(paste("C=", thetaT[1]),
-                            paste("G=", thetaT[2]),
-                            paste("M=", thetaT[3]),
-                            paste("Y=", thetaT[4]),
-                            "MCparam", MCparam, sep = "_"))
+                              "MCparam", MCparam, sep = "_")
+               # ,CGMY = paste(paste("C=", thetaT[1]),
+               #              paste("G=", thetaT[2]),
+               #              paste("M=", thetaT[3]),
+               #              paste("Y=", thetaT[4]),
+               #              "MCparam", MCparam, sep = "_")
+               )
 
   fileName <- paste(MC, method, extension, sep = "")
   fileName
@@ -728,10 +736,11 @@ updateOutputFile <- function(thetaT, MCparam, TemperedType, Output){
                 Normal = paste("alphaT", "betaT", "deltaT", "lambdaT", "muT",
                                "data size", "seed", "alphaE", "betaE", "deltaE",
                                "lambdaE", "muE", "failure", "time",
-                               sep = ","),
-                CGMY = paste("CT", "GT", "MT", "YT", "data size", "seed", "CE",
-                             "GE", "ME", "YE","failure", "time",
-                             sep = ","))
+                               sep = ",")
+                # ,CGMY = paste("CT", "GT", "MT", "YT", "data size", "seed", "CE",
+                #              "GE", "ME", "YE","failure", "time",
+                #              sep = ",")
+                )
 
     write(x, file = fileName, sep = "\n")
   }

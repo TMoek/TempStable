@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{dSTS}
 \alias{dSTS}
-\title{PDF TS subordinator by Stable subordinator}
+\title{Density function of the tempered stable subordinator distribution}
 \usage{
 dSTS(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL)
 }
