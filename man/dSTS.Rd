@@ -2,12 +2,12 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{dSTS}
 \alias{dSTS}
-\title{Density function of the tempered stable subordinator distribution}
+\title{Density function of the tempered stable subordinator (TSS) distribution}
 \usage{
 dSTS(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL)
 }
 \arguments{
-\item{x}{A positive integer.}
+\item{x}{A numeric vector of quantiles.}
 
 \item{alpha}{A real number between 0 and 1.}
 
@@ -19,16 +19,27 @@ dSTS(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL)
 }
 \value{
 As \code{x} is a numeric vector, the return value is also a numeric
-vector
+vector.
 }
 \description{
-Gap holder for description.
+The probability density function of tempered stable distributions is
+generally not available in closed form. However, many software packages (like
+the \code{stabledist} package) have fast computation routines based on series
+or integral representations. Combining such series representations with the
+density function of the TSS distribution, we obtain a series representation
+for the TSS distribution.
 }
 \details{
-Gap holder for details.
+\deqn{f_{TSS}(y;\theta)=\mathrm{e}^{-\lambda y-\lambda^{\alpha}\delta
+\Gamma(-\alpha)}\frac{-1}{\pi}\sum_{k=1}^{\infty}\frac{(-1)^k}{k!}
+\Gamma(1+\alpha k)\Gamma(1-\alpha)^k\left(\frac{\delta}{\alpha}\right)^ky^
+{-(1+\alpha k)}\sin(\alpha\pi k)}
 }
 \examples{
 dSTS(1000,0.5,1,0.3)
 dSTS(1,0.5,1,0.3)
 
+}
+\seealso{
+Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{dCTS}
 \alias{dCTS}
-\title{Title}
+\title{Density function of the classic tempered stable (CTS) distribution}
 \usage{
 dCTS(
   x,
@@ -16,12 +16,11 @@ dCTS(
   dens_method = "FFT",
   a = -20,
   b = 20,
-  nf = 2048,
-  ...
+  nf = 2048
 )
 }
 \arguments{
-\item{x}{A gap holder.}
+\item{x}{A numeric vector of quantiles.}
 
 \item{alpha}{A real number between 0 and 2.}
 
@@ -33,29 +32,34 @@ dCTS(
 
 \item{theta}{A vector of all other arguments.}
 
-\item{dens_method}{A gap holder.}
+\item{dens_method}{Algorithm for numerical evaluation. Choose between \code{
+"FFT"} and \code{"Conv"}.}
 
-\item{a}{A gap holder, if \code{dens_method == "FFT"}. -20
+\item{a}{Starting point of FFT, if \code{dens_method == "FFT"}. -20
 by default.}
 
-\item{b}{A gap holder, if \code{dens_method == "FFT"}. 20
+\item{b}{Ending point of FFT, if \code{dens_method == "FFT"}. 20
 by default.}
 
-\item{nf}{A gap holder.}
-
-\item{...}{A gap holder.}
+\item{nf}{Pieces the transformation is divided in. Limited to power-of-two
+size.}
 }
 \value{
-Gap holder for return.
+As \code{x} is a numeric vector, the return value is also a numeric
+vector.
 }
 \description{
-Gap holder for description.
-}
-\details{
-Gap holder for details.
+The probability density function of tempered stable distributions is
+generally not available in closed form. Crucially, even a simple relationship
+with a stable density as for the TSS distribution is not available.
+For numerical evaluations it is therefore necessary to rely on algorithms
+like the fast Fourier transform applied to the characteristic function.
 }
 \examples{
 dCTS(1,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048)
 dCTS(1,0.6,1,1,1,1,1,NULL,"Conv")
 
+}
+\seealso{
+Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
 }

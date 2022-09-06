@@ -181,11 +181,11 @@ test_that("TemperedEstim_with_Normal_Cgmm_gives_correct_return", {
                                 s_min = 0, s_max= 1)
 
 
-    expect_equal(TestObject@par[["alpha"]], 0.00000100527107)
-    expect_equal(TestObject@par[["beta"]], 4.209540e+00)
-    expect_equal(TestObject@par[["delta"]], 8.0388993 )
-    expect_equal(TestObject@par[["lambda"]],6.106399e+00 )
-    expect_equal(TestObject@par[["mu"]],-3.5626797 )
+    expect_equal(TestObject@par[["alpha"]], 6.9249214e-06)
+    expect_equal(TestObject@par[["beta"]], 3.62083094e+00)
+    expect_equal(TestObject@par[["delta"]], 9.069466e+00)
+    expect_equal(TestObject@par[["lambda"]], 5.8179065e+00)
+    expect_equal(TestObject@par[["mu"]], -3.6766514e+00)
 
     expect_equal(TestObject@par0,c(0.5,0,1,1,0))
   })

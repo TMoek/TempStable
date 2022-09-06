@@ -43,7 +43,6 @@
 #' TemperedEstim("Subordinator", "GMC", rSTS(20, 0.5, 1, 1), algo = "2SGMC",
 #'               alphaReg = 0.01, WeightingMatrix = "OptAsym",
 #'               regularization = "cut-off", ncond = 8)
-#'
 #' }
 #'
 #' @export

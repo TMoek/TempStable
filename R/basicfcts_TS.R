@@ -53,20 +53,31 @@ charSTS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
                  ((lambda - t * imagN)^alpha - lambda^alpha)))
 }
 
-#' Density function of the tempered stable subordinator distribution
+#' Density function of the tempered stable subordinator (TSS) distribution
 #'
-#' Gap holder for description.
+#' The probability density function of tempered stable distributions is
+#' generally not available in closed form. However, many software packages (like
+#' the \code{stabledist} package) have fast computation routines based on series
+#' or integral representations. Combining such series representations with the
+#' density function of the TSS distribution, we obtain a series representation
+#' for the TSS distribution.
 #'
-#' Gap holder for details.
+#' \deqn{f_{TSS}(y;\theta)=\mathrm{e}^{-\lambda y-\lambda^{\alpha}\delta
+#' \Gamma(-\alpha)}\frac{-1}{\pi}\sum_{k=1}^{\infty}\frac{(-1)^k}{k!}
+#' \Gamma(1+\alpha k)\Gamma(1-\alpha)^k\left(\frac{\delta}{\alpha}\right)^ky^
+#' {-(1+\alpha k)}\sin(\alpha\pi k)}
 #'
-#' @param x A positive integer.
+#' @param x A numeric vector of quantiles.
 #' @param alpha A real number between 0 and 1.
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
 #' @param theta A vector of all other arguments.
 #'
 #' @return As \code{x} is a numeric vector, the return value is also a numeric
-#' vector
+#' vector.
+#'
+#' @seealso
+#' Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
 #'
 #' @examples
 #' dSTS(1000,0.5,1,0.3)
@@ -136,9 +147,11 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
 
     if(pmethod =="integrate"){
-    p <- sapply(q, function(z, ...) min(stats::integrate(dSTS, 0, z, alpha = alpha,
-                                         delta = delta, lambda = lambda,
-                                         ...)$value, 1 - 1e-07))
+    p <- sapply(q, function(z, ...) min(stats::integrate(dSTS, 0, z,
+                                                         alpha = alpha,
+                                                         delta = delta,
+                                                         lambda = lambda,
+                                                         ...)$value, 1 - 1e-07))
 
   } else {
     m <- gamma(1 - alpha)*delta/lambda^(1-alpha)
@@ -293,7 +306,7 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
         qmaxi <- qmax
       }
       .unirootNA(froot,interval = c(qmini,qmaxi),
-                              extendInt = "yes", y = y)}
+                              extendInt = "yes", y = y, ...)}
 
     q <- sapply(p, qroot, qmin = qmin, qmax = qmax)
     return(q)
@@ -351,27 +364,34 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
 
 }
 
-#' Title
+#' Density function of the classic tempered stable (CTS) distribution
 #'
-#' Gap holder for description.
+#' The probability density function of tempered stable distributions is
+#' generally not available in closed form. Crucially, even a simple relationship
+#' with a stable density as for the TSS distribution is not available.
+#' For numerical evaluations it is therefore necessary to rely on algorithms
+#' like the fast Fourier transform applied to the characteristic function.
 #'
-#' Gap holder for details.
-#'
-#' @param x A gap holder.
+#' @param x A numeric vector of quantiles.
 #' @param alpha A real number between 0 and 2.
 #' @param deltap,deltam  A real number > 0.
 #' @param lambdap,lambdam A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
-#' @param dens_method A gap holder.
-#' @param a A gap holder, if \code{dens_method == "FFT"}. -20
+#' @param dens_method Algorithm for numerical evaluation. Choose between \code{
+#' "FFT"} and \code{"Conv"}.
+#' @param a Starting point of FFT, if \code{dens_method == "FFT"}. -20
 #' by default.
-#' @param b A gap holder, if \code{dens_method == "FFT"}. 20
+#' @param b Ending point of FFT, if \code{dens_method == "FFT"}. 20
 #' by default.
-#' @param nf A gap holder.
-#' @param ... A gap holder.
+#' @param nf Pieces the transformation is divided in. Limited to power-of-two
+#' size.
 #'
-#' @return Gap holder for return.
+#' @return As \code{x} is a numeric vector, the return value is also a numeric
+#' vector.
+#'
+#' @seealso
+#' Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
 #'
 #' @examples
 #' dCTS(1,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048)
@@ -380,7 +400,7 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
 #' @export
 dCTS <- function(x, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
                  lambdam = NULL, mu = NULL, theta = NULL, dens_method = "FFT",
-                 a = -20, b = 20, nf = 2048, ...) {
+                 a = -20, b = 20, nf = 2048) {
     if ((missing(alpha) | missing(deltap) | missing(deltam) | missing(lambdap) |
          missing(lambdam) | missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -678,7 +698,6 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
 #'   qCTS(0.5,1.5,1,1,1,1,1)
 #' }
 #'
-#' @importFrom stabledist qstable
 #' @export
 qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
                  lambdam = NULL, mu = NULL, theta = NULL, qmin = NULL,
@@ -718,8 +737,8 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
         qmini <- qmin
         qmaxi <- qmax
       }
-      stabledist:::.unirootNA(froot, interval = c(qmini,qmaxi),
-                              extendInt = "yes", y = y, ...)}
+      .unirootNA(froot, interval = c(qmini,qmaxi), extendInt = "yes",
+                y = y, ...)}
 
     q <- sapply(p, qroot, qmin = qmin, qmax = qmax)
     return(q)
