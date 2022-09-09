@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{pSTS}
 \alias{pSTS}
-\title{Function title}
+\title{Quantile function of the tempered stable subordinator distribution}
 \usage{
 pSTS(
   q,
@@ -16,7 +16,7 @@ pSTS(
 )
 }
 \arguments{
-\item{q}{A numeric vector of quantiles.}
+\item{q}{A numeric vector of positive quantiles.}
 
 \item{alpha}{A real number between 0 and 1.}
 
@@ -26,24 +26,27 @@ pSTS(
 
 \item{theta}{A vector of all other arguments.}
 
-\item{pmethod}{A gap holder.}
+\item{pmethod}{A string. If not "integrate", the function \code{chartocdf()}
+will be triggered.}
 
 \item{N}{integer: the number of replications, if
 \code{pmethod != "integrate"}. 10000 by default.}
 
-\item{...}{A gap holder.}
+\item{...}{Possibility to modify \code{stats::integrate()}.}
 }
 \value{
-A gap holder.
+As \code{x} is a numeric vector, the return value is also a numeric
+vector.
 }
 \description{
-Gap holder for description.
-}
-\details{
-Gap holder for details.
+This function returns the quantile function of the tempered stable
+suborinator distribution.
 }
 \examples{
 pSTS(3,0.7,1.354,0.3)
 pSTS(1,0.5,10,300,NULL,"")
 
+}
+\seealso{
+See also the [dSTS()] density-function.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{charCTS}
 \alias{charCTS}
-\title{Title}
+\title{Characteristic function of the classical tempered stable (CTS) distribution}
 \usage{
 charCTS(
   t,
@@ -16,7 +16,7 @@ charCTS(
 )
 }
 \arguments{
-\item{t}{A gap holder.}
+\item{t}{A positive integer.}
 
 \item{alpha}{A real number between 0 and 2.}
 
@@ -29,16 +29,28 @@ charCTS(
 \item{theta}{A vector of all other arguments.}
 }
 \value{
-Gap holder for return.
+The result of spectral positive tempered stable process
 }
 \description{
-Gap holder for description.
+Let $X\sim CTS(\alpha,\delta_+,\delta_-,\lambda_+,\lambda_-,\mu)$.
+The characteristic function is given by (Kuechler & Tappe 2013).
 }
 \details{
-Gap holder for details.
+\deqn{\varphi_{CTS}(t;\theta):=\mathbb{E}_{\theta}\left
+[\mathrm{e}^{\mathrm{i}tX}\right]&=\exp\left(\mathrm{i}t\mu+\delta_+
+\Gamma(-\alpha)\left((\lambda_+-\mathrm{i}t)^{\alpha}-\lambda_+^{\alpha}+
+\mathrm{i}t\alpha\lambda_+^{\alpha-1}\right)\right.\\&\ \left. +\delta_-
+\Gamma(-\alpha)\left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-
+\mathrm{i}t\alpha\lambda_-^{\alpha-1}\right)\right)}
 }
 \examples{
 charCTS(2,0.5,1,1.5,2,2.5,3)
 charCTS(2,1.5,200,150,300,2500,1,NULL)
 
+}
+\references{
+Massing, T. (2022), 'Parametric Estimation of Tempered Stbale Laws';
+
+Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
+processes' \url{https://doi.org/10.1016/j.spa.2013.06.012}
 }

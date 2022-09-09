@@ -8,19 +8,15 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' function of the tempered stable distribution (\code{alpha}, \code{delta},
 #' \code{lambda}) can be simulated exactly through acceptance-rejection
 #' sampling.
-#'
 #' For whole derivation and meaning of single letters see also Kawai et. Masuda
 #' (2011).
 #' Basically, the derivation starts from a one-dimensional stable distribution
 #' which is later added with a centered and totally positively skewed tempered
 #' stable (Levy) process.
 #'
-#' Reiichiro Kawai, & Hiroki Masuda (2011).
-#' On simulation of tempered stable random variates.
-#' Journal of Computational and Applied Mathematics, 235(8), 2873-2887.
-#' https://doi.org/10.1016/j.cam.2010.12.014
-#' @seealso(
-#' \url{https://www.sciencedirect.com/science/article/pii/S0377042710006643})
+#' \deqn{ \varphi_{TSS}(t;\theta):=\mathbb{E}_{\theta}\left[
+#' \mathrm{e}^{\mathrm{i}tY}\right]= \exp\left(\delta\Gamma(-\alpha)
+#' \left((\lambda-\mathrm{i}t)^{\alpha}-\lambda^{\alpha}\right)\right)}
 #'
 #' @param t A positive integer.
 #' @param alpha A real number between 0 and 1.
@@ -29,6 +25,12 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' @param theta A vector of all other arguments.
 #'
 #' @return The result of spectral positive tempered stable process
+#'
+#' @references
+#' Massing, T. (2022), 'Parametric Estimation of Tempered Stbale Laws'
+#'
+#' Reiichiro K. & Hiroki M. (2011), 'On simulation of tempered stable random
+#' variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
 #'
 #' @examples
 #' charSTS(1000,0.5,1,0.3)
@@ -76,8 +78,11 @@ charSTS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
 #' @return As \code{x} is a numeric vector, the return value is also a numeric
 #' vector.
 #'
-#' @seealso
+#' @references
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
+#'
+#' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
+#' processes' \url{https://doi.org/10.1016/j.spa.2013.06.012}
 #'
 #' @examples
 #' dSTS(1000,0.5,1,0.3)
@@ -107,23 +112,28 @@ dSTS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 
 }
 
-#' Function title
+#' Quantile function of the tempered stable subordinator distribution
 #'
-#' Gap holder for description.
+#' This function returns the quantile function of the tempered stable
+#' suborinator distribution.
 #'
-#' Gap holder for details.
 #'
-#' @param q A numeric vector of quantiles.
+#' @param q A numeric vector of positive quantiles.
 #' @param alpha A real number between 0 and 1.
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
 #' @param theta A vector of all other arguments.
-#' @param pmethod A gap holder.
+#' @param pmethod A string. If not "integrate", the function \code{chartocdf()}
+#' will be triggered.
 #' @param N integer: the number of replications, if
 #' \code{pmethod != "integrate"}. 10000 by default.
-#' @param ... A gap holder.
+#' @param ... Possibility to modify \code{stats::integrate()}.
 #'
-#' @return A gap holder.
+#' @return  As \code{x} is a numeric vector, the return value is also a numeric
+#' vector.
+#'
+#' @seealso
+#' See also the [dSTS()] density-function.
 #'
 #' @examples
 #' pSTS(3,0.7,1.354,0.3)
@@ -314,20 +324,32 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 
 ##### Classical Tempered Stable (CTS)#####
 
-#' Title
+#' Characteristic function of the classical tempered stable (CTS) distribution
 #'
-#' Gap holder for description.
+#' Let $X\sim CTS(\alpha,\delta_+,\delta_-,\lambda_+,\lambda_-,\mu)$.
+#' The characteristic function is given by (Kuechler & Tappe 2013).
 #'
-#' Gap holder for details.
+#' \deqn{\varphi_{CTS}(t;\theta):=\mathbb{E}_{\theta}\left
+#' [\mathrm{e}^{\mathrm{i}tX}\right]&=\exp\left(\mathrm{i}t\mu+\delta_+
+#' \Gamma(-\alpha)\left((\lambda_+-\mathrm{i}t)^{\alpha}-\lambda_+^{\alpha}+
+#' \mathrm{i}t\alpha\lambda_+^{\alpha-1}\right)\right.\\&\ \left. +\delta_-
+#' \Gamma(-\alpha)\left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-
+#' \mathrm{i}t\alpha\lambda_-^{\alpha-1}\right)\right)}
 #'
-#' @param t A gap holder.
+#' @param t A positive integer.
 #' @param alpha A real number between 0 and 2.
 #' @param deltap,deltam  A real number > 0.
 #' @param lambdap,lambdam A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
 #'
-#' @return Gap holder for return.
+#' @return The result of spectral positive tempered stable process
+#'
+#' @references
+#' Massing, T. (2022), 'Parametric Estimation of Tempered Stbale Laws';
+#'
+#' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
+#' processes' \url{https://doi.org/10.1016/j.spa.2013.06.012}
 #'
 #' @examples
 #' charCTS(2,0.5,1,1.5,2,2.5,3)
@@ -390,7 +412,7 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
 #' @return As \code{x} is a numeric vector, the return value is also a numeric
 #' vector.
 #'
-#' @seealso
+#' @references
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
 #'
 #' @examples
@@ -746,21 +768,32 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 
 ##### Normal Tempered Stable#####
 
-#' Title
+#' Characteristic function of the normal tempered stable (NTS) distribution
 #'
-#' Gap holder for description.
+#' We can obtain the NTS distribution by tempering a stable distribution.
+#' The corresponding tempering function can be found in Rachev et al. (2011).
 #'
-#' Gap holder for details.
+#' \deqn{\varphi_{NTS}(t;\theta)=E\left[\mathrm{e}^{\mathrm{i}tZ}\right]= \exp
+#' \left(\mathrm{i}t\mu+\delta\Gamma(-\alpha)\left((\lambda-\mathrm{i}t
+#' \beta+t^2/2)^{\alpha}-\lambda^{\alpha}\right)\right)
+#' }
 #'
-#' @param t A gap holder.
+#' @param t A positive integer.
 #' @param alpha A real number between 0 and 1.
-#' @param beta A gap holder
+#' @param beta Any real number.
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
 #'
-#' @return Gap holder for return.
+#' @return The result of spectral positive tempered stable process
+#'
+#' @references
+#' Massing, T. (2022), 'Parametric Estimation of Tempered Stbale Laws'
+#'
+#' Rachev, S., Kim, Y., Bianchi, M. & Fabozzi, F. (2011), 'Financial Models with
+#' Levy Processes and Volatility Clustering'
+#' \url{https://books.google.de/books?id=XKvUUrcS_twC}
 #'
 #' @examples
 #' charNTS(0.1,0.9,10,20,30,40)
@@ -791,27 +824,32 @@ charNTS <- function(t, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 
 }
 
-#' Title
+#' Density function of the normal tempered stable (NTS) distribution
 #'
-#' Gap holder for description.
+#' As for the CTS distribution, the density function is not available in closed
+#' form and numerical computation relies on the fast Fourier transform (FFT).
 #'
-#' Gap holder for details.
-#'
-#' @param x A gap holder.
+#' @param x A numeric vector of quantiles.
 #' @param alpha A real number between 0 and 1.
-#' @param beta A gap holder
+#' @param beta Any real number.
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
-#' @param dens_method Currently useless param, as it does nothing. "FFT" by
-#' default.
-#' @param a A gap holder. -20 by default.
-#' @param b A gap holder. 20 by default.
-#' @param nf A gap holder. 2048 by default.
-#' @param ... A gap holder.
+#' @param dens_method Currently, useless param, as it does nothing and FFT is
+#' always used.
+#' @param a Starting point of FFT, if \code{dens_method == "FFT"}. -20
+#' by default.
+#' @param b Ending point of FFT, if \code{dens_method == "FFT"}. 20
+#' by default.
+#' @param nf Pieces the transformation is divided in. Limited to power-of-two
+#' size.
 #'
-#' @return Gap holder for return.
+#' @return As \code{x} is a numeric vector, the return value is also a numeric
+#' vector.
+#'
+#' @references
+#' Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
 #'
 #' @examples
 #' dNTS(1,0.8,1,1,1,1)
@@ -820,7 +858,7 @@ charNTS <- function(t, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' @export
 dNTS <- function(x, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
                  mu = NULL, theta = NULL, dens_method = "FFT",
-                 a = -20, b = 20, nf = 2048,...) {
+                 a = -20, b = 20, nf = 2048) {
     if ((missing(alpha) | missing(beta) | missing(delta) | missing(lambda) |
          missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -1056,8 +1094,8 @@ qNTS <- function(p, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
         qmini <- qmin
         qmaxi <- qmax
       }
-      stabledist:::.unirootNA(froot,interval = c(qmini,qmaxi),
-                              extendInt = "yes", y = y, ...)}
+      .unirootNA(froot,interval = c(qmini,qmaxi), extendInt = "yes",
+                 y = y, ...)}
 
     q <- sapply(p, qroot, qmin = qmin, qmax = qmax)
     return(q)
@@ -1140,6 +1178,7 @@ chartocdf <- function(q, N, m , s, char, ...){
 c_err <- function(t) {if(abs(t)<1){(1-t)*cos(pi*t)+1/pi*abs(sin(pi*t))} else 0}
 
 
+#' @importFrom stats uniroot
 .unirootNA <-
   function(f,
            interval,
@@ -1170,7 +1209,7 @@ c_err <- function(t) {if(abs(t)<1){(1-t)*cos(pi*t)+1/pi*abs(sin(pi*t))} else 0}
     if (is.na(f.lower) || is.na(f.upper) || f.lower * f.upper > 0)
       return(NA)
     ## else there is one :
-    uniroot(
+    stats::uniroot(
       f,
       interval = interval,
       ...,

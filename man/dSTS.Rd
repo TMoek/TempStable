@@ -40,6 +40,9 @@ dSTS(1000,0.5,1,0.3)
 dSTS(1,0.5,1,0.3)
 
 }
-\seealso{
+\references{
 Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
+
+Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
+processes' \url{https://doi.org/10.1016/j.spa.2013.06.012}
 }

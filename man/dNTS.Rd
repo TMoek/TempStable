@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{dNTS}
 \alias{dNTS}
-\title{Title}
+\title{Density function of the normal tempered stable (NTS) distribution}
 \usage{
 dNTS(
   x,
@@ -15,16 +15,15 @@ dNTS(
   dens_method = "FFT",
   a = -20,
   b = 20,
-  nf = 2048,
-  ...
+  nf = 2048
 )
 }
 \arguments{
-\item{x}{A gap holder.}
+\item{x}{A numeric vector of quantiles.}
 
 \item{alpha}{A real number between 0 and 1.}
 
-\item{beta}{A gap holder}
+\item{beta}{Any real number.}
 
 \item{delta}{A real number > 0.}
 
@@ -34,28 +33,31 @@ dNTS(
 
 \item{theta}{A vector of all other arguments.}
 
-\item{dens_method}{Currently useless param, as it does nothing. "FFT" by
-default.}
+\item{dens_method}{Currently, useless param, as it does nothing and FFT is
+always used.}
 
-\item{a}{A gap holder. -20 by default.}
+\item{a}{Starting point of FFT, if \code{dens_method == "FFT"}. -20
+by default.}
 
-\item{b}{A gap holder. 20 by default.}
+\item{b}{Ending point of FFT, if \code{dens_method == "FFT"}. 20
+by default.}
 
-\item{nf}{A gap holder. 2048 by default.}
-
-\item{...}{A gap holder.}
+\item{nf}{Pieces the transformation is divided in. Limited to power-of-two
+size.}
 }
 \value{
-Gap holder for return.
+As \code{x} is a numeric vector, the return value is also a numeric
+vector.
 }
 \description{
-Gap holder for description.
-}
-\details{
-Gap holder for details.
+As for the CTS distribution, the density function is not available in closed
+form and numerical computation relies on the fast Fourier transform (FFT).
 }
 \examples{
 dNTS(1,0.8,1,1,1,1)
 dNTS(0.5,0.5,20,20,20,20, a = -2000, b = 2000, nf = 8192)
 
+}
+\references{
+Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
 }

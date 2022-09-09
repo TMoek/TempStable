@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{charNTS}
 \alias{charNTS}
-\title{Title}
+\title{Characteristic function of the normal tempered stable (NTS) distribution}
 \usage{
 charNTS(
   t,
@@ -15,11 +15,11 @@ charNTS(
 )
 }
 \arguments{
-\item{t}{A gap holder.}
+\item{t}{A positive integer.}
 
 \item{alpha}{A real number between 0 and 1.}
 
-\item{beta}{A gap holder}
+\item{beta}{Any real number.}
 
 \item{delta}{A real number > 0.}
 
@@ -30,16 +30,27 @@ charNTS(
 \item{theta}{A vector of all other arguments.}
 }
 \value{
-Gap holder for return.
+The result of spectral positive tempered stable process
 }
 \description{
-Gap holder for description.
+We can obtain the NTS distribution by tempering a stable distribution.
+The corresponding tempering function can be found in Rachev et al. (2011).
 }
 \details{
-Gap holder for details.
+\deqn{\varphi_{NTS}(t;\theta)=E\left[\mathrm{e}^{\mathrm{i}tZ}\right]= \exp
+\left(\mathrm{i}t\mu+\delta\Gamma(-\alpha)\left((\lambda-\mathrm{i}t
+\beta+t^2/2)^{\alpha}-\lambda^{\alpha}\right)\right)
+}
 }
 \examples{
 charNTS(0.1,0.9,10,20,30,40)
 charNTS(0.1,0.9,1,2,3,4, NULL)
 
+}
+\references{
+Massing, T. (2022), 'Parametric Estimation of Tempered Stbale Laws'
+
+Rachev, S., Kim, Y., Bianchi, M. & Fabozzi, F. (2011), 'Financial Models with
+Levy Processes and Volatility Clustering'
+\url{https://books.google.de/books?id=XKvUUrcS_twC}
 }

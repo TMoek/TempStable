@@ -60,6 +60,6 @@ dCTS(1,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048)
 dCTS(1,0.6,1,1,1,1,1,NULL,"Conv")
 
 }
-\seealso{
+\references{
 Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
 }

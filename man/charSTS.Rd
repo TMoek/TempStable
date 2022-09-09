@@ -25,25 +25,25 @@ When \code{alpha} is a real number between 0 and 1, the characterisic
 function of the tempered stable distribution (\code{alpha}, \code{delta},
 \code{lambda}) can be simulated exactly through acceptance-rejection
 sampling.
-}
-\details{
 For whole derivation and meaning of single letters see also Kawai et. Masuda
 (2011).
 Basically, the derivation starts from a one-dimensional stable distribution
 which is later added with a centered and totally positively skewed tempered
 stable (Levy) process.
-
-Reiichiro Kawai, & Hiroki Masuda (2011).
-On simulation of tempered stable random variates.
-Journal of Computational and Applied Mathematics, 235(8), 2873-2887.
-https://doi.org/10.1016/j.cam.2010.12.014
+}
+\details{
+\deqn{ \varphi_{TSS}(t;\theta):=\mathbb{E}_{\theta}\left[
+\mathrm{e}^{\mathrm{i}tY}\right]= \exp\left(\delta\Gamma(-\alpha)
+\left((\lambda-\mathrm{i}t)^{\alpha}-\lambda^{\alpha}\right)\right)}
 }
 \examples{
 charSTS(1000,0.5,1,0.3)
 charSTS(500,0.9,1,0.3)
 
 }
-\seealso{
-(
-\url{https://www.sciencedirect.com/science/article/pii/S0377042710006643})
+\references{
+Massing, T. (2022), 'Parametric Estimation of Tempered Stbale Laws'
+
+Reiichiro K. & Hiroki M. (2011), 'On simulation of tempered stable random
+variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
 }
