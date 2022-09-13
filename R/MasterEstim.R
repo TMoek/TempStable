@@ -8,10 +8,10 @@
 #' of the various estimate functions is available in the package
 #' \code{StableEstim}.
 #' \describe{
-#'   \item{For ML:} use \code{?StableEstim::MLParametersEstim}
-#'   \item{For GMM:} use \code{?StableEstim::GMMParametersEstim}
-#'   \item{For Cgmm:} use \code{?StableEstim::CgmmParametersEstim}
-#'   \item{For GMC:} TODO
+#' \item{For ML:}{Write \code{?StableEstim::MLParametersEstim} to console.}
+#' \item{For GMM:}{Write \code{?StableEstim::GMMParametersEstim} to console.}
+#' \item{For Cgmm:}{Write \code{?StableEstim::CgmmParametersEstim} to console.}
+#' \item{For GMC:}{TODO}
 #' }
 #'
 #' @param TemperedType A String. Either "Classic", "Subordinator", or "Normal"
@@ -29,22 +29,21 @@
 #'
 #' @examples
 #' \donttest{
-#' TemperedEstim( TemperedType = "Classic", EstimMethod = "ML",
+#' TemperedEstim(TemperedType = "Classic", EstimMethod = "ML",
 #'                data = rCTS(2,1.5,1,1,1,1,0),
-#'                theta0 = c(1.5,1,1,1,1,0) - 0.1)
+#'                theta0 = c(1.5,1,1,1,1,0) - 0.1);
 #' TemperedEstim("Subordinator", "GMM", rSTS(20,0.5,1,1), algo = "2SGMM",
 #'               alphaReg = 0.01, regularization = "cut-off",
 #'               WeightingMatrix = "OptAsym", t_scheme = "free",
-#'               t_free = seq(0.1,2,length.out = 12))
+#'               t_free = seq(0.1,2,length.out = 12));
 #' TemperedEstim("Normal", "Cgmm", rNTS(20,0.5,1,1,1,0), algo = "2SCgmm",
 #'               alphaReg = 0.01, subdivisions = 20,
 #'               IntegrationMethod = "Uniform", randomIntegrationLaw = "unif",
-#'               s_min = 0, s_max= 1)
+#'               s_min = 0, s_max= 1);
 #' TemperedEstim("Subordinator", "GMC", rSTS(20, 0.5, 1, 1), algo = "2SGMC",
 #'               alphaReg = 0.01, WeightingMatrix = "OptAsym",
-#'               regularization = "cut-off", ncond = 8)
+#'               regularization = "cut-off", ncond = 8);
 #' }
-#'
 #' @export
 TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
                           EstimMethod = c("ML", "GMM", "Cgmm", "GMC"), data,

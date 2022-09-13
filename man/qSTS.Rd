@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{qSTS}
 \alias{qSTS}
-\title{Title}
+\title{Quantile function of of the tempered stable subordinator distribution}
 \usage{
 qSTS(
   p,
@@ -35,6 +35,7 @@ Gap holder for return.
 }
 \description{
 Gap holder for description.
+TODO: die Quantilfunktion schaut, an welcher x -Stelle p = pSTS() ist
 }
 \details{
 Gap holder for details.

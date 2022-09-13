@@ -2,7 +2,8 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{pCTS}
 \alias{pCTS}
-\title{Function title}
+\title{Cumulative probability function of the classic tempered stable (CTS)
+distribution}
 \usage{
 pCTS(
   q,
@@ -20,7 +21,7 @@ pCTS(
 )
 }
 \arguments{
-\item{q}{A gap holder.}
+\item{q}{A numeric vector of positive quantile.}
 
 \item{alpha}{A real number between 0 and 2.}
 
@@ -32,25 +33,31 @@ pCTS(
 
 \item{theta}{A vector of all other arguments.}
 
-\item{a}{A gap holder. -20 by default.}
+\item{a}{Starting point of FFT, if \code{dens_method == "FFT"}. -20
+by default.}
 
-\item{b}{A gap holder. 20 by default.}
+\item{b}{Ending point of FFT, if \code{dens_method == "FFT"}. 20
+by default.}
 
-\item{nf}{A gap holder.}
+\item{nf}{Pieces the transformation is divided in. Limited to power-of-two
+size.}
 
-\item{...}{A gap holder.}
+\item{...}{Possibility to modify \code{stats::integrate()}.}
 }
 \value{
-Gap holder for return.
+As \code{x} is a numeric vector, the return value is also a numeric
+vector.
 }
 \description{
-Gap holder for description.
-}
-\details{
-Gap holder for details.
+This function returns the cumulative probability function of the CTS
+distribution.
 }
 \examples{
-pCTS(0.5,0.5,1,1,1,1,1)
-pCTS(0.5,0.9,1,2,3,4,5)
+x <- seq(-5,5,0.25)
+y <- pCTS(x,0.5,1,1,1,1,1)
+plot(x,y)
 
+}
+\seealso{
+See also the [dCTS()] density-function.
 }

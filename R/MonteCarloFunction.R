@@ -43,10 +43,10 @@
 #' of the various estimate functions is available in the package
 #' \code{StableEstim}.
 #' \describe{
-#'   \item{For ML:} use \code{?StableEstim::MLParametersEstim}
-#'   \item{For GMM:} use \code{?StableEstim::GMMParametersEstim}
-#'   \item{For Cgmm:} use \code{?StableEstim::CgmmParametersEstim}
-#'   \item{For GMC:} TODO
+#'   \item{For ML:}{use \code{?StableEstim::MLParametersEstim}}
+#'   \item{For GMM:}{use \code{?StableEstim::GMMParametersEstim}}
+#'   \item{For Cgmm:}{use \code{?StableEstim::CgmmParametersEstim}}
+#'   \item{For GMC:}{TODO}
 #' }
 #'
 #' @seealso

@@ -20,7 +20,7 @@ dCTS(
 )
 }
 \arguments{
-\item{x}{A numeric vector of quantiles.}
+\item{x}{A numeric vector of quantile.}
 
 \item{alpha}{A real number between 0 and 2.}
 
@@ -56,8 +56,9 @@ For numerical evaluations it is therefore necessary to rely on algorithms
 like the fast Fourier transform applied to the characteristic function.
 }
 \examples{
-dCTS(1,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048)
-dCTS(1,0.6,1,1,1,1,1,NULL,"Conv")
+x <- seq(0,15,0.25)
+y <- dCTS(x,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048)
+plot(x,y)
 
 }
 \references{

@@ -7,7 +7,7 @@
 dSTS(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL)
 }
 \arguments{
-\item{x}{A numeric vector of quantiles.}
+\item{x}{A numeric vector of quantile.}
 
 \item{alpha}{A real number between 0 and 1.}
 
@@ -36,8 +36,9 @@ for the TSS distribution.
 {-(1+\alpha k)}\sin(\alpha\pi k)}
 }
 \examples{
-dSTS(1000,0.5,1,0.3)
-dSTS(1,0.5,1,0.3)
+x <- seq(0,15,0.25)
+y <- dSTS(x,0.5,1,0.3)
+plot(x,y)
 
 }
 \references{

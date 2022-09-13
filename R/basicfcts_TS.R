@@ -69,7 +69,7 @@ charSTS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
 #' \Gamma(1+\alpha k)\Gamma(1-\alpha)^k\left(\frac{\delta}{\alpha}\right)^ky^
 #' {-(1+\alpha k)}\sin(\alpha\pi k)}
 #'
-#' @param x A numeric vector of quantiles.
+#' @param x A numeric vector of quantile.
 #' @param alpha A real number between 0 and 1.
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
@@ -85,8 +85,9 @@ charSTS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
 #' processes' \url{https://doi.org/10.1016/j.spa.2013.06.012}
 #'
 #' @examples
-#' dSTS(1000,0.5,1,0.3)
-#' dSTS(1,0.5,1,0.3)
+#' x <- seq(0,15,0.25)
+#' y <- dSTS(x,0.5,1,0.3)
+#' plot(x,y)
 #'
 #' @importFrom stabledist dstable
 #' @export
@@ -112,13 +113,14 @@ dSTS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 
 }
 
-#' Quantile function of the tempered stable subordinator distribution
+#' Cumulative probability function of the tempered stable subordinator
+#' distribution
 #'
-#' This function returns the quantile function of the tempered stable
-#' suborinator distribution.
+#' This function returns the cumulative probability function of the tempered
+#' stable suborinator distribution.
 #'
 #'
-#' @param q A numeric vector of positive quantiles.
+#' @param q A numeric vector of positive quantile.
 #' @param alpha A real number between 0 and 1.
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
@@ -136,8 +138,9 @@ dSTS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 #' See also the [dSTS()] density-function.
 #'
 #' @examples
-#' pSTS(3,0.7,1.354,0.3)
-#' pSTS(1,0.5,10,300,NULL,"")
+#' x <- seq(-15,15,0.25)
+#' y <- pSTS(x,0.7,1.354,0.3)
+#' plot(x,y)
 #'
 #' @export
 pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
@@ -262,9 +265,10 @@ rSTS_SR1 <- function(alpha, delta, lambda, k) {
     return(sum(apply(X, 1, FUN = min)))
 }
 
-#' Title
+#' Quantile function of of the tempered stable subordinator distribution
 #'
 #' Gap holder for description.
+#' TODO: die Quantilfunktion schaut, an welcher x -Stelle p = pSTS() ist
 #'
 #' Gap holder for details.
 #'
@@ -326,15 +330,18 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 
 #' Characteristic function of the classical tempered stable (CTS) distribution
 #'
-#' Let $X\sim CTS(\alpha,\delta_+,\delta_-,\lambda_+,\lambda_-,\mu)$.
+#' Let  \code{X ~ CTS(alpha,deltap, deltam, lambdap, lambdam, mu)}.
 #' The characteristic function is given by (Kuechler & Tappe 2013).
 #'
-#' \deqn{\varphi_{CTS}(t;\theta):=\mathbb{E}_{\theta}\left
-#' [\mathrm{e}^{\mathrm{i}tX}\right]&=\exp\left(\mathrm{i}t\mu+\delta_+
-#' \Gamma(-\alpha)\left((\lambda_+-\mathrm{i}t)^{\alpha}-\lambda_+^{\alpha}+
-#' \mathrm{i}t\alpha\lambda_+^{\alpha-1}\right)\right.\\&\ \left. +\delta_-
-#' \Gamma(-\alpha)\left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-
-#' \mathrm{i}t\alpha\lambda_-^{\alpha-1}\right)\right)}
+#' \deqn{\varphi_{CTS}(t;\theta):=
+#' \mathbb{E}_{\theta}\left[
+#' \mathrm{e}^{\mathrm{i}tX}\right]=
+#' \exp\left(\mathrm{i}t\mu+\delta_+\Gamma(-\alpha)
+#' \left((\lambda_+-\mathrm{i}t)^{\alpha}-\lambda_+^{\alpha}+
+#' \mathrm{i}t\alpha\lambda_+^{\alpha-1}\right)+\delta_-\Gamma(-\alpha)
+#' \left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-\mathrm{i}t\alpha
+#' \lambda_-^{\alpha-1}\right)
+#' \right)}
 #'
 #' @param t A positive integer.
 #' @param alpha A real number between 0 and 2.
@@ -394,7 +401,7 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
 #' For numerical evaluations it is therefore necessary to rely on algorithms
 #' like the fast Fourier transform applied to the characteristic function.
 #'
-#' @param x A numeric vector of quantiles.
+#' @param x A numeric vector of quantile.
 #' @param alpha A real number between 0 and 2.
 #' @param deltap,deltam  A real number > 0.
 #' @param lambdap,lambdam A  real number > 0.
@@ -416,8 +423,9 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
 #'
 #' @examples
-#' dCTS(1,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048)
-#' dCTS(1,0.6,1,1,1,1,1,NULL,"Conv")
+#' x <- seq(0,15,0.25)
+#' y <- dCTS(x,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048)
+#' plot(x,y)
 #'
 #' @export
 dCTS <- function(x, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
@@ -506,28 +514,36 @@ dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
                             abs.tol = 0)$value)
 }
 
-#' Function title
+#' Cumulative probability function of the classic tempered stable (CTS)
+#' distribution
 #'
-#' Gap holder for description.
+#' This function returns the cumulative probability function of the CTS
+#' distribution.
 #'
-#' Gap holder for details.
-#'
-#' @param q A gap holder.
+#' @param q A numeric vector of positive quantile.
 #' @param alpha A real number between 0 and 2.
 #' @param deltap,deltam  A real number > 0.
 #' @param lambdap,lambdam A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
-#' @param a A gap holder. -20 by default.
-#' @param b A gap holder. 20 by default.
-#' @param nf A gap holder.
-#' @param ... A gap holder.
+#' @param a Starting point of FFT, if \code{dens_method == "FFT"}. -20
+#' by default.
+#' @param b Ending point of FFT, if \code{dens_method == "FFT"}. 20
+#' by default.
+#' @param nf Pieces the transformation is divided in. Limited to power-of-two
+#' size.
+#' @param ... Possibility to modify \code{stats::integrate()}.
 #'
-#' @return Gap holder for return.
+#' @return As \code{x} is a numeric vector, the return value is also a numeric
+#' vector.
+#'
+#' @seealso
+#' See also the [dCTS()] density-function.
 #'
 #' @examples
-#' pCTS(0.5,0.5,1,1,1,1,1)
-#' pCTS(0.5,0.9,1,2,3,4,5)
+#' x <- seq(-5,5,0.25)
+#' y <- pCTS(x,0.5,1,1,1,1,1)
+#' plot(x,y)
 #'
 #' @export
 pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
@@ -559,10 +575,11 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
                 function(z) {
                   if(z<a) 0
                   else if (z>b) 1
-                  else min(stats::integrate(dCTS, lower = a, upper = z, alpha = alpha,
-                                 deltap = deltap, deltam = deltam,
-                                 lambdap = lambdap, lambdam = lambdam,
-                                 mu = mu,...)$value, 1 - 1e-07)})
+                  else min(stats::integrate(dCTS, lower = a, upper = z,
+                                            alpha = alpha, deltap = deltap,
+                                            deltam = deltam, lambdap = lambdap,
+                                            lambdam = lambdam, mu = mu,...)
+                           $value, 1 - 1e-07)})
 
     return(p)
 }
@@ -829,7 +846,7 @@ charNTS <- function(t, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' As for the CTS distribution, the density function is not available in closed
 #' form and numerical computation relies on the fast Fourier transform (FFT).
 #'
-#' @param x A numeric vector of quantiles.
+#' @param x A numeric vector of quantile.
 #' @param alpha A real number between 0 and 1.
 #' @param beta Any real number.
 #' @param delta A real number > 0.
@@ -852,8 +869,9 @@ charNTS <- function(t, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
 #'
 #' @examples
-#' dNTS(1,0.8,1,1,1,1)
-#' dNTS(0.5,0.5,20,20,20,20, a = -2000, b = 2000, nf = 8192)
+#' x <- seq(0,15,0.25)
+#' y <- dNTS(x,0.8,1,1,1,1)
+#' plot(x,y)
 #'
 #' @export
 dNTS <- function(x, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
@@ -905,34 +923,39 @@ dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
                               yleft = 1e-18, yright = 1e-18)[2]))
 }
 
-#' Title
+#' Cumulative probability function of the normal tempered stable (NTS)
+#' distribution
 #'
-#' Gap holder for description.
+#' This function returns the cumulative probability function of the NTS
+#' distribution.
 #'
-#' Gap holder for details.
-#'
-#' @param q A gap holder.
+#' @param q A numeric vector of positive quantile.
 #' @param alpha A real number between 0 and 1.
-#' @param beta A gap holder
+#' @param beta Any real number.
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
-#' @param a A gap holder. -20 by default.
-#' @param b A gap holder. 20 by default.
-#' @param nf A gap holder. 2048 by default. I don't know if this param is used
-#' in this function.
-#' @param ... A gap holder.
+#' @param a Starting point integrate density function. -40 by default.
+#' @param b Ending point of integrate density function. 40 by default.
+#' @param nf Pieces the fast Fourier transformation is divided in. Limited to
+#' power-of-two size. 2^11 by default.
+#' @param ... Change parameters in [dNST()]
 #'
-#' @return Gap holder for return.
+#' @return  As \code{x} is a numeric vector, the return value is also a numeric
+#' vector.
+#'
+#' @seealso
+#' See also the [dNTS()] density-function.
 #'
 #' @examples
-#' pNTS(0.1,0.5,1,1,1,1)
-#' pNTS(0.1,0.5,1,1,1,1,NULL, -20, 20, 2^6)
+#' x <- seq(-15,15,0.25)
+#' y <- pNTS(x,0.5,1,1,1,1)
+#' plot(x,y)
 #'
 #' @export
 pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
-                 mu = NULL, theta = NULL, a = -40, b = 40, nf = 2^13, ...) {
+                 mu = NULL, theta = NULL, a = -40, b = 40, nf = 2^11, ...) {
     if ((missing(alpha) | missing(beta) | missing(delta) | missing(lambda) |
          missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -958,9 +981,10 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
                 if(z<a) 0
                 else if
                 (z>b) 1
-                else min(stats::integrate(dNTS, lower = a, upper = z, alpha = alpha,
-                               beta = beta, delta = delta, lambda = lambda,
-                               mu = mu, ...)$value, 1-1e-7)})
+                else min(stats::integrate(dNTS, lower = a, upper = z,
+                                          alpha = alpha, beta = beta,
+                                          delta = delta, lambda = lambda,
+                                          mu = mu, ...)$value, 1-1e-7)})
 
     return(p)
 }

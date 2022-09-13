@@ -2,7 +2,8 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{pSTS}
 \alias{pSTS}
-\title{Quantile function of the tempered stable subordinator distribution}
+\title{Cumulative probability function of the tempered stable subordinator
+distribution}
 \usage{
 pSTS(
   q,
@@ -16,7 +17,7 @@ pSTS(
 )
 }
 \arguments{
-\item{q}{A numeric vector of positive quantiles.}
+\item{q}{A numeric vector of positive quantile.}
 
 \item{alpha}{A real number between 0 and 1.}
 
@@ -39,12 +40,13 @@ As \code{x} is a numeric vector, the return value is also a numeric
 vector.
 }
 \description{
-This function returns the quantile function of the tempered stable
-suborinator distribution.
+This function returns the cumulative probability function of the tempered
+stable suborinator distribution.
 }
 \examples{
-pSTS(3,0.7,1.354,0.3)
-pSTS(1,0.5,10,300,NULL,"")
+x <- seq(-15,15,0.25)
+y <- pSTS(x,0.7,1.354,0.3)
+plot(x,y)
 
 }
 \seealso{

@@ -2,7 +2,8 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{pNTS}
 \alias{pNTS}
-\title{Title}
+\title{Cumulative probability function of the normal tempered stable (NTS)
+distribution}
 \usage{
 pNTS(
   q,
@@ -14,16 +15,16 @@ pNTS(
   theta = NULL,
   a = -40,
   b = 40,
-  nf = 2^13,
+  nf = 2^11,
   ...
 )
 }
 \arguments{
-\item{q}{A gap holder.}
+\item{q}{A numeric vector of positive quantile.}
 
 \item{alpha}{A real number between 0 and 1.}
 
-\item{beta}{A gap holder}
+\item{beta}{Any real number.}
 
 \item{delta}{A real number > 0.}
 
@@ -33,26 +34,29 @@ pNTS(
 
 \item{theta}{A vector of all other arguments.}
 
-\item{a}{A gap holder. -20 by default.}
+\item{a}{Starting point integrate density function. -40 by default.}
 
-\item{b}{A gap holder. 20 by default.}
+\item{b}{Ending point of integrate density function. 40 by default.}
 
-\item{nf}{A gap holder. 2048 by default. I don't know if this param is used
-in this function.}
+\item{nf}{Pieces the fast Fourier transformation is divided in. Limited to
+power-of-two size. 2^11 by default.}
 
-\item{...}{A gap holder.}
+\item{...}{Change parameters in [dNST()]}
 }
 \value{
-Gap holder for return.
+As \code{x} is a numeric vector, the return value is also a numeric
+vector.
 }
 \description{
-Gap holder for description.
-}
-\details{
-Gap holder for details.
+This function returns the cumulative probability function of the NTS
+distribution.
 }
 \examples{
-pNTS(0.1,0.5,1,1,1,1)
-pNTS(0.1,0.5,1,1,1,1,NULL, -20, 20, 2^6)
+x <- seq(-15,15,0.25)
+y <- pNTS(x,0.5,1,1,1,1)
+plot(x,y)
 
+}
+\seealso{
+See also the [dNTS()] density-function.
 }

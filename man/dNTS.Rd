@@ -19,7 +19,7 @@ dNTS(
 )
 }
 \arguments{
-\item{x}{A numeric vector of quantiles.}
+\item{x}{A numeric vector of quantile.}
 
 \item{alpha}{A real number between 0 and 1.}
 
@@ -54,8 +54,9 @@ As for the CTS distribution, the density function is not available in closed
 form and numerical computation relies on the fast Fourier transform (FFT).
 }
 \examples{
-dNTS(1,0.8,1,1,1,1)
-dNTS(0.5,0.5,20,20,20,20, a = -2000, b = 2000, nf = 8192)
+x <- seq(0,15,0.25)
+y <- dNTS(x,0.8,1,1,1,1)
+plot(x,y)
 
 }
 \references{

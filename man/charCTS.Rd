@@ -32,16 +32,19 @@ charCTS(
 The result of spectral positive tempered stable process
 }
 \description{
-Let $X\sim CTS(\alpha,\delta_+,\delta_-,\lambda_+,\lambda_-,\mu)$.
+Let  \code{X ~ CTS(alpha,deltap, deltam, lambdap, lambdam, mu)}.
 The characteristic function is given by (Kuechler & Tappe 2013).
 }
 \details{
-\deqn{\varphi_{CTS}(t;\theta):=\mathbb{E}_{\theta}\left
-[\mathrm{e}^{\mathrm{i}tX}\right]&=\exp\left(\mathrm{i}t\mu+\delta_+
-\Gamma(-\alpha)\left((\lambda_+-\mathrm{i}t)^{\alpha}-\lambda_+^{\alpha}+
-\mathrm{i}t\alpha\lambda_+^{\alpha-1}\right)\right.\\&\ \left. +\delta_-
-\Gamma(-\alpha)\left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-
-\mathrm{i}t\alpha\lambda_-^{\alpha-1}\right)\right)}
+\deqn{\varphi_{CTS}(t;\theta):=
+\mathbb{E}_{\theta}\left[
+\mathrm{e}^{\mathrm{i}tX}\right]=
+\exp\left(\mathrm{i}t\mu+\delta_+\Gamma(-\alpha)
+\left((\lambda_+-\mathrm{i}t)^{\alpha}-\lambda_+^{\alpha}+
+\mathrm{i}t\alpha\lambda_+^{\alpha-1}\right)+\delta_-\Gamma(-\alpha)
+\left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-\mathrm{i}t\alpha
+\lambda_-^{\alpha-1}\right)
+\right)}
 }
 \examples{
 charCTS(2,0.5,1,1.5,2,2.5,3)
