@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{qCTS}
 \alias{qCTS}
-\title{Function title}
+\title{Quantile function of the classic tempered stable (CTS)}
 \usage{
 qCTS(
   p,
@@ -19,7 +19,8 @@ qCTS(
 )
 }
 \arguments{
-\item{p}{A gap holder.}
+\item{p}{A numeric vector of probabilities. Each probability must be a real
+number >0 and <1.}
 
 \item{alpha}{A real number between 0 and 2.}
 
@@ -31,18 +32,18 @@ qCTS(
 
 \item{theta}{A vector of all other arguments.}
 
-\item{qmin, qmax}{Limits of the interval.}
+\item{qmin, qmax}{Limits of the interval. Will be calcultated if
+\code{==NULL}.}
 
-\item{...}{A gap holder.}
+\item{...}{Modify [pSTS()] and [stats::uniroot()].}
 }
 \value{
-Gap holder for return.
+As \code{p} is a numeric vector, the return value is also a numeric
+vector.
 }
 \description{
-Gap holder for description.
-}
-\details{
-Gap holder for details.
+This function returns the quantile function of the classic tempered stable
+(CTS).
 }
 \examples{
 \donttest{
@@ -50,4 +51,7 @@ Gap holder for details.
   qCTS(0.5,1.5,1,1,1,1,1)
 }
 
+}
+\seealso{
+See also the [pCTS()] probability function.
 }

@@ -18,7 +18,7 @@ charSTS(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL)
 \item{theta}{A vector of all other arguments.}
 }
 \value{
-The result of spectral positive tempered stable process
+The result of spectral positive tempered stable process.
 }
 \description{
 When \code{alpha} is a real number between 0 and 1, the characterisic

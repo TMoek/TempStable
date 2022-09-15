@@ -36,12 +36,12 @@ will be triggered.}
 \item{...}{Possibility to modify \code{stats::integrate()}.}
 }
 \value{
-As \code{x} is a numeric vector, the return value is also a numeric
+As \code{q} is a numeric vector, the return value is also a numeric
 vector.
 }
 \description{
 This function returns the cumulative probability function of the tempered
-stable suborinator distribution.
+stable subordinator distribution.
 }
 \examples{
 x <- seq(-15,15,0.25)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{qNTS}
 \alias{qNTS}
-\title{Function title}
+\title{Quantile function of the normal tempered stable (NTS)}
 \usage{
 qNTS(
   p,
@@ -18,7 +18,8 @@ qNTS(
 )
 }
 \arguments{
-\item{p}{A gap holder.}
+\item{p}{A numeric vector of probabilities. Each probability must be a real
+number >0 and <1.}
 
 \item{alpha}{A real number between 0 and 1.}
 
@@ -32,21 +33,24 @@ qNTS(
 
 \item{theta}{A vector of all other arguments.}
 
-\item{qmin, qmax}{Limits of the interval.}
+\item{qmin, qmax}{Limits of the interval. Will be calcultated if
+\code{==NULL}.}
 
-\item{...}{A gap holder.}
+\item{...}{Modify [pSTS()] and [stats::uniroot()].}
 }
 \value{
-Gap holder for return.
+As \code{p} is a numeric vector, the return value is also a numeric
+vector.
 }
 \description{
-Gap holder for description.
-}
-\details{
-Gap holder for details.
+This function returns the quantile function of the normal tempered stable
+(NTS).
 }
 \examples{
 qNTS(0.1,0.5,1,1,1,1)
 qNTS(0.3,0.6,1,1,1,1,NULL)
 
+}
+\seealso{
+See also the [pSTS()] probability function.
 }

@@ -44,7 +44,7 @@ power-of-two size. 2^11 by default.}
 \item{...}{Change parameters in [dNST()]}
 }
 \value{
-As \code{x} is a numeric vector, the return value is also a numeric
+As \code{q} is a numeric vector, the return value is also a numeric
 vector.
 }
 \description{

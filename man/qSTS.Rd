@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{qSTS}
 \alias{qSTS}
-\title{Quantile function of of the tempered stable subordinator distribution}
+\title{Quantile function of the tempered stable subordinator distribution}
 \usage{
 qSTS(
   p,
@@ -16,7 +16,8 @@ qSTS(
 )
 }
 \arguments{
-\item{p}{A gap holder.}
+\item{p}{A numeric vector of probabilities. Each probability must be a real
+number >0 and <1.}
 
 \item{alpha}{A real number between 0 and 1.}
 
@@ -26,22 +27,24 @@ qSTS(
 
 \item{theta}{A vector of all other arguments.}
 
-\item{qmin, qmax}{Limits of the interval.}
+\item{qmin, qmax}{Limits of the interval. Will be calcultated if
+\code{==NULL}.}
 
-\item{...}{A gap holder.}
+\item{...}{Modify [pSTS()] and [stats::uniroot()].}
 }
 \value{
-Gap holder for return.
+As \code{p} is a numeric vector, the return value is also a numeric
+vector.
 }
 \description{
-Gap holder for description.
-TODO: die Quantilfunktion schaut, an welcher x -Stelle p = pSTS() ist
-}
-\details{
-Gap holder for details.
+This function returns the quantile function of the tempered stable
+subordinator distribution.
 }
 \examples{
 qSTS(0.5,0.5,5,0.01)
 qSTS(0.5,0.9,1,10,NULL)
 
+}
+\seealso{
+See also the [pSTS()] probability function.
 }

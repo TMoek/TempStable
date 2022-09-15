@@ -45,7 +45,7 @@ size.}
 \item{...}{Possibility to modify \code{stats::integrate()}.}
 }
 \value{
-As \code{x} is a numeric vector, the return value is also a numeric
+As \code{q} is a numeric vector, the return value is also a numeric
 vector.
 }
 \description{

@@ -24,7 +24,7 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' @param lambda A  real number > 0.
 #' @param theta A vector of all other arguments.
 #'
-#' @return The result of spectral positive tempered stable process
+#' @return The result of spectral positive tempered stable process.
 #'
 #' @references
 #' Massing, T. (2022), 'Parametric Estimation of Tempered Stbale Laws'
@@ -117,7 +117,7 @@ dSTS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 #' distribution
 #'
 #' This function returns the cumulative probability function of the tempered
-#' stable suborinator distribution.
+#' stable subordinator distribution.
 #'
 #'
 #' @param q A numeric vector of positive quantile.
@@ -131,7 +131,7 @@ dSTS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 #' \code{pmethod != "integrate"}. 10000 by default.
 #' @param ... Possibility to modify \code{stats::integrate()}.
 #'
-#' @return  As \code{x} is a numeric vector, the return value is also a numeric
+#' @return  As \code{q} is a numeric vector, the return value is also a numeric
 #' vector.
 #'
 #' @seealso
@@ -176,13 +176,16 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
   return(p)
 }
 
-#' Title
+
+#' Function to generate random variates of STS distribution.
 #'
-#' Gap holder for description.
+#' Generates \code{n} random numbers distributed according to the distribution
+#' of the tempered stable subordinator.
 #'
-#' Gap holder for details.
+#' TODO: Describe difference between "AR" and "SR". Right now, AR is the method
+#' that is used in Monte Carlo. And it cannot be changed there.
 #'
-#' @param n A gap holder.
+#' @param n sample size (integer).
 #' @param alpha A real number between 0 and 1.
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
@@ -190,9 +193,8 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' @param method A String. Either "AR" or "SR".
 #' @param k integer: the number of replications, if \code{method == "SR"}. 100
 #' by default.
-#' @param ... A gap holder.
 #'
-#' @return Gap holder for return.
+#' @return generates random deviates.
 #'
 #' @examples
 #' rSTS(100,0.5,1,1)
@@ -200,7 +202,7 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #'
 #' @export
 rSTS <- function(n, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
-                   method = "AR", k = 100, ...) {
+                   method = "AR", k = 100) {
     if ((missing(alpha) | missing(delta) | missing(lambda)) & is.null(theta))
       stop("No or not enough parameters supplied")
     theta0 <- c(alpha, delta, lambda)
@@ -265,22 +267,26 @@ rSTS_SR1 <- function(alpha, delta, lambda, k) {
     return(sum(apply(X, 1, FUN = min)))
 }
 
-#' Quantile function of of the tempered stable subordinator distribution
+#' Quantile function of the tempered stable subordinator distribution
 #'
-#' Gap holder for description.
-#' TODO: die Quantilfunktion schaut, an welcher x -Stelle p = pSTS() ist
+#' This function returns the quantile function of the tempered stable
+#' subordinator distribution.
 #'
-#' Gap holder for details.
-#'
-#' @param p A gap holder.
+#' @param p A numeric vector of probabilities. Each probability must be a real
+#' number >0 and <1.
 #' @param alpha A real number between 0 and 1.
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
 #' @param theta A vector of all other arguments.
-#' @param qmin,qmax Limits of the interval.
-#' @param ... A gap holder.
+#' @param qmin,qmax Limits of the interval. Will be calcultated if
+#' \code{==NULL}.
+#' @param ... Modify [pSTS()] and [stats::uniroot()].
 #'
-#' @return Gap holder for return.
+#' @return  As \code{p} is a numeric vector, the return value is also a numeric
+#' vector.
+#'
+#' @seealso
+#' See also the [pSTS()] probability function.
 #'
 #' @examples
 #' qSTS(0.5,0.5,5,0.01)
@@ -534,7 +540,7 @@ dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
 #' size.
 #' @param ... Possibility to modify \code{stats::integrate()}.
 #'
-#' @return As \code{x} is a numeric vector, the return value is also a numeric
+#' @return As \code{q} is a numeric vector, the return value is also a numeric
 #' vector.
 #'
 #' @seealso
@@ -714,22 +720,27 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
     return(x)
 }
 
-#' Function title
+#' Quantile function of the classic tempered stable (CTS)
 #'
-#' Gap holder for description.
+#' This function returns the quantile function of the classic tempered stable
+#' (CTS).
 #'
-#' Gap holder for details.
-#'
-#' @param p A gap holder.
+#' @param p A numeric vector of probabilities. Each probability must be a real
+#' number >0 and <1.
 #' @param alpha A real number between 0 and 2.
 #' @param deltap,deltam  A real number > 0.
 #' @param lambdap,lambdam A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
-#' @param qmin,qmax Limits of the interval.
-#' @param ... A gap holder.
+#' @param qmin,qmax Limits of the interval. Will be calcultated if
+#' \code{==NULL}.
+#' @param ... Modify [pSTS()] and [stats::uniroot()].
 #'
-#' @return Gap holder for return.
+#' @return  As \code{p} is a numeric vector, the return value is also a numeric
+#' vector.
+#'
+#' @seealso
+#' See also the [pCTS()] probability function.
 #'
 #' @examples
 #' \donttest{
@@ -942,7 +953,7 @@ dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
 #' power-of-two size. 2^11 by default.
 #' @param ... Change parameters in [dNST()]
 #'
-#' @return  As \code{x} is a numeric vector, the return value is also a numeric
+#' @return  As \code{q} is a numeric vector, the return value is also a numeric
 #' vector.
 #'
 #' @seealso
@@ -1059,23 +1070,28 @@ rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
     return(x)
 }
 
-#' Function title
+#' Quantile function of the normal tempered stable (NTS)
 #'
-#' Gap holder for description.
+#' This function returns the quantile function of the normal tempered stable
+#' (NTS).
 #'
-#' Gap holder for details.
-#'
-#' @param p A gap holder.
+#' @param p A numeric vector of probabilities. Each probability must be a real
+#' number >0 and <1.
 #' @param alpha A real number between 0 and 1.
 #' @param beta A gap holder.
 #' @param delta  A real number > 0.
 #' @param lambda A  real number >= 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
-#' @param qmin,qmax Limits of the interval.
-#' @param ... A gap holder.
+#' @param qmin,qmax Limits of the interval. Will be calcultated if
+#' \code{==NULL}.
+#' @param ... Modify [pSTS()] and [stats::uniroot()].
 #'
-#' @return Gap holder for return.
+#' @return As \code{p} is a numeric vector, the return value is also a numeric
+#' vector.
+#'
+#' @seealso
+#' See also the [pSTS()] probability function.
 #'
 #' @examples
 #' qNTS(0.1,0.5,1,1,1,1)
