@@ -27,7 +27,7 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' @return The result of spectral positive tempered stable process.
 #'
 #' @references
-#' Massing, T. (2022), 'Parametric Estimation of Tempered Stbale Laws'
+#' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Reiichiro K. & Hiroki M. (2011), 'On simulation of tempered stable random
 #' variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
@@ -79,7 +79,7 @@ charSTS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
 #' vector.
 #'
 #' @references
-#' Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
+#' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
 #' processes' \url{https://doi.org/10.1016/j.spa.2013.06.012}
@@ -138,7 +138,7 @@ dSTS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 #' See also the [dSTS()] density-function.
 #'
 #' @examples
-#' x <- seq(-15,15,0.25)
+#' x <- seq(0,15,0.25)
 #' y <- pSTS(x,0.7,1.354,0.3)
 #' plot(x,y)
 #'
@@ -359,7 +359,7 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' @return The result of spectral positive tempered stable process
 #'
 #' @references
-#' Massing, T. (2022), 'Parametric Estimation of Tempered Stbale Laws';
+#' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws';
 #'
 #' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
 #' processes' \url{https://doi.org/10.1016/j.spa.2013.06.012}
@@ -426,7 +426,7 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
 #' vector.
 #'
 #' @references
-#' Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
+#' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' @examples
 #' x <- seq(0,15,0.25)
@@ -526,7 +526,7 @@ dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
 #' This function returns the cumulative probability function of the CTS
 #' distribution.
 #'
-#' @param q A numeric vector of positive quantile.
+#' @param q A numeric vector of quantile.
 #' @param alpha A real number between 0 and 2.
 #' @param deltap,deltam  A real number > 0.
 #' @param lambdap,lambdam A  real number > 0.
@@ -590,13 +590,15 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
     return(p)
 }
 
-#' Function title
+#' Function to generate random variates of CTS distribution.
 #'
-#' Gap holder for description.
+#' Generates \code{n} random numbers distributed according to the classic
+#' tempered stable (CTS) distribution.
 #'
-#' Gap holder for details.
+#' TODO: Describe difference between "aAR" and "SR". Right now, aAR is the
+#' method that is used in Monte Carlo. And it cannot be changed there.
 #'
-#' @param n A gap holder.
+#' @param n sample size (integer).
 #' @param alpha A real number between 0 and 2.
 #' @param deltap,deltam  A real number > 0.
 #' @param lambdap,lambdam A  real number > 0.
@@ -606,9 +608,8 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @param k integer: the number of replications, if \code{method == "SR"}. 100
 #' by default.
 #' @param c A real number. Only relevant for \code{method == "aAR"}.
-#' TODO(Till): Choose a suitable default value.
 #'
-#' @return Gap holder for return.
+#' @return generates random deviates.
 #'
 #' @examples
 #' rCTS(10,0.5,1,1,1,1,1,NULL,"SR",10)
@@ -817,7 +818,7 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @return The result of spectral positive tempered stable process
 #'
 #' @references
-#' Massing, T. (2022), 'Parametric Estimation of Tempered Stbale Laws'
+#' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Rachev, S., Kim, Y., Bianchi, M. & Fabozzi, F. (2011), 'Financial Models with
 #' Levy Processes and Volatility Clustering'
@@ -877,7 +878,7 @@ charNTS <- function(t, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' vector.
 #'
 #' @references
-#' Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
+#' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' @examples
 #' x <- seq(0,15,0.25)
@@ -940,7 +941,7 @@ dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
 #' This function returns the cumulative probability function of the NTS
 #' distribution.
 #'
-#' @param q A numeric vector of positive quantile.
+#' @param q A numeric vector of quantile.
 #' @param alpha A real number between 0 and 1.
 #' @param beta Any real number.
 #' @param delta A real number > 0.
@@ -1000,13 +1001,15 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
     return(p)
 }
 
-#' Function title
+#' Function to generate random variates of NTS distribution.
 #'
-#' Gap holder for description.
+#' Generates \code{n} random numbers distributed according to the normal
+#' tempered stable distribution.
 #'
-#' Gap holder for details.
+#' TODO: Describe difference between "AR" and "SR". Right now, AR is the method
+#' that is used in Monte Carlo. And it cannot be changed there.
 #'
-#' @param n A gap holder.
+#' @param n sample size (integer).
 #' @param alpha A real number between 0 and 1.
 #' @param beta A gap holder.
 #' @param delta  A real number > 0.
@@ -1016,9 +1019,8 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' @param method A String. Either "AR" or "SR". "AR" by default.
 #' @param k integer: the number of replications, if \code{method == "SR"}. 100
 #' by default.
-#' @param ... A gap holder.
 #'
-#' @return Gap holder for return.
+#' @return generates random deviates.
 #'
 #' @examples
 #' rNTS(100, 0.5, 1,1,1,1)
@@ -1027,7 +1029,7 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #'
 #' @export
 rNTS <- function(n, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
-                 mu = NULL, theta = NULL, method = "AR", k = 100, ...) {
+                 mu = NULL, theta = NULL, method = "AR", k = 100) {
     if ((missing(alpha) | missing(beta) | missing(delta) | missing(lambda) |
          missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -1047,7 +1049,7 @@ rNTS <- function(n, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
     x <- switch(method,
                 AR = rNTS_AR(n = n, alpha = alpha, beta = beta,
-                             delta = delta, lambda = lambda, mu = mu, ...),
+                             delta = delta, lambda = lambda, mu = mu),
                 SR = rNTS_SR(n = n, alpha = alpha, beta = beta, delta = delta,
                              lambda = lambda, mu = mu, k = k))
     return(x)
@@ -1177,26 +1179,26 @@ rCGMY <- function(n, C, G, M, Y, method = "SR", k = 100, ...) {
 
 #####Bohman Char to CDF#####
 
-#' Function title
+#' Cumulative distribution function from characteristic function
 #'
 #' Gap holder for description.
 #'
 #' Gap holder for details.
 #'
-#' @param q A gap holder.
+#' @param q A numeric vector of positive quantile.
 #' @param N A gap holder.
 #' @param m A gap holder.
 #' @param s A gap holder.
-#' @param char A gap holder.
-#' @param ... A gap holder.
+#' @param char Choose a characteristic function from package. Either [charSTS],
+#' [charCTS], or [charNTS].
+#' @param ... Use this for parameters of the relevant characteristic function.
 #'
-#' @return Gap holder for return.
+#' @return As \code{q} is a numeric vector, the return value is also a numeric
+#' vector.
 #'
 #' @examples
-#' chartocdf(0.5,10,1,1,charNTS, alpha=0.5, beta = 1, delta = 1, lambda = 1,
+#' chartocdf(seq(0,15,0.25),61,1,1,charNTS, alpha=0.5, beta = 1, delta = 1, lambda = 1,
 #'  mu = 1)
-#' chartocdf(0.5,10,1,1,charCTS, alpha=0.5, deltap = 1, deltam = 1, lambdap = 1,
-#'  lambdam = 1, mu = 1)
 #'
 #' @export
 chartocdf <- function(q, N, m , s, char, ...){

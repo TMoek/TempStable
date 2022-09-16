@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{rCTS}
 \alias{rCTS}
-\title{Function title}
+\title{Function to generate random variates of CTS distribution.}
 \usage{
 rCTS(
   n,
@@ -19,7 +19,7 @@ rCTS(
 )
 }
 \arguments{
-\item{n}{A gap holder.}
+\item{n}{sample size (integer).}
 
 \item{alpha}{A real number between 0 and 2.}
 
@@ -36,17 +36,18 @@ rCTS(
 \item{k}{integer: the number of replications, if \code{method == "SR"}. 100
 by default.}
 
-\item{c}{A real number. Only relevant for \code{method == "aAR"}.
-TODO(Till): Choose a suitable default value.}
+\item{c}{A real number. Only relevant for \code{method == "aAR"}.}
 }
 \value{
-Gap holder for return.
+generates random deviates.
 }
 \description{
-Gap holder for description.
+Generates \code{n} random numbers distributed according to the classic
+tempered stable (CTS) distribution.
 }
 \details{
-Gap holder for details.
+TODO: Describe difference between "aAR" and "SR". Right now, aAR is the
+method that is used in Monte Carlo. And it cannot be changed there.
 }
 \examples{
 rCTS(10,0.5,1,1,1,1,1,NULL,"SR",10)

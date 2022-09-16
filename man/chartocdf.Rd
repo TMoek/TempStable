@@ -2,12 +2,12 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{chartocdf}
 \alias{chartocdf}
-\title{Function title}
+\title{Cumulative distribution function from characteristic function}
 \usage{
 chartocdf(q, N, m, s, char, ...)
 }
 \arguments{
-\item{q}{A gap holder.}
+\item{q}{A numeric vector of positive quantile.}
 
 \item{N}{A gap holder.}
 
@@ -15,12 +15,14 @@ chartocdf(q, N, m, s, char, ...)
 
 \item{s}{A gap holder.}
 
-\item{char}{A gap holder.}
+\item{char}{Choose a characteristic function from package. Either [charSTS],
+[charCTS], or [charNTS].}
 
-\item{...}{A gap holder.}
+\item{...}{Use this for parameters of the relevant characteristic function.}
 }
 \value{
-Gap holder for return.
+As \code{q} is a numeric vector, the return value is also a numeric
+vector.
 }
 \description{
 Gap holder for description.
@@ -29,9 +31,7 @@ Gap holder for description.
 Gap holder for details.
 }
 \examples{
-chartocdf(0.5,10,1,1,charNTS, alpha=0.5, beta = 1, delta = 1, lambda = 1,
+chartocdf(seq(0,15,0.25),61,1,1,charNTS, alpha=0.5, beta = 1, delta = 1, lambda = 1,
  mu = 1)
-chartocdf(0.5,10,1,1,charCTS, alpha=0.5, deltap = 1, deltam = 1, lambdap = 1,
- lambdam = 1, mu = 1)
 
 }

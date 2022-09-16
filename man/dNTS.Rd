@@ -60,5 +60,5 @@ plot(x,y)
 
 }
 \references{
-Massing, Till (2022), 'Parametric Estimation of Tempered Stbale Laws'
+Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 }

@@ -42,7 +42,7 @@ charSTS(500,0.9,1,0.3)
 
 }
 \references{
-Massing, T. (2022), 'Parametric Estimation of Tempered Stbale Laws'
+Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
 
 Reiichiro K. & Hiroki M. (2011), 'On simulation of tempered stable random
 variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}

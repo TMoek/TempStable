@@ -20,7 +20,7 @@ pNTS(
 )
 }
 \arguments{
-\item{q}{A numeric vector of positive quantile.}
+\item{q}{A numeric vector of quantile.}
 
 \item{alpha}{A real number between 0 and 1.}
 
