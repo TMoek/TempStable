@@ -43,14 +43,39 @@
 #' of the various estimate functions is available in the package
 #' \code{StableEstim}.
 #' \describe{
-#'   \item{For ML:}{use \code{?StableEstim::MLParametersEstim}}
-#'   \item{For GMM:}{use \code{?StableEstim::GMMParametersEstim}}
-#'   \item{For Cgmm:}{use \code{?StableEstim::CgmmParametersEstim}}
-#'   \item{For GMC:}{TODO}
+#'   \item{For ML:}{use \code{?StableEstim::MLParametersEstim}. See usage of
+#'   Maximum likelihood estimation in Kim et al. (2008)}
+#'   \item{For GMM:}{use \code{?StableEstim::GMMParametersEstim}. Generalized
+#'   Method of Moments by Hansen (1982)}
+#'   \item{For Cgmm:}{use \code{?StableEstim::CgmmParametersEstim}. Continuum
+#'   Generalized Methods of Moments by Carrasco & Kotchoni (2017)}
+#'   \item{For GMC:}{We also use a method of moment approach which follows
+#'    Kuechler & Tappe (2013). They match empirical cumulants with their
+#'    theoretical counterparts. We extend this by using Hansen's (1982) GMM
+#'    framework. We call the approach generalized method of cumulants (GMC) to
+#'    distinguish it from the GMM method using characteristic function moment
+#'    conditions. However, it fits well into Hansen's (1982) framework allowing
+#'    for standard asymptotic theory.}
 #' }
 #'
 #' @seealso
 #' \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R}
+#'
+#' @references
+#' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws';
+#'
+#' Kim, Y. s., Rachev, S. T., Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
+#' market models with lévy processes and time-varying volatility'
+#' \url{https://doi.org/10.1016/j.jbankfin.2007.11.004};
+#'
+#' Hansen, L. P. (1982), 'Large sample properties of generalized method of
+#' moments estimators' \url{https://doi.org/10.2307/1912775};
+#'
+#' Carrasco, M. & Kotchoni, R. (2017), 'Efficient estimation using the
+#' characteristic function' \url{https://doi.org/10.1017/S0266466616000025};
+#'
+#' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distribution and processes'
+#' \url{https://doi.org/10.1016/j.spa.2013.06.012};
 #'
 #' @param ParameterMatrix A gap holder.
 #' @param SampleSizes Sample sizes to be used to simulate the data. By default,
