@@ -7,7 +7,7 @@
 charSTS(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL)
 }
 \arguments{
-\item{t}{A positive integer.}
+\item{t}{A numeric vector of quantile.}
 
 \item{alpha}{A real number between 0 and 1.}
 
@@ -37,8 +37,9 @@ stable (Levy) process.
 \left((\lambda-\mathrm{i}t)^{\alpha}-\lambda^{\alpha}\right)\right)}
 }
 \examples{
-charSTS(1000,0.5,1,0.3)
-charSTS(500,0.9,1,0.3)
+x <- seq(-10,10,0.25)
+y <- charSTS(x,0.5,1,1)
+plot(x,y)
 
 }
 \references{

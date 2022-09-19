@@ -18,7 +18,7 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' \mathrm{e}^{\mathrm{i}tY}\right]= \exp\left(\delta\Gamma(-\alpha)
 #' \left((\lambda-\mathrm{i}t)^{\alpha}-\lambda^{\alpha}\right)\right)}
 #'
-#' @param t A positive integer.
+#' @param t A numeric vector of quantile.
 #' @param alpha A real number between 0 and 1.
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
@@ -33,8 +33,9 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
 #'
 #' @examples
-#' charSTS(1000,0.5,1,0.3)
-#' charSTS(500,0.9,1,0.3)
+#' x <- seq(-10,10,0.25)
+#' y <- charSTS(x,0.5,1,1)
+#' plot(x,y)
 #'
 #' @export
 charSTS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
@@ -349,7 +350,7 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' \lambda_-^{\alpha-1}\right)
 #' \right)}
 #'
-#' @param t A positive integer.
+#' @param t A numeric vector of quantile.
 #' @param alpha A real number between 0 and 2.
 #' @param deltap,deltam  A real number > 0.
 #' @param lambdap,lambdam A  real number > 0.
@@ -365,8 +366,9 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' processes' \url{https://doi.org/10.1016/j.spa.2013.06.012}
 #'
 #' @examples
-#' charCTS(2,0.5,1,1.5,2,2.5,3)
-#' charCTS(2,1.5,200,150,300,2500,1,NULL)
+#' x <- seq(-10,10,0.25)
+#' y <- charCTS(x,1.5,1,1,1,1,0)
+#' plot(x,y)
 #'
 #' @export
 charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
@@ -547,9 +549,11 @@ dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
 #' See also the [dCTS()] density-function.
 #'
 #' @examples
+#' \donttest{
 #' x <- seq(-5,5,0.25)
 #' y <- pCTS(x,0.5,1,1,1,1,1)
 #' plot(x,y)
+#' }
 #'
 #' @export
 pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
@@ -807,7 +811,7 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' \beta+t^2/2)^{\alpha}-\lambda^{\alpha}\right)\right)
 #' }
 #'
-#' @param t A positive integer.
+#' @param t A numeric vector of quantile.
 #' @param alpha A real number between 0 and 1.
 #' @param beta Any real number.
 #' @param delta A real number > 0.
@@ -825,8 +829,9 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' \url{https://books.google.de/books?id=XKvUUrcS_twC}
 #'
 #' @examples
-#' charNTS(0.1,0.9,10,20,30,40)
-#' charNTS(0.1,0.9,1,2,3,4, NULL)
+#' x <- seq(-10,10,0.25)
+#' y <- charNTS(x,0.5,1,1,1,0)
+#' plot(x,y)
 #'
 #' @export
 charNTS <- function(t, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
@@ -961,9 +966,11 @@ dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
 #' See also the [dNTS()] density-function.
 #'
 #' @examples
+#' \donttest{
 #' x <- seq(-15,15,0.25)
 #' y <- pNTS(x,0.5,1,1,1,1)
 #' plot(x,y)
+#' }
 #'
 #' @export
 pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,

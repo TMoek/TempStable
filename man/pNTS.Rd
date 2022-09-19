@@ -52,9 +52,11 @@ This function returns the cumulative probability function of the NTS
 distribution.
 }
 \examples{
+\donttest{
 x <- seq(-15,15,0.25)
 y <- pNTS(x,0.5,1,1,1,1)
 plot(x,y)
+}
 
 }
 \seealso{

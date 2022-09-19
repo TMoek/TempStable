@@ -1,31 +1,93 @@
 ##### Master function#####
 
-#' Function title
+#' Main estimation function
 #'
-#' Gap holder for description.
+#' Main estimation function which computes all the information about the
+#' estimator. It allows the user to choose the preferred method and several
+#' related options.
+#'
+#' \strong{TemperedType} Detailed documentation of the individual tempered
+#' stable distributions can be viewed in the respective characteristic function.
+#' Use \code{charSTS}, \code{charCTS}, or \code{charNTS}.
 #'
 #' \strong{Estimfct} Detailed documentation of the individual parameters
 #' of the various estimate functions is available in the package
 #' \code{StableEstim}.
 #' \describe{
-#' \item{For ML:}{Write \code{?StableEstim::MLParametersEstim} to console.}
-#' \item{For GMM:}{Write \code{?StableEstim::GMMParametersEstim} to console.}
-#' \item{For Cgmm:}{Write \code{?StableEstim::CgmmParametersEstim} to console.}
-#' \item{For GMC:}{TODO}
+#'   \item{For ML:}{use \code{?StableEstim::MLParametersEstim}. See usage of
+#'   Maximum likelihood estimation in Kim et al. (2008)}
+#'   \item{For GMM:}{use \code{?StableEstim::GMMParametersEstim}. Generalized
+#'   Method of Moments by Hansen (1982)}
+#'   \item{For Cgmm:}{use \code{?StableEstim::CgmmParametersEstim}. Continuum
+#'   Generalized Methods of Moments by Carrasco & Kotchoni (2017)}
+#'   \item{For GMC:}{We also use a method of moment approach which follows
+#'    Kuechler & Tappe (2013). They match empirical cumulants with their
+#'    theoretical counterparts. We extend this by using Hansen's (1982) GMM
+#'    framework. We call the approach generalized method of cumulants (GMC) to
+#'    distinguish it from the GMM method using characteristic function moment
+#'    conditions. However, it fits well into Hansen's (1982) framework allowing
+#'    for standard asymptotic theory.}
 #' }
+#'
+#' \strong{Estim-Class} Class storing all the information about the estimation
+#' method; output of this function.
+#' \strong{Slots of the return class}
+#' \describe{
+#'   \item{par:}{Object of class "\code{numeric}"; Value of the estimated
+#'   parameters.}
+#'   \item{par0:}{Object of class "\code{numeric}";Initial guess for the
+#'   parameters.}
+#'   \item{vcov:}{Object of class "\code{matrix}" representing the covariance
+#'   matrix.}
+#'   \item{confint:}{Object of class "\code{matrix}" representing the confidence
+#'   interval computed at a specific level (attribute of the object).}
+#'   \item{data:}{Object of class "\code{numeric}" used to compute the
+#'   estimation.}
+#'   \item{sampleSize:}{Object of class "\code{numeric}" ; length of the data.}
+#'   \item{others:}{Object of class "\code{list}" ; more information about the
+#'   estimation method.}
+#'   \item{duration:}{Object of class "\code{numeric}" ; duration in seconds.}
+#'   \item{failure:}{Object of class "\code{numeric}" representing the status of
+#'    the procedure: 0 failure or 1 success.}
+#'   \item{method:}{Object of class "\code{character}" description of the
+#'   parameter used in the estimation.}
+#' }
+#'
+#' @seealso
+#' \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R}
+#'
+#' @references
+#' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws';
+#'
+#' Kim, Y. s., Rachev, S. T., Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
+#' market models with lévy processes and time-varying volatility'
+#' \url{https://doi.org/10.1016/j.jbankfin.2007.11.004};
+#'
+#' Hansen, L. P. (1982), 'Large sample properties of generalized method of
+#' moments estimators' \url{https://doi.org/10.2307/1912775};
+#'
+#' Carrasco, M. & Kotchoni, R. (2017), 'Efficient estimation using the
+#' characteristic function' \url{https://doi.org/10.1017/S0266466616000025};
+#'
+#' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distribution and processes'
+#' \url{https://doi.org/10.1016/j.spa.2013.06.012};
 #'
 #' @param TemperedType A String. Either "Classic", "Subordinator", or "Normal"
 #' @param EstimMethod A String. Either "ML", "GMM", "Cgmm", or "GMC".
-#' @param data A gap holder.
-#' @param theta0 A gap holder. \code{NULL} by default. Must not be NULL, if
-#' data comes from function like \code{rCTS(...)}
-#' @param ComputeCov A Boolean. \code{FALSE} by default.
-#' @param HandleError A Boolean. \code{TRUE} by default.
+#' @param data Data used to perform the estimation: vector of length n.
+#' @param theta0 A vector of numeric values corresponding to the pattern of the
+#' \code{TemperedType}.
+#' @param ComputeCov 	Logical flag: If set to TRUE, the asymptotic covariance
+#' matrix is computed. \code{FALSE} by default.
+#' @param HandleError Logical flag: If set to \code{TRUE} and if an error occurs
+#' during the estimation procedure, the computation will carry on and NA will be
+#' returned. Useful for Monte Carlo simulations.\code{TRUE} by default.
 #' @param eps A gap holder. \code{1e-06} by default.
-#' @param ... A gap holder.
+#' @param ... Other arguments to be passed to the estimation function or the
+#' asymptotic confidence level.
 #'
 #'
-#' @return Gap holder for return.
+#' @return Object of a estim-class. See details for more information.
 #'
 #' @examples
 #' \donttest{
@@ -53,14 +115,14 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
         stop("data not provided !")
     if (is.null(theta0)) {
         if (TemperedType == "Classic") {
-            theta0 <- MoC_CTS(x <- data, c(1.5, 1, 1, 1, 1, 0), eps = eps)
+            theta0 <- MoC_CTS(x <- data, c(1.5, 1, 1, 1, 1, 0))
         } else if (TemperedType == "Subordinator") {
-            theta0 <- MoC_STS(x <- data, c(0.5, 1, 1), eps = eps)
+            theta0 <- MoC_STS(x <- data, c(0.5, 1, 1))
         } else if (TemperedType == "Normal") {
-            theta0 <- MoC_NTS(x <- data, c(0.5, 0, 1, 1, 0), eps = eps)
+            theta0 <- MoC_NTS(x <- data, c(0.5, 0, 1, 1, 0))
         }
       # else {
-      #       theta0 <- MoC_CGMY(x <- data, c(1, 1, 1, 1.5), eps = eps)
+      #       theta0 <- MoC_CGMY(x <- data, c(1, 1, 1, 1.5))
       #   }
     }
     if (TemperedType == "Classic") {
@@ -200,19 +262,7 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
 
 ##### auxiliaries#####
 
-#' Function title
-#'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
-#'
-#' @param type A String. Either "Classic", "Subordinator", "Normal", or
-#' "CGMY".
-#' @param method A String. Either "ML", "GMM", "Cgmm", or "GMC".
-#'
-#' @return Gap holder for return.
-#'
-#' @export
+# No export.
 getTempEstimFcts <- function(
     type = c("Classic", "Subordinator", "Normal"),
     method = c("ML", "GMM", "Cgmm", "GMC")) {

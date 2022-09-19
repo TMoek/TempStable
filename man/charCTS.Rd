@@ -16,7 +16,7 @@ charCTS(
 )
 }
 \arguments{
-\item{t}{A positive integer.}
+\item{t}{A numeric vector of quantile.}
 
 \item{alpha}{A real number between 0 and 2.}
 
@@ -47,8 +47,9 @@ The characteristic function is given by (Kuechler & Tappe 2013).
 \right)}
 }
 \examples{
-charCTS(2,0.5,1,1.5,2,2.5,3)
-charCTS(2,1.5,200,150,300,2500,1,NULL)
+x <- seq(-10,10,0.25)
+y <- charCTS(x,1.5,1,1,1,1,0)
+plot(x,y)
 
 }
 \references{

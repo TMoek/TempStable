@@ -53,9 +53,11 @@ This function returns the cumulative probability function of the CTS
 distribution.
 }
 \examples{
+\donttest{
 x <- seq(-5,5,0.25)
 y <- pCTS(x,0.5,1,1,1,1,1)
 plot(x,y)
+}
 
 }
 \seealso{

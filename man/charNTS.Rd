@@ -15,7 +15,7 @@ charNTS(
 )
 }
 \arguments{
-\item{t}{A positive integer.}
+\item{t}{A numeric vector of quantile.}
 
 \item{alpha}{A real number between 0 and 1.}
 
@@ -43,8 +43,9 @@ The corresponding tempering function can be found in Rachev et al. (2011).
 }
 }
 \examples{
-charNTS(0.1,0.9,10,20,30,40)
-charNTS(0.1,0.9,1,2,3,4, NULL)
+x <- seq(-10,10,0.25)
+y <- charNTS(x,0.5,1,1,1,0)
+plot(x,y)
 
 }
 \references{

@@ -18,7 +18,8 @@ TemperedEstim_Simulation(
 )
 }
 \arguments{
-\item{ParameterMatrix}{A gap holder.}
+\item{ParameterMatrix}{The matrix is to be composed of vectors, row by row.
+Each vector must fit the pattern of theta of the \code{TemperedType}.}
 
 \item{SampleSizes}{Sample sizes to be used to simulate the data. By default,
 we use 200 (small sample size) and 1600 (large sample size);
@@ -44,10 +45,12 @@ information is saved in the current directory. See details.}
 
 \item{eps}{A gap holder.}
 
-\item{...}{A gap holder.}
+\item{...}{Other arguments to be passed to the estimation function.}
 }
 \value{
-Gap holder for return.
+If \code{saveOutput == FALSE}, the return object is a list of 2.
+Results of the simulation are listed in \code{$outputMat}. If \code{
+saveOutput == TRUE}, only a csv file is saved and nothing is returned.
 }
 \description{
 Runs Monte Carlo simulation for a selected estimation method. The function

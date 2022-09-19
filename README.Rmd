@@ -20,6 +20,29 @@ knitr::opts_chunk$set(
 
 TODO: Describe what the package does... How to write readme: https://monashbioinformaticsplatform.github.io/2017-11-16-open-science-training/topics/rmarkdown.html
 
+<!-- Start of my description -->
+A collection of methods to estimate parameters of different tempered stable
+distributions. Currently, there are three different tempered stable 
+distributions to choose from: Tempered stable subordinator distribution, 
+classical tempered stable distribution, normal tempered stable distribution.
+The package also provides functions to compute characteristic functions and
+tools to run Monte Carlo simulations.
+
+The main function of this package are briefly described below:
+
+*   main function: TemperedEstim() computes all the information about the
+estimator. It allows the user to choose the preferred method and several
+related options.
+*   Characteristic function, density function, probability function and other 
+functions for every tempered stable distribution mentioned above. 
+E.g. charSTS(), dCTS(), ...
+*   Monte Carlo simulation: a tool to run a Monte Carlo simulation (TemperedEstim_Simulation()) is provided and can save output files or 
+produce statistical summary.
+
+The package was developed by Till Massing and Cedric Jüssen and is structurally based on the "StableEstim" package by Tarak Kharrat and Georgi N. Boshnakov.
+
+<!-- End of my description -->
+
 StableEstim description looks like this:
 
 A collection of methods to estimate the four parameters of stable distributions. The package also provides functions to compute characteristic functions and tools to run Monte Carlo simulations.

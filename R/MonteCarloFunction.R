@@ -77,7 +77,8 @@
 #' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distribution and processes'
 #' \url{https://doi.org/10.1016/j.spa.2013.06.012};
 #'
-#' @param ParameterMatrix A gap holder.
+#' @param ParameterMatrix The matrix is to be composed of vectors, row by row.
+#' Each vector must fit the pattern of theta of the \code{TemperedType}.
 #' @param SampleSizes Sample sizes to be used to simulate the data. By default,
 #'  we use 200 (small sample size) and 1600 (large sample size);
 #'  vector of integer.
@@ -94,9 +95,11 @@
 #'  information is saved in the current directory. See details.
 #' @param SeedOptions List to control the seed generation. See details.
 #' @param eps A gap holder.
-#' @param ... A gap holder.
+#' @param ... Other arguments to be passed to the estimation function.
 #'
-#' @return Gap holder for return.
+#' @return If \code{saveOutput == FALSE}, the return object is a list of 2.
+#' Results of the simulation are listed in \code{$outputMat}. If \code{
+#' saveOutput == TRUE}, only a csv file is saved and nothing is returned.
 #'
 #' @examples
 #' \donttest{
@@ -211,7 +214,8 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                                npar = npar, ParameterMatrix,
                                                CheckPointValues =
                                                  updatedCheckPointValues,
-                                               saveOutput = saveOutput,eps, ...)
+                                               saveOutput = saveOutput, eps,
+                                               ...)
 
         OutputCollection <- EstimOutput
 
@@ -250,8 +254,8 @@ getSeedVector <- function(Outputsize, SeedOptions = NULL) {
 ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                     TemperedType, Estimfct, HandleError,
                                     ab_current,nab, npar, ParameterMatrix,
-                                    CheckPointValues = NULL, saveOutput,
-                                    eps, ...) {
+                                    CheckPointValues = NULL, saveOutput, eps,
+                                    ...) {
     if (TemperedType == "Classic") {
         Ncol <- 16
     } else if (TemperedType == "Subordinator") {
@@ -317,8 +321,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                        size = size, Ncol = Ncol,
                                        TemperedType = TemperedType,
                                        Estimfct = Estimfct,
-                                       HandleError = HandleError,
-                                       eps = eps, ...)
+                                       HandleError = HandleError, eps, ...)
             Output[iter, ] <- Estim$outputMat
             file <- Estim$file
 
