@@ -298,6 +298,17 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         size <- SampleSizes[sample]
         if (sample != sample_start)
             mc_start = 1
+
+
+
+
+        #test 26.09.22
+        #cores <- parallel::detectCores()
+        #cl <- parallel::makeCluster(70)
+        #doParallel::registerDoParallel(cl)
+        #doRNG::registerDoRNG(1234)
+
+        #foreach(r = mc_start:MCparam) %dopar%{
         for (mc in mc_start:MCparam) {
             tIter <- getTime_()
             iter <- mc + (sample - 1) * MCparam
