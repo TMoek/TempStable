@@ -16,9 +16,12 @@ License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 Imports:
+    doParallel,
+    foreach,
     methods (>= 4.1.2),
     moments (>= 0.14.1),
     numDeriv (>= 2016.8-1.1),
+    parallel,
     stabledist (>= 0.7-1),
     StableEstim (>= 2.1),
     rootSolve (>= 1.8.2.3),

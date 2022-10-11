@@ -251,6 +251,7 @@ getSeedVector <- function(Outputsize, SeedOptions = NULL) {
 }
 
 # No export.
+#' @importFrom foreach %dopar%
 ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                     TemperedType, Estimfct, HandleError,
                                     ab_current,nab, npar, ParameterMatrix,
@@ -303,50 +304,61 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
 
 
         #test 26.09.22
-        #cores <- parallel::detectCores()
-        #cl <- parallel::makeCluster(70)
-        #doParallel::registerDoParallel(cl)
-        #doRNG::registerDoRNG(1234)
+        cores <- parallel::detectCores()
+        cl <- parallel::makeCluster(5)
+        doParallel::registerDoParallel(cl)
+        parallel::clusterExport(cl,c('rCTS', 'rCTS_aAR', 'rCTS_aARp',
+                                     'getTempEstimation', 'TemperedEstim',
+                                     'EstimClassicClass'))
 
-        #foreach(r = mc_start:MCparam) %dopar%{
-        for (mc in mc_start:MCparam) {
-            tIter <- getTime_()
-            iter <- mc + (sample - 1) * MCparam
-            set.seed(seed <- SeedVector[mc])
-            if (TemperedType == "Classic") {
-                x <- rCTS(n = size, alpha = thetaT[1], deltap = thetaT[2],
-                          deltam = thetaT[3], lambdap = thetaT[4],
-                          lambdam = thetaT[5], mu = thetaT[6])
-            } else if (TemperedType == "Subordinator") {
-                x <- rSTS(n = size, alpha = thetaT[1], delta = thetaT[2],
-                          lambda = thetaT[3])
-            } else if (TemperedType == "Normal") {
-                x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
-                          delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5])
-            }
-            # else {
-            #     x <- rCGMY(n = size, C = thetaT[1], M = thetaT[2],
-            #                G = thetaT[3], Y = thetaT[4])
-            # }
-            Estim <- getTempEstimation(thetaT = thetaT, x = x, seed = seed,
-                                       size = size, Ncol = Ncol,
-                                       TemperedType = TemperedType,
-                                       Estimfct = Estimfct,
-                                       HandleError = HandleError, eps, ...)
-            Output[iter, ] <- Estim$outputMat
-            file <- Estim$file
+        doRNG::registerDoRNG(1234)
 
-            if (!is.null(CheckPointValues)) {
-                writeCheckPoint(ParameterMatrix, TemperedType, Estimfct,
-                                ab_current, nab, npar, sample, nSS, mc,
-                                MCparam, ...)
-            }
-
-            if (saveOutput) updateOutputFile(thetaT, MCparam, TemperedType,
-                                             Estim)
-
-            StableEstim::PrintEstimatedRemainingTime(iter, tIter, Nrow)
+        insideForeach <- function(mc){
         }
+
+        #Start Loop
+        foreach::foreach(mc = mc_start:MCparam,
+                         .packages = c("StableEstim")
+                         ) %dopar%{
+        #for (mc in mc_start:MCparam) {
+          tIter <- getTime_()
+          iter <- mc + (sample - 1) * MCparam
+          set.seed(seed <- SeedVector[mc])
+          if (TemperedType == "Classic") {
+            x <- rCTS(n = size, alpha = thetaT[1], deltap = thetaT[2],
+                      deltam = thetaT[3], lambdap = thetaT[4],
+                      lambdam = thetaT[5], mu = thetaT[6])
+          } else if (TemperedType == "Subordinator") {
+            x <- rSTS(n = size, alpha = thetaT[1], delta = thetaT[2],
+                      lambda = thetaT[3])
+          } else if (TemperedType == "Normal") {
+            x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
+                      delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5])
+          }
+          # else {
+          #     x <- rCGMY(n = size, C = thetaT[1], M = thetaT[2],
+          #                G = thetaT[3], Y = thetaT[4])
+          # }
+          Estim <- getTempEstimation(thetaT = thetaT, x = x, seed = seed,
+                                     size = size, Ncol = Ncol,
+                                     TemperedType = TemperedType,
+                                     Estimfct = Estimfct,
+                                     HandleError = HandleError, eps, ...)
+          Output[iter, ] <- Estim$outputMat
+          file <- Estim$file
+
+          if (!is.null(CheckPointValues)) {
+            writeCheckPoint(ParameterMatrix, TemperedType, Estimfct,
+                            ab_current, nab, npar, sample, nSS, mc,
+                            MCparam, ...)
+          }
+
+          if (saveOutput) updateOutputFile(thetaT, MCparam, TemperedType,
+                                           Estim)
+
+          StableEstim::PrintEstimatedRemainingTime(iter, tIter, Nrow)
+        }
+        parallel::stopCluster(cl)
     }
 
     return(list(outputMat = Output, file = file))
@@ -788,3 +800,7 @@ updateOutputFile <- function(thetaT, MCparam, TemperedType, Output){
         file = fileName, sep="\n", append=TRUE)
 }
 
+
+#Added by Cedric 20221011
+# No export.
+getTime_ <- function() proc.time()[3]
