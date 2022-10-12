@@ -143,7 +143,8 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                                       "Normal"),
                                      Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
                                      HandleError = TRUE, saveOutput = TRUE,
-                                     SeedOptions = NULL, eps = 1e-06, ...) {
+                                     SeedOptions = NULL, eps = 1e-06,
+                                     parallelization = FALSE, ...) {
     #seeAlso: https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R
     SeedVector <- getSeedVector(MCparam, SeedOptions)
     Estimfct <- match.arg(Estimfct)
@@ -215,6 +216,7 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                                CheckPointValues =
                                                  updatedCheckPointValues,
                                                saveOutput = saveOutput, eps,
+                                               parallelization,
                                                ...)
 
         OutputCollection <- EstimOutput
@@ -256,7 +258,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                     TemperedType, Estimfct, HandleError,
                                     ab_current,nab, npar, ParameterMatrix,
                                     CheckPointValues = NULL, saveOutput, eps,
-                                    ...) {
+                                    parallelization, ...) {
     if (TemperedType == "Classic") {
         Ncol <- 16
     } else if (TemperedType == "Subordinator") {
@@ -295,6 +297,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         sample_start = 1
         mc_start = 1
     }
+
     for (sample in sample_start:nSS) {
         size <- SampleSizes[sample]
         if (sample != sample_start)
@@ -302,25 +305,32 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
 
 
 
-
         #test 26.09.22
-        cores <- parallel::detectCores()
-        cl <- parallel::makeCluster(5)
-        doParallel::registerDoParallel(cl)
-        parallel::clusterExport(cl,c('rCTS', 'rCTS_aAR', 'rCTS_aARp',
-                                     'getTempEstimation', 'TemperedEstim',
-                                     'EstimClassicClass'))
-
-        doRNG::registerDoRNG(1234)
-
-        insideForeach <- function(mc){
+        if (parallelization == TRUE){
+          cores <- parallel::detectCores()
+          cl <- parallel::makeCluster(5)
+          doParallel::registerDoParallel(cl)
+          parallel::clusterExport(cl,list('rCTS', 'rCTS_aAR', 'rCTS_aARp',
+                                          'getTempEstimation', 'TemperedEstim',
+                                          'EstimClassicClass',
+                                          'NameParamsObjects',
+                                          'getTempEstimFcts',
+                                          'MLParametersEstim_CTS',
+                                          '.asymptoticVarianceEstimML_CTS',
+                                          '.methodDesML_CTS',
+                                          '.initResTemp',
+                                          'NameParamsObjectsTemp',
+                                          'writeCheckPoint',
+                                          'Estim_Des_Temp',
+                                          'get_filename_checkPoint_Temp',
+                                          'setClassesForeach',
+                                          'updateOutputFile',
+                                          'get_filename'
+          ))
+          doRNG::registerDoRNG(1234)
         }
 
-        #Start Loop
-        foreach::foreach(mc = mc_start:MCparam,
-                         .packages = c("StableEstim")
-                         ) %dopar%{
-        #for (mc in mc_start:MCparam) {
+        inLoopFunction <- function(mc, ...){
           tIter <- getTime_()
           iter <- mc + (sample - 1) * MCparam
           set.seed(seed <- SeedVector[mc])
@@ -344,7 +354,11 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                      TemperedType = TemperedType,
                                      Estimfct = Estimfct,
                                      HandleError = HandleError, eps, ...)
-          Output[iter, ] <- Estim$outputMat
+
+          if (isFALSE(parallelization)){
+            Output[iter, ] <- Estim$outputMat
+          }
+
           file <- Estim$file
 
           if (!is.null(CheckPointValues)) {
@@ -357,8 +371,39 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                            Estim)
 
           StableEstim::PrintEstimatedRemainingTime(iter, tIter, Nrow)
+
+          if ( isTRUE(parallelization)){
+            return(Estim$outputMat)
+          }
+          else return(Output)
         }
-        parallel::stopCluster(cl)
+
+        #Start Loop
+        if (isTRUE(parallelization)){
+          OutputForeach <- foreach::foreach(mc = mc_start:MCparam,
+                                            .combine = "rbind",
+                                            .packages = c("StableEstim")
+                                            ) %dopar%{
+            setClassesForeach()
+            inLoopFunction(mc)
+          }
+          parallel::stopCluster(cl)
+          for(i in 0:(length(attributes(OutputForeach)$rng)-1)){
+            mc <- i + 1
+            iter <- mc + (sample - 1) * MCparam
+            Output[iter, 1:(length(thetaT) + 2)] <- c(
+              thetaT, size, SeedVector[mc])
+            for(a in 1:length(attributes(OutputForeach)$rng[[i+1]])){
+              Output[iter,(a+length(thetaT)+2)] <- attributes(
+                OutputForeach)$rng[[i+1]][a]
+            }
+          }
+        }
+        else {
+          for (mc in mc_start:MCparam) {
+            Output <- inLoopFunction(mc, ... )
+          }
+        }
     }
 
     return(list(outputMat = Output, file = file))
@@ -804,3 +849,148 @@ updateOutputFile <- function(thetaT, MCparam, TemperedType, Output){
 #Added by Cedric 20221011
 # No export.
 getTime_ <- function() proc.time()[3]
+
+
+# Added by Cedric 20221012
+# No export.
+setClassesForeach <- function(){
+  EstimClassicClass <- setClass(
+    "EstimClassicClass",
+    slots = list(
+      par = "numeric",
+      par0 = "numeric",
+      vcov = "matrix",
+      confint = "matrix",
+      data = "numeric",
+      sampleSize = "numeric",
+      others = "list",
+      duration = "numeric",
+      failure = "numeric",
+      method = "character"
+    ),
+    contains = list(),
+    validity = function(object) {
+      par <- object@par
+      if (length(par) == 6)
+        ansp <- TRUE
+      else
+        ansp <- "Parameter of length different of 6"
+      par0 <- object@par0
+      if (length(par0) == 6)
+        ansp0 <- TRUE
+      else
+        ansp0 <- "Initial Parameter of length different of 6"
+      vcov <- object@vcov
+      if (ncol(vcov) == 6 &&
+          nrow(vcov) == 6)
+        anscov <- TRUE
+      else
+        anscov <- "covariance matrix of length different of 6x6"
+      confint <- object@confint
+      if (ncol(confint) == 2 &&
+          nrow(confint) == 6)
+        ansconfint <- TRUE
+      else
+        ansconfint <-
+        "confidance intervall matrix of length different of 6x2"
+      if (ansp == TRUE &&
+          ansp0 == TRUE && anscov == TRUE &&
+          ansconfint == TRUE)
+        res <- TRUE
+      else if (is.character(ansp))
+        res <- ansp
+      else if (is.character(ansp0))
+        res <- ansp0
+      else if (is.character(anscov))
+        res <- anscov
+      else if (is.character(ansconfint))
+        res <- ansconfint
+      res
+    }
+  )
+
+  ## Init method
+
+  setMethod("initialize", "EstimClassicClass",
+            function(.Object,
+                     par,
+                     par0,
+                     vcov,
+                     confint,
+                     method,
+                     level,
+                     others,
+                     data,
+                     duration,
+                     failure,
+                     ...) {
+              ## handle missing
+              if (missing(par))
+                par        <- numeric(6)
+              if (missing(par0))
+                par0       <- numeric(6)
+              if (missing(vcov))
+                vcov       <- matrix(0, nrow = 6, ncol = 6)
+              if (missing(confint))
+                confint    <- matrix(0, nrow = 6, ncol = 2)
+              if (missing(data))
+                data       <- numeric(100)
+              sampleSize <- length(data)
+              if (missing(method))
+                method     <- "Default"
+              if (missing(others))
+                others     <- list()
+              if (missing(level))
+                level      <- 0
+              if (missing(duration))
+                duration   <- 0
+              if (missing(failure))
+                failure    <- 0
+
+              ## set up names
+              NameParamsObjects(par, "Classic")
+              NameParamsObjects(par0, "Classic")
+              NameParamsObjects(vcov, "Classic")
+              NameParamsObjects(confint, "Classic")
+              attr(confint, "level") <- level
+
+              methods::callNextMethod(
+                .Object,
+                par = par,
+                par0 = par0,
+                vcov = vcov,
+                confint = confint,
+                data = data,
+                sampleSize = sampleSize,
+                method = method,
+                others = others,
+                duration = duration,
+                failure = failure,
+                ...
+              )
+            })
+
+  setMethod("show", "EstimClassicClass",
+            function(object) {
+              cat("*** Tempered Estim Classic, method Show *** \n")
+              cat("** Method ** \n")
+              print(object@method)
+              cat("** Parameters Estimation ** \n")
+              print(object@par)
+              cat("** Covariance Matrix Estimation ** \n")
+              print(object@vcov)
+              cat("** Confidence interval Estimation ** \n")
+              print(paste("Confidence level=", attributes(object@confint)$level))
+              print(paste("data length=", object@sampleSize))
+              print(object@confint)
+              cat("** Estimation time ** \n")
+              PrintDuration(object@duration)
+              cat("** Estimation status ** \n")
+              if (object@failure == 0)
+                cat("success")
+              else
+                cat("failure")
+              cat("\n ******* End Show (Tempered Estim Classic) ******* \n")
+            })
+
+}
