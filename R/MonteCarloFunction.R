@@ -259,6 +259,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                     ab_current,nab, npar, ParameterMatrix,
                                     CheckPointValues = NULL, saveOutput, eps,
                                     parallelization, ...) {
+
     if (TemperedType == "Classic") {
         Ncol <- 16
     } else if (TemperedType == "Subordinator") {
@@ -325,12 +326,23 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                           'get_filename_checkPoint_Temp',
                                           'setClassesForeach',
                                           'updateOutputFile',
-                                          'get_filename'
+                                          'get_filename',
+                                          'sample',
+                                          'size', 'thetaT',
+                                          'eps'
           ))
+          #missing  'Ncol', 'MCparam', 'TemperedType', 'Estimfct', 'HandleError',
+          # 'ParameterMatrix', 'ab_current', 'nab', 'npar', 'nSS', 'saveOutput',
+          # 'Nrow', 'parallelization', 'SeedVector'
           doRNG::registerDoRNG(1234)
         }
 
-        inLoopFunction <- function(mc, ...){
+
+        inLoopFunction <- function(mc, sample, MCparam, SeedVector, size,
+                                   thetaT, Ncol, TemperedType, Estimfct,
+                                   HandleError, eps, ParameterMatrix,
+                                   ab_current, nab, npar, nSS, saveOutput, Nrow,
+                                   parallelization, ...){
           tIter <- getTime_()
           iter <- mc + (sample - 1) * MCparam
           set.seed(seed <- SeedVector[mc])
@@ -345,6 +357,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
             x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
                       delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5])
           }
+
           # else {
           #     x <- rCGMY(n = size, C = thetaT[1], M = thetaT[2],
           #                G = thetaT[3], Y = thetaT[4])
@@ -372,7 +385,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
 
           StableEstim::PrintEstimatedRemainingTime(iter, tIter, Nrow)
 
-          if ( isTRUE(parallelization)){
+          if (isTRUE(parallelization)){
             return(Estim$outputMat)
           }
           else return(Output)
@@ -385,9 +398,18 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                             .packages = c("StableEstim")
                                             ) %dopar%{
             setClassesForeach()
-            inLoopFunction(mc)
+            inLoopFunction(mc = mc, sample = sample, MCparam = MCparam,
+                           SeedVector = SeedVector, size = size,
+                           thetaT = thetaT, Ncol = Ncol,
+                           TemperedType = TemperedType, Estimfct = Estimfct,
+                           HandleError = HandleError,
+                           eps = eps, ParameterMatrix = ParameterMatrix,
+                           ab_current = ab_current, nab = nab, npar = npar,
+                           nSS = nSS, saveOutput = saveOutput, Nrow = Nrow,
+                           parallelization = parallelization, ...)
           }
           parallel::stopCluster(cl)
+
           for(i in 0:(length(attributes(OutputForeach)$rng)-1)){
             mc <- i + 1
             iter <- mc + (sample - 1) * MCparam
@@ -401,7 +423,20 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         }
         else {
           for (mc in mc_start:MCparam) {
-            Output <- inLoopFunction(mc, ... )
+            Output <- inLoopFunction(mc = mc, sample = sample,
+                                     MCparam = MCparam,
+                                     SeedVector = SeedVector, size = size,
+                                     thetaT = thetaT, Ncol = Ncol,
+                                     TemperedType = TemperedType,
+                                     Estimfct = Estimfct,
+                                     HandleError = HandleError,
+                                     eps = eps,
+                                     ParameterMatrix = ParameterMatrix,
+                                     ab_current = ab_current, nab = nab,
+                                     npar = npar,
+                                     nSS = nSS, saveOutput = saveOutput,
+                                     Nrow = Nrow,
+                                     parallelization = parallelization, ... )
           }
         }
     }
@@ -994,3 +1029,4 @@ setClassesForeach <- function(){
             })
 
 }
+
