@@ -14,6 +14,7 @@ TemperedEstim_Simulation(
   saveOutput = TRUE,
   SeedOptions = NULL,
   eps = 1e-06,
+  parallelization = FALSE,
   ...
 )
 }

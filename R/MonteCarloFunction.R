@@ -211,7 +211,8 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                                TemperedType = TemperedType,
                                                Estimfct = Estimfct,
                                                HandleError = HandleError,
-                                               ab_current = ab, nab = nab,
+                                               ab_current = ab,
+                                               nab = nab,
                                                npar = npar, ParameterMatrix,
                                                CheckPointValues =
                                                  updatedCheckPointValues,
@@ -225,7 +226,6 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
           if (length(returnList) == 0) returnList <- EstimOutput
           else returnList <- Map(rbind,returnList, EstimOutput)
         }
-
     }
 
     deleteCheckPoint(ParameterMatrix, TemperedType, Estimfct, nab, npar, lS,
@@ -256,7 +256,7 @@ getSeedVector <- function(Outputsize, SeedOptions = NULL) {
 #' @importFrom foreach %dopar%
 ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                     TemperedType, Estimfct, HandleError,
-                                    ab_current,nab, npar, ParameterMatrix,
+                                    ab_current, nab, npar, ParameterMatrix,
                                     CheckPointValues = NULL, saveOutput, eps,
                                     parallelization, ...) {
 
@@ -273,6 +273,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
     nSS <- length(SampleSizes)
     Nrow <- nSS * MCparam
     Output <- matrix(data = NA, ncol = Ncol, nrow = Nrow)
+
     if (TemperedType == "Classic") {
         colnames(Output) <- c("alphaT", "delta+T", "delta-T", "lambda+T",
                               "lambda-T", "muT", "data size", "seed", "alphaE",
@@ -299,50 +300,51 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         mc_start = 1
     }
 
-    for (sample in sample_start:nSS) {
+
+    #Test 17.10.22
+    cores <- parallel::detectCores()
+    cl <- parallel::makeCluster(5)
+    doParallel::registerDoParallel(cl)
+    parallel::clusterExport(cl,list('setClassesForeach', 'rCTS',
+                                    'rCTS_aAR', 'rCTS_aARp',
+                                    'getTempEstimation',
+                                    'getTempEstimFcts',
+                                    'TemperedEstim', 'NameParamsObjects',
+                                    'MLParametersEstim_CTS',
+                                    '.asymptoticVarianceEstimML_CTS',
+                                    '.methodDesML_CTS',
+                                    '.initResTemp',
+                                    'NameParamsObjectsTemp',
+                                    'writeCheckPoint',
+                                    'Estim_Des_Temp',
+                                    'get_filename_checkPoint_Temp',
+                                    'setClassesForeach',
+                                    'updateOutputFile',
+                                    'get_filename',
+
+                                    'Output', 'SeedVector', 'TemperedType',
+                                    'saveOutput',
+                                    'SeedVector','thetaT'),
+                            envir = environment())
+    parallel::clusterExport(cl,
+                            varlist = ls(),
+                            envir = environment())
+    doRNG::registerDoRNG(1234)
+
+    Output <- foreach::foreach(sample = sample_start:nSS,
+                     .combine = "rbind",
+                     .packages = c("StableEstim")
+    ) %dopar%{
+
+    #for (sample in sample_start:nSS) {
+
+        #Predefine unknows values in this environment
+        setClassesForeach()
+
         size <- SampleSizes[sample]
-        if (sample != sample_start)
-            mc_start = 1
+        if (sample != sample_start) mc_start = 1
 
-
-
-        #test 26.09.22
-        if (parallelization == TRUE){
-          cores <- parallel::detectCores()
-          cl <- parallel::makeCluster(5)
-          doParallel::registerDoParallel(cl)
-          parallel::clusterExport(cl,list('rCTS', 'rCTS_aAR', 'rCTS_aARp',
-                                          'getTempEstimation', 'TemperedEstim',
-                                          'EstimClassicClass',
-                                          'NameParamsObjects',
-                                          'getTempEstimFcts',
-                                          'MLParametersEstim_CTS',
-                                          '.asymptoticVarianceEstimML_CTS',
-                                          '.methodDesML_CTS',
-                                          '.initResTemp',
-                                          'NameParamsObjectsTemp',
-                                          'writeCheckPoint',
-                                          'Estim_Des_Temp',
-                                          'get_filename_checkPoint_Temp',
-                                          'setClassesForeach',
-                                          'updateOutputFile',
-                                          'get_filename',
-                                          'sample',
-                                          'size', 'thetaT',
-                                          'eps'
-          ))
-          #missing  'Ncol', 'MCparam', 'TemperedType', 'Estimfct', 'HandleError',
-          # 'ParameterMatrix', 'ab_current', 'nab', 'npar', 'nSS', 'saveOutput',
-          # 'Nrow', 'parallelization', 'SeedVector'
-          doRNG::registerDoRNG(1234)
-        }
-
-
-        inLoopFunction <- function(mc, sample, MCparam, SeedVector, size,
-                                   thetaT, Ncol, TemperedType, Estimfct,
-                                   HandleError, eps, ParameterMatrix,
-                                   ab_current, nab, npar, nSS, saveOutput, Nrow,
-                                   parallelization, ...){
+        for (mc in mc_start:MCparam) {
           tIter <- getTime_()
           iter <- mc + (sample - 1) * MCparam
           set.seed(seed <- SeedVector[mc])
@@ -368,15 +370,12 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                      Estimfct = Estimfct,
                                      HandleError = HandleError, eps, ...)
 
-          if (isFALSE(parallelization)){
-            Output[iter, ] <- Estim$outputMat
-          }
-
+          Output[iter, ] <- Estim$outputMat
           file <- Estim$file
 
           if (!is.null(CheckPointValues)) {
-            writeCheckPoint(ParameterMatrix, TemperedType, Estimfct,
-                            ab_current, nab, npar, sample, nSS, mc,
+            writeCheckPoint(ParameterMatrix, TemperedType, Estimfct, ab_current,
+                            nab, npar, sample, nSS, mc,
                             MCparam, ...)
           }
 
@@ -384,62 +383,103 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                            Estim)
 
           StableEstim::PrintEstimatedRemainingTime(iter, tIter, Nrow)
-
-          if (isTRUE(parallelization)){
-            return(Estim$outputMat)
-          }
-          else return(Output)
         }
 
-        #Start Loop
-        if (isTRUE(parallelization)){
-          OutputForeach <- foreach::foreach(mc = mc_start:MCparam,
-                                            .combine = "rbind",
-                                            .packages = c("StableEstim")
-                                            ) %dopar%{
-            setClassesForeach()
-            inLoopFunction(mc = mc, sample = sample, MCparam = MCparam,
-                           SeedVector = SeedVector, size = size,
-                           thetaT = thetaT, Ncol = Ncol,
-                           TemperedType = TemperedType, Estimfct = Estimfct,
-                           HandleError = HandleError,
-                           eps = eps, ParameterMatrix = ParameterMatrix,
-                           ab_current = ab_current, nab = nab, npar = npar,
-                           nSS = nSS, saveOutput = saveOutput, Nrow = Nrow,
-                           parallelization = parallelization, ...)
-          }
-          parallel::stopCluster(cl)
+        Output
 
-          for(i in 0:(length(attributes(OutputForeach)$rng)-1)){
-            mc <- i + 1
-            iter <- mc + (sample - 1) * MCparam
-            Output[iter, 1:(length(thetaT) + 2)] <- c(
-              thetaT, size, SeedVector[mc])
-            for(a in 1:length(attributes(OutputForeach)$rng[[i+1]])){
-              Output[iter,(a+length(thetaT)+2)] <- attributes(
-                OutputForeach)$rng[[i+1]][a]
-            }
-          }
-        }
-        else {
-          for (mc in mc_start:MCparam) {
-            Output <- inLoopFunction(mc = mc, sample = sample,
-                                     MCparam = MCparam,
-                                     SeedVector = SeedVector, size = size,
-                                     thetaT = thetaT, Ncol = Ncol,
-                                     TemperedType = TemperedType,
-                                     Estimfct = Estimfct,
-                                     HandleError = HandleError,
-                                     eps = eps,
-                                     ParameterMatrix = ParameterMatrix,
-                                     ab_current = ab_current, nab = nab,
-                                     npar = npar,
-                                     nSS = nSS, saveOutput = saveOutput,
-                                     Nrow = Nrow,
-                                     parallelization = parallelization, ... )
-          }
-        }
+        #parallelization == FALSE
+        # if (isFALSE(parallelization)){
+        #   #Here Code from above
+        # }
+
+        # #parallelization == TRUE
+        # if (isTRUE(parallelization)){
+        #   #predefine rfunction
+        #   if (TemperedType == "Classic") {
+        #     rfunction <- function(size, thetaT){
+        #       rCTS(n = size, alpha = thetaT[1], deltap = thetaT[2],
+        #            deltam = thetaT[3], lambdap = thetaT[4],
+        #            lambdam = thetaT[5], mu = thetaT[6])
+        #     }
+        #   } else if (TemperedType == "Subordinator") {
+        #     rfunction <- function(size, thetaT){
+        #       rSTS(n = size, alpha = thetaT[1], delta = thetaT[2],
+        #            lambda = thetaT[3])
+        #     }
+        #   } else { #"Normal"
+        #     rfunction <- function(size, thetaT){
+        #       rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
+        #            delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5])
+        #     }
+        #   }
+        #
+        #   cores <- parallel::detectCores()
+        #   cl <- parallel::makeCluster(5)
+        #   doParallel::registerDoParallel(cl)
+        #   parallel::clusterExport(cl,list('setClassesForeach', 'rCTS',
+        #                                   'rCTS_aAR', 'rCTS_aARp',
+        #                                   'getTempEstimation',
+        #                                   'getTempEstimFcts',
+        #                                   'TemperedEstim', 'NameParamsObjects',
+        #                                   'MLParametersEstim_CTS',
+        #                                   '.asymptoticVarianceEstimML_CTS',
+        #                                   '.methodDesML_CTS',
+        #                                   '.initResTemp',
+        #                                   'NameParamsObjectsTemp',
+        #
+        #                                   'sample'
+        #   ))
+        #   doRNG::registerDoRNG(1234)
+        #
+        #   #Start Loop
+        #   OutputForeach <- foreach::foreach(mc = mc_start:MCparam,
+        #                                     .combine = "rbind",
+        #                                     .packages = c("StableEstim")
+        #   ) %dopar%{
+        #     #Define classes and objects again to make them reachable
+        #     size <- SampleSizes[sample]
+        #     setClassesForeach()
+        #
+        #
+        #     set.seed(seed <- SeedVector[mc])
+        #     x <- rfunction(size = size, thetaT = thetaT)
+        #
+        #     Estim <- getTempEstimation(thetaT = thetaT, x = x, seed = seed,
+        #                                size = size, Ncol = Ncol,
+        #                                TemperedType = TemperedType,
+        #                                Estimfct = Estimfct,
+        #                                HandleError = HandleError, eps, ...)
+        #
+        #     file <- Estim$file
+        #
+        #     if (saveOutput) updateOutputFile(thetaT, MCparam, TemperedType,
+        #                                      Estim)
+        #     Estim$outputMat
+        #   }
+        #   #End Loop
+        #   parallel::stopCluster(cl)
+        #
+        #   #Translate OutputForeach in Output
+        #   for(i in 0:(length(attributes(OutputForeach)$rng)-1)){
+        #     mc <- i + 1
+        #     iter <- mc + (sample - 1) * MCparam
+        #     Output[iter, 1:(length(thetaT) + 2)] <- c(
+        #       thetaT, size, SeedVector[mc])
+        #     for(a in 1:length(attributes(OutputForeach)$rng[[i+1]])){
+        #       Output[iter,(a+length(thetaT)+2)] <- attributes(
+        #         OutputForeach)$rng[[i+1]][a]
+        #     }
+        #   }
+        #
+        # }
+        # #End Parallelization
     }
+    #End Sample
+
+    #Test Today
+    parallel::stopCluster(cl)
+
+    #return(OutputForeach)
 
     return(list(outputMat = Output, file = file))
 }
