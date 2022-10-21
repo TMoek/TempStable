@@ -1,136 +1,136 @@
 
-test_that("charSTS_gives_correct_return", {
-  expect_equal(charSTS(1000,0.5,1,0.3),-1.954837e-34-1.69676e-34i)
-  expect_equal(charSTS(500,0.9,1,12.3),-1.44336e-177-1.211255e-176i)
-  expect_equal(charSTS(500,0.9,1000,12.3),0+0i)
+test_that("charTSS_gives_correct_return", {
+  expect_equal(charTSS(1000,0.5,1,0.3),-1.954837e-34-1.69676e-34i)
+  expect_equal(charTSS(500,0.9,1,12.3),-1.44336e-177-1.211255e-176i)
+  expect_equal(charTSS(500,0.9,1000,12.3),0+0i)
 
-  expect_equal(charSTS(1000000,0.5,1,0.3),0+0i)
-  expect_equal(charSTS(0,0.5,1,0.3),1+0i)
-  expect_equal(charSTS(-10000,0.5,1,0.3),7.497345e-109+5.91963e-109i)
-  expect_equal(charSTS(500,0.4,11.3,Inf),NaN*(1+1i))
-  expect_equal(charSTS(500,0.4,Inf,335),0+0i)
-  expect_equal(charSTS(Inf,0.4,33,35),NaN*(1+1i))
+  expect_equal(charTSS(1000000,0.5,1,0.3),0+0i)
+  expect_equal(charTSS(0,0.5,1,0.3),1+0i)
+  expect_equal(charTSS(-10000,0.5,1,0.3),7.497345e-109+5.91963e-109i)
+  expect_equal(charTSS(500,0.4,11.3,Inf),NaN*(1+1i))
+  expect_equal(charTSS(500,0.4,Inf,335),0+0i)
+  expect_equal(charTSS(Inf,0.4,33,35),NaN*(1+1i))
 
   #Failure message: actual != expected but don't know how to show the difference
   #Should work as params are in the value range.
   #Works in console.
-  #expect_equal(charSTS(1,0.5,1,1.3),0.08414106+0.7693653i)
+  #expect_equal(charTSS(1,0.5,1,1.3),0.08414106+0.7693653i)
 
   #Failure message: actual != expected but don't know how to show the difference
   #Should not work as params are not in the value range.
   #Works in console.
-  #expect_equal(charSTS(-1,0.5,1,0.3),-0.21252633-0.3164881*(0+1i))
-  #expect_equal(charSTS(0.1,0.5,1,0.3),0.92500754+0.3058346i)
-  #expect_equal(charSTS(0.000001,0.5,1,0.3),1+0.0000032i)
-  #expect_equal(charSTS(500,1.9,0.00001,12.3),3.794157e-05-6.56268e-04i)
-  #expect_equal(charSTS(5,0.5,0.00001,12.3),0.99999755+0.0000248i)
-  #expect_equal(charSTS(1,0.5,1,0.3),-0.21252633+0.3164881i)
-  #expect_equal(charSTS(500,0.9,0.0000001,12.3),0.9999595+0.0002794i)
+  #expect_equal(charTSS(-1,0.5,1,0.3),-0.21252633-0.3164881*(0+1i))
+  #expect_equal(charTSS(0.1,0.5,1,0.3),0.92500754+0.3058346i)
+  #expect_equal(charTSS(0.000001,0.5,1,0.3),1+0.0000032i)
+  #expect_equal(charTSS(500,1.9,0.00001,12.3),3.794157e-05-6.56268e-04i)
+  #expect_equal(charTSS(5,0.5,0.00001,12.3),0.99999755+0.0000248i)
+  #expect_equal(charTSS(1,0.5,1,0.3),-0.21252633+0.3164881i)
+  #expect_equal(charTSS(500,0.9,0.0000001,12.3),0.9999595+0.0002794i)
 
-  expect_error(charSTS(10000,2.0,1,0.3))
-  expect_error(charSTS(500,2,11.3,35))
-  expect_error(charSTS(400,0.4,0,35))
-  expect_error(charSTS(10000,2.5,1,0.3))
-  expect_error(charSTS(500,1.9,1,12.3))
-  expect_error(charSTS('a',0.4,33,35), "non-numeric argument to binary operator")
+  expect_error(charTSS(10000,2.0,1,0.3))
+  expect_error(charTSS(500,2,11.3,35))
+  expect_error(charTSS(400,0.4,0,35))
+  expect_error(charTSS(10000,2.5,1,0.3))
+  expect_error(charTSS(500,1.9,1,12.3))
+  expect_error(charTSS('a',0.4,33,35), "non-numeric argument to binary operator")
 
 })
 
-test_that("dSTS_gives_correct_return", {
+test_that("dTSS_gives_correct_return", {
 
-  expect_equal(dSTS(1000,0.5,1,0.3),1.131172e-134)
-  expect_equal(dSTS(1000,0.5,10,3),0)
+  expect_equal(dTSS(1000,0.5,1,0.3),1.131172e-134)
+  expect_equal(dTSS(1000,0.5,10,3),0)
 
-  expect_error(dSTS(1000,1.5,10,0.3))
-  expect_error(dSTS(1000,1.5,10,30))
-  expect_error(dSTS(1000,1.5,10,3))
-  expect_error(dSTS('a',0.4,33,35), "non-numeric argument to binary operator")
+  expect_error(dTSS(1000,1.5,10,0.3))
+  expect_error(dTSS(1000,1.5,10,30))
+  expect_error(dTSS(1000,1.5,10,3))
+  expect_error(dTSS('a',0.4,33,35), "non-numeric argument to binary operator")
 
   suppressWarnings({
-    expect_equal(dSTS(1,0.5,1,0.3),0.22313758)
-    expect_equal(dSTS(10,0.5,10,3),0.31110755)
-    expect_equal(dSTS(10,0.5,10,300),0)
-    expect_equal(dSTS(10,0.5,10,30),7.791729e-61)
-    expect_warning(dSTS(1,0.5,1,0.3))
-    expect_warning(dSTS(10,0.5,10,3))
-    expect_warning(dSTS(10,0.5,10,300))
-    expect_warning(dSTS(10,0.5,10,30))
+    expect_equal(dTSS(1,0.5,1,0.3),0.22313758)
+    expect_equal(dTSS(10,0.5,10,3),0.31110755)
+    expect_equal(dTSS(10,0.5,10,300),0)
+    expect_equal(dTSS(10,0.5,10,30),7.791729e-61)
+    expect_warning(dTSS(1,0.5,1,0.3))
+    expect_warning(dTSS(10,0.5,10,3))
+    expect_warning(dTSS(10,0.5,10,300))
+    expect_warning(dTSS(10,0.5,10,30))
   })
 })
 
-test_that("pSTS_methode_integrate_gives_correct_return", {
+test_that("pTSS_methode_integrate_gives_correct_return", {
 
   suppressWarnings({
-    expect_equal(pSTS(10,0.5,10,300),0.9999999)
-    expect_equal(pSTS(1,0.5,10,300),0.29072176)
-    expect_equal(pSTS(1,0.5,10,3),2.700436e-113)
-    expect_equal(pSTS(1,0.5,1,3),0.55464479)
-    expect_equal(pSTS(1,0.5,1,1),0.19025569)
+    expect_equal(pTSS(10,0.5,10,300),0.9999999)
+    expect_equal(pTSS(1,0.5,10,300),0.29072176)
+    expect_equal(pTSS(1,0.5,10,3),2.700436e-113)
+    expect_equal(pTSS(1,0.5,1,3),0.55464479)
+    expect_equal(pTSS(1,0.5,1,1),0.19025569)
 
-    expect_error(pSTS(1,1.5,1,3))
-    expect_error(pSTS(1,0.5,-1,10))
-    expect_error(pSTS(1,0.5,1,0))
-    expect_error(pSTS(1,0.5,0,0))
-    expect_error(pSTS(1,0.5,-1,-1))
-    expect_error(pSTS(1,0.5,-1,-10))
-    #expect_error(pSTS(1,2,1,3), "NaNs produced")
-    expect_error(pSTS(3,1.7,0.00000001,0.0000000000003))
+    expect_error(pTSS(1,1.5,1,3))
+    expect_error(pTSS(1,0.5,-1,10))
+    expect_error(pTSS(1,0.5,1,0))
+    expect_error(pTSS(1,0.5,0,0))
+    expect_error(pTSS(1,0.5,-1,-1))
+    expect_error(pTSS(1,0.5,-1,-10))
+    #expect_error(pTSS(1,2,1,3), "NaNs produced")
+    expect_error(pTSS(3,1.7,0.00000001,0.0000000000003))
   })
 })
 
-test_that("pSTS_methode_not_integrate_gives_correct_return", {
+test_that("pTSS_methode_not_integrate_gives_correct_return", {
 
   suppressWarnings({
-    expect_equal(pSTS(1,0.5,10,300,NULL,""),0.2907089)
-    expect_equal(pSTS(1,0.5,10,3,NULL,""),1.983969e-13)
-    expect_equal(pSTS(1,0.5,1,3,NULL,""),0.55464466)
-    expect_equal(pSTS(1,0.5,1,1,NULL,"",110),0.190891564)
-    expect_equal(pSTS(10,0.5,10,300,NULL,""),1)
+    expect_equal(pTSS(1,0.5,10,300,NULL,""),0.2907115)
+    expect_equal(pTSS(1,0.5,10,3,NULL,""),1.983969e-13)
+    expect_equal(pTSS(1,0.5,1,3,NULL,""),0.5546446)
+    expect_equal(pTSS(1,0.5,1,1,NULL,"",110),0.190891564)
+    expect_equal(pTSS(10,0.5,10,300,NULL,""),1)
 
-    expect_error(pSTS(3,1.7,0.00000001,0.0000000000003,NULL,""))
-    expect_error(pSTS(1,1.5,1,3,NULL,"",1000))
-    expect_error(pSTS(1,0.5,-1,10,NULL,"",50))
-    expect_error(pSTS(1,0.5,0,0,NULL,""))
-    expect_error(pSTS(1,0.5,-1,-1,NULL,""))
-    expect_error(pSTS(1,0.5,-1,-10,NULL,""))
-    expect_error(pSTS(1,0.5,1,0,NULL,"",1))
+    expect_error(pTSS(3,1.7,0.00000001,0.0000000000003,NULL,""))
+    expect_error(pTSS(1,1.5,1,3,NULL,"",1000))
+    expect_error(pTSS(1,0.5,-1,10,NULL,"",50))
+    expect_error(pTSS(1,0.5,0,0,NULL,""))
+    expect_error(pTSS(1,0.5,-1,-1,NULL,""))
+    expect_error(pTSS(1,0.5,-1,-10,NULL,""))
+    expect_error(pTSS(1,0.5,1,0,NULL,"",1))
   })
 })
 
-test_that("rSTS_gives_correct_return", {
+test_that("rTSS_gives_correct_return", {
 
-  expect_equal(length(rSTS(100,0.5,1,1)), 100)
-  expect_equal(mean(rSTS(100,0.5,1,1,NULL,"SR",0)), 0)
-  expect_equal(rSTS(100,0.5,1,1,NULL,"NotARNeitherSR"), NULL)
-  expect_equal(rSTS(-1,0.5,1,1,NULL, "AR"), NULL)
-  expect_equal(mean(rSTS(5,0.01,1,1,NULL,"AR")),0)
+  expect_equal(length(rTSS(100,0.5,1,1)), 100)
+  expect_equal(mean(rTSS(100,0.5,1,1,NULL,"SR",0)), 0)
+  expect_equal(rTSS(100,0.5,1,1,NULL,"NotARNeitherSR"), NULL)
+  expect_equal(rTSS(-1,0.5,1,1,NULL, "AR"), NULL)
+  expect_equal(mean(rTSS(5,0.01,1,1,NULL,"AR")),0)
 
 
-  expect_error(rSTS(100,0.5,1,1,NULL,"SR",-1))
-  expect_error(rSTS(-1,0.5,1,3,NULL,"SR"))
-  expect_error(rSTS(5,0.001,1,1,NULL,"AR"))
+  expect_error(rTSS(100,0.5,1,1,NULL,"SR",-1))
+  expect_error(rTSS(-1,0.5,1,3,NULL,"SR"))
+  expect_error(rTSS(5,0.001,1,1,NULL,"AR"))
 
   suppressWarnings({
   })
 })
 
-test_that("pSTS_gives_correct_return", {
+test_that("pTSS_gives_correct_return", {
 
   suppressWarnings({
-    expect_equal(pSTS(1,0.9,1,10),0)
-    expect_equal(pSTS(1,0.8,1,10),1.231069e-212)
-    expect_equal(pSTS(1,0.7,1,10),0.00089094557)
-    expect_equal(pSTS(2,0.6,10,100),7.343228e-72)
-    expect_equal(pSTS(2,0.5,10,100),0.98935456)
-    expect_equal(pSTS(5,0.5,10,100), 0.9999999)
+    expect_equal(pTSS(1,0.9,1,10),0)
+    expect_equal(pTSS(1,0.8,1,10),1.231069e-212)
+    expect_equal(pTSS(1,0.7,1,10),0.00089094557)
+    expect_equal(pTSS(2,0.6,10,100),7.343228e-72)
+    expect_equal(pTSS(2,0.5,10,100),0.98935456)
+    expect_equal(pTSS(5,0.5,10,100), 0.9999999)
 
-    expect_error(pSTS(1000.5, 1.5, 5, 0.01))
-    expect_error(pSTS(0.5, 1.5, 5, 0.01))
-    expect_error(pSTS(1.1,1.1,1.1,10))
-    expect_error(pSTS(1,1.1,1.1,10))
-    expect_error(pSTS(1,1.1,1,10))
-    expect_error(pSTS(1,1,1,10))
-    expect_error(pSTS(1,0.7,100,10))
+    expect_error(pTSS(1000.5, 1.5, 5, 0.01))
+    expect_error(pTSS(0.5, 1.5, 5, 0.01))
+    expect_error(pTSS(1.1,1.1,1.1,10))
+    expect_error(pTSS(1,1.1,1.1,10))
+    expect_error(pTSS(1,1.1,1,10))
+    expect_error(pTSS(1,1,1,10))
+    expect_error(pTSS(1,0.7,100,10))
 
   })
 })
@@ -404,7 +404,7 @@ test_that("chartocdf_gives_correct_return", {
                            lambda = 1, mu = 1), 0.053609065)
     # expect_equal(chartocdf(0.5,10,1,1,charCGMY, Y=0.5, C = 1, G = 1, M = 1),
     #              0.3212782)
-    expect_equal(chartocdf(0.5,10,1,1,charSTS, alpha=0.5, delta = 1,
+    expect_equal(chartocdf(0.5,10,1,1,charTSS, alpha=0.5, delta = 1,
                            lambda = 1), 0.0730034)
     expect_equal(chartocdf(0.5,10,1,1,charCTS, alpha=0.5, deltap = 1,
                            deltam = 1, lambdap = 1, lambdam = 1, mu = 1),

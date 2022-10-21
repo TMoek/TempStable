@@ -1,5 +1,5 @@
 #' @importFrom moments all.moments
-CumFinder_STS <- function(x, jmax = 3) {
+CumFinder_TSS <- function(x, jmax = 3) {
     raw.moments <- moments::all.moments(x, order.max = jmax)
     cumfrommom(raw.moments)[-1]
 }
@@ -27,16 +27,16 @@ cumfrommom <- function(moms) {
     return(kappa)
 }
 
-MoCObjective_STS <- function(x, parms) {
+MoCObjective_TSS <- function(x, parms) {
     c(F1 = gamma(1 - x[1]) * x[2]/x[3]^(1 - x[1]) - parms[1],
       F2 = gamma(2 - x[1]) * x[2]/x[3]^(2 - x[1]) - parms[2],
       F3 = gamma(3 - x[1]) * x[2]/x[3]^(3 - x[1]) - parms[3])
 }
 
 #' @importFrom rootSolve multiroot
-MoC_STS <- function(x, theta0 = c(0.5, 1, 1), eps = 1e-06) {
-    cumulants <- CumFinder_STS(x)
-    parroot <- rootSolve::multiroot(MoCObjective_STS, theta0, parms = cumulants)
+MoC_TSS <- function(x, theta0 = c(0.5, 1, 1), eps = 1e-06) {
+    cumulants <- CumFinder_TSS(x)
+    parroot <- rootSolve::multiroot(MoCObjective_TSS, theta0, parms = cumulants)
     theta <- parroot$root
     if (theta[1] < 0) {
         theta <- theta0

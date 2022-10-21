@@ -8,7 +8,7 @@
 #'
 #' \strong{TemperedType} Detailed documentation of the individual tempered
 #' stable distributions can be viewed in the respective characteristic function.
-#' Use \code{charSTS}, \code{charCTS}, or \code{charNTS}.
+#' Use \code{charTSS}, \code{charCTS}, or \code{charNTS}.
 #'
 #' \strong{Estimfct} Detailed documentation of the individual parameters
 #' of the various estimate functions is available in the package
@@ -94,7 +94,7 @@
 #' TemperedEstim(TemperedType = "Classic", EstimMethod = "ML",
 #'                data = rCTS(2,1.5,1,1,1,1,0),
 #'                theta0 = c(1.5,1,1,1,1,0) - 0.1);
-#' TemperedEstim("Subordinator", "GMM", rSTS(20,0.5,1,1), algo = "2SGMM",
+#' TemperedEstim("Subordinator", "GMM", rTSS(20,0.5,1,1), algo = "2SGMM",
 #'               alphaReg = 0.01, regularization = "cut-off",
 #'               WeightingMatrix = "OptAsym", t_scheme = "free",
 #'               t_free = seq(0.1,2,length.out = 12));
@@ -102,7 +102,7 @@
 #'               alphaReg = 0.01, subdivisions = 20,
 #'               IntegrationMethod = "Uniform", randomIntegrationLaw = "unif",
 #'               s_min = 0, s_max= 1);
-#' TemperedEstim("Subordinator", "GMC", rSTS(20, 0.5, 1, 1), algo = "2SGMC",
+#' TemperedEstim("Subordinator", "GMC", rTSS(20, 0.5, 1, 1), algo = "2SGMC",
 #'               alphaReg = 0.01, WeightingMatrix = "OptAsym",
 #'               regularization = "cut-off", ncond = 8);
 #' }
@@ -117,7 +117,7 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
         if (TemperedType == "Classic") {
             theta0 <- MoC_CTS(x <- data, c(1.5, 1, 1, 1, 1, 0))
         } else if (TemperedType == "Subordinator") {
-            theta0 <- MoC_STS(x <- data, c(0.5, 1, 1))
+            theta0 <- MoC_TSS(x <- data, c(0.5, 1, 1))
         } else if (TemperedType == "Normal") {
             theta0 <- MoC_NTS(x <- data, c(0.5, 0, 1, 1, 0))
         }
@@ -206,7 +206,7 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
 #         if (TemperedType == "Classic") {
 #             theta0 <- MoC_CTS(x = data, c(1.5, 1, 1, 1, 1, 0), eps = eps)
 #         } else if (TemperedType == "Subordinator") {
-#             theta0 <- MoC_STS(x = data, c(0.5, 1, 1), eps = eps)
+#             theta0 <- MoC_TSS(x = data, c(0.5, 1, 1), eps = eps)
 #         } else if (TemperedType == "Normal") {
 #             theta0 <- MoC_NTS(x = data, c(0.5, 0, 1, 1, 0), eps = eps)
 #         } else {
@@ -287,21 +287,21 @@ getTempEstimFcts <- function(
         Output
     } else if (type == "Subordinator") {
         Output <- switch(method, ML = {
-            list(Params = MLParametersEstim_STS,
-                 CovarianceMat = .asymptoticVarianceEstimML_STS,
-                 methodDes = .methodDesML_STS)
+            list(Params = MLParametersEstim_TSS,
+                 CovarianceMat = .asymptoticVarianceEstimML_TSS,
+                 methodDes = .methodDesML_TSS)
         }, GMM = {
-            list(Params = GMMParametersEstim_STS,
-                 CovarianceMat = .asymptoticVarianceEstimGMM_STS,
-                 methodDes = getGMMmethodName_STS)
+            list(Params = GMMParametersEstim_TSS,
+                 CovarianceMat = .asymptoticVarianceEstimGMM_TSS,
+                 methodDes = getGMMmethodName_TSS)
         }, Cgmm = {
-            list(Params = CgmmParametersEstim_STS,
-                 CovarianceMat = .asymptoticVarianceEstimCgmm_STS,
-                 methodDes = getCgmmMethodName_STS)
+            list(Params = CgmmParametersEstim_TSS,
+                 CovarianceMat = .asymptoticVarianceEstimCgmm_TSS,
+                 methodDes = getCgmmMethodName_TSS)
         }, GMC = {
-            list(Params = GMCParametersEstim_STS,
-                 CovarianceMat = .asymptoticVarianceEstimGMC_STS,
-                 methodDes = getGMCmethodName_STS)
+            list(Params = GMCParametersEstim_TSS,
+                 CovarianceMat = .asymptoticVarianceEstimGMC_TSS,
+                 methodDes = getGMCmethodName_TSS)
         }, stop(paste(method, " not taken into account !")))
         Output
     } else if (type == "Normal") {
@@ -419,7 +419,7 @@ NameParamsObjectsTemp <- function(mat, type = c("Classic", "Subordinator",
 }
 
 # No Export.
-CheckParametersRange_STS <- function(theta) {
+CheckParametersRange_TSS <- function(theta) {
     alpha <- theta[1]
     delta <- theta[2]
     lambda <- theta[3]

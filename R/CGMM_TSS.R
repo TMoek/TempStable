@@ -1,5 +1,5 @@
 ##### main function#####
-CgmmParametersEstim_STS <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
+CgmmParametersEstim_TSS <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
                                     alphaReg = 0.01, subdivisions = 50,
                                     IntegrationMethod = c("Uniform", "Simpson"),
                                     randomIntegrationLaw = c("unif", "norm"),
@@ -7,16 +7,16 @@ CgmmParametersEstim_STS <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
                                     IterationControl = list(), eps = 1e-06,
                                     PrintTime = FALSE, ...) {
     if (is.null(theta0))
-        theta0 <- MoC_STS(x, c(0.5, 1, 1), eps = eps)
+        theta0 <- MoC_TSS(x, c(0.5, 1, 1), eps = eps)
     algo <- match.arg(algo)
     t_init <- StableEstim::getTime_()
-    method <- getCgmmMethodName_STS(algo = algo, alphaReg = alphaReg,
+    method <- getCgmmMethodName_TSS(algo = algo, alphaReg = alphaReg,
                                     subdivisions = subdivisions,
                                     IntegrationMethod = IntegrationMethod,
                                     randomIntegrationLaw = randomIntegrationLaw,
                                     s_min = s_min, s_max = s_max)
     Estim <- switch(algo, `2SCgmm` = {
-        Compute2SCgmmParametersEstim_STS(x = x, theta0 = theta0,
+        Compute2SCgmmParametersEstim_TSS(x = x, theta0 = theta0,
                                          alphaReg = alphaReg, eps = eps,
                                          s_min = s_min, s_max = s_max,
                                          IntegrationMethod = IntegrationMethod,
@@ -24,7 +24,7 @@ CgmmParametersEstim_STS <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
                                            randomIntegrationLaw,
                                          subdivisions = subdivisions, ...)
     }, ITCgmm = {
-        ComputeITCgmmParametersEstim_STS(x = x, theta0 = theta0,
+        ComputeITCgmmParametersEstim_TSS(x = x, theta0 = theta0,
                                          alphaReg = alphaReg, eps = eps,
                                          s_min = s_min, s_max = s_max,
                                          IntegrationMethod = IntegrationMethod,
@@ -34,7 +34,7 @@ CgmmParametersEstim_STS <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
                                          IterationControl = IterationControl,
                                          ...)
     }, CueCgmm = {
-        ComputeCueCgmmParametersEstim_STS(x = x, theta0 = theta0,
+        ComputeCueCgmmParametersEstim_TSS(x = x, theta0 = theta0,
                                           alphaReg = alphaReg, eps = eps,
                                           s_min = s_min, s_max = s_max,
                                           IntegrationMethod = IntegrationMethod,
@@ -57,7 +57,7 @@ CgmmParametersEstim_STS <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
 }
 
 ##### auxiliaries#####
-getCgmmMethodName_STS <- function(algo, alphaReg, subdivisions,
+getCgmmMethodName_TSS <- function(algo, alphaReg, subdivisions,
                                   IntegrationMethod, randomIntegrationLaw,
                                   s_min, s_max, ...) {
     args <- list(...)
@@ -72,7 +72,7 @@ getCgmmMethodName_STS <- function(algo, alphaReg, subdivisions,
 }
 
 ##### CGMM methods#####
-Compute2SCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps, s_min,
+Compute2SCgmmParametersEstim_TSS <- function(x, theta0, alphaReg, eps, s_min,
                                              s_max, IntegrationMethod,
                                              randomIntegrationLaw, subdivisions,
                                              ...) {
@@ -81,7 +81,7 @@ Compute2SCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps, s_min,
         control <- list(abs.tol = 1e-15, rel.tol = 1e-07, x.tol = 1.5e-05,
                         xf.tol = 2.2e-10)
         thetaHat <- as.numeric(stats::nlminb(start = theta0,
-                                      objective = ComputeObjectiveCgmm_STS,
+                                      objective = ComputeObjectiveCgmm_TSS,
                                       gradient = NULL, hessian = NULL,
                                       Weighting = "Id", x = x,
                                       alphaReg = alphaReg, thetaHat = NULL,
@@ -95,7 +95,7 @@ Compute2SCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps, s_min,
                                       upper = c(1 - eps, Inf, Inf))$par)
     } else {
         thetaHat <- as.numeric(stats::nlminb(start = theta0,
-                                      objective = ComputeObjectiveCgmm_STS,
+                                      objective = ComputeObjectiveCgmm_TSS,
                                       gradient = NULL, hessian = NULL,
                                       Weighting = "Id", x = x,
                                       alphaReg = alphaReg, thetaHat = NULL,
@@ -107,7 +107,7 @@ Compute2SCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps, s_min,
                                       lower = c(eps, eps, eps),
                                       upper = c(1 - eps, Inf, Inf))$par)
     }
-    Cmat <- ComputeCmat_STS(x = x, thetaHat = thetaHat, s_min = s_min,
+    Cmat <- ComputeCmat_TSS(x = x, thetaHat = thetaHat, s_min = s_min,
                             s_max = s_max,
                             IntegrationMethod = IntegrationMethod,
                             randomIntegrationLaw = randomIntegrationLaw,
@@ -115,7 +115,7 @@ Compute2SCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps, s_min,
     if (is.null(dots$control)) {
         control <- list(abs.tol = 1e-15, rel.tol = 1e-07, x.tol = 1.5e-05,
                         xf.tol = 2.2e-10)
-        res <- stats::nlminb(start = theta0, objective = ComputeObjectiveCgmm_STS,
+        res <- stats::nlminb(start = theta0, objective = ComputeObjectiveCgmm_TSS,
                       Weighting = "optimal", Cmat = Cmat, x = x,
                       alphaReg = alphaReg, thetaHat = thetaHat, s_min = s_min,
                       s_max = s_max, IntegrationMethod = IntegrationMethod,
@@ -123,7 +123,7 @@ Compute2SCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps, s_min,
                       subdivisions = subdivisions, ..., control = control,
                       lower = c(eps, eps, eps), upper = c(1 - eps, Inf, Inf))
     } else {
-        res <- stats::nlminb(start = theta0, objective = ComputeObjectiveCgmm_STS,
+        res <- stats::nlminb(start = theta0, objective = ComputeObjectiveCgmm_TSS,
                       Weighting = "optimal", Cmat = Cmat, x = x,
                       alphaReg = alphaReg, thetaHat = thetaHat, s_min = s_min,
                       s_max = s_max, IntegrationMethod = IntegrationMethod,
@@ -135,14 +135,14 @@ Compute2SCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps, s_min,
 }
 
 
-ComputeITCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps, s_min,
+ComputeITCgmmParametersEstim_TSS <- function(x, theta0, alphaReg, eps, s_min,
                                              s_max, IntegrationMethod,
                                              randomIntegrationLaw, subdivisions,
                                              IterationControl, ...) {
     iter = 0
     IterationControl <- checkIterationControl(IterationControl)
     theta1 <- as.numeric(stats::nlminb(start = theta0,
-                                objective = ComputeObjectiveCgmm_STS,
+                                objective = ComputeObjectiveCgmm_TSS,
                                 Weighting = "Id", x = x, alphaReg = alphaReg,
                                 thetaHat = NULL, s_min = s_min, s_max = s_max,
                                 IntegrationMethod = IntegrationMethod,
@@ -154,7 +154,7 @@ ComputeITCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps, s_min,
     RelativeErr = IterationControl$RelativeErrMax + 5
     while ((iter < IterationControl$NbIter) &&
            (RelativeErr > IterationControl$RelativeErrMax)) {
-        Cmat <- ComputeCmat_STS(x = x, thetaHat = PrevEstimParVal,
+        Cmat <- ComputeCmat_TSS(x = x, thetaHat = PrevEstimParVal,
                                 s_min = s_min, s_max = s_max,
                                 IntegrationMethod = IntegrationMethod,
                                 randomIntegrationLaw = randomIntegrationLaw,
@@ -164,7 +164,7 @@ ComputeITCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps, s_min,
             control <- list(abs.tol = 1e-15, rel.tol = 1e-07, x.tol = 1.5e-05,
                             xf.tol = 2.2e-10)
             CurrentEstimAllInfo <- stats::nlminb(start = PrevEstimParVal,
-                                          objective = ComputeObjectiveCgmm_STS,
+                                          objective = ComputeObjectiveCgmm_TSS,
                                           Weighting = "optimal", Cmat = Cmat,
                                           alphaReg = alphaReg, x = x,
                                           thetaHat = PrevEstimParVal,
@@ -178,7 +178,7 @@ ComputeITCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps, s_min,
                                           upper = c(1 - eps, Inf, Inf))
         } else {
             CurrentEstimAllInfo <- stats::nlminb(start = PrevEstimParVal,
-                                          objective = ComputeObjectiveCgmm_STS,
+                                          objective = ComputeObjectiveCgmm_TSS,
                                           Weighting = "optimal", Cmat = Cmat,
                                           alphaReg = alphaReg, x = x,
                                           thetaHat = PrevEstimParVal,
@@ -200,7 +200,7 @@ ComputeITCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps, s_min,
     list(par = as.numeric(CurrentEstimParVal), all = CurrentEstimAllInfo)
 }
 
-ComputeCueCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps,
+ComputeCueCgmmParametersEstim_TSS <- function(x, theta0, alphaReg, eps,
                                               s_min, s_max, IntegrationMethod,
                                               randomIntegrationLaw,
                                               subdivisions, IterationControl,
@@ -208,7 +208,7 @@ ComputeCueCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps,
     iter = 0
     IterationControl <- checkIterationControl(IterationControl)
     theta1 <- as.numeric(stats::nlminb(start = theta0,
-                                objective = ComputeObjectiveCgmm_STS,
+                                objective = ComputeObjectiveCgmm_TSS,
                                 Weighting = "Id", x = x, alphaReg = alphaReg,
                                 thetaHat = NULL, s_min = s_min, s_max = s_max,
                                 IntegrationMethod = IntegrationMethod,
@@ -225,7 +225,7 @@ ComputeCueCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps,
             control <- list(abs.tol = 1e-15, rel.tol = 1e-07, x.tol = 1.5e-05,
                             xf.tol = 2.2e-10)
             CurrentEstimAllInfo <- stats::nlminb(start = PrevEstimParVal,
-                                          objective = ComputeObjectiveCgmm_STS,
+                                          objective = ComputeObjectiveCgmm_TSS,
                                           Cmat = NULL, Weighting = "optimal",
                                           alphaReg = alphaReg, x = x,
                                           thetaHat = PrevEstimParVal,
@@ -239,7 +239,7 @@ ComputeCueCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps,
                                           upper = c(1 - eps, Inf, Inf))
         } else {
             CurrentEstimAllInfo <- stats::nlminb(start = PrevEstimParVal,
-                                          objective = ComputeObjectiveCgmm_STS,
+                                          objective = ComputeObjectiveCgmm_TSS,
                                           Cmat = NULL, Weighting = "optimal",
                                           alphaReg = alphaReg, x = x,
                                           thetaHat = PrevEstimParVal,
@@ -262,7 +262,7 @@ ComputeCueCgmmParametersEstim_STS <- function(x, theta0, alphaReg, eps,
 }
 
 ##### Objective related functions#####
-ComputeObjectiveCgmm_STS <- function(theta, Cmat = NULL, x,
+ComputeObjectiveCgmm_TSS <- function(theta, Cmat = NULL, x,
                                      Weighting = c("optimal", "Id"), alphaReg,
                                      thetaHat, s_min, s_max, subdivisions = 50,
                                      IntegrationMethod =
@@ -273,7 +273,7 @@ ComputeObjectiveCgmm_STS <- function(theta, Cmat = NULL, x,
     IntegrationMethod <- match.arg(IntegrationMethod)
     randomIntegrationLaw <- match.arg(randomIntegrationLaw)
     Weighting <- match.arg(Weighting)
-    ObjectiveVal <- ComputeCgmmFcts_STS(Fct = "Objective", theta = theta,
+    ObjectiveVal <- ComputeCgmmFcts_TSS(Fct = "Objective", theta = theta,
                                         Cmat = Cmat, x = x,
                                         Weighting = Weighting,
                                         alphaReg = alphaReg,
@@ -287,7 +287,7 @@ ComputeObjectiveCgmm_STS <- function(theta, Cmat = NULL, x,
 }
 
 
-ComputeCgmmFcts_STS <- function(Fct = c("Objective", "Covariance"), theta,
+ComputeCgmmFcts_TSS <- function(Fct = c("Objective", "Covariance"), theta,
                                 Cmat = NULL, x, Weighting = c("optimal", "Id"),
                                 alphaReg, thetaHat, s_min, s_max,
                                 subdivisions = 50,
@@ -299,7 +299,7 @@ ComputeCgmmFcts_STS <- function(Fct = c("Objective", "Covariance"), theta,
     randomIntegrationLaw <- match.arg(randomIntegrationLaw)
     Weighting <- match.arg(Weighting)
     ghatBarFctOft <- function(t_var, X){
-      Conj(sampleComplexCFMoment_STS(x = X, t = t_var, theta = theta))
+      Conj(sampleComplexCFMoment_TSS(x = X, t = t_var, theta = theta))
     }
     ghatFctOft <- function(t_var, X) Conj(ghatBarFctOft(t_var, X))
     if (Weighting == "Id") {
@@ -315,14 +315,14 @@ ComputeCgmmFcts_STS <- function(Fct = c("Objective", "Covariance"), theta,
                                                         randomIntegrationLaw,
                                                       ...)
     } else {
-        V <- ComputeV_STS(Fct = Fct, theta = theta, thetaHat = thetaHat, X = x,
+        V <- ComputeV_TSS(Fct = Fct, theta = theta, thetaHat = thetaHat, X = x,
                           IntegrationMethod = IntegrationMethod, s_min = s_min,
                           randomIntegrationLaw = randomIntegrationLaw,
                           s_max = s_max, subdivisions = subdivisions, ...)
         if (is.null(Cmat)) {
             if (Fct == "Covariance")
                 thetaToUse <- thetaHat else thetaToUse <- theta
-            Cmat <- ComputeCmat_STS(x = x, thetaHat = thetaToUse, s_min = s_min,
+            Cmat <- ComputeCmat_TSS(x = x, thetaHat = thetaToUse, s_min = s_min,
                                     s_max = s_max,
                                     IntegrationMethod = IntegrationMethod,
                                     randomIntegrationLaw = randomIntegrationLaw,
@@ -336,19 +336,19 @@ ComputeCgmmFcts_STS <- function(Fct = c("Objective", "Covariance"), theta,
     ObjectiveVal
 }
 
-ComputeV_STS <- function(Fct = c("Objective", "Covariance"), theta, thetaHat, X,
+ComputeV_TSS <- function(Fct = c("Objective", "Covariance"), theta, thetaHat, X,
                          s_min, s_max, IntegrationMethod, randomIntegrationLaw,
                          subdivisions, ...) {
     Fct <- match.arg(Fct)
     g_hat_fct <- function(s, x) {
-        sampleComplexCFMoment_STS(x = x, t = s, theta = theta)
+        sampleComplexCFMoment_TSS(x = x, t = s, theta = theta)
     }
     g_bar_fct <- function(s, x) {
-        Conj(sapply(X = x, FUN = sampleComplexCFMoment_STS, t = s,
+        Conj(sapply(X = x, FUN = sampleComplexCFMoment_TSS, t = s,
                     theta = thetaHat))
     }
     Jac_g_hat_fct <- function(s, x) {
-        jacobianSampleComplexCFMoment_STS(t = s, theta = theta)
+        jacobianSampleComplexCFMoment_TSS(t = s, theta = theta)
     }
     if (Fct == "Covariance") {
         res <- IntegrateRandomVectorsProduct(f_fct = g_bar_fct, X = X,
@@ -373,10 +373,10 @@ ComputeV_STS <- function(Fct = c("Objective", "Covariance"), theta, thetaHat, X,
 }
 
 
-ComputeCmat_STS <- function(x, thetaHat, s_min, s_max, IntegrationMethod,
+ComputeCmat_TSS <- function(x, thetaHat, s_min, s_max, IntegrationMethod,
                             randomIntegrationLaw, subdivisions, ...) {
     f_fct <- function(s, x) {
-        sapply(X = x, FUN = sampleComplexCFMoment_STS, t = s, theta = thetaHat)
+        sapply(X = x, FUN = sampleComplexCFMoment_TSS, t = s, theta = thetaHat)
     }
     f_bar_fct <- function(s, x) {
         Conj(f_fct(s, x))

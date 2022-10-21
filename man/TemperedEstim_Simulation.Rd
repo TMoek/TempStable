@@ -14,7 +14,6 @@ TemperedEstim_Simulation(
   saveOutput = TRUE,
   SeedOptions = NULL,
   eps = 1e-06,
-  parallelization = FALSE,
   ...
 )
 }
@@ -114,12 +113,12 @@ of the various estimate functions is available in the package
 \donttest{
 TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
                                                  c(0.5,1,1,1,1,0)),
-                         SampleSizes = 10, MCparam = 10,
+                         SampleSizes = c(10), MCparam = 10,
                          TemperedType = "Classic", Estimfct = "ML",
                          saveOutput = FALSE)
 
 TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0)),
-                         SampleSizes = 40, MCparam = 40,
+                         SampleSizes = c(40), MCparam = 40,
                          TemperedType = "Classic", Estimfct = "GMM",
                          saveOutput = FALSE, algo = "2SGMM",
                          regularization = "cut-off",
@@ -128,7 +127,7 @@ TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0)),
                          t_free = seq(0.1,2,length.out=12))
 
 TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
-                         SampleSizes = 4, MCparam = 4,
+                         SampleSizes = c(4), MCparam = 4,
                          TemperedType = "Classic", Estimfct = "Cgmm",
                          saveOutput = FALSE, algo = "2SCgmm",
                          alphaReg = 0.01, subdivisions = 20,
@@ -137,7 +136,7 @@ TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
                          s_min = 0, s_max= 1)
 
 TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
-                         SampleSizes = 4, MCparam = 4,
+                         SampleSizes = c(4), MCparam = 4,
                          TemperedType = "Classic", Estimfct = "GMC",
                          saveOutput = FALSE, algo = "2SGMC",
                          alphaReg = 0.01, WeightingMatrix = "OptAsym",

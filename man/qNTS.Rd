@@ -36,7 +36,7 @@ number >0 and <1.}
 \item{qmin, qmax}{Limits of the interval. Will be calcultated if
 \code{==NULL}.}
 
-\item{...}{Modify [pSTS()] and [stats::uniroot()].}
+\item{...}{Modify [pTSS()] and [stats::uniroot()].}
 }
 \value{
 As \code{p} is a numeric vector, the return value is also a numeric
@@ -52,5 +52,5 @@ qNTS(0.3,0.6,1,1,1,1,NULL)
 
 }
 \seealso{
-See also the [pSTS()] probability function.
+See also the [pTSS()] probability function.
 }

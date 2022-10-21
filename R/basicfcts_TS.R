@@ -1,6 +1,6 @@
 imagN <- (0 + (0 + (0 + (0+1i))))
 
-####Subordinator Tempered Stable (STS)####
+####Tempered stable subordinator (TTS)####
 
 #' Characteristic function of the tempered stable subordinator
 #'
@@ -34,11 +34,11 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #'
 #' @examples
 #' x <- seq(-10,10,0.25)
-#' y <- charSTS(x,0.5,1,1)
+#' y <- charTSS(x,0.5,1,1)
 #' plot(x,y)
 #'
 #' @export
-charSTS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
+charTSS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
     if ((missing(alpha) | missing(delta) | missing(lambda)) & is.null(theta))
       stop("No or not enough parameters supplied")
     theta0 <- c(alpha, delta, lambda)
@@ -87,12 +87,12 @@ charSTS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
 #'
 #' @examples
 #' x <- seq(0,15,0.25)
-#' y <- dSTS(x,0.5,1,0.3)
+#' y <- dTSS(x,0.5,1,0.3)
 #' plot(x,y)
 #'
 #' @importFrom stabledist dstable
 #' @export
-dSTS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
+dTSS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
     if ((missing(alpha) | missing(delta) | missing(lambda)) & is.null(theta))
       stop("No or not enough parameters supplied")
     theta0 <- c(alpha, delta, lambda)
@@ -128,24 +128,24 @@ dSTS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 #' @param theta A vector of all other arguments.
 #' @param pmethod A string. If not "integrate", the function \code{chartocdf()}
 #' will be triggered.
-#' @param N integer: the number of replications, if
-#' \code{pmethod != "integrate"}. 10000 by default.
+#' @param N is a power of two & N >= 1024. if
+#' \code{pmethod != "integrate"}. 10000 by default. Relevant for
 #' @param ... Possibility to modify \code{stats::integrate()}.
 #'
 #' @return  As \code{q} is a numeric vector, the return value is also a numeric
 #' vector.
 #'
 #' @seealso
-#' See also the [dSTS()] density-function.
+#' See also the [dTSS()] density-function.
 #'
 #' @examples
 #' x <- seq(0,15,0.25)
-#' y <- pSTS(x,0.7,1.354,0.3)
+#' y <- pTSS(x,0.7,1.354,0.3)
 #' plot(x,y)
 #'
 #' @export
-pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
-                   pmethod = "integrate", N = 10000, ...) {
+pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
+                   pmethod = "integrate", N = 8192, ...) {
     if ((missing(alpha) | missing(delta) | missing(lambda)) & is.null(theta))
       stop("No or not enough parameters supplied")
     theta0 <- c(alpha, delta, lambda)
@@ -161,7 +161,7 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
 
     if(pmethod =="integrate"){
-    p <- sapply(q, function(z, ...) min(stats::integrate(dSTS, 0, z,
+    p <- sapply(q, function(z, ...) min(stats::integrate(dTSS, 0, z,
                                                          alpha = alpha,
                                                          delta = delta,
                                                          lambda = lambda,
@@ -170,7 +170,7 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
   } else {
     m <- gamma(1 - alpha)*delta/lambda^(1-alpha)
     s <- sqrt(gamma(2-alpha)*delta/lambda^(2-alpha))
-    p <- sapply(q, chartocdf, N = N, m = m, s = s, char = charSTS,
+    p <- sapply(q, chartocdf, N = N, m = m, s = s, char = charTSS,
                 alpha = alpha, delta = delta, lambda = lambda)
   }
 
@@ -178,7 +178,7 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 }
 
 
-#' Function to generate random variates of STS distribution.
+#' Function to generate random variates of TSS distribution.
 #'
 #' Generates \code{n} random numbers distributed according to the distribution
 #' of the tempered stable subordinator.
@@ -198,11 +198,11 @@ pSTS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' @return generates random deviates.
 #'
 #' @examples
-#' rSTS(100,0.5,1,1)
-#' rSTS(100,0.5,1,1,NULL,"SR",50)
+#' rTSS(100,0.5,1,1)
+#' rTSS(100,0.5,1,1,NULL,"SR",50)
 #'
 #' @export
-rSTS <- function(n, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
+rTSS <- function(n, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
                    method = "AR", k = 100) {
     if ((missing(alpha) | missing(delta) | missing(lambda)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -218,16 +218,16 @@ rSTS <- function(n, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
     }
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
     x <- switch(method,
-                AR = rSTS_AR(n = n, alpha = alpha, delta = delta,
+                AR = rTSS_AR(n = n, alpha = alpha, delta = delta,
                              lambda = lambda),
-                SR = rSTS_SR(n = n, alpha = alpha, delta = delta,
+                SR = rTSS_SR(n = n, alpha = alpha, delta = delta,
                              lambda = lambda, k = k))
     return(x)
 }
 
 # No export.
 #' @importFrom stabledist rstable
-rSTS_AR <- function(n, alpha, delta, lambda) {
+rTSS_AR <- function(n, alpha, delta, lambda) {
     sigma <- ((1/alpha * gamma(1 - alpha) * delta *
                  cos(alpha * pi/2))^(1/alpha))
 
@@ -252,14 +252,14 @@ rSTS_AR <- function(n, alpha, delta, lambda) {
 }
 
 # No export.
-rSTS_SR <- function(n, alpha, delta, lambda, k) {
-    base::replicate(n = n, rSTS_SR1(alpha = alpha, delta = delta,
+rTSS_SR <- function(n, alpha, delta, lambda, k) {
+    base::replicate(n = n, rTSS_SR1(alpha = alpha, delta = delta,
                                     lambda = lambda, k = k))
 
 }
 
 # No export.
-rSTS_SR1 <- function(alpha, delta, lambda, k) {
+rTSS_SR1 <- function(alpha, delta, lambda, k) {
     parrivalslong <- cumsum(stats::rexp(k * 1.1))
     parrivals <- parrivalslong[parrivalslong <= k]
     E1 <- stats::rexp(length(parrivals))
@@ -281,21 +281,21 @@ rSTS_SR1 <- function(alpha, delta, lambda, k) {
 #' @param theta A vector of all other arguments.
 #' @param qmin,qmax Limits of the interval. Will be calcultated if
 #' \code{==NULL}.
-#' @param ... Modify [pSTS()] and [stats::uniroot()].
+#' @param ... Modify [pTSS()] and [stats::uniroot()].
 #'
 #' @return  As \code{p} is a numeric vector, the return value is also a numeric
 #' vector.
 #'
 #' @seealso
-#' See also the [pSTS()] probability function.
+#' See also the [pTSS()] probability function.
 #'
 #' @examples
-#' qSTS(0.5,0.5,5,0.01)
-#' qSTS(0.5,0.9,1,10,NULL)
+#' qTSS(0.5,0.5,5,0.01)
+#' qTSS(0.5,0.9,1,10,NULL)
 #'
 #' @importFrom stabledist qstable
 #' @export
-qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
+qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
                   qmin = NULL, qmax = NULL, ...) {
     if (missing(alpha) & missing(delta) & missing(lambda) & is.null(theta))
       stop("No parameters supplied")
@@ -312,7 +312,7 @@ qSTS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
 
     froot <- function(x, y, ...){
-      pSTS(q = x, alpha = alpha, delta = delta, lambda = lambda, ...) - y
+      pTSS(q = x, alpha = alpha, delta = delta, lambda = lambda, ...) - y
     }
 
     qroot <- function(y, qmin, qmax) {
@@ -739,7 +739,7 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
 #' @param theta A vector of all other arguments.
 #' @param qmin,qmax Limits of the interval. Will be calcultated if
 #' \code{==NULL}.
-#' @param ... Modify [pSTS()] and [stats::uniroot()].
+#' @param ... Modify [pTSS()] and [stats::uniroot()].
 #'
 #' @return  As \code{p} is a numeric vector, the return value is also a numeric
 #' vector.
@@ -1065,7 +1065,7 @@ rNTS <- function(n, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 # No export.
 rNTS_AR <- function(n, alpha, beta, delta, lambda, mu) {
     z <- stats::rnorm(n = n)
-    y <- rSTS_AR(n = n, alpha = alpha, delta = delta, lambda = lambda)
+    y <- rTSS_AR(n = n, alpha = alpha, delta = delta, lambda = lambda)
     x <- sqrt(y) * z + beta * y + mu
     return(x)
 }
@@ -1074,7 +1074,7 @@ rNTS_AR <- function(n, alpha, beta, delta, lambda, mu) {
 # No export.
 rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
     z <- stats::rnorm(n = n)
-    y <- rSTS_SR(n = n, alpha = alpha, delta = delta, lambda = lambda, k = k)
+    y <- rTSS_SR(n = n, alpha = alpha, delta = delta, lambda = lambda, k = k)
     x <- sqrt(y) * z + beta * y + mu
     return(x)
 }
@@ -1094,13 +1094,13 @@ rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
 #' @param theta A vector of all other arguments.
 #' @param qmin,qmax Limits of the interval. Will be calcultated if
 #' \code{==NULL}.
-#' @param ... Modify [pSTS()] and [stats::uniroot()].
+#' @param ... Modify [pTSS()] and [stats::uniroot()].
 #'
 #' @return As \code{p} is a numeric vector, the return value is also a numeric
 #' vector.
 #'
 #' @seealso
-#' See also the [pSTS()] probability function.
+#' See also the [pTSS()] probability function.
 #'
 #' @examples
 #' qNTS(0.1,0.5,1,1,1,1)
@@ -1188,15 +1188,14 @@ rCGMY <- function(n, C, G, M, Y, method = "SR", k = 100, ...) {
 
 #' Cumulative distribution function from characteristic function
 #'
-#' Gap holder for description.
-#'
-#' Gap holder for details.
+#' This function returns the distribution function for a given characteristic
+#' function.
 #'
 #' @param q A numeric vector of positive quantile.
-#' @param N A gap holder.
+#' @param N is a power of two & N >= 1024.
 #' @param m A gap holder.
 #' @param s A gap holder.
-#' @param char Choose a characteristic function from package. Either [charSTS],
+#' @param char Choose a characteristic function from package. Either [charTSS],
 #' [charCTS], or [charNTS].
 #' @param ... Use this for parameters of the relevant characteristic function.
 #'
@@ -1206,6 +1205,10 @@ rCGMY <- function(n, C, G, M, Y, method = "SR", k = 100, ...) {
 #' @examples
 #' chartocdf(seq(0,15,0.25),61,1,1,charNTS, alpha=0.5, beta = 1, delta = 1, lambda = 1,
 #'  mu = 1)
+#'
+#' @references
+#' Bohman, Harald (1972), 'From Characteristic Function to Distribution Function
+#' via Fourier Analysis'
 #'
 #' @export
 chartocdf <- function(q, N, m , s, char, ...){

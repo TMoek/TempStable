@@ -1,5 +1,5 @@
 ##### main function#####
-GMCParametersEstim_STS <-
+GMCParametersEstim_TSS <-
   function(x,
            algo = c("2SGMC", "ITGMC", "CueGMC"),
            ncond,
@@ -18,13 +18,13 @@ GMCParametersEstim_STS <-
       ncondfl <- floor(ncond)
     }
     if (is.null(theta0))
-      theta0 <- MoC_STS(x, c(0.5, 1, 1), eps = eps)
+      theta0 <- MoC_TSS(x, c(0.5, 1, 1), eps = eps)
     algo <- match.arg(algo)
     regularization <- match.arg(regularization)
     WeightingMatrix <- match.arg(WeightingMatrix)
     t_init <- StableEstim::getTime_()
     method <-
-      getGMCmethodName_STS(
+      getGMCmethodName_TSS(
         algo = algo,
         ncond = ncondfl,
         alphaReg = alphaReg,
@@ -34,7 +34,7 @@ GMCParametersEstim_STS <-
       )
     Estim <- switch(algo,
                     `2SGMC` = {
-                      Compute2SGMCParametersEstim_STS(
+                      Compute2SGMCParametersEstim_TSS(
                         x = x,
                         ncond = ncondfl,
                         theta0 = theta0,
@@ -46,7 +46,7 @@ GMCParametersEstim_STS <-
                       )
                     },
                     ITGMM = {
-                      ComputeITGMCParametersEstim_STS(
+                      ComputeITGMCParametersEstim_TSS(
                         x = x,
                         ncond = ncondfl,
                         theta0 = theta0,
@@ -59,7 +59,7 @@ GMCParametersEstim_STS <-
                       )
                     },
                     CueGMM = {
-                      ComputeCueGMCParametersEstim_STS(
+                      ComputeCueGMCParametersEstim_TSS(
                         x = x,
                         ncond = ncondfl,
                         theta0 = theta0,
@@ -93,7 +93,7 @@ GMCParametersEstim_STS <-
     )
   }
 
-getGMCmethodName_STS <-
+getGMCmethodName_TSS <-
   function(algo,
            ncond,
            alphaReg,
@@ -115,7 +115,7 @@ getGMCmethodName_STS <-
 
 
 ##### GMC methods#####
-Compute2SGMCParametersEstim_STS <-
+Compute2SGMCParametersEstim_TSS <-
   function(x,
            ncond,
            theta0,
@@ -126,7 +126,7 @@ Compute2SGMCParametersEstim_STS <-
            ...) {
     iter = 0
     AllCurrentEstim <-
-      ComputeCurrentGMC_STS(
+      ComputeCurrentGMC_TSS(
         theta0 = theta0,
         x = x,
         ncond = ncond,
@@ -138,9 +138,9 @@ Compute2SGMCParametersEstim_STS <-
       )
     theta1 <- (AllCurrentEstim$OptInfo)$par
     ProvidedWeightingMatrix <-
-      ComputeGMCWeightingMatrix_STS(theta1, x, ncond, WeightingMatrix, ...)
+      ComputeGMCWeightingMatrix_TSS(theta1, x, ncond, WeightingMatrix, ...)
     CurrentEstimOptInfo <-
-      ComputeCurrentGMC_STS(
+      ComputeCurrentGMC_TSS(
         theta0 = theta1,
         x = x,
         ncond = ncond,
@@ -155,7 +155,7 @@ Compute2SGMCParametersEstim_STS <-
   }
 
 
-ComputeITGMCParametersEstim_STS <-
+ComputeITGMCParametersEstim_TSS <-
   function(x,
            ncond,
            theta0,
@@ -168,7 +168,7 @@ ComputeITGMCParametersEstim_STS <-
     iter = 0
     Control <- checkIterationControl(IterationControl)
     AllCurrentEstim <-
-      ComputeCurrentGMC_STS(
+      ComputeCurrentGMC_TSS(
         theta0 = theta0,
         x = x,
         ncond = ncond,
@@ -184,7 +184,7 @@ ComputeITGMCParametersEstim_STS <-
     while ((iter < Control$NbIter) &&
            (RelativeErr > Control$RelativeErrMax)) {
       ProvidedWeightingMatrix <-
-        ComputeWeightingMatrix_STS(
+        ComputeWeightingMatrix_TSS(
           theta = PrevEstimParVal,
           x = x,
           ncond = ncond,
@@ -192,7 +192,7 @@ ComputeITGMCParametersEstim_STS <-
           ...
         )
       AllCurrentEstim <-
-        ComputeCurrentGMC_STS(
+        ComputeCurrentGMC_TSS(
           theta0 = PrevEstimParVal,
           x = x,
           ncond = ncond,
@@ -214,7 +214,7 @@ ComputeITGMCParametersEstim_STS <-
     list(Estim = CurrentEstimOptInfo)
   }
 
-ComputeCueGMCParametersEstim_STS <-
+ComputeCueGMCParametersEstim_TSS <-
   function(x,
            ncond,
            theta0,
@@ -231,7 +231,7 @@ ComputeCueGMCParametersEstim_STS <-
     while ((iter < Control$NbIter) &&
            (RelativeErr > Control$RelativeErrMax)) {
       AllCurrentEstim <-
-        ComputeCurrentGMC_STS(
+        ComputeCurrentGMC_TSS(
           theta0 = PrevEstimParVal,
           x = x,
           ncond = ncond,
@@ -253,7 +253,7 @@ ComputeCueGMCParametersEstim_STS <-
   }
 
 ##### current step####
-ComputeCurrentGMC_STS <-
+ComputeCurrentGMC_TSS <-
   function(theta0,
            x,
            ncond,
@@ -265,7 +265,7 @@ ComputeCurrentGMC_STS <-
     optOutput <-
       stats::nlminb(
         start = theta0,
-        objective = ComputeGMCObjective_STS,
+        objective = ComputeGMCObjective_TSS,
         gradient = NULL,
         hessian = NULL,
         x = x,
@@ -283,7 +283,7 @@ ComputeCurrentGMC_STS <-
   }
 
 
-ComputeGMCObjective_STS <-
+ComputeGMCObjective_TSS <-
   function(theta,
            x,
            ncond,
@@ -293,16 +293,16 @@ ComputeGMCObjective_STS <-
            eps,
            ...) {
     W <-
-      ComputeGMCWeightingMatrix_STS(
+      ComputeGMCWeightingMatrix_TSS(
         theta = theta,
         x = x,
         ncond = ncond,
         WeightingMatrix = WeightingMatrix,
         ...
       )
-    gbar <- sampleCumulants_STS(x = x, ncond = ncond, theta = theta)
+    gbar <- sampleCumulants_TSS(x = x, ncond = ncond, theta = theta)
     W1gbar <-
-      ComputeInvKbyG_STS(
+      ComputeInvKbyG_TSS(
         K = W,
         G = gbar,
         alphaReg = alphaReg,
@@ -316,42 +316,42 @@ ComputeGMCObjective_STS <-
 
 
 ##### sample moment condition functions#####
-sampleCumulants_STS <- function(x, ncond, theta) {
+sampleCumulants_TSS <- function(x, ncond, theta) {
   sampleCumulants <-
-    empiricalCumulants_STS(x = x, ncond = ncond) -
-    theoreticalCumulants_STS(ncond = ncond, theta = theta)
+    empiricalCumulants_TSS(x = x, ncond = ncond) -
+    theoreticalCumulants_TSS(ncond = ncond, theta = theta)
   return(sampleCumulants)
 }
 
-empiricalCumulants_STS <- function(x, ncond) {
-  CumFinder_STS(x = x, jmax = ncond)
+empiricalCumulants_TSS <- function(x, ncond) {
+  CumFinder_TSS(x = x, jmax = ncond)
 }
 
-theoreticalCumulants_STS <- function(ncond, theta) {
+theoreticalCumulants_TSS <- function(ncond, theta) {
   alpha <- theta[1]
   delta <- theta[2]
   lambda <- theta[3]
-  CheckParametersRange_STS(c(alpha, delta, lambda))
+  CheckParametersRange_TSS(c(alpha, delta, lambda))
   theoretical <- numeric(ncond)
   X <- 1:ncond
   theoretical <-
-    sapply(X = X, jththeoreticalCumulant_STS, theta = theta)
+    sapply(X = X, jththeoreticalCumulant_TSS, theta = theta)
   return(theoretical)
 }
 
-jththeoreticalCumulant_STS <- function(j, theta) {
+jththeoreticalCumulant_TSS <- function(j, theta) {
   gamma(j - theta[1]) * theta[2] / theta[3] ^ (j - theta[1])
 }
 
 
 ##### Weighting Matrix related functions#####
 
-ComputeGMCWeightingMatrix_STS <-
+ComputeGMCWeightingMatrix_TSS <-
   function(theta, x, ncond, WeightingMatrix, ...) {
     switch(
       WeightingMatrix,
       OptAsym = {
-        W <- asymVarCumulants_STS(theta = theta,
+        W <- asymVarCumulants_TSS(theta = theta,
                                   x = x,
                                   ncond = ncond)
       },
@@ -370,9 +370,9 @@ ComputeGMCWeightingMatrix_STS <-
   }
 
 
-asymVarCumulants_STS <- function(theta, x, ncond) {
+asymVarCumulants_TSS <- function(theta, x, ncond) {
   k.pow <- (1:(ncond - 1))
-  cumus <- CumFinder_STS(x = x, jmax = ncond)[1:(ncond - 1)]
+  cumus <- CumFinder_TSS(x = x, jmax = ncond)[1:(ncond - 1)]
   g <- function(n, z) {
     z ^ n - ifelse(n > 1, 1, 0) * sum(choose(n - 1, (0:(n - 2))) *
                                         cumus[1:(n - 1)] * z ^
@@ -381,7 +381,7 @@ asymVarCumulants_STS <- function(theta, x, ncond) {
   gvec <- function(z) {
     sapply(X = (1:ncond),
            FUN = g,
-           z = z) - theoreticalCumulants_STS(ncond = ncond, theta = theta)
+           z = z) - theoreticalCumulants_TSS(ncond = ncond, theta = theta)
   }
   gmat <- function(z) {
     matrix(gvec(z)) %*% gvec(z)

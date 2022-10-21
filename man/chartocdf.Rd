@@ -9,13 +9,13 @@ chartocdf(q, N, m, s, char, ...)
 \arguments{
 \item{q}{A numeric vector of positive quantile.}
 
-\item{N}{A gap holder.}
+\item{N}{is a power of two & N >= 1024.}
 
 \item{m}{A gap holder.}
 
 \item{s}{A gap holder.}
 
-\item{char}{Choose a characteristic function from package. Either [charSTS],
+\item{char}{Choose a characteristic function from package. Either [charTSS],
 [charCTS], or [charNTS].}
 
 \item{...}{Use this for parameters of the relevant characteristic function.}
@@ -25,13 +25,15 @@ As \code{q} is a numeric vector, the return value is also a numeric
 vector.
 }
 \description{
-Gap holder for description.
-}
-\details{
-Gap holder for details.
+This function returns the distribution function for a given characteristic
+function.
 }
 \examples{
 chartocdf(seq(0,15,0.25),61,1,1,charNTS, alpha=0.5, beta = 1, delta = 1, lambda = 1,
  mu = 1)
 
+}
+\references{
+Bohman, Harald (1972), 'From Characteristic Function to Distribution Function
+via Fourier Analysis'
 }

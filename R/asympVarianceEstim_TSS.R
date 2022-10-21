@@ -1,24 +1,24 @@
 ##### ML#####
-.asymptoticVarianceEstimML_STS <- function(data, EstimObj,
+.asymptoticVarianceEstimML_TSS <- function(data, EstimObj,
                                            type = "Subordinator", ...) {
-    asymptoticVarianceEstimML_STS(thetaEst = EstimObj$Estim$par,
+    asymptoticVarianceEstimML_TSS(thetaEst = EstimObj$Estim$par,
                                   n_sample = length(data), type = type, ...)
 }
 
-asymptoticVarianceEstimML_STS <- function(thetaEst, n_sample,
+asymptoticVarianceEstimML_TSS <- function(thetaEst, n_sample,
                                           type = "Subordinator",
                                           subdivisions = 100, ...) {
-    NameParamsObjectsTemp(invFisherMatrix_STS(as.numeric(thetaEst),
+    NameParamsObjectsTemp(invFisherMatrix_TSS(as.numeric(thetaEst),
                                               subdivisions)/n_sample,
                           type = type)
 }
 
 
-invFisherMatrix_STS <- function(theta, subdivisions = 100) {
+invFisherMatrix_TSS <- function(theta, subdivisions = 100) {
     mat <- matrix(NA, 3, 3)
     integrand <- function(x, i, j) {
-        invf <- 1/VectorialDensity_STS(theta, x)
-        df <- jacVectorialDensity_STS(theta, x)
+        invf <- 1/VectorialDensity_TSS(theta, x)
+        df <- jacVectorialDensity_TSS(theta, x)
         y <- invf * df[, i] * df[, j]
     }
     for (i in 1:3) {
@@ -32,38 +32,38 @@ invFisherMatrix_STS <- function(theta, subdivisions = 100) {
     solve(mat)
 }
 
-VectorialDensity_STS <- function(theta, xi) {
-    dSTS(xi, theta[1], theta[2], theta[3])
+VectorialDensity_TSS <- function(theta, xi) {
+    dTSS(xi, theta[1], theta[2], theta[3])
 }
 
-jacVectorialDensity_STS <- function(theta, xi) {
-    NumDeriv_jacobian_STS(fctToDeriv = VectorialDensity_STS,
+jacVectorialDensity_TSS <- function(theta, xi) {
+    NumDeriv_jacobian_TSS(fctToDeriv = VectorialDensity_TSS,
                           WhereFctIsEvaluated = theta, xi = xi)
 }
 
-NumDeriv_jacobian_STS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
+NumDeriv_jacobian_TSS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
     numDeriv::jacobian(fctToDeriv, WhereFctIsEvaluated, method = "Richardson",
              method.args = list(), ...)
 }
 
 ##### GMM#####
-.asymptoticVarianceEstimGMM_STS <- function(data, EstimObj,
+.asymptoticVarianceEstimGMM_TSS <- function(data, EstimObj,
                                             type = "Subordinator", eps, ...) {
-    V <- solve(GMMasymptoticVarianceEstim_STS(theta = EstimObj$Estim$par,
+    V <- solve(GMMasymptoticVarianceEstim_TSS(theta = EstimObj$Estim$par,
                                               t = EstimObj$tEstim, x = data,
                                               eps = eps, ...))/length(data)
     NameParamsObjects(V, type = type)
 }
 
 ##### CGMM#####
-.asymptoticVarianceEstimCgmm_STS <- function(data, EstimObj,
+.asymptoticVarianceEstimCgmm_TSS <- function(data, EstimObj,
                                              type = "Subordinator", ...) {
-    V <- ComputeCovarianceCgmm_STS(theta = EstimObj$Estim$par,
+    V <- ComputeCovarianceCgmm_TSS(theta = EstimObj$Estim$par,
                                    thetaHat = EstimObj$Estim$par, x = data, ...)
     NameParamsObjects(Mod(ComputeCutOffInverse(V))/length(data), type = type)
 }
 
-ComputeCovarianceCgmm_STS <- function(theta, Cmat = NULL, x, alphaReg,
+ComputeCovarianceCgmm_TSS <- function(theta, Cmat = NULL, x, alphaReg,
                                       thetaHat, s_min, s_max, subdivisions = 50,
                                       IntegrationMethod = c("Uniform",
                                                             "Simpson"),
@@ -72,7 +72,7 @@ ComputeCovarianceCgmm_STS <- function(theta, Cmat = NULL, x, alphaReg,
     n <- length(x)
     IntegrationMethod <- match.arg(IntegrationMethod)
     randomIntegrationLaw <- match.arg(randomIntegrationLaw)
-    CovMat <- ComputeCgmmFcts_STS(Fct = "Covariance", theta = theta,
+    CovMat <- ComputeCgmmFcts_TSS(Fct = "Covariance", theta = theta,
                                   Cmat = Cmat, x = x, Weighting = "optimal",
                                   alphaReg = alphaReg, thetaHat = thetaHat,
                                   s_min = s_min, s_max = s_max,
@@ -118,22 +118,22 @@ getSingularValueDecomposition <- function(Kn){
 
 
 ##### GMC#####
-.asymptoticVarianceEstimGMC_STS <- function(data, EstimObj,
+.asymptoticVarianceEstimGMC_TSS <- function(data, EstimObj,
                                             type = "Subordinator", eps, ...) {
-    V <- solve(GMCasymptoticVarianceEstim_STS(theta = EstimObj$Estim$par,
+    V <- solve(GMCasymptoticVarianceEstim_TSS(theta = EstimObj$Estim$par,
                                               ncond = EstimObj$ncond, x = data,
                                               eps = eps, ...))/length(data)
     NameParamsObjects(V, type = type)
 }
 
-GMCasymptoticVarianceEstim_STS <- function(..., theta, x, ncond,
+GMCasymptoticVarianceEstim_TSS <- function(..., theta, x, ncond,
                                            WeightingMatrix, alphaReg = 0.01,
                                            regularization = "Tikhonov",
     eps) {
-    K <- ComputeGMCWeightingMatrix_STS(theta = theta, x = x, ncond = ncond,
+    K <- ComputeGMCWeightingMatrix_TSS(theta = theta, x = x, ncond = ncond,
                                        WeightingMatrix = WeightingMatrix, ...)
-    B <- jacobianSampleRealCFMoment_STS(t, theta)
-    fct <- function(G) ComputeInvKbyG_STS(K = K, G = G, alphaReg = alphaReg,
+    B <- jacobianSampleRealCFMoment_TSS(t, theta)
+    fct <- function(G) ComputeInvKbyG_TSS(K = K, G = G, alphaReg = alphaReg,
                                           regularization = regularization,
                                           eps = eps)
     invKcrossB <- apply(X = B, MARGIN = 2, FUN = fct)

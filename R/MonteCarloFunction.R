@@ -252,7 +252,6 @@ getSeedVector <- function(Outputsize, SeedOptions = NULL) {
 }
 
 # No export.
-#' @importFrom foreach %dopar%
 ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                     TemperedType, Estimfct, HandleError,
                                     ab_current, nab, npar, ParameterMatrix,
@@ -313,7 +312,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                     deltam = thetaT[3], lambdap = thetaT[4],
                     lambdam = thetaT[5], mu = thetaT[6])
         } else if (TemperedType == "Subordinator") {
-          x <- rSTS(n = size, alpha = thetaT[1], delta = thetaT[2],
+          x <- rTSS(n = size, alpha = thetaT[1], delta = thetaT[2],
                     lambda = thetaT[3])
         } else if (TemperedType == "Normal") {
           x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
@@ -449,7 +448,7 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
 #                   deltam = thetaT[3], lambdap = thetaT[4], lambdam = thetaT[5],
 #                   mu = thetaT[6])
 #     } else if (TemperedType == "Subordinator") {
-#         x <- rSTS(n = size, alpha = thetaT[1], delta = thetaT[2],
+#         x <- rTSS(n = size, alpha = thetaT[1], delta = thetaT[2],
 #                   lambda = thetaT[3])
 #     } else if (TemperedType == "Normal") {
 #         x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
@@ -795,149 +794,4 @@ updateOutputFile <- function(thetaT, MCparam, TemperedType, Output){
 #Added by Cedric 20221011
 # No export.
 getTime_ <- function() proc.time()[3]
-
-
-# Added by Cedric 20221012
-# No export.
-setClassesForeach <- function(){
-  EstimClassicClass <- setClass(
-    "EstimClassicClass",
-    slots = list(
-      par = "numeric",
-      par0 = "numeric",
-      vcov = "matrix",
-      confint = "matrix",
-      data = "numeric",
-      sampleSize = "numeric",
-      others = "list",
-      duration = "numeric",
-      failure = "numeric",
-      method = "character"
-    ),
-    contains = list(),
-    validity = function(object) {
-      par <- object@par
-      if (length(par) == 6)
-        ansp <- TRUE
-      else
-        ansp <- "Parameter of length different of 6"
-      par0 <- object@par0
-      if (length(par0) == 6)
-        ansp0 <- TRUE
-      else
-        ansp0 <- "Initial Parameter of length different of 6"
-      vcov <- object@vcov
-      if (ncol(vcov) == 6 &&
-          nrow(vcov) == 6)
-        anscov <- TRUE
-      else
-        anscov <- "covariance matrix of length different of 6x6"
-      confint <- object@confint
-      if (ncol(confint) == 2 &&
-          nrow(confint) == 6)
-        ansconfint <- TRUE
-      else
-        ansconfint <-
-        "confidance intervall matrix of length different of 6x2"
-      if (ansp == TRUE &&
-          ansp0 == TRUE && anscov == TRUE &&
-          ansconfint == TRUE)
-        res <- TRUE
-      else if (is.character(ansp))
-        res <- ansp
-      else if (is.character(ansp0))
-        res <- ansp0
-      else if (is.character(anscov))
-        res <- anscov
-      else if (is.character(ansconfint))
-        res <- ansconfint
-      res
-    }
-  )
-
-  ## Init method
-
-  setMethod("initialize", "EstimClassicClass",
-            function(.Object,
-                     par,
-                     par0,
-                     vcov,
-                     confint,
-                     method,
-                     level,
-                     others,
-                     data,
-                     duration,
-                     failure,
-                     ...) {
-              ## handle missing
-              if (missing(par))
-                par        <- numeric(6)
-              if (missing(par0))
-                par0       <- numeric(6)
-              if (missing(vcov))
-                vcov       <- matrix(0, nrow = 6, ncol = 6)
-              if (missing(confint))
-                confint    <- matrix(0, nrow = 6, ncol = 2)
-              if (missing(data))
-                data       <- numeric(100)
-              sampleSize <- length(data)
-              if (missing(method))
-                method     <- "Default"
-              if (missing(others))
-                others     <- list()
-              if (missing(level))
-                level      <- 0
-              if (missing(duration))
-                duration   <- 0
-              if (missing(failure))
-                failure    <- 0
-
-              ## set up names
-              NameParamsObjects(par, "Classic")
-              NameParamsObjects(par0, "Classic")
-              NameParamsObjects(vcov, "Classic")
-              NameParamsObjects(confint, "Classic")
-              attr(confint, "level") <- level
-
-              methods::callNextMethod(
-                .Object,
-                par = par,
-                par0 = par0,
-                vcov = vcov,
-                confint = confint,
-                data = data,
-                sampleSize = sampleSize,
-                method = method,
-                others = others,
-                duration = duration,
-                failure = failure,
-                ...
-              )
-            })
-
-  setMethod("show", "EstimClassicClass",
-            function(object) {
-              cat("*** Tempered Estim Classic, method Show *** \n")
-              cat("** Method ** \n")
-              print(object@method)
-              cat("** Parameters Estimation ** \n")
-              print(object@par)
-              cat("** Covariance Matrix Estimation ** \n")
-              print(object@vcov)
-              cat("** Confidence interval Estimation ** \n")
-              print(paste("Confidence level=", attributes(object@confint)$level))
-              print(paste("data length=", object@sampleSize))
-              print(object@confint)
-              cat("** Estimation time ** \n")
-              PrintDuration(object@duration)
-              cat("** Estimation status ** \n")
-              if (object@failure == 0)
-                cat("success")
-              else
-                cat("failure")
-              cat("\n ******* End Show (Tempered Estim Classic) ******* \n")
-            })
-
-}
 

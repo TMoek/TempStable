@@ -1,5 +1,5 @@
 ##### main function#####
-GMMParametersEstim_STS <-
+GMMParametersEstim_TSS <-
   function(x,
            algo = c("2SGMM", "ITGMM", "CueGMM"),
            alphaReg = 0.01,
@@ -18,7 +18,7 @@ GMMParametersEstim_STS <-
            PrintTime = FALSE,
            ...) {
     if (is.null(theta0))
-      theta0 <- MoC_STS(x, c(0.5, 1, 1), eps = eps)
+      theta0 <- MoC_TSS(x, c(0.5, 1, 1), eps = eps)
     algo <- match.arg(algo)
     regularization <- match.arg(regularization)
     WeightingMatrix <- match.arg(WeightingMatrix)
@@ -26,7 +26,7 @@ GMMParametersEstim_STS <-
     t_init <- StableEstim::getTime_()
 
     method <-
-      getGMMmethodName_STS(
+      getGMMmethodName_TSS(
         algo = algo,
         alphaReg = alphaReg,
         regularization = regularization,
@@ -36,7 +36,7 @@ GMMParametersEstim_STS <-
       )
     Estim <- switch(algo,
                     `2SGMM` = {
-                      Compute2SGMMParametersEstim_STS(
+                      Compute2SGMMParametersEstim_TSS(
                         x = x,
                         theta0 = theta0,
                         alphaReg = alphaReg,
@@ -48,7 +48,7 @@ GMMParametersEstim_STS <-
                       )
                     },
                     ITGMM = {
-                      ComputeITGMMParametersEstim_STS(
+                      ComputeITGMMParametersEstim_TSS(
                         x = x,
                         theta0 = theta0,
                         alphaReg = alphaReg,
@@ -61,7 +61,7 @@ GMMParametersEstim_STS <-
                       )
                     },
                     CueGMM = {
-                      ComputeCueGMMParametersEstim_STS(
+                      ComputeCueGMMParametersEstim_TSS(
                         x = x,
                         theta0 = theta0,
                         alphaReg = alphaReg,
@@ -91,7 +91,7 @@ GMMParametersEstim_STS <-
   }
 
 ##### auxiliaries#####
-getGMMmethodName_STS <-
+getGMMmethodName_TSS <-
   function(algo,
            alphaReg,
            regularization,
@@ -160,7 +160,7 @@ PrintIteration <- function(theta, iter, nbIterMax) {
 
 ##### GMM methods#####
 
-Compute2SGMMParametersEstim_STS <-
+Compute2SGMMParametersEstim_TSS <-
   function(x,
            theta0,
            alphaReg,
@@ -171,7 +171,7 @@ Compute2SGMMParametersEstim_STS <-
            ...) {
     iter = 0
     AllCurrentEstim <-
-      ComputeCurrentEstim_STS(
+      ComputeCurrentEstim_TSS(
         t_scheme = t_scheme,
         theta0 = theta0,
         x = x,
@@ -184,9 +184,9 @@ Compute2SGMMParametersEstim_STS <-
     theta1 <- (AllCurrentEstim$OptInfo)$par
     t <- AllCurrentEstim$t
     ProvidedWeightingMatrix <-
-      ComputeWeightingMatrix_STS(t, theta1, x, WeightingMatrix, ...)
+      ComputeWeightingMatrix_TSS(t, theta1, x, WeightingMatrix, ...)
     CurrentEstimOptInfo <-
-      ComputeCurrentEstim_STS(
+      ComputeCurrentEstim_TSS(
         t_scheme = t_scheme,
         theta0 = theta1,
         x = x,
@@ -200,7 +200,7 @@ Compute2SGMMParametersEstim_STS <-
     list(Estim = CurrentEstimOptInfo, tEstim = t)
   }
 
-ComputeITGMMParametersEstim_STS <-
+ComputeITGMMParametersEstim_TSS <-
   function(x,
            theta0,
            alphaReg,
@@ -213,7 +213,7 @@ ComputeITGMMParametersEstim_STS <-
     iter = 0
     Control <- checkIterationControl(IterationControl)
     AllCurrentEstim <-
-      ComputeCurrentEstim_STS(
+      ComputeCurrentEstim_TSS(
         t_scheme = t_scheme,
         theta0 = theta0,
         x = x,
@@ -230,7 +230,7 @@ ComputeITGMMParametersEstim_STS <-
     while ((iter < Control$NbIter) &&
            (RelativeErr > Control$RelativeErrMax)) {
       ProvidedWeightingMatrix <-
-        ComputeWeightingMatrix_STS(
+        ComputeWeightingMatrix_TSS(
           t = t,
           theta = PrevEstimParVal,
           x = x,
@@ -238,7 +238,7 @@ ComputeITGMMParametersEstim_STS <-
           ...
         )
       AllCurrentEstim <-
-        ComputeCurrentEstim_STS(
+        ComputeCurrentEstim_TSS(
           t_scheme = t_scheme,
           theta0 = PrevEstimParVal,
           x = x,
@@ -261,7 +261,7 @@ ComputeITGMMParametersEstim_STS <-
     list(Estim = CurrentEstimOptInfo, tEstim = t)
   }
 
-ComputeCueGMMParametersEstim_STS <-
+ComputeCueGMMParametersEstim_TSS <-
   function(x,
            theta0,
            alphaReg,
@@ -278,7 +278,7 @@ ComputeCueGMMParametersEstim_STS <-
     while ((iter < Control$NbIter) &&
            (RelativeErr > Control$RelativeErrMax)) {
       AllCurrentEstim <-
-        ComputeCurrentEstim_STS(
+        ComputeCurrentEstim_TSS(
           t_scheme = t_scheme,
           theta0 = PrevEstimParVal,
           x = x,
@@ -302,7 +302,7 @@ ComputeCueGMMParametersEstim_STS <-
 
 
 ##### current step####
-ComputeCurrentEstim_STS <-
+ComputeCurrentEstim_TSS <-
   function(t_scheme,
            theta0,
            x,
@@ -312,7 +312,7 @@ ComputeCurrentEstim_STS <-
            eps,
            ...) {
     t <-
-      ComputeT_STS(
+      ComputeT_TSS(
         tScheme = t_scheme,
         theta = theta0,
         x = x,
@@ -325,7 +325,7 @@ ComputeCurrentEstim_STS <-
     optOutput <-
       stats::nlminb(
         start = theta0,
-        objective = ComputeObjective_STS,
+        objective = ComputeObjective_TSS,
         gradient = NULL,
         hessian = NULL,
         t = t,
@@ -343,7 +343,7 @@ ComputeCurrentEstim_STS <-
   }
 
 
-ComputeObjective_STS <-
+ComputeObjective_TSS <-
   function(theta,
            t,
            x,
@@ -354,16 +354,16 @@ ComputeObjective_STS <-
            eps,
            ...) {
     K <-
-      ComputeWeightingMatrix_STS(
+      ComputeWeightingMatrix_TSS(
         t = t,
         theta = theta,
         x = x,
         WeightingMatrix = WeightingMatrix,
         ...
       )
-    gbar <- sampleRealCFMoment_STS(x = x, t = t, theta = theta)
+    gbar <- sampleRealCFMoment_TSS(x = x, t = t, theta = theta)
     K1gbar <-
-      ComputeInvKbyG_STS(
+      ComputeInvKbyG_TSS(
         K = K,
         G = gbar,
         alphaReg = alphaReg,
@@ -376,25 +376,25 @@ ComputeObjective_STS <-
 
 
 ##### Sample ECF related functions#####
-sampleRealCFMoment_STS <- function(x, t, theta) {
-  ComplexRes <- sampleComplexCFMoment_STS(x, t, theta)
+sampleRealCFMoment_TSS <- function(x, t, theta) {
+  ComplexRes <- sampleComplexCFMoment_TSS(x, t, theta)
   return(c(Re(ComplexRes), Im(ComplexRes)))
 }
 
-sampleComplexCFMoment_STS <- function(x, t, theta) {
+sampleComplexCFMoment_TSS <- function(x, t, theta) {
   ecf <- function(tt)
     mean(exp(complex(imaginary = tt * x)))
   phiXn <- sapply(t, ecf)
-  phiTheta <- ComplexCF_STS(t, theta)
+  phiTheta <- ComplexCF_TSS(t, theta)
   return(phiXn - phiTheta)
 }
 
-ComplexCF_STS <- function(t, theta) {
+ComplexCF_TSS <- function(t, theta) {
   alpha <- theta[1]
   delta <- theta[2]
   lambda <- theta[3]
-  CheckParametersRange_STS(c(alpha, delta, lambda))
-  charSTS(t, alpha, delta, lambda)
+  CheckParametersRange_TSS(c(alpha, delta, lambda))
+  charTSS(t, alpha, delta, lambda)
 }
 
 
@@ -402,15 +402,15 @@ ComplexCF_STS <- function(t, theta) {
 
 ##### Weighting Matrix related functions#####
 
-ComputeWeightingMatrix_STS <-
+ComputeWeightingMatrix_TSS <-
   function(t, theta, x, WeightingMatrix, ...) {
     switch(
       WeightingMatrix,
       OptAsym = {
-        K <- asymVarRealCFMoment_STS(t = t, theta = theta)
+        K <- asymVarRealCFMoment_TSS(t = t, theta = theta)
       },
       DataVar = {
-        K <- DataVarRealCFMoment_STS(t = t, theta = theta, x = x)
+        K <- DataVarRealCFMoment_TSS(t = t, theta = theta, x = x)
       },
       Id = {
         K <- diag(nrow = 2 * length(t), ncol = 2 * length(t))
@@ -426,14 +426,14 @@ ComputeWeightingMatrix_STS <-
     K
   }
 
-asymVarRealCFMoment_STS <- function(t, theta) {
+asymVarRealCFMoment_TSS <- function(t, theta) {
   m <- length(t)
   res <- matrix(0, ncol = 2 * m, nrow = 2 * m)
   tiPlustj <- crossSum(t, t)
   tiMenostj <- crossSum(t,-t)
-  phi <- ComplexCF_STS(t, theta)
-  phi_tiPlus_tj <- sapply(tiPlustj, ComplexCF_STS, theta)
-  phi_tiMenos_tj <- sapply(tiMenostj, ComplexCF_STS, theta)
+  phi <- ComplexCF_TSS(t, theta)
+  phi_tiPlus_tj <- sapply(tiPlustj, ComplexCF_TSS, theta)
+  phi_tiMenos_tj <- sapply(tiMenostj, ComplexCF_TSS, theta)
   res[1:m, 1:m] <-
     (0.5 * (Re(phi_tiPlus_tj) + Re(phi_tiMenos_tj)) - Re(phi) %*% t(Re(phi)))
   res[1:m, (m + 1):(2 * m)] <-
@@ -452,28 +452,28 @@ crossSum <- function(X, Y) {
   res
 }
 
-DataVarRealCFMoment_STS <- function(t, theta, x) {
+DataVarRealCFMoment_TSS <- function(t, theta, x) {
   gt <-
-    DataMatrixRealCFMomentCondition_STS(t = t, theta = theta, x = x)
+    DataMatrixRealCFMomentCondition_TSS(t = t, theta = theta, x = x)
   stats::var(gt)
 }
 
-DataMatrixRealCFMomentCondition_STS <- function(t, theta, x) {
+DataMatrixRealCFMomentCondition_TSS <- function(t, theta, x) {
   x <- matrix(c(x), ncol = 1)
   x_comp <- x %*% matrix(t, nrow = 1)
   x_comp <- matrix(complex(imaginary = x_comp), ncol = length(t))
   emp_car <- exp(x_comp)
-  the_car <- ComplexCF_STS(t, theta)
+  the_car <- ComplexCF_TSS(t, theta)
   gt <- t(t(emp_car) - the_car)
   gt <- cbind(Re(gt), Im(gt))
   return(gt)
 }
 
 ##### compute Inverse K#####
-ComputeInvKbyG_STS <-
+ComputeInvKbyG_TSS <-
   function(K, G, alphaReg, regularization, eps) {
     ComputeRegularized <- FALSE
-    eigenAnalysis <- getSingularValueDecomposition_STS(K)
+    eigenAnalysis <- getSingularValueDecomposition_TSS(K)
     if (any(abs(eigenAnalysis$lambda) < alphaReg))
       ComputeRegularized <- TRUE
     else {
@@ -490,7 +490,7 @@ ComputeInvKbyG_STS <-
     }
     if (ComputeRegularized)
       K1G <-
-      ComputeRegularizedK1G_STS(
+      ComputeRegularizedK1G_TSS(
         K = K,
         G = G,
         alphaReg = alphaReg,
@@ -500,7 +500,7 @@ ComputeInvKbyG_STS <-
     K1G
   }
 
-getSingularValueDecomposition_STS <- function(Kn) {
+getSingularValueDecomposition_TSS <- function(Kn) {
   if (isSymmetric(Kn)) {
     SingularValuesDecomposition <- eigen(x = Kn, symmetric = TRUE)
     phi <- SingularValuesDecomposition$vectors
@@ -519,9 +519,9 @@ getSingularValueDecomposition_STS <- function(Kn) {
   ))
 }
 
-ComputeRegularizedK1G_STS <-
+ComputeRegularizedK1G_TSS <-
   function(K, G, alphaReg, regularization, eps) {
-    RegularisedSol_STS(
+    RegularisedSol_TSS(
       Kn = K,
       alphaReg = alphaReg,
       r = G,
@@ -530,7 +530,7 @@ ComputeRegularizedK1G_STS <-
     )
   }
 
-RegularisedSol_STS <-
+RegularisedSol_TSS <-
   function(Kn,
            alphaReg,
            r,
@@ -539,7 +539,7 @@ RegularisedSol_STS <-
            ...) {
     regularization <- match.arg(regularization)
     return(
-      ComputeRegularizedSol_STS(
+      ComputeRegularizedSol_TSS(
         Kn = Kn,
         alpha = alphaReg,
         r = r,
@@ -550,7 +550,7 @@ RegularisedSol_STS <-
     )
   }
 
-ComputeRegularizedSol_STS <-
+ComputeRegularizedSol_TSS <-
   function(Kn,
            alpha,
            r,
@@ -558,12 +558,12 @@ ComputeRegularizedSol_STS <-
            eps,
            ...) {
     regularization <- match.arg(regularization)
-    singularValuesSystem <- getSingularValueDecomposition_STS(Kn)
+    singularValuesSystem <- getSingularValueDecomposition_TSS(Kn)
     lambda <- singularValuesSystem$lambda
     phi <- singularValuesSystem$phi
     ksi <- singularValuesSystem$ksi
     qAlphaLambda <-
-      ComputeqAlphaLambda_STS(
+      ComputeqAlphaLambda_TSS(
         lambda = lambda,
         alpha = alpha,
         regularization = regularization,
@@ -583,7 +583,7 @@ ComputeRegularizedSol_STS <-
     ))
   }
 
-ComputeqAlphaLambda_STS <-
+ComputeqAlphaLambda_TSS <-
   function(lambda, alpha, regularization, eps, ...) {
     switch(
       regularization,
@@ -626,7 +626,7 @@ checkValidConstantC <- function(eps, ...) {
 
 ##### t-Scheme related functions#####
 
-ComputeT_STS <- function(tScheme, eps, ...) {
+ComputeT_TSS <- function(tScheme, eps, ...) {
   args <- list(...)
   if (tScheme == "free") {
     checkFreeArgs(args)
@@ -634,12 +634,12 @@ ComputeT_STS <- function(tScheme, eps, ...) {
   } else if ((tScheme == "equally") || (tScheme == "NonOptAr")) {
     checkMainArgs(args)
     t <-
-      ComputeEquallySpacedPoints_STS(tScheme = tScheme, eps = eps, ...)
+      ComputeEquallySpacedPoints_TSS(tScheme = tScheme, eps = eps, ...)
   } else if ((tScheme == "uniformOpt") ||
              (tScheme == "ArithOpt") || (tScheme == "VarOpt")) {
     nb_t <- checkMainArgs(args)
     t <-
-      ComputeOptimisedPoints_STS(tScheme = tScheme, eps = eps, ...)
+      ComputeOptimisedPoints_TSS(tScheme = tScheme, eps = eps, ...)
   }
   t
 }
@@ -657,10 +657,10 @@ checkMainArgs <- function(args) {
 }
 
 
-ComputeEquallySpacedPoints_STS <-
+ComputeEquallySpacedPoints_TSS <-
   function(..., tScheme, eps, x, nb_t, Constrained = TRUE) {
     Bands <-
-      Compute_tBands_STS(x = x,
+      Compute_tBands_TSS(x = x,
                          Constrained = Constrained,
                          eps = eps,
                          ...)
@@ -672,7 +672,7 @@ ComputeEquallySpacedPoints_STS <-
     t
   }
 
-Compute_tBands_STS <- function(x, Constrained, eps, ...) {
+Compute_tBands_TSS <- function(x, Constrained, eps, ...) {
   args <- list(...)
   if (!Constrained) {
     lower <- ifelse(is.null(args$min_t), eps, args$min_t)
@@ -688,20 +688,20 @@ Compute_tBands_STS <- function(x, Constrained, eps, ...) {
   list(lower = lower, upper = upper)
 }
 
-# ComputeFirstRootRealeCF_STS <- function (x, ..., tol = 0.001, maxIter = 100, lowerBand = 1e-04, upperBand = 30) {
-# WelshSol <- WelshFirstRootRealeCF_STS(x, tol, maxIter) if (WelshSol$phinR < tol) return(WelshSol$t) else
-# return(numFirstRootRealeCF_STS(x, tol, lowerBand, upperBand, ...)$t) } WelshFirstRootRealeCF_STS <- function (x,
+# ComputeFirstRootRealeCF_TSS <- function (x, ..., tol = 0.001, maxIter = 100, lowerBand = 1e-04, upperBand = 30) {
+# WelshSol <- WelshFirstRootRealeCF_TSS(x, tol, maxIter) if (WelshSol$phinR < tol) return(WelshSol$t) else
+# return(numFirstRootRealeCF_TSS(x, tol, lowerBand, upperBand, ...)$t) } WelshFirstRootRealeCF_TSS <- function (x,
 # tol = 0.001, maxIter = 100){ A = 0 iter = 0 m = mean(abs(x)) #val = phinR(A, x) val = mean(cos(A * x)) # this has
 # to be double checked!  while ((abs(val) > tol) && (iter < maxIter)) { A = A + val/m #val = phinR(A, x) val =
-# mean(cos(A * x)) iter = iter + 1 } list(t = A, phinR = val) } numFirstRootRealeCF_STS <- function (x, tol = 0.001,
-# lowerBand = 1e-04, upperBand = 30, ...) { t_init <- graphFirstRootRealeCF_STS(x, tol = tol, lowerBand = lowerBand,
+# mean(cos(A * x)) iter = iter + 1 } list(t = A, phinR = val) } numFirstRootRealeCF_TSS <- function (x, tol = 0.001,
+# lowerBand = 1e-04, upperBand = 30, ...) { t_init <- graphFirstRootRealeCF_TSS(x, tol = tol, lowerBand = lowerBand,
 # upperBand = upperBand)$t if (is.na(t_init)) t_init <- upperBand objectiveFct <- function(t) abs(mean(cos(t * x)))
 # optInfo <- nlminb(start = t_init, objective = objectiveFct, lower = lowerBand, upper = upperBand) list(t =
-# as.numeric(optInfo$par), phinR = optInfo$objective) } graphFirstRootRealeCF_STS <- function (x, tol = 0.001,
+# as.numeric(optInfo$par), phinR = optInfo$objective) } graphFirstRootRealeCF_TSS <- function (x, tol = 0.001,
 # lowerBand = 1e-04, upperBand = 30) { t_seq <- seq(lowerBand, upperBand, tol) phinR <- function (t, x) mean(cos(t *
 # x)) phiVal <- sapply(t_seq, phinR, x = x) t <- t_seq[abs(phiVal) < tol][1] list(t = t, phinR = phinR(t, x)) }
 
-ComputeOptimisedPoints_STS <-
+ComputeOptimisedPoints_TSS <-
   function(...,
            tScheme,
            eps,
@@ -712,7 +712,7 @@ ComputeOptimisedPoints_STS <-
     t0 <- seq(eps, An - eps, length.out = nb_t)
     if ((tScheme == "uniformOpt") || (tScheme == "ArithOpt")) {
       t <-
-        ComputeApproxOptSpacing_STS(
+        ComputeApproxOptSpacing_TSS(
           ...,
           tScheme = tScheme,
           eps = eps,
@@ -726,18 +726,18 @@ ComputeOptimisedPoints_STS <-
         t <-
           stats::optim(
             par = t0,
-            fn = ObjectiveFctToMinIn_t_STS,
+            fn = ObjectiveFctToMinIn_t_TSS,
             gr = NULL,
             ...,
             method = "Nelder-Mead"
           )$par
       else
-        t <- stats::nlminb(start = t0, objective = ObjectiveFctToMinIn_t_STS, ...)
+        t <- stats::nlminb(start = t0, objective = ObjectiveFctToMinIn_t_TSS, ...)
     }
     t
   }
 
-ComputeApproxOptSpacing_STS <-
+ComputeApproxOptSpacing_TSS <-
   function(..., tScheme, eps, nb_t, Constrained, An) {
     tau0 <-
       ComputeTau0(
@@ -747,11 +747,11 @@ ComputeApproxOptSpacing_STS <-
         nb_t = nb_t
       )
     if (Constrained) {
-      Bands <- Compute_tauBands_STS(tScheme, eps, nb_t, An)
+      Bands <- Compute_tauBands_TSS(tScheme, eps, nb_t, An)
       tauInfo <-
         stats::nlminb(
           start = tau0,
-          objective = ObjectiveFctToMinIn_tau_STS,
+          objective = ObjectiveFctToMinIn_tau_TSS,
           gradient = NULL,
           hessian = NULL,
           tScheme = tScheme,
@@ -765,7 +765,7 @@ ComputeApproxOptSpacing_STS <-
       tauInfo <-
         stats::nlminb(
           start = tau0,
-          objective = ObjectiveFctToMinIn_tau_STS,
+          objective = ObjectiveFctToMinIn_tau_TSS,
           gradient = NULL,
           hessian = NULL,
           tScheme = tScheme,
@@ -790,7 +790,7 @@ ComputeTau0 <- function(An, tScheme, eps, nb_t) {
     tau0 <- (An - eps) / (nb_t * (2 * nb_t + 1))
 }
 
-Compute_tauBands_STS <- function(tScheme, eps, nb_t, An) {
+Compute_tauBands_TSS <- function(tScheme, eps, nb_t, An) {
   if (tScheme == "uniformOpt") {
     lower = eps
     upper = An / nb_t
@@ -802,7 +802,7 @@ Compute_tauBands_STS <- function(tScheme, eps, nb_t, An) {
 }
 
 
-ObjectiveFctToMinIn_tau_STS <-
+ObjectiveFctToMinIn_tau_TSS <-
   function(tau,
            ...,
            tScheme,
@@ -819,7 +819,7 @@ ObjectiveFctToMinIn_tau_STS <-
     } else if (tScheme == "ArithOpt") {
       t <- ((1:nb_t) * (2:(nb_t + 1))) * tau
     }
-    ObjectiveFctToMinIn_t_STS(
+    ObjectiveFctToMinIn_t_TSS(
       t,
       ...,
       theta = theta,
@@ -835,7 +835,7 @@ ObjectiveFctToMinIn_tau_STS <-
 InvDet <- function(Mat)
   1 / abs(det(Mat))
 
-ObjectiveFctToMinIn_t_STS <-
+ObjectiveFctToMinIn_t_TSS <-
   function(t,
            ...,
            theta,
@@ -846,7 +846,7 @@ ObjectiveFctToMinIn_t_STS <-
            regularization = "Tikhonov",
            fctToApply = InvDet) {
     W <-
-      GMMasymptoticVarianceEstim_STS(
+      GMMasymptoticVarianceEstim_TSS(
         ...,
         t = t,
         theta = theta,
@@ -860,7 +860,7 @@ ObjectiveFctToMinIn_t_STS <-
   }
 
 
-GMMasymptoticVarianceEstim_STS <-
+GMMasymptoticVarianceEstim_TSS <-
   function(...,
            t,
            theta,
@@ -870,17 +870,17 @@ GMMasymptoticVarianceEstim_STS <-
            alphaReg = 0.01,
            regularization = "Tikhonov") {
     K <-
-      ComputeWeightingMatrix_STS(
+      ComputeWeightingMatrix_TSS(
         t = t,
         theta = theta,
         x = x,
         WeightingMatrix = WeightingMatrix,
         ...
       )
-    B <- jacobianSampleRealCFMoment_STS(t, theta)
+    B <- jacobianSampleRealCFMoment_TSS(t, theta)
     fct <-
       function(G)
-        ComputeInvKbyG_STS(
+        ComputeInvKbyG_TSS(
           K = K,
           G = G,
           alphaReg = alphaReg,
@@ -891,23 +891,23 @@ GMMasymptoticVarianceEstim_STS <-
     crossprod(B, invKcrossB)
   }
 
-jacobianSampleRealCFMoment_STS <- function(t, theta) {
-  jac <- jacobianSampleComplexCFMoment_STS(t, theta)
+jacobianSampleRealCFMoment_TSS <- function(t, theta) {
+  jac <- jacobianSampleComplexCFMoment_TSS(t, theta)
   apply(jac, 2, function(x)
     c(Re(x), Im(x)))
 }
 
-jacobianSampleComplexCFMoment_STS <- function(t, theta) {
-  -jacobianComplexCF_STS(t, theta)
+jacobianSampleComplexCFMoment_TSS <- function(t, theta) {
+  -jacobianComplexCF_TSS(t, theta)
 }
 
-jacobianComplexCF_STS <- function(t, theta) {
+jacobianComplexCF_TSS <- function(t, theta) {
   ComplexCFtoDeriv <- function(th)
-    ComplexCF_STS(t, th)
-  NumDeriv_jacobian_STS(ComplexCFtoDeriv, theta)
+    ComplexCF_TSS(t, th)
+  NumDeriv_jacobian_TSS(ComplexCFtoDeriv, theta)
 }
 
-NumDeriv_jacobian_STS <-
+NumDeriv_jacobian_TSS <-
   function(fctToDeriv, WhereFctIsEvaluated, ...) {
     numDeriv::jacobian(
       fctToDeriv,
