@@ -13,12 +13,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-# TempStable
+# TempStable <img src="man/figures/logo.png" align="right" width="120" />
 
 <!-- badges: start -->
 <!-- badges: end -->
-
-TODO: Describe what the package does... How to write readme: https://monashbioinformaticsplatform.github.io/2017-11-16-open-science-training/topics/rmarkdown.html
 
 <!-- Start of my description -->
 A collection of methods to estimate parameters of different tempered stable

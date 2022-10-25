@@ -1,13 +1,16 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# TempStable
+# TempStable <img src="man/figures/logo.png" align="right" width="120"/>
 
 <!-- badges: start -->
-<!-- badges: end -->
 
-TODO: Describe what the package does… How to write readme:
-<https://monashbioinformaticsplatform.github.io/2017-11-16-open-science-training/topics/rmarkdown.html>
+<!-- badges: end -->
 
 <!-- Start of my description -->
 
