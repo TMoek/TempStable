@@ -13,7 +13,8 @@ rNTS(
   mu = NULL,
   theta = NULL,
   method = "AR",
-  k = 100
+  k = 100,
+  ...
 )
 }
 \arguments{
@@ -44,12 +45,19 @@ Generates \code{n} random numbers distributed according to the normal
 tempered stable distribution.
 }
 \details{
-TODO: Describe difference between "AR" and "SR". Right now, AR is the method
-that is used in Monte Carlo. And it cannot be changed there.
+"AR" stands for the Acceptance-Rejection Method and "SR" for infinite shot
+noise series representation. "AR" is the standard method used in Monte Carlo
+simulation. For more details, see references.
 }
 \examples{
 rNTS(100, 0.5, 1,1,1,1)
 rNTS(10, 0.6, 0,1,1,0)
 rNTS(10, 0.5, 1,1,1,1, NULL, "SR", 100)
 
+}
+\references{
+Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
+
+Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
+variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
 }

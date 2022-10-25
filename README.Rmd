@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# tillsfunctionpackage
+# TempStable
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -30,7 +30,7 @@ tools to run Monte Carlo simulations.
 
 The main function of this package are briefly described below:
 
-*   main function: TemperedEstim() computes all the information about the
+*   Main function: TemperedEstim() computes all the information about the
 estimator. It allows the user to choose the preferred method and several
 related options.
 *   Characteristic function, density function, probability function and other 
@@ -46,11 +46,11 @@ The package was developed by Till Massing and Cedric Jüssen and is structurally
 
 ## Installation
 
-You can install the development version of tillsfunctionpackage from [GitHub](https://github.com/) with:
+You can install the development version of TempStable from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("cedricjuessen/tillsfunctionpackage")
+devtools::install_github("cedricjuessen/TempStable")
 ```
 
 ## Example
@@ -58,7 +58,7 @@ devtools::install_github("cedricjuessen/tillsfunctionpackage")
 This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
-library(tillsfunctionpackage)
+library(TempStable)
 ## basic example code
 ```
 

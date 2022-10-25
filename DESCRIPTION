@@ -1,4 +1,4 @@
-Package: tillsfunctionpackage
+Package: TempStable
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
@@ -25,7 +25,7 @@ Imports:
     VGAM (>= 1.1-7)
 RoxygenNote: 7.2.1
 Suggests: 
-    knitr (>= 1.39),
+    knitr (>= 1.4),
     rmarkdown (>= 2.14),
     testthat (>= 3.0.0)
 VignetteBuilder: knitr

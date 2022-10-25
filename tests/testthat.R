@@ -1,4 +1,4 @@
 library(testthat)
-library(tillsfunctionpackage)
+library(TempStable)
 
-test_check("tillsfunctionpackage")
+test_check("TempStable")

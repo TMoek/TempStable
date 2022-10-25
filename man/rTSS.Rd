@@ -38,11 +38,18 @@ Generates \code{n} random numbers distributed according to the distribution
 of the tempered stable subordinator.
 }
 \details{
-TODO: Describe difference between "AR" and "SR". Right now, AR is the method
-that is used in Monte Carlo. And it cannot be changed there.
+"AR" stands for the Acceptance-Rejection Method and "SR" for infinite shot
+noise series representation. "AR" is the standard method used in Monte Carlo
+simulation. For more details, see references.
 }
 \examples{
 rTSS(100,0.5,1,1)
 rTSS(100,0.5,1,1,NULL,"SR",50)
 
+}
+\references{
+Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
+
+Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
+variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
 }

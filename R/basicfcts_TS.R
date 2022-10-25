@@ -183,8 +183,9 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' Generates \code{n} random numbers distributed according to the distribution
 #' of the tempered stable subordinator.
 #'
-#' TODO: Describe difference between "AR" and "SR". Right now, AR is the method
-#' that is used in Monte Carlo. And it cannot be changed there.
+#' "AR" stands for the Acceptance-Rejection Method and "SR" for infinite shot
+#' noise series representation. "AR" is the standard method used in Monte Carlo
+#' simulation. For more details, see references.
 #'
 #' @param n sample size (integer).
 #' @param alpha A real number between 0 and 1.
@@ -200,6 +201,12 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' @examples
 #' rTSS(100,0.5,1,1)
 #' rTSS(100,0.5,1,1,NULL,"SR",50)
+#'
+#' @references
+#' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
+#'
+#' Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
+#' variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
 #'
 #' @export
 rTSS <- function(n, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
@@ -599,8 +606,9 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' Generates \code{n} random numbers distributed according to the classic
 #' tempered stable (CTS) distribution.
 #'
-#' TODO: Describe difference between "aAR" and "SR". Right now, aAR is the
-#' method that is used in Monte Carlo. And it cannot be changed there.
+#' "aAR" stands for the approximate Acceptance-Rejection Method and "SR" for
+#' infinite shot noise series representation. "aAR" is the standard method used
+#' in Monte Carlo simulation. For more details, see references.
 #'
 #' @param n sample size (integer).
 #' @param alpha A real number between 0 and 2.
@@ -614,6 +622,12 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @param c A real number. Only relevant for \code{method == "aAR"}.
 #'
 #' @return generates random deviates.
+#'
+#' @references
+#' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
+#'
+#' Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
+#' variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
 #'
 #' @examples
 #' rCTS(10,0.5,1,1,1,1,1,NULL,"SR",10)
@@ -1013,8 +1027,9 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' Generates \code{n} random numbers distributed according to the normal
 #' tempered stable distribution.
 #'
-#' TODO: Describe difference between "AR" and "SR". Right now, AR is the method
-#' that is used in Monte Carlo. And it cannot be changed there.
+#' "AR" stands for the Acceptance-Rejection Method and "SR" for infinite shot
+#' noise series representation. "AR" is the standard method used in Monte Carlo
+#' simulation. For more details, see references.
 #'
 #' @param n sample size (integer).
 #' @param alpha A real number between 0 and 1.
@@ -1029,6 +1044,12 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #'
 #' @return generates random deviates.
 #'
+#' @references
+#' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
+#'
+#' Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
+#' variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
+#'
 #' @examples
 #' rNTS(100, 0.5, 1,1,1,1)
 #' rNTS(10, 0.6, 0,1,1,0)
@@ -1036,7 +1057,7 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #'
 #' @export
 rNTS <- function(n, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
-                 mu = NULL, theta = NULL, method = "AR", k = 100) {
+                 mu = NULL, theta = NULL, method = "AR", k = 100, ...) {
     if ((missing(alpha) | missing(beta) | missing(delta) | missing(lambda) |
          missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")

@@ -46,11 +46,18 @@ Generates \code{n} random numbers distributed according to the classic
 tempered stable (CTS) distribution.
 }
 \details{
-TODO: Describe difference between "aAR" and "SR". Right now, aAR is the
-method that is used in Monte Carlo. And it cannot be changed there.
+"aAR" stands for the approximate Acceptance-Rejection Method and "SR" for
+infinite shot noise series representation. "aAR" is the standard method used
+in Monte Carlo simulation. For more details, see references.
 }
 \examples{
 rCTS(10,0.5,1,1,1,1,1,NULL,"SR",10)
 rCTS(10,0.5,1,1,1,1,1,NULL,"aAR")
 
+}
+\references{
+Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
+
+Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
+variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
 }
