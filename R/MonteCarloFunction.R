@@ -671,7 +671,12 @@ get_filename_checkPoint_Temp <- function(ParameterMatrix, nab, npar, MCparam,
 
     MC <- paste("Test", sep = "")
 
-    fileName <- paste(MC, method, "_CHECKPOINT.txt", sep = "")
+    methodTrunc <- method
+    if (base::nchar(methodTrunc) > 30){
+      methodTrunc <- substring(methodTrunc,1,30)
+    }
+
+    fileName <- paste(MC, methodTrunc, "_CHECKPOINT.txt", sep = "")
     fileName
 }
 

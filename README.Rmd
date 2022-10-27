@@ -58,5 +58,20 @@ This is a basic example which shows you how to solve a common problem:
 ```{r example}
 library(TempStable)
 ## basic example code
+# Such a simulation can take a very long time. Therefore, it can make sense to 
+# parallelise after Monte Carlo runs. Parallelisation of the simulation is not 
+# yet part of the package. 
+
+# For testing purposes, the amount of runs and parameters is greatly reduced. 
+# Therefore, the result is not meaningful. To start a meaningful simulation, the
+# SampleSize could be, for example, 1000 and MCParam also 1000.
+thetaT <- c(1.5,1,1,1,1,0)
+res_CTS_ML_size10 <- TemperedEstim_Simulation(ParameterMatrix = rbind(thetaT),
+                                               SampleSizes = c(10), MCparam = 10,
+                                               TemperedType = "Classic", Estimfct = "ML",
+                                               saveOutput = FALSE)
+
+colMeans(sweep(res_CTS_ML_size10$outputMat[,9:14],2,thetaT), na.rm = TRUE)
+
 ```
 

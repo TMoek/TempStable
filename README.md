@@ -1,17 +1,10 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# TempStable <img src="man/figures/logo.png" align="right" width="120"/>
+# TempStable <img src="man/figures/logo.png" align="right" width="120" />
 
 <!-- badges: start -->
-
 <!-- badges: end -->
-
 <!-- Start of my description -->
 
 A collection of methods to estimate parameters of different tempered
@@ -56,4 +49,38 @@ This is a basic example which shows you how to solve a common problem:
 ``` r
 library(TempStable)
 ## basic example code
+# Such a simulation can take a very long time. Therefore, it can make sense to 
+# parallelise after Monte Carlo runs. Parallelisation of the simulation is not 
+# yet part of the package. 
+
+# For testing purposes, the amount of runs and parameters is greatly reduced. 
+# Therefore, the result is not meaningful. To start a meaningful simulation, the
+# SampleSize could be, for example, 1000 and MCParam also 1000.
+thetaT <- c(1.5,1,1,1,1,0)
+res_CTS_ML_size10 <- TemperedEstim_Simulation(ParameterMatrix = rbind(thetaT),
+                                               SampleSizes = c(10), MCparam = 10,
+                                               TemperedType = "Classic", Estimfct = "ML",
+                                               saveOutput = FALSE)
+#> ---------------- Alpha=1.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- 
+#> *** Iter 1/10 *** Estimated Remaining Time: 0h1min25sec. *** 
+#> *** Iter 2/10 *** Estimated Remaining Time: 0h1min26sec. *** 
+#> *** Iter 3/10 *** Estimated Remaining Time: 0h2min53sec. *** 
+#> *** Iter 4/10 *** Estimated Remaining Time: 0h2min9sec. ***
+#> Warning in log(densis): NaNs wurden erzeugt
+
+#> Warning in log(densis): NaNs wurden erzeugt
+#> *** Iter 5/10 *** Estimated Remaining Time: 0h0min32sec. ***
+#> Warning in log(densis): NaNs wurden erzeugt
+#> *** Iter 6/10 *** Estimated Remaining Time: 0h0min20sec. *** 
+#> *** Iter 7/10 *** Estimated Remaining Time: 0h0min36sec. ***
+#> Warning in log(densis): NaNs wurden erzeugt
+#> *** Iter 8/10 *** Estimated Remaining Time: 0h0min10sec. ***
+#> Warning in log(densis): NaNs wurden erzeugt
+#> *** Iter 9/10 *** Estimated Remaining Time: 0h0min5sec. ***
+#> Warning in log(densis): NaNs wurden erzeugt
+#> *** Iter 10/10 *** Estimated Remaining Time: 0h0min0sec. ***
+
+colMeans(sweep(res_CTS_ML_size10$outputMat[,9:14],2,thetaT), na.rm = TRUE)
+#>     alphaE    delta+E    delta-E   lambda+E   lambda-E        muE 
+#> -1.3042931  2.6728718  3.5903143  1.2565115  1.5549486  0.4091366
 ```

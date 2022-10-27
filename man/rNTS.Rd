@@ -13,8 +13,7 @@ rNTS(
   mu = NULL,
   theta = NULL,
   method = "AR",
-  k = 100,
-  ...
+  k = 100
 )
 }
 \arguments{

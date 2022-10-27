@@ -1057,7 +1057,7 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #'
 #' @export
 rNTS <- function(n, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
-                 mu = NULL, theta = NULL, method = "AR", k = 100, ...) {
+                 mu = NULL, theta = NULL, method = "AR", k = 100) {
     if ((missing(alpha) | missing(beta) | missing(delta) | missing(lambda) |
          missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")

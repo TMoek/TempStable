@@ -1,6 +1,7 @@
 Package: TempStable
 Type: Package
-Title: What the Package Does (Title Case)
+Title: A collection of methods to estimate parameters of different tempered 
+  stable distributions
 Version: 0.1.0
 Authors@R: c( person(given = "Till", family = "Massing",
                      email = "till.massing@uni-due.de",
@@ -9,8 +10,13 @@ Authors@R: c( person(given = "Till", family = "Massing",
                      middle = "Maximilian",
                      email = "cedric.juessen@vwl.uni-due.de",
                      role = "cre"))
-Description: TODO: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: 
+  A collection of methods to estimate parameters of different tempered stable 
+  distributions. Currently, there are three different tempered stable 
+  distributions to choose from: Tempered stable subordinator distribution, 
+  classical tempered stable distribution, normal tempered stable distribution.
+  The package also provides functions to compute characteristic functions and
+  tools to run Monte Carlo simulations.
 URL: TODO: Link to GitHub project, when project is public
 License: GPL (>= 2)
 Encoding: UTF-8

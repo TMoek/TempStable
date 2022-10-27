@@ -166,32 +166,6 @@ test_that("TemperedEstim_with_Subordinator_GMM_gives_correct_return", {
   })
 })
 
-test_that("TemperedEstim_with_Normal_Cgmm_gives_correct_return", {
-  testData <- c(-0.48187163, 6.71812753, -0.48640565, 2.92431562, 3.61830684,
-                4.45014798, 1.28346323, 3.06967044, -0.61520167, 2.29961823,
-                0.32348759, -0.96483995, 3.44698766, 0.04735393, 1.11814035,
-                5.49385211, 3.00778039, 2.31281466, 0.34080925, 1.67412363)
-
-  suppressWarnings({
-    TestObject <- TemperedEstim("Normal", "Cgmm", testData,
-                                algo = "2SCgmm", alphaReg = 0.01,
-                                subdivisions = 20,
-                                IntegrationMethod = "Uniform",
-                                randomIntegrationLaw = "unif",
-                                s_min = 0, s_max= 1)
-
-
-    expect_equal(TestObject@par[["alpha"]], 1.00527107e-06)
-    expect_equal(TestObject@par[["beta"]], 4.209540e+00)
-    expect_equal(TestObject@par[["delta"]], 8.0388993e+00)
-    expect_equal(TestObject@par[["lambda"]], 6.1063990e+00)
-    expect_equal(TestObject@par[["mu"]], -3.5626797e+00)
-
-    expect_equal(TestObject@par0,c(0.5,0,1,1,0))
-  })
-})
-
-
 test_that("TemperedEstim_with_Subordinator_GMC_gives_correct_return", {
   testData <- c(2.7875940, 0.6474977, 3.6280734, 2.2341773, 2.9577528,
                 1.5241392, 3.6102109, 1.9597134, 2.8262536, 2.1545273,
