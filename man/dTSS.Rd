@@ -45,5 +45,5 @@ plot(x,y)
 Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 
 Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
-processes' \url{https://doi.org/10.1016/j.spa.2013.06.012}
+processes' \doi{10.1016/j.spa.2013.06.012}
 }

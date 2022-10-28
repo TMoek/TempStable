@@ -149,16 +149,16 @@ Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws';
 
 Kim, Y. s., Rachev, S. T., Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
 market models with lévy processes and time-varying volatility'
-\url{https://doi.org/10.1016/j.jbankfin.2007.11.004};
+\doi{10.1016/j.jbankfin.2007.11.004};
 
 Hansen, L. P. (1982), 'Large sample properties of generalized method of
-moments estimators' \url{https://doi.org/10.2307/1912775};
+moments estimators' \doi{10.2307/1912775};
 
 Carrasco, M. & Kotchoni, R. (2017), 'Efficient estimation using the
-characteristic function' \url{https://doi.org/10.1017/S0266466616000025};
+characteristic function' \doi{10.1017/S0266466616000025};
 
 Kuechler, U. & Tappe, S. (2013), 'Tempered stable distribution and processes'
-\url{https://doi.org/10.1016/j.spa.2013.06.012};
+\doi{10.1016/j.spa.2013.06.012};
 }
 \seealso{
 \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R}

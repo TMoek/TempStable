@@ -58,5 +58,5 @@ rNTS(10, 0.5, 1,1,1,1, NULL, "SR", 100)
 Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 
 Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
-variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
+variates' \doi{10.1016/j.cam.2010.12.014}
 }

@@ -32,7 +32,7 @@ which is later added with a centered and totally positively skewed tempered
 stable (Levy) process.
 }
 \details{
-\deqn{ \varphi_{TSS}(t;\theta):=\mathbb{E}_{\theta}\left[
+\deqn{\varphi_{TSS}(t;\theta):=\mathbb{E}_{\theta}\left[
 \mathrm{e}^{\mathrm{i}tY}\right]= \exp\left(\delta\Gamma(-\alpha)
 \left((\lambda-\mathrm{i}t)^{\alpha}-\lambda^{\alpha}\right)\right)}
 }
@@ -46,5 +46,5 @@ plot(x,y)
 Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
 
 Reiichiro K. & Hiroki M. (2011), 'On simulation of tempered stable random
-variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
+variates' \doi{10.1016/j.cam.2010.12.014}
 }

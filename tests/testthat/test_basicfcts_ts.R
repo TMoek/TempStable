@@ -397,24 +397,24 @@ test_that("qNTS_gives_correct_return", {
 #   })
 # })
 
-test_that("chartocdf_gives_correct_return", {
-
-  suppressWarnings({
-    expect_equal(chartocdf(0.5,10,1,1,charNTS, alpha=0.5, beta = 1, delta = 1,
-                           lambda = 1, mu = 1), 0.053609065)
-    # expect_equal(chartocdf(0.5,10,1,1,charCGMY, Y=0.5, C = 1, G = 1, M = 1),
-    #              0.3212782)
-    expect_equal(chartocdf(0.5,10,1,1,charTSS, alpha=0.5, delta = 1,
-                           lambda = 1), 0.0730034)
-    expect_equal(chartocdf(0.5,10,1,1,charCTS, alpha=0.5, deltap = 1,
-                           deltam = 1, lambdap = 1, lambdam = 1, mu = 1),
-                 0.216307303)
-
-    expect_error(chartocdf(0.5,10,1,1,charCTS()))
-    expect_error(chartocdf(0.5,10,1,1,charNTS, alpha=0.5, delta = 1, lambda = 1,
-                           mu = 1))
-  })
-})
+# test_that("chartocdf_gives_correct_return", {
+#
+#   suppressWarnings({
+#     expect_equal(chartocdf(0.5,10,1,1,charNTS, alpha=0.5, beta = 1, delta = 1,
+#                            lambda = 1, mu = 1), 0.053609065)
+#     # expect_equal(chartocdf(0.5,10,1,1,charCGMY, Y=0.5, C = 1, G = 1, M = 1),
+#     #              0.3212782)
+#     expect_equal(chartocdf(0.5,10,1,1,charTSS, alpha=0.5, delta = 1,
+#                            lambda = 1), 0.0730034)
+#     expect_equal(chartocdf(0.5,10,1,1,charCTS, alpha=0.5, deltap = 1,
+#                            deltam = 1, lambdap = 1, lambdam = 1, mu = 1),
+#                  0.216307303)
+#
+#     expect_error(chartocdf(0.5,10,1,1,charCTS()))
+#     expect_error(chartocdf(0.5,10,1,1,charNTS, alpha=0.5, delta = 1, lambda = 1,
+#                            mu = 1))
+#   })
+# })
 
 
 

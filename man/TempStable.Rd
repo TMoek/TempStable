@@ -43,6 +43,7 @@ produce statistical summary.
 # For testing purposes, the amount of runs and parameters is greatly reduced.
 # Therefore, the result is not meaningful. To start a meaningful simulation,
 # the SampleSize could be, for example, 1000 and MCParam also 1000.
+\donttest{
 thetaT <- c(1.5,1,1,1,1,0)
 res_CTS_ML_size10 <- TemperedEstim_Simulation(ParameterMatrix =
                                                 rbind(thetaT),
@@ -53,5 +54,6 @@ res_CTS_ML_size10 <- TemperedEstim_Simulation(ParameterMatrix =
                                               saveOutput = FALSE)
 
 colMeans(sweep(res_CTS_ML_size10$outputMat[,9:14],2,thetaT), na.rm = TRUE)
+}
 
 }

@@ -1,6 +1,6 @@
 imagN <- (0 + (0 + (0 + (0+1i))))
 
-####Tempered stable subordinator (TTS)####
+####Tempered stable subordinator (TSS)####
 
 #' Characteristic function of the tempered stable subordinator
 #'
@@ -14,7 +14,7 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' which is later added with a centered and totally positively skewed tempered
 #' stable (Levy) process.
 #'
-#' \deqn{ \varphi_{TSS}(t;\theta):=\mathbb{E}_{\theta}\left[
+#' \deqn{\varphi_{TSS}(t;\theta):=\mathbb{E}_{\theta}\left[
 #' \mathrm{e}^{\mathrm{i}tY}\right]= \exp\left(\delta\Gamma(-\alpha)
 #' \left((\lambda-\mathrm{i}t)^{\alpha}-\lambda^{\alpha}\right)\right)}
 #'
@@ -30,7 +30,7 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Reiichiro K. & Hiroki M. (2011), 'On simulation of tempered stable random
-#' variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
+#' variates' \doi{10.1016/j.cam.2010.12.014}
 #'
 #' @examples
 #' x <- seq(-10,10,0.25)
@@ -83,7 +83,7 @@ charTSS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
-#' processes' \url{https://doi.org/10.1016/j.spa.2013.06.012}
+#' processes' \doi{10.1016/j.spa.2013.06.012}
 #'
 #' @examples
 #' x <- seq(0,15,0.25)
@@ -139,9 +139,11 @@ dTSS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 #' See also the [dTSS()] density-function.
 #'
 #' @examples
+#' \donttest{
 #' x <- seq(0,15,0.25)
 #' y <- pTSS(x,0.7,1.354,0.3)
 #' plot(x,y)
+#' }
 #'
 #' @export
 pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
@@ -206,7 +208,7 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
-#' variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
+#' variates' \doi{10.1016/j.cam.2010.12.014}
 #'
 #' @export
 rTSS <- function(n, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
@@ -370,7 +372,7 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws';
 #'
 #' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
-#' processes' \url{https://doi.org/10.1016/j.spa.2013.06.012}
+#' processes' \doi{10.1016/j.spa.2013.06.012}
 #'
 #' @examples
 #' x <- seq(-10,10,0.25)
@@ -627,7 +629,7 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
-#' variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
+#' variates' \doi{10.1016/j.cam.2010.12.014}
 #'
 #' @examples
 #' rCTS(10,0.5,1,1,1,1,1,NULL,"SR",10)
@@ -1048,7 +1050,7 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
-#' variates' \url{https://doi.org/10.1016/j.cam.2010.12.014}
+#' variates' \doi{10.1016/j.cam.2010.12.014}
 #'
 #' @examples
 #' rNTS(100, 0.5, 1,1,1,1)
@@ -1207,31 +1209,8 @@ rCGMY <- function(n, C, G, M, Y, method = "SR", k = 100, ...) {
 
 #####Bohman Char to CDF#####
 
-#' Cumulative distribution function from characteristic function
-#'
-#' This function returns the distribution function for a given characteristic
-#' function.
-#'
-#' @param q A numeric vector of positive quantile.
-#' @param N is a power of two & N >= 1024.
-#' @param m A gap holder.
-#' @param s A gap holder.
-#' @param char Choose a characteristic function from package. Either [charTSS],
-#' [charCTS], or [charNTS].
-#' @param ... Use this for parameters of the relevant characteristic function.
-#'
-#' @return As \code{q} is a numeric vector, the return value is also a numeric
-#' vector.
-#'
-#' @examples
-#' chartocdf(seq(0,15,0.25),61,1,1,charNTS, alpha=0.5, beta = 1, delta = 1, lambda = 1,
-#'  mu = 1)
-#'
-#' @references
-#' Bohman, Harald (1972), 'From Characteristic Function to Distribution Function
-#' via Fourier Analysis'
-#'
-#' @export
+#Cumulative distribution function from characteristic function
+# No export.
 chartocdf <- function(q, N, m , s, char, ...){
     lambda_bohman <- pi/(m+3*s+2*q)
 

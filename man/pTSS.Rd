@@ -44,9 +44,11 @@ This function returns the cumulative probability function of the tempered
 stable subordinator distribution.
 }
 \examples{
+\donttest{
 x <- seq(0,15,0.25)
 y <- pTSS(x,0.7,1.354,0.3)
 plot(x,y)
+}
 
 }
 \seealso{
