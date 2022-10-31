@@ -36,15 +36,13 @@ Let  \code{X ~ CTS(alpha,deltap, deltam, lambdap, lambdam, mu)}.
 The characteristic function is given by (Kuechler & Tappe 2013).
 }
 \details{
-\deqn{\varphi_{CTS}(t;\theta):=
-\mathbb{E}_{\theta}\left[
-\mathrm{e}^{\mathrm{i}tX}\right]=
-\exp\left(\mathrm{i}t\mu+\delta_+\Gamma(-\alpha)
-\left((\lambda_+-\mathrm{i}t)^{\alpha}-\lambda_+^{\alpha}+
-\mathrm{i}t\alpha\lambda_+^{\alpha-1}\right)+\delta_-\Gamma(-\alpha)
-\left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-\mathrm{i}t\alpha
-\lambda_-^{\alpha-1}\right)
-\right)}
+\if{html}{
+  \out{<div style="text-align: center">}\figure{charCTS.png}{options: style=
+  "width:750px;max-width:75\%;"}\out{</div>}
+}
+\if{latex}{
+  \out{\begin{center}}\figure{charCTS.png}\out{\end{center}}
+}
 }
 \examples{
 x <- seq(-10,10,0.25)

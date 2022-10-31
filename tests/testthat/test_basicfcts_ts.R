@@ -1,7 +1,9 @@
 
 test_that("charTSS_gives_correct_return", {
-  expect_equal(charTSS(1000,0.5,1,0.3),-1.954837e-34-1.69676e-34i)
-  expect_equal(charTSS(500,0.9,1,12.3),-1.44336e-177-1.211255e-176i)
+  expect_equal(round(charTSS(1000,0.5,1,0.3), digits = 40),
+               -1.954837e-34-1.69676e-34i)
+  expect_equal(round(charTSS(500,0.9,1,12.3), digits = 182),
+               -1.44336e-177-1.211255e-176i)
   expect_equal(charTSS(500,0.9,1000,12.3),0+0i)
 
   expect_equal(charTSS(1000000,0.5,1,0.3),0+0i)

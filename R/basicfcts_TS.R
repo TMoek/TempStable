@@ -14,9 +14,13 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' which is later added with a centered and totally positively skewed tempered
 #' stable (Levy) process.
 #'
-#' \deqn{\varphi_{TSS}(t;\theta):=\mathbb{E}_{\theta}\left[
-#' \mathrm{e}^{\mathrm{i}tY}\right]= \exp\left(\delta\Gamma(-\alpha)
-#' \left((\lambda-\mathrm{i}t)^{\alpha}-\lambda^{\alpha}\right)\right)}
+#' \if{html}{
+#'   \out{<div style="text-align: center">}\figure{charTTS.png}{options: style=
+#'   "width:750px;max-width:75\%;"}\out{</div>}
+#' }
+#' \if{latex}{
+#'   \out{\begin{center}}\figure{charTTS.png}\out{\end{center}}
+#' }
 #'
 #' @param t A numeric vector of quantile.
 #' @param alpha A real number between 0 and 1.
@@ -349,15 +353,14 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' Let  \code{X ~ CTS(alpha,deltap, deltam, lambdap, lambdam, mu)}.
 #' The characteristic function is given by (Kuechler & Tappe 2013).
 #'
-#' \deqn{\varphi_{CTS}(t;\theta):=
-#' \mathbb{E}_{\theta}\left[
-#' \mathrm{e}^{\mathrm{i}tX}\right]=
-#' \exp\left(\mathrm{i}t\mu+\delta_+\Gamma(-\alpha)
-#' \left((\lambda_+-\mathrm{i}t)^{\alpha}-\lambda_+^{\alpha}+
-#' \mathrm{i}t\alpha\lambda_+^{\alpha-1}\right)+\delta_-\Gamma(-\alpha)
-#' \left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-\mathrm{i}t\alpha
-#' \lambda_-^{\alpha-1}\right)
-#' \right)}
+#' \if{html}{
+#'   \out{<div style="text-align: center">}\figure{charCTS.png}{options: style=
+#'   "width:750px;max-width:75\%;"}\out{</div>}
+#' }
+#' \if{latex}{
+#'   \out{\begin{center}}\figure{charCTS.png}\out{\end{center}}
+#' }
+#'
 #'
 #' @param t A numeric vector of quantile.
 #' @param alpha A real number between 0 and 2.

@@ -32,9 +32,13 @@ which is later added with a centered and totally positively skewed tempered
 stable (Levy) process.
 }
 \details{
-\deqn{\varphi_{TSS}(t;\theta):=\mathbb{E}_{\theta}\left[
-\mathrm{e}^{\mathrm{i}tY}\right]= \exp\left(\delta\Gamma(-\alpha)
-\left((\lambda-\mathrm{i}t)^{\alpha}-\lambda^{\alpha}\right)\right)}
+\if{html}{
+  \out{<div style="text-align: center">}\figure{charTTS.png}{options: style=
+  "width:750px;max-width:75\%;"}\out{</div>}
+}
+\if{latex}{
+  \out{\begin{center}}\figure{charTTS.png}\out{\end{center}}
+}
 }
 \examples{
 x <- seq(-10,10,0.25)
