@@ -7,8 +7,8 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' Theoretical characteristic function (CF) of the distribution of the tempered
 #' stable subordinator. See Kawai et. Masuda (2011) for details.
 #'
-#'theta dentotes the parameter vector (alpha, delta, lambda). Either provide the parameters
-#'alpha, delta, lambda OR provide theta.
+#' theta denotes the parameter vector (alpha, delta, lambda). Either provide the parameters
+#' alpha, delta, lambda OR provide theta.
 #' \if{html}{
 #'   \out{<div style="text-align: center">}\figure{charTTS.png}{options: style=
 #'   "width:750px;max-width:75\%;"}\out{</div>}
@@ -28,7 +28,7 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' @references
 #' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
-#' Reiichiro K. & Hiroki M. (2011), 'On simulation of tempered stable random
+#' Kawai, R. & Masuda, H. (2011), 'On simulation of tempered stable random
 #' variates' \doi{10.1016/j.cam.2010.12.014}
 #'
 #' @examples
@@ -57,32 +57,32 @@ charTSS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
 
 #' Density function of the tempered stable subordinator (TSS) distribution
 #'
-#' The probability density function of tempered stable distributions is
-#' generally not available in closed form. However, many software packages (like
-#' the \code{stabledist} package) have fast computation routines based on series
-#' or integral representations. Combining such series representations with the
-#' density function of the TSS distribution, we obtain a series representation
-#' for the TSS distribution.
+#' The probability density function of tempered stable subordinator distribution.
+#' It can be computed via the stable distribution (see details)
+#' using the \code{stabledist} package.
 #'
-#' \deqn{f_{TSS}(y;\theta)=\mathrm{e}^{-\lambda y-\lambda^{\alpha}\delta
-#' \Gamma(-\alpha)}\frac{-1}{\pi}\sum_{k=1}^{\infty}\frac{(-1)^k}{k!}
-#' \Gamma(1+\alpha k)\Gamma(1-\alpha)^k\left(\frac{\delta}{\alpha}\right)^ky^
-#' {-(1+\alpha k)}\sin(\alpha\pi k)}
+#' theta denotes the parameter vector (alpha, delta, lambda). Either provide the parameters
+#' alpha, delta, lambda OR provide theta.
+#' \deqn{f_{TSS}(y;\theta)=\mathrm{e}^{-\lambda y-\lambda^{\alpha}\delta\Gamma(-\alpha)}f_{S(\alpha,\delta)}(y),}
+#' where f_{S\alpha,\delta)} is the density of the stable subordinator.
 #'
-#' @param x A numeric vector of quantile.
+#' @param x A numeric vector of quantiles.
 #' @param alpha A real number between 0 and 1.
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
 #' @param theta A vector of all other arguments.
 #'
 #' @return As \code{x} is a numeric vector, the return value is also a numeric
-#' vector.
+#' vector of probability densities.
 #'
 #' @references
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
 #' processes' \doi{10.1016/j.spa.2013.06.012}
+#'
+#' Kawai, R. & Masuda, H. (2011), 'On simulation of tempered stable random
+#' variates' \doi{10.1016/j.cam.2010.12.014}
 #'
 #' @examples
 #' x <- seq(0,15,0.25)
