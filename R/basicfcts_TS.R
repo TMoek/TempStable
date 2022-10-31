@@ -4,15 +4,8 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 
 #' Characteristic function of the tempered stable subordinator
 #'
-#' When \code{alpha} is a real number between 0 and 1, the characterisic
-#' function of the tempered stable distribution (\code{alpha}, \code{delta},
-#' \code{lambda}) can be simulated exactly through acceptance-rejection
-#' sampling.
-#' For whole derivation and meaning of single letters see also Kawai et. Masuda
-#' (2011).
-#' Basically, the derivation starts from a one-dimensional stable distribution
-#' which is later added with a centered and totally positively skewed tempered
-#' stable (Levy) process.
+#' Theoretical characteristic function (CF) of the distribution of the tempered
+#' stable subordinator. See Kawai et. Masuda (2011) for details.
 #'
 #' \if{html}{
 #'   \out{<div style="text-align: center">}\figure{charTTS.png}{options: style=
@@ -22,11 +15,11 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #'   \out{\begin{center}}\figure{charTTS.png}\out{\end{center}}
 #' }
 #'
-#' @param t A numeric vector of quantile.
+#' @param t A vector of real numbers where the CF is evaluated.
 #' @param alpha A real number between 0 and 1.
 #' @param delta A real number > 0.
 #' @param lambda A  real number > 0.
-#' @param theta A vector of all other arguments.
+#' @param theta Alternatively, a vector of all other arguments.
 #'
 #' @return The result of spectral positive tempered stable process.
 #'
