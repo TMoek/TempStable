@@ -5,10 +5,10 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' Characteristic function of the tempered stable subordinator
 #'
 #' Theoretical characteristic function (CF) of the distribution of the tempered
-#' stable subordinator. See Kawai et. Masuda (2011) for details.
+#' stable subordinator. See Kawai & Masuda (2011) for details.
 #'
-#' theta denotes the parameter vector (alpha, delta, lambda). Either provide the parameters
-#' alpha, delta, lambda OR provide theta.
+#' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
+#' \code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
 #' \if{html}{
 #'   \out{<div style="text-align: center">}\figure{charTTS.png}{options: style=
 #'   "width:750px;max-width:75\%;"}\out{</div>}
@@ -18,10 +18,10 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' }
 #'
 #' @param t A vector of real numbers where the CF is evaluated.
-#' @param alpha A real number between 0 and 1.
-#' @param delta A real number > 0.
-#' @param lambda A  real number > 0.
-#' @param theta Alternatively, a vector of all other arguments.
+#' @param alpha Stability parameter. A real number between 0 and 1.
+#' @param delta Scale parameter. A real number > 0.
+#' @param lambda Tempering parameter. A real number > 0.
+#' @param theta Parameters stacked as a vector.
 #'
 #' @return The CF of the tempered stable subordinator distribution.
 #'
@@ -34,7 +34,6 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' @examples
 #' x <- seq(-10,10,0.25)
 #' y <- charTSS(x,0.5,1,1)
-#' plot(x,y)
 #'
 #' @export
 charTSS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
@@ -57,20 +56,20 @@ charTSS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
 
 #' Density function of the tempered stable subordinator (TSS) distribution
 #'
-#' The probability density function of tempered stable subordinator distribution.
+#' The probability density function (PDF) of tempered stable subordinator distribution.
 #' It can be computed via the stable distribution (see details)
 #' using the \code{stabledist} package.
 #'
-#' theta denotes the parameter vector (alpha, delta, lambda). Either provide the parameters
-#' alpha, delta, lambda OR provide theta.
+#' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
+#' \code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
 #' \deqn{f_{TSS}(y;\theta)=\mathrm{e}^{-\lambda y-\lambda^{\alpha}\delta\Gamma(-\alpha)}f_{S(\alpha,\delta)}(y),}
 #' where f_{S\alpha,\delta)} is the density of the stable subordinator.
 #'
-#' @param x A numeric vector of quantiles.
-#' @param alpha A real number between 0 and 1.
-#' @param delta A real number > 0.
-#' @param lambda A  real number > 0.
-#' @param theta A vector of all other arguments.
+#' @param x A numeric vector of positive quantiles.
+#' @param alpha Stability parameter. A real number between 0 and 1.
+#' @param delta Scale parameter. A real number > 0.
+#' @param lambda Tempering parameter. A real number > 0.
+#' @param theta Parameters stacked as a vector.
 #'
 #' @return As \code{x} is a numeric vector, the return value is also a numeric
 #' vector of probability densities.
@@ -113,26 +112,29 @@ dTSS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 
 }
 
-#' Cumulative probability function of the tempered stable subordinator
+#' Cumulative probability distribution function of the tempered stable subordinator
 #' distribution
 #'
-#' This function returns the cumulative probability function of the tempered
+#' This function returns the cumulative probability distribution function (CDF) of the tempered
 #' stable subordinator distribution.
 #'
+#' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
+#' \code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
+#' The function integrates the PDF numerically with \code{integrate()}.
 #'
-#' @param q A numeric vector of positive quantile.
-#' @param alpha A real number between 0 and 1.
-#' @param delta A real number > 0.
-#' @param lambda A  real number > 0.
-#' @param theta A vector of all other arguments.
+#' @param q A numeric vector of positive quantiles.
+#' @param alpha Stability parameter. A real number between 0 and 1.
+#' @param delta Scale parameter. A real number > 0.
+#' @param lambda Tempering parameter. A real number > 0.
+#' @param theta Parameters stacked as a vector.
 #' @param pmethod A string. If not "integrate", the function \code{chartocdf()}
 #' will be triggered.
 #' @param N is a power of two & N >= 1024. if
-#' \code{pmethod != "integrate"}. 10000 by default. Relevant for
+#' \code{pmethod != "integrate"}. 8192 by default. Relevant for
 #' @param ... Possibility to modify \code{stats::integrate()}.
 #'
 #' @return  As \code{q} is a numeric vector, the return value is also a numeric
-#' vector.
+#' vector of probabilities.
 #'
 #' @seealso
 #' See also the [dTSS()] density-function.
@@ -179,25 +181,27 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 }
 
 
-#' Function to generate random variates of TSS distribution.
+#' Function to generate random variates of the TSS distribution.
 #'
-#' Generates \code{n} random numbers distributed according to the distribution
-#' of the tempered stable subordinator.
+#' Generates \code{n} random numbers distributed according
+#' of the tempered stable subordinator distribution.
 #'
-#' "AR" stands for the Acceptance-Rejection Method and "SR" for infinite shot
-#' noise series representation. "AR" is the standard method used in Monte Carlo
-#' simulation. For more details, see references.
+#' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
+#' \code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
+#' "AR" stands for the Acceptance-Rejection Method and "SR" for a truncated infinite shot
+#' noise series representation. "AR" is the standard method used.
+#' For more details, see references.
 #'
 #' @param n sample size (integer).
-#' @param alpha A real number between 0 and 1.
-#' @param delta A real number > 0.
-#' @param lambda A  real number > 0.
-#' @param theta A vector of all other arguments.
+#' @param alpha Stability parameter. A real number between 0 and 1.
+#' @param delta Scale parameter. A real number > 0.
+#' @param lambda Tempering parameter. A real number > 0.
+#' @param theta Parameters stacked as a vector.
 #' @param method A String. Either "AR" or "SR".
-#' @param k integer: the number of replications, if \code{method == "SR"}. 100
+#' @param k integer: the level of truncation, if \code{method == "SR"}. 10000
 #' by default.
 #'
-#' @return generates random deviates.
+#' @return Generates \code{n} random numbers.
 #'
 #' @examples
 #' rTSS(100,0.5,1,1)
@@ -211,7 +215,7 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #'
 #' @export
 rTSS <- function(n, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
-                   method = "AR", k = 100) {
+                   method = "AR", k = 10000) {
     if ((missing(alpha) | missing(delta) | missing(lambda)) & is.null(theta))
       stop("No or not enough parameters supplied")
     theta0 <- c(alpha, delta, lambda)
@@ -281,18 +285,23 @@ rTSS_SR1 <- function(alpha, delta, lambda, k) {
 #' This function returns the quantile function of the tempered stable
 #' subordinator distribution.
 #'
+#' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
+#' \code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
+#' The function searches for a root between \code{qmin} and \code{qmax} with \code{uniroot}.
+#' Boundaries can either be supplied by the user or a built-in approach using the stable distribution is used.
+#'
 #' @param p A numeric vector of probabilities. Each probability must be a real
 #' number >0 and <1.
-#' @param alpha A real number between 0 and 1.
-#' @param delta A real number > 0.
-#' @param lambda A  real number > 0.
-#' @param theta A vector of all other arguments.
-#' @param qmin,qmax Limits of the interval. Will be calcultated if
+#' @param alpha Stability parameter. A real number between 0 and 1.
+#' @param delta Scale parameter. A real number > 0.
+#' @param lambda Tempering parameter. A real number > 0.
+#' @param theta Parameters stacked as a vector.
+#' @param qmin,qmax Limits of the interval. Will be computed if
 #' \code{==NULL}.
 #' @param ... Modify [pTSS()] and [stats::uniroot()].
 #'
 #' @return  As \code{p} is a numeric vector, the return value is also a numeric
-#' vector.
+#' vector of quantiles.
 #'
 #' @seealso
 #' See also the [pTSS()] probability function.
@@ -345,9 +354,11 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 
 #' Characteristic function of the classical tempered stable (CTS) distribution
 #'
-#' Let  \code{X ~ CTS(alpha,deltap, deltam, lambdap, lambdam, mu)}.
-#' The characteristic function is given by (Kuechler & Tappe 2013).
+#' Theoretical characteristic function (CF) of the classical tempered
+#' stable distribution. See Kuechler & Tappe (2013) for details.
 #'
+#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
+#'  individually OR provide \code{theta}.
 #' \if{html}{
 #'   \out{<div style="text-align: center">}\figure{charCTS.png}{options: style=
 #'   "width:750px;max-width:75\%;"}\out{</div>}
@@ -357,14 +368,16 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' }
 #'
 #'
-#' @param t A numeric vector of quantile.
-#' @param alpha A real number between 0 and 2.
-#' @param deltap,deltam  A real number > 0.
-#' @param lambdap,lambdam A  real number > 0.
+#' @param t A vector of real numbers where the CF is evaluated.
+#' @param alpha Stability parameter. A real number between 0 and 2.
+#' @param deltap Scale parameter for the right tail. A real number > 0.
+#' @param deltam  Scale parameter for the left tail. A real number > 0.
+#' @param lambdap Tempering parameter for the right tail. A real number > 0.
+#' @param lambdam Tempering parameter for the left tail. A real number > 0.
 #' @param mu A location parameter, any real number.
-#' @param theta A vector of all other arguments.
+#' @param theta Parameters stacked as a vector.
 #'
-#' @return The result of spectral positive tempered stable process
+#' @return The CF of the tempered stable subordinator distribution.
 #'
 #' @references
 #' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws';
@@ -375,7 +388,6 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' @examples
 #' x <- seq(-10,10,0.25)
 #' y <- charCTS(x,1.5,1,1,1,1,0)
-#' plot(x,y)
 #'
 #' @export
 charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
@@ -410,29 +422,34 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
 
 #' Density function of the classic tempered stable (CTS) distribution
 #'
-#' The probability density function of tempered stable distributions is
-#' generally not available in closed form. Crucially, even a simple relationship
-#' with a stable density as for the TSS distribution is not available.
-#' For numerical evaluations it is therefore necessary to rely on algorithms
-#' like the fast Fourier transform applied to the characteristic function.
+#' The probability density function (PDF) of the classical tempered stable distributions is
+#' not available in closed form.
+#' Relies on fast Fourier transform (FFT) applied to the characteristic function.
 #'
-#' @param x A numeric vector of quantile.
-#' @param alpha A real number between 0 and 2.
-#' @param deltap,deltam  A real number > 0.
-#' @param lambdap,lambdam A  real number > 0.
+#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
+#'  individually OR provide \code{theta}.
+#'  Methods include the FFT or alternatively by convolving two totally positively skewed
+#'  tempered stable distributions, see Massing (2022).
+#'
+#' @param x A numeric vector of quantiles.
+#' @param alpha Stability parameter. A real number between 0 and 2.
+#' @param deltap Scale parameter for the right tail. A real number > 0.
+#' @param deltam  Scale parameter for the left tail. A real number > 0.
+#' @param lambdap Tempering parameter for the right tail. A real number > 0.
+#' @param lambdam Tempering parameter for the left tail. A real number > 0.
 #' @param mu A location parameter, any real number.
-#' @param theta A vector of all other arguments.
+#' @param theta Parameters stacked as a vector.
 #' @param dens_method Algorithm for numerical evaluation. Choose between \code{
-#' "FFT"} and \code{"Conv"}.
+#' "FFT"} (default) and \code{"Conv"}.
 #' @param a Starting point of FFT, if \code{dens_method == "FFT"}. -20
 #' by default.
 #' @param b Ending point of FFT, if \code{dens_method == "FFT"}. 20
 #' by default.
 #' @param nf Pieces the transformation is divided in. Limited to power-of-two
-#' size.
+#' size. 2048 by default.
 #'
 #' @return As \code{x} is a numeric vector, the return value is also a numeric
-#' vector.
+#' vector of densities.
 #'
 #' @references
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
@@ -532,15 +549,20 @@ dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
 #' Cumulative probability function of the classic tempered stable (CTS)
 #' distribution
 #'
-#' This function returns the cumulative probability function of the CTS
-#' distribution.
+#' This function returns the cumulative probability distribution function (CDF) of the classic tempered stable distribution.
 #'
-#' @param q A numeric vector of quantile.
-#' @param alpha A real number between 0 and 2.
-#' @param deltap,deltam  A real number > 0.
-#' @param lambdap,lambdam A  real number > 0.
+#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
+#' individually OR provide \code{theta}.
+#' The function integrates the PDF numerically with \code{integrate()}.
+#'
+#' @param q A numeric vector of quantiles.
+#' @param alpha Stability parameter. A real number between 0 and 2.
+#' @param deltap Scale parameter for the right tail. A real number > 0.
+#' @param deltam  Scale parameter for the left tail. A real number > 0.
+#' @param lambdap Tempering parameter for the right tail. A real number > 0.
+#' @param lambdam Tempering parameter for the left tail. A real number > 0.
 #' @param mu A location parameter, any real number.
-#' @param theta A vector of all other arguments.
+#' @param theta Parameters stacked as a vector.
 #' @param a Starting point of FFT, if \code{dens_method == "FFT"}. -20
 #' by default.
 #' @param b Ending point of FFT, if \code{dens_method == "FFT"}. 20
@@ -550,7 +572,7 @@ dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
 #' @param ... Possibility to modify \code{stats::integrate()}.
 #'
 #' @return As \code{q} is a numeric vector, the return value is also a numeric
-#' vector.
+#' vector of probabilities.
 #'
 #' @seealso
 #' See also the [dCTS()] density-function.
@@ -606,22 +628,26 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' Generates \code{n} random numbers distributed according to the classic
 #' tempered stable (CTS) distribution.
 #'
-#' "aAR" stands for the approximate Acceptance-Rejection Method and "SR" for
-#' infinite shot noise series representation. "aAR" is the standard method used
-#' in Monte Carlo simulation. For more details, see references.
+#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
+#'  individually OR provide \code{theta}.
+#' "aAR" stands for the approximate Acceptance-Rejection Method and "SR" for a truncated
+#' infinite shot noise series representation. "aAR" is the standard method used.
+#' For more details, see references.
 #'
 #' @param n sample size (integer).
-#' @param alpha A real number between 0 and 2.
-#' @param deltap,deltam  A real number > 0.
-#' @param lambdap,lambdam A  real number > 0.
+#' @param alpha Stability parameter. A real number between 0 and 2.
+#' @param deltap Scale parameter for the right tail. A real number > 0.
+#' @param deltam  Scale parameter for the left tail. A real number > 0.
+#' @param lambdap Tempering parameter for the right tail. A real number > 0.
+#' @param lambdam Tempering parameter for the left tail. A real number > 0.
 #' @param mu A location parameter, any real number.
-#' @param theta A vector of all other arguments.
+#' @param theta Parameters stacked as a vector.
 #' @param method A String. Either "aAR" or "SR".
-#' @param k integer: the number of replications, if \code{method == "SR"}. 100
+#' @param k integer: the level of truncation, if \code{method == "SR"}. 10000
 #' by default.
-#' @param c A real number. Only relevant for \code{method == "aAR"}.
+#' @param c A real number. Only relevant for \code{method == "aAR"}. 1 by default.
 #'
-#' @return generates random deviates.
+#' @return Generates \code{n} random numbers.
 #'
 #' @references
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
@@ -636,7 +662,7 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @export
 rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
                  lambdam = NULL, mu = NULL, theta = NULL, method = "aAR",
-                 k = 100, c = 1) {
+                 k = 10000, c = 1) {
     if ((missing(alpha) | missing(deltap) | missing(deltam) | missing(lambdap) |
          missing(lambdam) | missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -744,19 +770,26 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
 #' This function returns the quantile function of the classic tempered stable
 #' (CTS).
 #'
+#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
+#'  individually OR provide \code{theta}.
+#' The function searches for a root between \code{qmin} and \code{qmax} with \code{uniroot}.
+#' Boundaries can either be supplied by the user or a built-in approach using the stable distribution is used.
+#'
 #' @param p A numeric vector of probabilities. Each probability must be a real
 #' number >0 and <1.
-#' @param alpha A real number between 0 and 2.
-#' @param deltap,deltam  A real number > 0.
-#' @param lambdap,lambdam A  real number > 0.
+#' @param alpha Stability parameter. A real number between 0 and 2.
+#' @param deltap Scale parameter for the right tail. A real number > 0.
+#' @param deltam  Scale parameter for the left tail. A real number > 0.
+#' @param lambdap Tempering parameter for the right tail. A real number > 0.
+#' @param lambdam Tempering parameter for the left tail. A real number > 0.
 #' @param mu A location parameter, any real number.
-#' @param theta A vector of all other arguments.
-#' @param qmin,qmax Limits of the interval. Will be calcultated if
+#' @param theta Parameters stacked as a vector.
+#' @param qmin,qmax Limits of the interval. Will be computed if
 #' \code{==NULL}.
 #' @param ... Modify [pTSS()] and [stats::uniroot()].
 #'
 #' @return  As \code{p} is a numeric vector, the return value is also a numeric
-#' vector.
+#' vector of quantiles.
 #'
 #' @seealso
 #' See also the [pCTS()] probability function.
@@ -817,23 +850,26 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 
 #' Characteristic function of the normal tempered stable (NTS) distribution
 #'
-#' We can obtain the NTS distribution by tempering a stable distribution.
-#' The corresponding tempering function can be found in Rachev et al. (2011).
+#' Theoretical characteristic function (CF) of the normal tempered
+#' stable distribution.
+#' See Rachev et al. (2011) for details.
 #'
+#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
+#'  individually OR provide \code{theta}.
 #' \deqn{\varphi_{NTS}(t;\theta)=E\left[\mathrm{e}^{\mathrm{i}tZ}\right]= \exp
 #' \left(\mathrm{i}t\mu+\delta\Gamma(-\alpha)\left((\lambda-\mathrm{i}t
 #' \beta+t^2/2)^{\alpha}-\lambda^{\alpha}\right)\right)
 #' }
 #'
-#' @param t A numeric vector of quantile.
-#' @param alpha A real number between 0 and 1.
-#' @param beta Any real number.
-#' @param delta A real number > 0.
-#' @param lambda A  real number > 0.
+#' @param t A vector of real numbers where the CF is evaluated.
+#' @param alpha Stability parameter. A real number between 0 and 1.
+#' @param beta Skewness parameter. Any real number.
+#' @param delta Scale parameter. A real number > 0.
+#' @param lambda Tempering parameter. A real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
 #'
-#' @return The result of spectral positive tempered stable process
+#' @return The CF of the tempered stable subordinator distribution.
 #'
 #' @references
 #' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
@@ -845,7 +881,6 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @examples
 #' x <- seq(-10,10,0.25)
 #' y <- charNTS(x,0.5,1,1,1,0)
-#' plot(x,y)
 #'
 #' @export
 charNTS <- function(t, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
