@@ -7,6 +7,8 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' Theoretical characteristic function (CF) of the distribution of the tempered
 #' stable subordinator. See Kawai et. Masuda (2011) for details.
 #'
+#'theta dentotes the parameter vector (alpha, delta, lambda). Either provide the parameters
+#'alpha, delta, lambda OR provide theta.
 #' \if{html}{
 #'   \out{<div style="text-align: center">}\figure{charTTS.png}{options: style=
 #'   "width:750px;max-width:75\%;"}\out{</div>}
@@ -21,7 +23,7 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' @param lambda A  real number > 0.
 #' @param theta Alternatively, a vector of all other arguments.
 #'
-#' @return The result of spectral positive tempered stable process.
+#' @return The CF of the tempered stable subordinator distribution.
 #'
 #' @references
 #' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
