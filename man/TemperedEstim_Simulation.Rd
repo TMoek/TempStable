@@ -57,8 +57,8 @@ information is saved in the current directory. See details.}
 
 \item{eps}{Error tolerance. \code{1e-06} by default.}
 
-\item{algo}{algorithm: For GMM: \code{"2SGMM"} is the two step GMM proposed by
-Hansen (1982). \code{"CueGMM"} and \code{"ITGMM"} are respectively the
+\item{algo}{algorithm: For GMM: \code{"2SGMM"} is the two step GMM proposed
+by Hansen (1982). \code{"CueGMM"} and \code{"ITGMM"} are respectively the
 continuous updated and the iterative GMM proposed by Hansen, Eaton et Yaron
 (1996) and adapted to the continuum case. For Cgmm: \code{"2SCgmm",
 "CueCgmm", ...}. Same for GMC.}
