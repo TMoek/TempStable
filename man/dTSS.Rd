@@ -7,33 +7,30 @@
 dTSS(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL)
 }
 \arguments{
-\item{x}{A numeric vector of quantile.}
+\item{x}{A numeric vector of positive quantiles.}
 
-\item{alpha}{A real number between 0 and 1.}
+\item{alpha}{Stability parameter. A real number between 0 and 1.}
 
-\item{delta}{A real number > 0.}
+\item{delta}{Scale parameter. A real number > 0.}
 
-\item{lambda}{A  real number > 0.}
+\item{lambda}{Tempering parameter. A real number > 0.}
 
-\item{theta}{A vector of all other arguments.}
+\item{theta}{Parameters stacked as a vector.}
 }
 \value{
 As \code{x} is a numeric vector, the return value is also a numeric
-vector.
+vector of probability densities.
 }
 \description{
-The probability density function of tempered stable distributions is
-generally not available in closed form. However, many software packages (like
-the \code{stabledist} package) have fast computation routines based on series
-or integral representations. Combining such series representations with the
-density function of the TSS distribution, we obtain a series representation
-for the TSS distribution.
+The probability density function (PDF) of tempered stable subordinator distribution.
+It can be computed via the stable distribution (see details)
+using the \code{stabledist} package.
 }
 \details{
-\deqn{f_{TSS}(y;\theta)=\mathrm{e}^{-\lambda y-\lambda^{\alpha}\delta
-\Gamma(-\alpha)}\frac{-1}{\pi}\sum_{k=1}^{\infty}\frac{(-1)^k}{k!}
-\Gamma(1+\alpha k)\Gamma(1-\alpha)^k\left(\frac{\delta}{\alpha}\right)^ky^
-{-(1+\alpha k)}\sin(\alpha\pi k)}
+\code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
+\code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
+\deqn{f_{TSS}(y;\theta)=\mathrm{e}^{-\lambda y-\lambda^{\alpha}\delta\Gamma(-\alpha)}f_{S(\alpha,\delta)}(y),}
+where f_{S\alpha,\delta)} is the density of the stable subordinator.
 }
 \examples{
 x <- seq(0,15,0.25)
@@ -46,4 +43,7 @@ Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 
 Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
 processes' \doi{10.1016/j.spa.2013.06.012}
+
+Kawai, R. & Masuda, H. (2011), 'On simulation of tempered stable random
+variates' \doi{10.1016/j.cam.2010.12.014}
 }

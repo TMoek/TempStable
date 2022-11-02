@@ -39,23 +39,61 @@
 #'   will be of size MCparam.}
 #' }
 #'
-#' \strong{Estimfct} Detailed documentation of the individual parameters
-#' of the various estimate functions is available in the package
-#' \code{StableEstim}.
+#' \strong{Estimfct} Additional parameters are needed for different estimation
+#' functions. These are listed below for each function. The list of additional
+#' parameters starts after the parameter \code{eps} in the parameter list.
 #' \describe{
-#'   \item{For ML:}{use \code{?StableEstim::MLParametersEstim}. See usage of
+#'   \item{For ML:}{No additional parameters are needed. See usage of
 #'   Maximum likelihood estimation in Kim et al. (2008)}
-#'   \item{For GMM:}{use \code{?StableEstim::GMMParametersEstim}. Generalized
-#'   Method of Moments by Hansen (1982)}
-#'   \item{For Cgmm:}{use \code{?StableEstim::CgmmParametersEstim}. Continuum
-#'   Generalized Methods of Moments by Carrasco & Kotchoni (2017)}
+#'   \item{For GMM:}{The parameters \code{algo, alphaReg, regularization,
+#'   WeightingMatrix, and t_scheme} must be specified. See also Generalized
+#'   Method of Moments by Hansen (1982).
+#'
+#'   Parameter \code{t_scheme}: One of the most important features of this
+#'   method is that it allows the user to choose how to place the points where
+#'   the moment conditions are evaluated. One can choose among 6 different
+#'   options. Depending on the option, further parameters have to be passed.
+#'   \describe{
+#'     \item{"equally":}{equally placed points in [min_t,max_t]. When provided,
+#'      user's \code{min_t} and \code{max_t} will be used (when
+#'      \code{Coinstrained == FALSE}).
+#'     }
+#'     \item{"NonOptAr":}{non optimal arithmetic placement.
+#'     }
+#'     \item{"uniformOpt":}{uniform optimal placement.
+#'     }
+#'     \item{"ArithOpt":}{arithmetic optimal placement.
+#'     }
+#'     \item{"Var Opt":}{optimal variance placement as explained above.
+#'     }
+#'     \item{"free":}{user needs to pass his own set of points in \code{t_free}.
+#'     }
+#'   }
+#'
+#'   Parameter \code{WeightingMatrix}: You can choose among 3 different options:
+#'   \describe{
+#'     \item{"OptAsym":}{the optimal asymptotic choice.
+#'     }
+#'     \item{"DataVar":}{the covariance matrix of the data provided.
+#'     }
+#'     \item{"Id":}{the identity matrix.
+#'     }
+#'   }
+#'   }
+#'   \item{For Cgmm:}{Continuum Generalized Methods of Moments by Carrasco &
+#'   Kotchoni (2017). The parameters \code{algo, alphaReg, subdivisions,
+#'   IntegrationMethod, randomIntegrationLaw, s_min, and s_max} must be
+#'   specified.
+#'   }
 #'   \item{For GMC:}{We also use a method of moment approach which follows
 #'    Kuechler & Tappe (2013). They match empirical cumulants with their
 #'    theoretical counterparts. We extend this by using Hansen's (1982) GMM
 #'    framework. We call the approach generalized method of cumulants (GMC) to
 #'    distinguish it from the GMM method using characteristic function moment
 #'    conditions. However, it fits well into Hansen's (1982) framework allowing
-#'    for standard asymptotic theory.}
+#'    for standard asymptotic theory.
+#'    The parameters \code{algo, alphaReg, regularization, WeightingMatrix, and
+#'    ncond} must be specified}
 #' }
 #'
 #' @seealso
@@ -64,12 +102,15 @@
 #' @references
 #' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws';
 #'
-#' Kim, Y. s., Rachev, S. T., Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
+#' Kim, Y. s.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
 #' market models with lévy processes and time-varying volatility'
 #' \doi{10.1016/j.jbankfin.2007.11.004};
 #'
 #' Hansen, L. P. (1982), 'Large sample properties of generalized method of
 #' moments estimators' \doi{10.2307/1912775};
+#'
+#' Hansen, L. P.; Heaton, J. & Yaron, A. (1996), 'Finite-Sample Properties of
+#' Some Alternative GMM Estimators' \doi{10.1080/07350015.1996.10524656}
 #'
 #' Carrasco, M. & Kotchoni, R. (2017), 'Efficient estimation using the
 #' characteristic function' \doi{10.1017/S0266466616000025};
@@ -94,7 +135,39 @@
 #'  of parameter) with the the estimation
 #'  information is saved in the current directory. See details.
 #' @param SeedOptions List to control the seed generation. See details.
-#' @param eps A gap holder.
+#' @param eps Error tolerance. \code{1e-06} by default.
+#'
+#' @param algo algorithm: For GMM: \code{"2SGMM"} is the two step GMM proposed by
+#' Hansen (1982). \code{"CueGMM"} and \code{"ITGMM"} are respectively the
+#' continuous updated and the iterative GMM proposed by Hansen, Eaton et Yaron
+#' (1996) and adapted to the continuum case. For Cgmm: \code{"2SCgmm",
+#' "CueCgmm", ...}. Same for GMC.
+#' @param regularization regularization scheme to be used, one of
+#' \code{"Tikhonov"} (Tikhonov), \code{"LF"} (Landweber-Fridmann) and
+#' \code{"cut-off"} (spectral cut-off).
+#' @param WeightingMatrix type of weighting matrix used to compute the
+#' objective function, one of \code{"OptAsym"} (the optimal asymptotic),
+#' \code{"DataVar"} (the data driven) and \code{"Id"} (the identity matrix).
+#' @param t_scheme scheme used to select the points where the moment conditions
+#' are evaluated, one of \code{"equally"} (equally placed), \code{"NonOptAr"}
+#' (non optimal arithmetic placement), \code{"uniformOpt"}
+#' (uniform optimal placement), \code{"ArithOpt"} (arithmetic optimal
+#' placement), \code{"Var Opt"} (optimal variance placement) and \code{"free"}
+#' (users need to pass their own set of points in ...).
+#' @param alphaReg value of the regularisation parameter; numeric.
+#' @param t_free sequence, if \code{t_scheme=="free"}.
+#' @param subdivisions 	Number of subdivisions used to compute the different
+#' integrals involved in the computation of the objective function (to
+#' minimise); numeric.
+#' @param IntegrationMethod Numerical integration method to be used to
+#' approximate the (vectorial) integrals. Users can choose between "Uniform"
+#' discretization or the "Simpson"'s rule (the 3-point Newton-Cotes quadrature
+#' rule).
+#' @param randomIntegrationLaw Probability measure associated to the Hilbert
+#' space spanned by the moment conditions.
+#' @param s_min,s_max Lower and Upper bounds of the interval where the moment
+#' conditions are considered; numeric.
+#' @param ncond TODO
 #' @param ... Other arguments to be passed to the estimation function.
 #'
 #' @return If \code{saveOutput == FALSE}, the return object is a list of 2.
@@ -143,7 +216,14 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                                       "Normal"),
                                      Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
                                      HandleError = TRUE, saveOutput = TRUE,
-                                     SeedOptions = NULL, eps = 1e-06, ...) {
+                                     SeedOptions = NULL, eps = 1e-06,
+                                     algo = NULL, regularization = NULL,
+                                     WeightingMatrix = NULL, t_scheme = NULL,
+                                     alphaReg = NULL, t_free = NULL,
+                                     subdivisions = NULL,
+                                     IntegrationMethod = NULL,
+                                     randomIntegrationLaw = NULL, s_min = NULL,
+                                     s_max = NULL, ncond = NULL, ...) {
     #seeAlso: https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R
     SeedVector <- getSeedVector(MCparam, SeedOptions)
     Estimfct <- match.arg(Estimfct)

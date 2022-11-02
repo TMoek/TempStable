@@ -14,41 +14,47 @@ rCTS(
   mu = NULL,
   theta = NULL,
   method = "aAR",
-  k = 100,
+  k = 10000,
   c = 1
 )
 }
 \arguments{
 \item{n}{sample size (integer).}
 
-\item{alpha}{A real number between 0 and 2.}
+\item{alpha}{Stability parameter. A real number between 0 and 2.}
 
-\item{deltap, deltam}{A real number > 0.}
+\item{deltap}{Scale parameter for the right tail. A real number > 0.}
 
-\item{lambdap, lambdam}{A  real number > 0.}
+\item{deltam}{Scale parameter for the left tail. A real number > 0.}
+
+\item{lambdap}{Tempering parameter for the right tail. A real number > 0.}
+
+\item{lambdam}{Tempering parameter for the left tail. A real number > 0.}
 
 \item{mu}{A location parameter, any real number.}
 
-\item{theta}{A vector of all other arguments.}
+\item{theta}{Parameters stacked as a vector.}
 
 \item{method}{A String. Either "aAR" or "SR".}
 
-\item{k}{integer: the number of replications, if \code{method == "SR"}. 100
+\item{k}{integer: the level of truncation, if \code{method == "SR"}. 10000
 by default.}
 
-\item{c}{A real number. Only relevant for \code{method == "aAR"}.}
+\item{c}{A real number. Only relevant for \code{method == "aAR"}. 1 by default.}
 }
 \value{
-generates random deviates.
+Generates \code{n} random numbers.
 }
 \description{
 Generates \code{n} random numbers distributed according to the classic
 tempered stable (CTS) distribution.
 }
 \details{
-"aAR" stands for the approximate Acceptance-Rejection Method and "SR" for
-infinite shot noise series representation. "aAR" is the standard method used
-in Monte Carlo simulation. For more details, see references.
+\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
+ individually OR provide \code{theta}.
+"aAR" stands for the approximate Acceptance-Rejection Method and "SR" for a truncated
+infinite shot noise series representation. "aAR" is the standard method used.
+For more details, see references.
 }
 \examples{
 rCTS(10,0.5,1,1,1,1,1,NULL,"SR",10)

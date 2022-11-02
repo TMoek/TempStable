@@ -22,28 +22,37 @@ qCTS(
 \item{p}{A numeric vector of probabilities. Each probability must be a real
 number >0 and <1.}
 
-\item{alpha}{A real number between 0 and 2.}
+\item{alpha}{Stability parameter. A real number between 0 and 2.}
 
-\item{deltap, deltam}{A real number > 0.}
+\item{deltap}{Scale parameter for the right tail. A real number > 0.}
 
-\item{lambdap, lambdam}{A  real number > 0.}
+\item{deltam}{Scale parameter for the left tail. A real number > 0.}
+
+\item{lambdap}{Tempering parameter for the right tail. A real number > 0.}
+
+\item{lambdam}{Tempering parameter for the left tail. A real number > 0.}
 
 \item{mu}{A location parameter, any real number.}
 
-\item{theta}{A vector of all other arguments.}
+\item{theta}{Parameters stacked as a vector.}
 
-\item{qmin, qmax}{Limits of the interval. Will be calcultated if
+\item{qmin, qmax}{Limits of the interval. Will be computed if
 \code{==NULL}.}
 
 \item{...}{Modify [pTSS()] and [stats::uniroot()].}
 }
 \value{
 As \code{p} is a numeric vector, the return value is also a numeric
-vector.
+vector of quantiles.
 }
 \description{
-This function returns the quantile function of the classic tempered stable
-(CTS).
+The quantile function of the classic tempered stable (CTS).
+}
+\details{
+\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
+ individually OR provide \code{theta}.
+The function searches for a root between \code{qmin} and \code{qmax} with \code{uniroot}.
+Boundaries can either be supplied by the user or a built-in approach using the stable distribution is used.
 }
 \examples{
 \donttest{

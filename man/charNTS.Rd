@@ -15,28 +15,31 @@ charNTS(
 )
 }
 \arguments{
-\item{t}{A numeric vector of quantile.}
+\item{t}{A vector of real numbers where the CF is evaluated.}
 
-\item{alpha}{A real number between 0 and 1.}
+\item{alpha}{Stability parameter. A real number between 0 and 1.}
 
-\item{beta}{Any real number.}
+\item{beta}{Skewness parameter. Any real number.}
 
-\item{delta}{A real number > 0.}
+\item{delta}{Scale parameter. A real number > 0.}
 
-\item{lambda}{A  real number > 0.}
+\item{lambda}{Tempering parameter. A real number > 0.}
 
 \item{mu}{A location parameter, any real number.}
 
 \item{theta}{A vector of all other arguments.}
 }
 \value{
-The result of spectral positive tempered stable process
+The CF of the normal tempered stable distribution.
 }
 \description{
-We can obtain the NTS distribution by tempering a stable distribution.
-The corresponding tempering function can be found in Rachev et al. (2011).
+Theoretical characteristic function (CF) of the normal tempered
+stable distribution.
+See Rachev et al. (2011) for details.
 }
 \details{
+\code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
+ individually OR provide \code{theta}.
 \deqn{\varphi_{NTS}(t;\theta)=E\left[\mathrm{e}^{\mathrm{i}tZ}\right]= \exp
 \left(\mathrm{i}t\mu+\delta\Gamma(-\alpha)\left((\lambda-\mathrm{i}t
 \beta+t^2/2)^{\alpha}-\lambda^{\alpha}\right)\right)
@@ -45,7 +48,6 @@ The corresponding tempering function can be found in Rachev et al. (2011).
 \examples{
 x <- seq(-10,10,0.25)
 y <- charNTS(x,0.5,1,1,1,0)
-plot(x,y)
 
 }
 \references{

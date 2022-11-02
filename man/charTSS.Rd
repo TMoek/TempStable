@@ -7,31 +7,26 @@
 charTSS(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL)
 }
 \arguments{
-\item{t}{A numeric vector of quantile.}
+\item{t}{A vector of real numbers where the CF is evaluated.}
 
-\item{alpha}{A real number between 0 and 1.}
+\item{alpha}{Stability parameter. A real number between 0 and 1.}
 
-\item{delta}{A real number > 0.}
+\item{delta}{Scale parameter. A real number > 0.}
 
-\item{lambda}{A  real number > 0.}
+\item{lambda}{Tempering parameter. A real number > 0.}
 
-\item{theta}{A vector of all other arguments.}
+\item{theta}{Parameters stacked as a vector.}
 }
 \value{
-The result of spectral positive tempered stable process.
+The CF of the tempered stable subordinator distribution.
 }
 \description{
-When \code{alpha} is a real number between 0 and 1, the characterisic
-function of the tempered stable distribution (\code{alpha}, \code{delta},
-\code{lambda}) can be simulated exactly through acceptance-rejection
-sampling.
-For whole derivation and meaning of single letters see also Kawai et. Masuda
-(2011).
-Basically, the derivation starts from a one-dimensional stable distribution
-which is later added with a centered and totally positively skewed tempered
-stable (Levy) process.
+Theoretical characteristic function (CF) of the distribution of the tempered
+stable subordinator. See Kawai & Masuda (2011) for details.
 }
 \details{
+\code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
+\code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
 \if{html}{
   \out{<div style="text-align: center">}\figure{charTTS.png}{options: style=
   "width:750px;max-width:75\%;"}\out{</div>}
@@ -43,12 +38,11 @@ stable (Levy) process.
 \examples{
 x <- seq(-10,10,0.25)
 y <- charTSS(x,0.5,1,1)
-plot(x,y)
 
 }
 \references{
 Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
 
-Reiichiro K. & Hiroki M. (2011), 'On simulation of tempered stable random
+Kawai, R. & Masuda, H. (2011), 'On simulation of tempered stable random
 variates' \doi{10.1016/j.cam.2010.12.014}
 }

@@ -13,7 +13,7 @@ rNTS(
   mu = NULL,
   theta = NULL,
   method = "AR",
-  k = 100
+  k = 10000
 )
 }
 \arguments{
@@ -33,20 +33,25 @@ rNTS(
 
 \item{method}{A String. Either "AR" or "SR". "AR" by default.}
 
-\item{k}{integer: the number of replications, if \code{method == "SR"}. 100
+\item{k}{integer: the number of replications, if \code{method == "SR"}. 10000
 by default.}
 }
 \value{
-generates random deviates.
+Generates \code{n} random numbers.
 }
 \description{
-Generates \code{n} random numbers distributed according to the normal
-tempered stable distribution.
+Generates \code{n} random numbers distributed according
+of the normal tempered stable distribution.
 }
 \details{
-"AR" stands for the Acceptance-Rejection Method and "SR" for infinite shot
-noise series representation. "AR" is the standard method used in Monte Carlo
-simulation. For more details, see references.
+\code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
+ individually OR provide \code{theta}.
+Works by a normal variance-mean mixture with a TSS distribution. Method parameter is for the method of
+simulating the TSS random variable, see the [rTSS()] function.
+"AR" stands for the Acceptance-Rejection Method and "SR" for a truncated infinite shot
+noise series representation. "AR" is the standard method used.
+
+For more details, see references.
 }
 \examples{
 rNTS(100, 0.5, 1,1,1,1)
@@ -59,4 +64,7 @@ Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
 
 Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
 variates' \doi{10.1016/j.cam.2010.12.014}
+}
+\seealso{
+See also the [rTSS()] function.
 }

@@ -19,26 +19,32 @@ qTSS(
 \item{p}{A numeric vector of probabilities. Each probability must be a real
 number >0 and <1.}
 
-\item{alpha}{A real number between 0 and 1.}
+\item{alpha}{Stability parameter. A real number between 0 and 1.}
 
-\item{delta}{A real number > 0.}
+\item{delta}{Scale parameter. A real number > 0.}
 
-\item{lambda}{A  real number > 0.}
+\item{lambda}{Tempering parameter. A real number > 0.}
 
-\item{theta}{A vector of all other arguments.}
+\item{theta}{Parameters stacked as a vector.}
 
-\item{qmin, qmax}{Limits of the interval. Will be calcultated if
+\item{qmin, qmax}{Limits of the interval. Will be computed if
 \code{==NULL}.}
 
 \item{...}{Modify [pTSS()] and [stats::uniroot()].}
 }
 \value{
 As \code{p} is a numeric vector, the return value is also a numeric
-vector.
+vector of quantiles.
 }
 \description{
-This function returns the quantile function of the tempered stable
+The quantile function of the tempered stable
 subordinator distribution.
+}
+\details{
+\code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
+\code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
+The function searches for a root between \code{qmin} and \code{qmax} with \code{uniroot}.
+Boundaries can either be supplied by the user or a built-in approach using the stable distribution is used.
 }
 \examples{
 qTSS(0.5,0.5,5,0.01)

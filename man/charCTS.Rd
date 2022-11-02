@@ -16,26 +16,32 @@ charCTS(
 )
 }
 \arguments{
-\item{t}{A numeric vector of quantile.}
+\item{t}{A vector of real numbers where the CF is evaluated.}
 
-\item{alpha}{A real number between 0 and 2.}
+\item{alpha}{Stability parameter. A real number between 0 and 2.}
 
-\item{deltap, deltam}{A real number > 0.}
+\item{deltap}{Scale parameter for the right tail. A real number > 0.}
 
-\item{lambdap, lambdam}{A  real number > 0.}
+\item{deltam}{Scale parameter for the left tail. A real number > 0.}
+
+\item{lambdap}{Tempering parameter for the right tail. A real number > 0.}
+
+\item{lambdam}{Tempering parameter for the left tail. A real number > 0.}
 
 \item{mu}{A location parameter, any real number.}
 
-\item{theta}{A vector of all other arguments.}
+\item{theta}{Parameters stacked as a vector.}
 }
 \value{
-The result of spectral positive tempered stable process
+The CF of the tempered stable subordinator distribution.
 }
 \description{
-Let  \code{X ~ CTS(alpha,deltap, deltam, lambdap, lambdam, mu)}.
-The characteristic function is given by (Kuechler & Tappe 2013).
+Theoretical characteristic function (CF) of the classical tempered
+stable distribution. See Kuechler & Tappe (2013) for details.
 }
 \details{
+\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
+ individually OR provide \code{theta}.
 \if{html}{
   \out{<div style="text-align: center">}\figure{charCTS.png}{options: style=
   "width:750px;max-width:75\%;"}\out{</div>}
@@ -47,7 +53,6 @@ The characteristic function is given by (Kuechler & Tappe 2013).
 \examples{
 x <- seq(-10,10,0.25)
 y <- charCTS(x,1.5,1,1,1,1,0)
-plot(x,y)
 
 }
 \references{

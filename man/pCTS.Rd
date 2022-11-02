@@ -21,17 +21,21 @@ pCTS(
 )
 }
 \arguments{
-\item{q}{A numeric vector of quantile.}
+\item{q}{A numeric vector of quantiles.}
 
-\item{alpha}{A real number between 0 and 2.}
+\item{alpha}{Stability parameter. A real number between 0 and 2.}
 
-\item{deltap, deltam}{A real number > 0.}
+\item{deltap}{Scale parameter for the right tail. A real number > 0.}
 
-\item{lambdap, lambdam}{A  real number > 0.}
+\item{deltam}{Scale parameter for the left tail. A real number > 0.}
+
+\item{lambdap}{Tempering parameter for the right tail. A real number > 0.}
+
+\item{lambdam}{Tempering parameter for the left tail. A real number > 0.}
 
 \item{mu}{A location parameter, any real number.}
 
-\item{theta}{A vector of all other arguments.}
+\item{theta}{Parameters stacked as a vector.}
 
 \item{a}{Starting point of FFT, if \code{dens_method == "FFT"}. -20
 by default.}
@@ -46,11 +50,15 @@ size.}
 }
 \value{
 As \code{q} is a numeric vector, the return value is also a numeric
-vector.
+vector of probabilities.
 }
 \description{
-This function returns the cumulative probability function of the CTS
-distribution.
+The cumulative probability distribution function (CDF) of the classic tempered stable distribution.
+}
+\details{
+\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
+individually OR provide \code{theta}.
+The function integrates the PDF numerically with \code{integrate()}.
 }
 \examples{
 \donttest{

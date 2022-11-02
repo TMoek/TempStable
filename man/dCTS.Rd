@@ -20,20 +20,24 @@ dCTS(
 )
 }
 \arguments{
-\item{x}{A numeric vector of quantile.}
+\item{x}{A numeric vector of quantiles.}
 
-\item{alpha}{A real number between 0 and 2.}
+\item{alpha}{Stability parameter. A real number between 0 and 2.}
 
-\item{deltap, deltam}{A real number > 0.}
+\item{deltap}{Scale parameter for the right tail. A real number > 0.}
 
-\item{lambdap, lambdam}{A  real number > 0.}
+\item{deltam}{Scale parameter for the left tail. A real number > 0.}
+
+\item{lambdap}{Tempering parameter for the right tail. A real number > 0.}
+
+\item{lambdam}{Tempering parameter for the left tail. A real number > 0.}
 
 \item{mu}{A location parameter, any real number.}
 
-\item{theta}{A vector of all other arguments.}
+\item{theta}{Parameters stacked as a vector.}
 
 \item{dens_method}{Algorithm for numerical evaluation. Choose between \code{
-"FFT"} and \code{"Conv"}.}
+"FFT"} (default) and \code{"Conv"}.}
 
 \item{a}{Starting point of FFT, if \code{dens_method == "FFT"}. -20
 by default.}
@@ -42,18 +46,22 @@ by default.}
 by default.}
 
 \item{nf}{Pieces the transformation is divided in. Limited to power-of-two
-size.}
+size. 2048 by default.}
 }
 \value{
 As \code{x} is a numeric vector, the return value is also a numeric
-vector.
+vector of densities.
 }
 \description{
-The probability density function of tempered stable distributions is
-generally not available in closed form. Crucially, even a simple relationship
-with a stable density as for the TSS distribution is not available.
-For numerical evaluations it is therefore necessary to rely on algorithms
-like the fast Fourier transform applied to the characteristic function.
+The probability density function (PDF) of the classical tempered stable distributions is
+not available in closed form.
+Relies on fast Fourier transform (FFT) applied to the characteristic function.
+}
+\details{
+\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
+ individually OR provide \code{theta}.
+ Methods include the FFT or alternatively by convolving two totally positively skewed
+ tempered stable distributions, see Massing (2022).
 }
 \examples{
 x <- seq(0,15,0.25)

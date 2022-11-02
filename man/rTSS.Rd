@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{rTSS}
 \alias{rTSS}
-\title{Function to generate random variates of TSS distribution.}
+\title{Function to generate random variates of the TSS distribution.}
 \usage{
 rTSS(
   n,
@@ -11,36 +11,38 @@ rTSS(
   lambda = NULL,
   theta = NULL,
   method = "AR",
-  k = 100
+  k = 10000
 )
 }
 \arguments{
 \item{n}{sample size (integer).}
 
-\item{alpha}{A real number between 0 and 1.}
+\item{alpha}{Stability parameter. A real number between 0 and 1.}
 
-\item{delta}{A real number > 0.}
+\item{delta}{Scale parameter. A real number > 0.}
 
-\item{lambda}{A  real number > 0.}
+\item{lambda}{Tempering parameter. A real number > 0.}
 
-\item{theta}{A vector of all other arguments.}
+\item{theta}{Parameters stacked as a vector.}
 
 \item{method}{A String. Either "AR" or "SR".}
 
-\item{k}{integer: the number of replications, if \code{method == "SR"}. 100
+\item{k}{integer: the level of truncation, if \code{method == "SR"}. 10000
 by default.}
 }
 \value{
-generates random deviates.
+Generates \code{n} random numbers.
 }
 \description{
-Generates \code{n} random numbers distributed according to the distribution
-of the tempered stable subordinator.
+Generates \code{n} random numbers distributed according
+of the tempered stable subordinator distribution.
 }
 \details{
-"AR" stands for the Acceptance-Rejection Method and "SR" for infinite shot
-noise series representation. "AR" is the standard method used in Monte Carlo
-simulation. For more details, see references.
+\code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
+\code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
+"AR" stands for the Acceptance-Rejection Method and "SR" for a truncated infinite shot
+noise series representation. "AR" is the standard method used.
+For more details, see references.
 }
 \examples{
 rTSS(100,0.5,1,1)
