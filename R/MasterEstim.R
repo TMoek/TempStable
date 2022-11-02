@@ -1,14 +1,14 @@
 ##### Master function#####
 
-#' Main estimation function
+#' Estimation function
 #'
-#' Main estimation function which computes all the information about the
-#' estimator. It allows the user to choose the preferred method and several
-#' related options.
+#' Main estimation function for the tempered stable subordinator distribution (TSS),
+#' the classical tempered stable distribution (CTS), and the normal tempered stable distribution (NTS).
+#' It allows the user to select the preferred estimation method and several related options.
 #'
 #' \strong{TemperedType} Detailed documentation of the individual tempered
 #' stable distributions can be viewed in the respective characteristic function.
-#' Use \code{charTSS}, \code{charCTS}, or \code{charNTS}.
+#' Use [charTSS()], [charCTS()], or [charNTS()].
 #'
 #' \strong{Estimfct} Detailed documentation of the individual parameters
 #' of the various estimate functions is available in the package
@@ -17,16 +17,11 @@
 #'   \item{For ML:}{use \code{?StableEstim::MLParametersEstim}. See usage of
 #'   Maximum likelihood estimation in Kim et al. (2008)}
 #'   \item{For GMM:}{use \code{?StableEstim::GMMParametersEstim}. Generalized
-#'   Method of Moments by Hansen (1982)}
+#'   Method of Moments by Feuerverger (1981)}
 #'   \item{For Cgmm:}{use \code{?StableEstim::CgmmParametersEstim}. Continuum
 #'   Generalized Methods of Moments by Carrasco & Kotchoni (2017)}
-#'   \item{For GMC:}{We also use a method of moment approach which follows
-#'    Kuechler & Tappe (2013). They match empirical cumulants with their
-#'    theoretical counterparts. We extend this by using Hansen's (1982) GMM
-#'    framework. We call the approach generalized method of cumulants (GMC) to
-#'    distinguish it from the GMM method using characteristic function moment
-#'    conditions. However, it fits well into Hansen's (1982) framework allowing
-#'    for standard asymptotic theory.}
+#'   \item{For GMC:}{use \code{?StableEstim::GMCParametersEstim}. Generalized Method of
+#'   Cumulants (GMC) by Massing, T. (2022)}
 #' }
 #'
 #' \strong{Estim-Class} Class storing all the information about the estimation
@@ -35,7 +30,7 @@
 #' \describe{
 #'   \item{par:}{Object of class "\code{numeric}"; Value of the estimated
 #'   parameters.}
-#'   \item{par0:}{Object of class "\code{numeric}";Initial guess for the
+#'   \item{par0:}{Object of class "\code{numeric}"; Initial guess for the
 #'   parameters.}
 #'   \item{vcov:}{Object of class "\code{matrix}" representing the covariance
 #'   matrix.}
@@ -72,9 +67,12 @@
 #' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distribution and processes'
 #' \doi{10.1016/j.spa.2013.06.012};
 #'
+#' Feuerverger, A. & McDunnough, P. (1981), 'On the efficiency of empirical characteristic function procedures'
+#' \doi{https://doi.org/10.1111/j.2517-6161.1981.tb01143.x};
+#'
 #' @param TemperedType A String. Either "Classic", "Subordinator", or "Normal"
 #' @param EstimMethod A String. Either "ML", "GMM", "Cgmm", or "GMC".
-#' @param data Data used to perform the estimation: vector of length n.
+#' @param data Data used to perform the estimation: numeric vector of length n.
 #' @param theta0 A vector of numeric values corresponding to the pattern of the
 #' \code{TemperedType}.
 #' @param ComputeCov 	Logical flag: If set to TRUE, the asymptotic covariance
@@ -82,7 +80,7 @@
 #' @param HandleError Logical flag: If set to \code{TRUE} and if an error occurs
 #' during the estimation procedure, the computation will carry on and NA will be
 #' returned. Useful for Monte Carlo simulations.\code{TRUE} by default.
-#' @param eps A gap holder. \code{1e-06} by default.
+#' @param eps Error tolerance. \code{1e-06} by default.
 #' @param ... Other arguments to be passed to the estimation function or the
 #' asymptotic confidence level.
 #'
