@@ -148,11 +148,11 @@ vector he wants to use.
 functions. These are listed below for each function. The list of additional
 parameters starts after the parameter \code{eps} in the parameter list.
 \describe{
-  \item{For ML:}{No additional parameters are needed. See usage of
-  Maximum likelihood estimation in Kim et al. (2008)}
-  \item{For GMM:}{The parameters \code{algo, alphaReg, regularization,
-  WeightingMatrix, and t_scheme} must be specified. See also Generalized
-  Method of Moments by Hansen (1982).
+  \item{For ML:}{ See usage of Maximum likelihood estimation in Kim et al.
+  (2008).No additional parameters are needed.}
+  \item{For GMM:}{Generalized Method of Moments by Feuerverger (1981).
+  The parameters \code{algo, alphaReg, regularization, WeightingMatrix, and
+  t_scheme} must be specified.
 
   Parameter \code{t_scheme}: One of the most important features of this
   method is that it allows the user to choose how to place the points where
@@ -175,7 +175,7 @@ parameters starts after the parameter \code{eps} in the parameter list.
     }
   }
 
-  Parameter \code{WeightingMatrix}: You can choose among 3 different options:
+  Parameter \code{WeightingMatrix}: One can choose among 3 different options:
   \describe{
     \item{"OptAsym":}{the optimal asymptotic choice.
     }
@@ -190,15 +190,10 @@ parameters starts after the parameter \code{eps} in the parameter list.
   IntegrationMethod, randomIntegrationLaw, s_min, and s_max} must be
   specified.
   }
-  \item{For GMC:}{We also use a method of moment approach which follows
-   Kuechler & Tappe (2013). They match empirical cumulants with their
-   theoretical counterparts. We extend this by using Hansen's (1982) GMM
-   framework. We call the approach generalized method of cumulants (GMC) to
-   distinguish it from the GMM method using characteristic function moment
-   conditions. However, it fits well into Hansen's (1982) framework allowing
-   for standard asymptotic theory.
-   The parameters \code{algo, alphaReg, regularization, WeightingMatrix, and
-   ncond} must be specified}
+  \item{For GMC:}{Generalized Method of Cumulants (GMC) by Massing, T.
+   (2022). The parameters \code{algo, alphaReg, regularization,
+   WeightingMatrix, and ncond} must be specified.
+   }
 }
 }
 \examples{
@@ -248,6 +243,10 @@ moments estimators' \doi{10.2307/1912775};
 
 Hansen, L. P.; Heaton, J. & Yaron, A. (1996), 'Finite-Sample Properties of
 Some Alternative GMM Estimators' \doi{10.1080/07350015.1996.10524656}
+
+Feuerverger, A. & McDunnough, P. (1981), 'On the efficiency of empirical
+characteristic function procedures'
+\doi{10.1111/j.2517-6161.1981.tb01143.x};
 
 Carrasco, M. & Kotchoni, R. (2017), 'Efficient estimation using the
 characteristic function' \doi{10.1017/S0266466616000025};

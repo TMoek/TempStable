@@ -12,6 +12,18 @@ TemperedEstim(
   ComputeCov = FALSE,
   HandleError = TRUE,
   eps = 1e-06,
+  algo = NULL,
+  regularization = NULL,
+  WeightingMatrix = NULL,
+  t_scheme = NULL,
+  alphaReg = NULL,
+  t_free = NULL,
+  subdivisions = NULL,
+  IntegrationMethod = NULL,
+  randomIntegrationLaw = NULL,
+  s_min = NULL,
+  s_max = NULL,
+  ncond = NULL,
   ...
 )
 }
@@ -34,6 +46,48 @@ returned. Useful for Monte Carlo simulations.\code{TRUE} by default.}
 
 \item{eps}{Error tolerance. \code{1e-06} by default.}
 
+\item{algo}{algorithm: For GMM: \code{"2SGMM"} is the two step GMM proposed
+by Hansen (1982). \code{"CueGMM"} and \code{"ITGMM"} are respectively the
+continuous updated and the iterative GMM proposed by Hansen, Eaton et Yaron
+(1996) and adapted to the continuum case. For Cgmm: \code{"2SCgmm",
+"CueCgmm", ...}. Same for GMC.}
+
+\item{regularization}{regularization scheme to be used, one of
+\code{"Tikhonov"} (Tikhonov), \code{"LF"} (Landweber-Fridmann) and
+\code{"cut-off"} (spectral cut-off).}
+
+\item{WeightingMatrix}{type of weighting matrix used to compute the
+objective function, one of \code{"OptAsym"} (the optimal asymptotic),
+\code{"DataVar"} (the data driven) and \code{"Id"} (the identity matrix).}
+
+\item{t_scheme}{scheme used to select the points where the moment conditions
+are evaluated, one of \code{"equally"} (equally placed), \code{"NonOptAr"}
+(non optimal arithmetic placement), \code{"uniformOpt"}
+(uniform optimal placement), \code{"ArithOpt"} (arithmetic optimal
+placement), \code{"Var Opt"} (optimal variance placement) and \code{"free"}
+(users need to pass their own set of points in ...).}
+
+\item{alphaReg}{value of the regularisation parameter; numeric.}
+
+\item{t_free}{sequence, if \code{t_scheme=="free"}.}
+
+\item{subdivisions}{Number of subdivisions used to compute the different
+integrals involved in the computation of the objective function (to
+minimise); numeric.}
+
+\item{IntegrationMethod}{Numerical integration method to be used to
+approximate the (vectorial) integrals. Users can choose between "Uniform"
+discretization or the "Simpson"'s rule (the 3-point Newton-Cotes quadrature
+rule).}
+
+\item{randomIntegrationLaw}{Probability measure associated to the Hilbert
+space spanned by the moment conditions.}
+
+\item{s_min, s_max}{Lower and Upper bounds of the interval where the moment
+conditions are considered; numeric.}
+
+\item{ncond}{TODO}
+
 \item{...}{Other arguments to be passed to the estimation function or the
 asymptotic confidence level.}
 }
@@ -41,27 +95,66 @@ asymptotic confidence level.}
 Object of a estim-class. See details for more information.
 }
 \description{
-Main estimation function for the tempered stable subordinator distribution (TSS),
-the classical tempered stable distribution (CTS), and the normal tempered stable distribution (NTS).
-It allows the user to select the preferred estimation method and several related options.
+Main estimation function for the tempered stable subordinator distribution
+(TSS), the classical tempered stable distribution (CTS), and the normal
+tempered stable distribution (NTS). It allows the user to select the
+preferred estimation method and several related options.
 }
 \details{
 \strong{TemperedType} Detailed documentation of the individual tempered
 stable distributions can be viewed in the respective characteristic function.
 Use [charTSS()], [charCTS()], or [charNTS()].
 
-\strong{Estimfct} Detailed documentation of the individual parameters
-of the various estimate functions is available in the package
-\code{StableEstim}.
+\strong{Estimfct} Additional parameters are needed for different estimation
+functions. These are listed below for each function. The list of additional
+parameters starts after the parameter \code{eps} in the parameter list.
 \describe{
-  \item{For ML:}{use \code{?StableEstim::MLParametersEstim}. See usage of
-  Maximum likelihood estimation in Kim et al. (2008)}
-  \item{For GMM:}{use \code{?StableEstim::GMMParametersEstim}. Generalized
-  Method of Moments by Feuerverger (1981)}
-  \item{For Cgmm:}{use \code{?StableEstim::CgmmParametersEstim}. Continuum
-  Generalized Methods of Moments by Carrasco & Kotchoni (2017)}
-  \item{For GMC:}{use \code{?StableEstim::GMCParametersEstim}. Generalized Method of
-  Cumulants (GMC) by Massing, T. (2022)}
+  \item{For ML:}{ See usage of Maximum likelihood estimation in Kim et al.
+  (2008). No additional parameters are needed.}
+  \item{For GMM:}{Generalized Method of Moments by Feuerverger (1981).
+  The parameters \code{algo, alphaReg, regularization, WeightingMatrix, and
+  t_scheme} must be specified.
+
+  Parameter \code{t_scheme}: One of the most important features of this
+  method is that it allows the user to choose how to place the points where
+  the moment conditions are evaluated. One can choose among 6 different
+  options. Depending on the option, further parameters have to be passed.
+  \describe{
+    \item{"equally":}{equally placed points in [min_t,max_t]. When provided,
+     user's \code{min_t} and \code{max_t} will be used (when
+     \code{Coinstrained == FALSE}).
+    }
+    \item{"NonOptAr":}{non optimal arithmetic placement.
+    }
+    \item{"uniformOpt":}{uniform optimal placement.
+    }
+    \item{"ArithOpt":}{arithmetic optimal placement.
+    }
+    \item{"Var Opt":}{optimal variance placement as explained above.
+    }
+    \item{"free":}{user needs to pass his own set of points in \code{t_free}.
+    }
+  }
+
+  Parameter \code{WeightingMatrix}: One can choose among 3 different options:
+  \describe{
+    \item{"OptAsym":}{the optimal asymptotic choice.
+    }
+    \item{"DataVar":}{the covariance matrix of the data provided.
+    }
+    \item{"Id":}{the identity matrix.
+    }
+  }
+  }
+  \item{For Cgmm:}{Continuum Generalized Methods of Moments by Carrasco &
+  Kotchoni (2017). The parameters \code{algo, alphaReg, subdivisions,
+  IntegrationMethod, randomIntegrationLaw, s_min, and s_max} must be
+  specified.
+  }
+  \item{For GMC:}{Generalized Method of Cumulants (GMC) by Massing, T.
+   (2022). The parameters \code{algo, alphaReg, regularization,
+   WeightingMatrix, and ncond} must be specified.
+   }
 }
 
 \strong{Estim-Class} Class storing all the information about the estimation
@@ -116,14 +209,18 @@ market models with lévy processes and time-varying volatility'
 Hansen, L. P. (1982), 'Large sample properties of generalized method of
 moments estimators' \doi{10.2307/1912775};
 
+Hansen, L. P.; Heaton, J. & Yaron, A. (1996), 'Finite-Sample Properties of
+Some Alternative GMM Estimators' \doi{10.1080/07350015.1996.10524656}
+
 Carrasco, M. & Kotchoni, R. (2017), 'Efficient estimation using the
 characteristic function' \doi{10.1017/S0266466616000025};
 
 Kuechler, U. & Tappe, S. (2013), 'Tempered stable distribution and processes'
 \doi{10.1016/j.spa.2013.06.012};
 
-Feuerverger, A. & McDunnough, P. (1981), 'On the efficiency of empirical characteristic function procedures'
-\doi{https://doi.org/10.1111/j.2517-6161.1981.tb01143.x};
+Feuerverger, A. & McDunnough, P. (1981), 'On the efficiency of empirical
+characteristic function procedures'
+\doi{10.1111/j.2517-6161.1981.tb01143.x};
 }
 \seealso{
 \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R}
