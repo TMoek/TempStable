@@ -115,7 +115,7 @@ dTSS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 #' Cumulative probability distribution function of the tempered stable subordinator
 #' distribution
 #'
-#' This function returns the cumulative probability distribution function (CDF) of the tempered
+#' The cumulative probability distribution function (CDF) of the tempered
 #' stable subordinator distribution.
 #'
 #' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
@@ -282,7 +282,7 @@ rTSS_SR1 <- function(alpha, delta, lambda, k) {
 
 #' Quantile function of the tempered stable subordinator distribution
 #'
-#' This function returns the quantile function of the tempered stable
+#' The quantile function of the tempered stable
 #' subordinator distribution.
 #'
 #' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
@@ -549,7 +549,7 @@ dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
 #' Cumulative probability function of the classic tempered stable (CTS)
 #' distribution
 #'
-#' This function returns the cumulative probability distribution function (CDF) of the classic tempered stable distribution.
+#' The cumulative probability distribution function (CDF) of the classic tempered stable distribution.
 #'
 #' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
 #' individually OR provide \code{theta}.
@@ -767,8 +767,7 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
 
 #' Quantile function of the classic tempered stable (CTS)
 #'
-#' This function returns the quantile function of the classic tempered stable
-#' (CTS).
+#' The quantile function of the classic tempered stable (CTS).
 #'
 #' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
 #'  individually OR provide \code{theta}.
@@ -869,7 +868,7 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
 #'
-#' @return The CF of the tempered stable subordinator distribution.
+#' @return The CF of the normal tempered stable distribution.
 #'
 #' @references
 #' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
@@ -909,8 +908,13 @@ charNTS <- function(t, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 
 #' Density function of the normal tempered stable (NTS) distribution
 #'
-#' As for the CTS distribution, the density function is not available in closed
-#' form and numerical computation relies on the fast Fourier transform (FFT).
+#' The probability density function (PDF) of the normal tempered stable distributions is
+#' not available in closed form.
+#' Relies on fast Fourier transform (FFT) applied to the characteristic function.
+#'
+#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
+#'  individually OR provide \code{theta}.
+#'  Currently, the only method is FFT.
 #'
 #' @param x A numeric vector of quantile.
 #' @param alpha A real number between 0 and 1.
@@ -929,7 +933,7 @@ charNTS <- function(t, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' size.
 #'
 #' @return As \code{x} is a numeric vector, the return value is also a numeric
-#' vector.
+#' vector of densities.
 #'
 #' @references
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
@@ -982,9 +986,6 @@ dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
     y <- stats::fft(tX, inverse = FALSE)
 
     densityW <- Re((dt/(2 * pi)) * exp(-(1i) * (nf/2 * dt) * xgrid) * y)
-
-    # The return value of stats::approx (RStudio) and Interpolation (Wolfram
-    # Mathematica) differ slightly. The larger nf, the smaller the difference.
     return (as.numeric(stats::approx(xgrid, densityW, xout=x,
                               yleft = 1e-18, yright = 1e-18)[2]))
 }
@@ -992,8 +993,11 @@ dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
 #' Cumulative probability function of the normal tempered stable (NTS)
 #' distribution
 #'
-#' This function returns the cumulative probability function of the NTS
-#' distribution.
+#' The cumulative probability distribution function (CDF) of the normal tempered stable distribution.
+#'
+#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
+#'  individually OR provide \code{theta}.
+#' The function integrates the PDF numerically with \code{integrate()}.
 #'
 #' @param q A numeric vector of quantile.
 #' @param alpha A real number between 0 and 1.
@@ -1009,7 +1013,7 @@ dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
 #' @param ... Change parameters in [dNST()]
 #'
 #' @return  As \code{q} is a numeric vector, the return value is also a numeric
-#' vector.
+#' vector of probabilities.
 #'
 #' @seealso
 #' See also the [dNTS()] density-function.
@@ -1059,12 +1063,17 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 
 #' Function to generate random variates of NTS distribution.
 #'
-#' Generates \code{n} random numbers distributed according to the normal
-#' tempered stable distribution.
+#' Generates \code{n} random numbers distributed according
+#' of the normal tempered stable distribution.
 #'
-#' "AR" stands for the Acceptance-Rejection Method and "SR" for infinite shot
-#' noise series representation. "AR" is the standard method used in Monte Carlo
-#' simulation. For more details, see references.
+#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
+#'  individually OR provide \code{theta}.
+#' Works by a normal variance-mean mixture with a TSS distribution. Method parameter is for the method of
+#' simulating the TSS random variable, see the [rTSS()] function.
+#' "AR" stands for the Acceptance-Rejection Method and "SR" for a truncated infinite shot
+#' noise series representation. "AR" is the standard method used.
+#'
+#' For more details, see references.
 #'
 #' @param n sample size (integer).
 #' @param alpha A real number between 0 and 1.
@@ -1074,10 +1083,13 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
 #' @param method A String. Either "AR" or "SR". "AR" by default.
-#' @param k integer: the number of replications, if \code{method == "SR"}. 100
+#' @param k integer: the number of replications, if \code{method == "SR"}. 10000
 #' by default.
 #'
-#' @return generates random deviates.
+#' @return Generates \code{n} random numbers.
+#'
+#' @seealso
+#' See also the [rTSS()] function.
 #'
 #' @references
 #' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
@@ -1092,7 +1104,7 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #'
 #' @export
 rNTS <- function(n, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
-                 mu = NULL, theta = NULL, method = "AR", k = 100) {
+                 mu = NULL, theta = NULL, method = "AR", k = 10000) {
     if ((missing(alpha) | missing(beta) | missing(delta) | missing(lambda) |
          missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -1137,8 +1149,12 @@ rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
 
 #' Quantile function of the normal tempered stable (NTS)
 #'
-#' This function returns the quantile function of the normal tempered stable
-#' (NTS).
+#' The quantile function of the normal tempered stable (CTS).
+#'
+#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
+#'  individually OR provide \code{theta}.
+#' The function searches for a root between \code{qmin} and \code{qmax} with \code{uniroot}.
+#' Boundaries can either be supplied by the user or a built-in approach using the stable distribution is used.
 #'
 #' @param p A numeric vector of probabilities. Each probability must be a real
 #' number >0 and <1.
@@ -1148,15 +1164,15 @@ rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
 #' @param lambda A  real number >= 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
-#' @param qmin,qmax Limits of the interval. Will be calcultated if
+#' @param qmin,qmax Limits of the interval. Will be computed if
 #' \code{==NULL}.
-#' @param ... Modify [pTSS()] and [stats::uniroot()].
+#' @param ... Modify [pNTS()] and [stats::uniroot()].
 #'
 #' @return As \code{p} is a numeric vector, the return value is also a numeric
-#' vector.
+#' vector of quantiles.
 #'
 #' @seealso
-#' See also the [pTSS()] probability function.
+#' See also the [pNTS()] probability function.
 #'
 #' @examples
 #' qNTS(0.1,0.5,1,1,1,1)
