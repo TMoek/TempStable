@@ -49,8 +49,8 @@ returned. Useful for Monte Carlo simulations.\code{TRUE} by default.}
 \item{algo}{algorithm: For GMM: \code{"2SGMM"} is the two step GMM proposed
 by Hansen (1982). \code{"CueGMM"} and \code{"ITGMM"} are respectively the
 continuous updated and the iterative GMM proposed by Hansen, Eaton et Yaron
-(1996) and adapted to the continuum case. For Cgmm: \code{"2SCgmm",
-"CueCgmm", ...}. Same for GMC.}
+(1996) and adapted to the continuum case. For GMC: \code{"2SGMC", "CueGMC"}.
+For Cgmm: \code{"2SCgmm", "CueCgmm", ...}.}
 
 \item{regularization}{regularization scheme to be used, one of
 \code{"Tikhonov"} (Tikhonov), \code{"LF"} (Landweber-Fridmann) and
@@ -86,7 +86,8 @@ space spanned by the moment conditions.}
 \item{s_min, s_max}{Lower and Upper bounds of the interval where the moment
 conditions are considered; numeric.}
 
-\item{ncond}{TODO}
+\item{ncond}{Integer. Number of moment conditions (until order \code{ncond}).
+Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.}
 
 \item{...}{Other arguments to be passed to the estimation function or the
 asymptotic confidence level.}
@@ -132,7 +133,7 @@ parameters starts after the parameter \code{eps} in the parameter list.
     }
     \item{"Var Opt":}{optimal variance placement as explained above.
     }
-    \item{"free":}{user needs to pass his own set of points in \code{t_free}.
+    \item{"free":}{user needs to pass own set of points in \code{t_free}.
     }
   }
 

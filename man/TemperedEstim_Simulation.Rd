@@ -60,8 +60,8 @@ information is saved in the current directory. See details.}
 \item{algo}{algorithm: For GMM: \code{"2SGMM"} is the two step GMM proposed
 by Hansen (1982). \code{"CueGMM"} and \code{"ITGMM"} are respectively the
 continuous updated and the iterative GMM proposed by Hansen, Eaton et Yaron
-(1996) and adapted to the continuum case. For Cgmm: \code{"2SCgmm",
-"CueCgmm", ...}. Same for GMC.}
+(1996) and adapted to the continuum case. For GMC: \code{"2SGMC", "CueGMC"}.
+For Cgmm: \code{"2SCgmm", "CueCgmm", ...}.}
 
 \item{regularization}{regularization scheme to be used, one of
 \code{"Tikhonov"} (Tikhonov), \code{"LF"} (Landweber-Fridmann) and
@@ -97,7 +97,8 @@ space spanned by the moment conditions.}
 \item{s_min, s_max}{Lower and Upper bounds of the interval where the moment
 conditions are considered; numeric.}
 
-\item{ncond}{TODO}
+\item{ncond}{Integer. Number of moment conditions (until order \code{ncond}).
+Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.}
 
 \item{...}{Other arguments to be passed to the estimation function.}
 }
@@ -133,11 +134,11 @@ parameters, the MC parameters as well as the options selected for the
 estimation method. The csv file is updated after each MC estimation which is
 useful when the simulation stops before it finishes.
 
-\strong{SeedOptions} If user does not want to control the seed generation,
-he could ignore this argument (default value NULL). This argument can be
-more useful when one wants to cut the simulation (even for one parameter
-value) into pieces. In that case, he can control which part of the seed
-vector he wants to use.
+\strong{SeedOptions} If users does not want to control the seed generation,
+they could ignore this argument (default value NULL). This argument can be
+more useful when they wants to cut the simulation (even for one parameter
+value) into pieces. In that case, they can control which part of the seed
+vector they want to use.
 \describe{
   \item{MCtot:}{total values of MC simulations in the entire process.}
   \item{seedStart:}{starting index in the seed vector. The vector extracted
@@ -171,7 +172,7 @@ parameters starts after the parameter \code{eps} in the parameter list.
     }
     \item{"Var Opt":}{optimal variance placement as explained above.
     }
-    \item{"free":}{user needs to pass his own set of points in \code{t_free}.
+    \item{"free":}{user needs to pass own set of points in \code{t_free}.
     }
   }
 

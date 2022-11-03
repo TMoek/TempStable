@@ -127,8 +127,8 @@
 #' @param algo algorithm: For GMM: \code{"2SGMM"} is the two step GMM proposed
 #' by Hansen (1982). \code{"CueGMM"} and \code{"ITGMM"} are respectively the
 #' continuous updated and the iterative GMM proposed by Hansen, Eaton et Yaron
-#' (1996) and adapted to the continuum case.  Same for GMC. For Cgmm: \code{"2SCgmm",
-#' "CueCgmm", ...}.
+#' (1996) and adapted to the continuum case. For GMC: \code{"2SGMC", "CueGMC"}.
+#' For Cgmm: \code{"2SCgmm", "CueCgmm", ...}.
 #' @param regularization regularization scheme to be used, one of
 #' \code{"Tikhonov"} (Tikhonov), \code{"LF"} (Landweber-Fridmann) and
 #' \code{"cut-off"} (spectral cut-off).
