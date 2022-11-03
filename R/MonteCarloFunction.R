@@ -28,11 +28,11 @@
 #' estimation method. The csv file is updated after each MC estimation which is
 #' useful when the simulation stops before it finishes.
 #'
-#' \strong{SeedOptions} If user does not want to control the seed generation,
-#' he could ignore this argument (default value NULL). This argument can be
-#' more useful when one wants to cut the simulation (even for one parameter
-#' value) into pieces. In that case, he can control which part of the seed
-#' vector he wants to use.
+#' \strong{SeedOptions} If users does not want to control the seed generation,
+#' they could ignore this argument (default value NULL). This argument can be
+#' more useful when they wants to cut the simulation (even for one parameter
+#' value) into pieces. In that case, they can control which part of the seed
+#' vector they want to use.
 #' \describe{
 #'   \item{MCtot:}{total values of MC simulations in the entire process.}
 #'   \item{seedStart:}{starting index in the seed vector. The vector extracted
@@ -66,7 +66,7 @@
 #'     }
 #'     \item{"Var Opt":}{optimal variance placement as explained above.
 #'     }
-#'     \item{"free":}{user needs to pass his own set of points in \code{t_free}.
+#'     \item{"free":}{user needs to pass own set of points in \code{t_free}.
 #'     }
 #'   }
 #'
@@ -138,8 +138,8 @@
 #' @param algo algorithm: For GMM: \code{"2SGMM"} is the two step GMM proposed
 #' by Hansen (1982). \code{"CueGMM"} and \code{"ITGMM"} are respectively the
 #' continuous updated and the iterative GMM proposed by Hansen, Eaton et Yaron
-#' (1996) and adapted to the continuum case. For Cgmm: \code{"2SCgmm",
-#' "CueCgmm", ...}. Same for GMC.
+#' (1996) and adapted to the continuum case. Same for GMC. For Cgmm: \code{"2SCgmm",
+#' "CueCgmm", ...}.
 #' @param regularization regularization scheme to be used, one of
 #' \code{"Tikhonov"} (Tikhonov), \code{"LF"} (Landweber-Fridmann) and
 #' \code{"cut-off"} (spectral cut-off).
@@ -165,7 +165,8 @@
 #' space spanned by the moment conditions.
 #' @param s_min,s_max Lower and Upper bounds of the interval where the moment
 #' conditions are considered; numeric.
-#' @param ncond TODO
+#' @param ncond Integer. Number of moment conditions (until order \code{ncond}).
+#' Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.
 #' @param ... Other arguments to be passed to the estimation function.
 #'
 #' @return If \code{saveOutput == FALSE}, the return object is a list of 2.
