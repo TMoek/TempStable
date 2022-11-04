@@ -11,17 +11,23 @@ test_that("TemperedEstim_with_Classic_ML_gives_correct_return", {
 
     expect_equal(TestObject@par[["alpha"]],1e-06)
     expect_equal(TestObject@par[["delta +"]],1e-06)
-    expect_equal(TestObject@par[["delta -"]],2.9497572)
-    expect_equal(TestObject@par[["lambda +"]],2.3245534)
-    expect_equal(TestObject@par[["lambda -"]],1.38320472)
-    expect_equal(TestObject@par[["mu"]],0.133412943)
+    expect_equal(round(TestObject@par[["delta -"]],
+                       digits = 7), 2.9497572)
+    expect_equal(round(TestObject@par[["lambda +"]],
+                       digits = 7), 2.3245534)
+    expect_equal(round(TestObject@par[["lambda -"]],
+                       digits = 8), 1.38320472)
+    expect_equal(round(TestObject@par[["mu"]],
+                       digits = 9), 0.133412943)
 
     expect_equal(TestObject@par0,c(1.5,1,1,1,1,0))
 
-    expect_equal(TestObject@others$par, c(0.0000010, 0.0000010, 2.9497572,
-                                          2.3245534, 1.3832047, 0.1334129))
+    expect_equal(TestObject@others$par, round(c(0.0000010, 0.0000010, 2.9497572,
+                                          2.3245534, 1.3832047, 0.1334129),
+                                          digits = 7))
 
-    expect_equal(TestObject@others$value, 30.25111)
+    expect_equal(round(TestObject@others$value,
+                       digits = 5), 30.25111)
 
     expect_equal(TestObject@others$counts[["function"]], 34)
     expect_equal(TestObject@others$counts[["gradient"]], 34)
@@ -45,15 +51,20 @@ test_that("TemperedEstim_with_Subordinator_ML_gives_correct_return", {
     TestObject <- TemperedEstim("Subordinator","ML",testData)
 
 
-    expect_equal(TestObject@par[["alpha"]],0.54827989)
-    expect_equal(TestObject@par[["delta"]],0.68233765)
-    expect_equal(TestObject@par[["lambda"]],0.38312306)
+    expect_equal(round(TestObject@par[["alpha"]],
+                       digits = 8), 0.54827989)
+    expect_equal(round(TestObject@par[["delta"]],
+                       digits = 8), 0.68233765)
+    expect_equal(round(TestObject@par[["lambda"]],
+                       digits = 8), 0.38312306)
 
     expect_equal(TestObject@par0,c(0.5,1,1))
 
-    expect_equal(TestObject@others$par, c(0.54827989, 0.68233765, 0.38312306))
+    expect_equal(round(TestObject@others$par,
+                       digits = 8), c(0.54827989, 0.68233765, 0.38312306))
 
-    expect_equal(TestObject@others$value, 29.973696)
+    expect_equal(round(TestObject@others$value,
+                       digits = 6), 29.973696)
 
     expect_equal(TestObject@others$counts[["function"]], 22)
     expect_equal(TestObject@others$counts[["gradient"]], 22)
@@ -80,18 +91,24 @@ test_that("TemperedEstim_with_Normal_ML_gives_correct_return", {
 
 
     expect_equal(TestObject@par[["alpha"]],1.000000e-06)
-    expect_equal(TestObject@par[["beta"]],1006.67285)
-    expect_equal(TestObject@par[["delta"]],1.12110825)
-    expect_equal(TestObject@par[["lambda"]],632.23181)
-    expect_equal(TestObject@par[["mu"]],4.1105327e-02)
+    expect_equal(round(TestObject@par[["beta"]],
+                       digits = 5), 1006.67285)
+    expect_equal(round(TestObject@par[["delta"]],
+                       digits = 8), 1.12110825)
+    expect_equal(round(TestObject@par[["lambda"]],
+                       digits = 5), 632.23181)
+    expect_equal(round(TestObject@par[["mu"]],
+                       digits = 9), 4.1105327e-02)
 
     expect_equal(TestObject@par0,c(0.5,0,1,1,0))
 
-    expect_equal(TestObject@others$par, c(1.000000e-06, 1.00667285e+03,
+    expect_equal(round(TestObject@others$par,
+                       digits = 6), c(1e-06, 1.00667285e+03,
                                           1.12111e+00, 6.3223181e+02,
                                           4.1105e-02))
 
-    expect_equal(TestObject@others$value, 32.302543)
+    expect_equal(round(TestObject@others$value,
+                       digits = 6), 32.302543)
 
     expect_equal(TestObject@others$counts[["function"]], 67)
     expect_equal(TestObject@others$counts[["gradient"]], 67)
@@ -156,13 +173,18 @@ test_that("TemperedEstim_with_Subordinator_GMM_gives_correct_return", {
                                 t_free = seq(0.1,2,length.out = 12))
 
 
-    expect_equal(TestObject@par[["alpha"]],0.76122136)
-    expect_equal(TestObject@par[["delta"]],0.29746717 )
-    expect_equal(TestObject@par[["lambda"]],0.270527991 )
+    expect_equal(round(TestObject@par[["alpha"]],
+                       digits = 8), 0.76122136)
+    expect_equal(round(TestObject@par[["delta"]],
+                       digits = 8), 0.29746717)
+    expect_equal(round(TestObject@par[["lambda"]],
+                       digits = 9), 0.270527991)
 
-    expect_equal(TestObject@par0,c(0.35491567, 1.18635803, 1.13613704))
+    expect_equal(round(TestObject@par0,
+                       digits = 8), c(0.35491567, 1.18635803, 1.13613704))
 
-    expect_equal(TestObject@others$par, c(0.761221359, 0.297467167, 0.270527991))
+    expect_equal(round(TestObject@others$par,
+                       digits = 9), c(0.761221359, 0.297467167, 0.270527991))
   })
 })
 
@@ -179,9 +201,12 @@ test_that("TemperedEstim_with_Subordinator_GMC_gives_correct_return", {
                                 regularization = "cut-off", ncond = 8)
 
 
-    expect_equal(TestObject@par[["alpha"]], 0.99999894)
-    expect_equal(TestObject@par[["delta"]], 0.0000021782686 )
-    expect_equal(TestObject@par[["lambda"]], 6.3841874  )
+    expect_equal(round(TestObject@par[["alpha"]],
+                       digits = 8), 0.99999894)
+    expect_equal(round(TestObject@par[["delta"]],
+                       digits = 11), 0.0000021782686)
+    expect_equal(round(TestObject@par[["lambda"]],
+                       digits = 7), 6.3841874)
 
     expect_equal(TestObject@par0,c(0.5,1,1))
   })

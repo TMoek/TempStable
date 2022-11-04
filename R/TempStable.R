@@ -20,7 +20,7 @@
 #'
 #' Characteristic function, density function, probability function and other
 #' functions for every tempered stable distribution mentioned above.
-#' E.g. charSTS(), dCTS(), ...
+#' E.g. charTSS(), dCTS(), ...
 #'
 #' \strong{Monte Carlo simulation:} a tool to run a Monte Carlo simulation
 #' (TemperedEstim_Simulation()) is provided and can save output files or
