@@ -1,13 +1,57 @@
 ##### ML#####
 .asymptoticVarianceEstimML_NTS <- function(data, EstimObj,
-                                           type = "Subordinator", ...) {
+                                           type = "Subordinator",
+                                           eps,
+                                           algo,
+                                           regularization,
+                                           WeightingMatrix,
+                                           t_scheme,
+                                           alphaReg,
+                                           t_free,
+                                           subdivisions,
+                                           IntegrationMethod,
+                                           randomIntegrationLaw,
+                                           s_min,
+                                           s_max,
+                                           ncond,
+                                           ...) {
     asymptoticVarianceEstimML_NTS(thetaEst = EstimObj$Estim$par,
-                                  n_sample = length(data), type = type, ...)
+                                  n_sample = length(data), type = type,
+                                  eps = eps,
+                                  algo = algo,
+                                  regularization = regularization,
+                                  WeightingMatrix =
+                                    WeightingMatrix,
+                                  t_scheme = t_scheme,
+                                  alphaReg = alphaReg,
+                                  t_free = t_free,
+                                  subdivisions = subdivisions,
+                                  IntegrationMethod =
+                                    IntegrationMethod,
+                                  randomIntegrationLaw =
+                                    randomIntegrationLaw,
+                                  s_min = s_min,
+                                  s_max = s_max,
+                                  ncond = ncond,
+                                  ...)
 }
 
 asymptoticVarianceEstimML_NTS <- function(thetaEst, n_sample,
                                           type = "Subordinator",
-                                          subdivisions = 100, ...) {
+                                          subdivisions = 100,
+                                          eps,
+                                          algo,
+                                          regularization,
+                                          WeightingMatrix,
+                                          t_scheme,
+                                          alphaReg,
+                                          t_free,
+                                          IntegrationMethod,
+                                          randomIntegrationLaw,
+                                          s_min,
+                                          s_max,
+                                          ncond,
+                                          ...) {
     NameParamsObjectsTemp(invFisherMatrix_NTS(as.numeric(thetaEst),
                                               subdivisions)/n_sample,
                           type = type)
@@ -48,18 +92,78 @@ NumDeriv_jacobian_NTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
 
 ##### GMM#####
 .asymptoticVarianceEstimGMM_NTS <- function(data, EstimObj,
-                                            type = "Subordinator", eps, ...) {
+                                            type = "Subordinator", eps,
+                                            algo,
+                                            regularization,
+                                            WeightingMatrix,
+                                            t_scheme,
+                                            alphaReg,
+                                            t_free,
+                                            subdivisions,
+                                            IntegrationMethod,
+                                            randomIntegrationLaw,
+                                            s_min,
+                                            s_max,
+                                            ncond,
+                                            ...) {
     V <- solve(GMMasymptoticVarianceEstim_NTS(theta = EstimObj$Estim$par,
                                               t = EstimObj$tEstim, x = data,
-                                              eps = eps, ...))/length(data)
+                                              eps = eps,
+                                              algo = algo,
+                                              regularization = regularization,
+                                              WeightingMatrix =
+                                                WeightingMatrix,
+                                              t_scheme = t_scheme,
+                                              alphaReg = alphaReg,
+                                              t_free = t_free,
+                                              subdivisions = subdivisions,
+                                              IntegrationMethod =
+                                                IntegrationMethod,
+                                              randomIntegrationLaw =
+                                                randomIntegrationLaw,
+                                              s_min = s_min,
+                                              s_max = s_max,
+                                              ncond = ncond,
+                                              ...))/length(data)
     NameParamsObjects(V, type = type)
 }
 
 ##### CGMM#####
 .asymptoticVarianceEstimCgmm_NTS <- function(data, EstimObj,
-                                             type = "Subordinator", ...) {
+                                             type = "Subordinator",
+                                             eps,
+                                             algo,
+                                             regularization,
+                                             WeightingMatrix,
+                                             t_scheme,
+                                             alphaReg,
+                                             t_free,
+                                             subdivisions,
+                                             IntegrationMethod,
+                                             randomIntegrationLaw,
+                                             s_min,
+                                             s_max,
+                                             ncond,
+                                             ...) {
     V <- ComputeCovarianceCgmm_NTS(theta = EstimObj$Estim$par,
-                                   thetaHat = EstimObj$Estim$par, x = data, ...)
+                                   thetaHat = EstimObj$Estim$par, x = data,
+                                   eps = eps,
+                                   algo = algo,
+                                   regularization = regularization,
+                                   WeightingMatrix =
+                                     WeightingMatrix,
+                                   t_scheme = t_scheme,
+                                   alphaReg = alphaReg,
+                                   t_free = t_free,
+                                   subdivisions = subdivisions,
+                                   IntegrationMethod =
+                                     IntegrationMethod,
+                                   randomIntegrationLaw =
+                                     randomIntegrationLaw,
+                                   s_min = s_min,
+                                   s_max = s_max,
+                                   ncond = ncond,
+                                   ...)
     NameParamsObjects(Mod(ComputeCutOffInverse(V))/length(data), type = type)
 }
 

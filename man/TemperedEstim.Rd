@@ -104,82 +104,82 @@ preferred estimation method and several related options.
 \details{
 \strong{TemperedType} Detailed documentation of the individual tempered
 stable distributions can be viewed in the respective characteristic function.
-Use [charTSS()], [charCTS()], or [charNTS()].
+Use \code{\link[=charTSS]{charTSS()}}, \code{\link[=charCTS]{charCTS()}}, or \code{\link[=charNTS]{charNTS()}}.
 
 \strong{Estimfct} Additional parameters are needed for different estimation
 functions. These are listed below for each function. The list of additional
 parameters starts after the parameter \code{eps} in the parameter list.
 \describe{
-  \item{For ML:}{ See usage of Maximum likelihood estimation in Kim et al.
-  (2008). No additional parameters are needed.}
-  \item{For GMM:}{Generalized Method of Moments by Feuerverger (1981).
-  The parameters \code{algo, alphaReg, regularization, WeightingMatrix, and
+\item{For ML:}{ See usage of Maximum likelihood estimation in Kim et al.
+(2008). No additional parameters are needed.}
+\item{For GMM:}{Generalized Method of Moments by Feuerverger (1981).
+The parameters \code{algo, alphaReg, regularization, WeightingMatrix, and
   t_scheme} must be specified.
 
-  Parameter \code{t_scheme}: One of the most important features of this
-  method is that it allows the user to choose how to place the points where
-  the moment conditions are evaluated. One can choose among 6 different
-  options. Depending on the option, further parameters have to be passed.
-  \describe{
-    \item{"equally":}{equally placed points in [min_t,max_t]. When provided,
-     user's \code{min_t} and \code{max_t} will be used (when
-     \code{Coinstrained == FALSE}).
-    }
-    \item{"NonOptAr":}{non optimal arithmetic placement.
-    }
-    \item{"uniformOpt":}{uniform optimal placement.
-    }
-    \item{"ArithOpt":}{arithmetic optimal placement.
-    }
-    \item{"Var Opt":}{optimal variance placement as explained above.
-    }
-    \item{"free":}{user needs to pass own set of points in \code{t_free}.
-    }
-  }
+Parameter \code{t_scheme}: One of the most important features of this
+method is that it allows the user to choose how to place the points where
+the moment conditions are evaluated. One can choose among 6 different
+options. Depending on the option, further parameters have to be passed.
+\describe{
+\item{"equally":}{equally placed points in \code{min_t,max_t}. When
+provided, user's \code{min_t} and \code{max_t} will be used (when
+\code{Coinstrained == FALSE}).
+}
+\item{"NonOptAr":}{non optimal arithmetic placement.
+}
+\item{"uniformOpt":}{uniform optimal placement.
+}
+\item{"ArithOpt":}{arithmetic optimal placement.
+}
+\item{"Var Opt":}{optimal variance placement as explained above.
+}
+\item{"free":}{user needs to pass own set of points in \code{t_free}.
+}
+}
 
-  Parameter \code{WeightingMatrix}: One can choose among 3 different options:
-  \describe{
-    \item{"OptAsym":}{the optimal asymptotic choice.
-    }
-    \item{"DataVar":}{the covariance matrix of the data provided.
-    }
-    \item{"Id":}{the identity matrix.
-    }
-  }
-  }
-  \item{For Cgmm:}{Continuum Generalized Methods of Moments by Carrasco &
-  Kotchoni (2017). The parameters \code{algo, alphaReg, subdivisions,
+Parameter \code{WeightingMatrix}: One can choose among 3 different options:
+\describe{
+\item{"OptAsym":}{the optimal asymptotic choice.
+}
+\item{"DataVar":}{the covariance matrix of the data provided.
+}
+\item{"Id":}{the identity matrix.
+}
+}
+}
+\item{For Cgmm:}{Continuum Generalized Methods of Moments by Carrasco &
+Kotchoni (2017). The parameters \code{algo, alphaReg, subdivisions,
   IntegrationMethod, randomIntegrationLaw, s_min, and s_max} must be
-  specified.
-  }
-  \item{For GMC:}{Generalized Method of Cumulants (GMC) by Massing, T.
-   (2022). The parameters \code{algo, alphaReg, regularization,
+specified.
+}
+\item{For GMC:}{Generalized Method of Cumulants (GMC) by Massing, T.
+(2022). The parameters \code{algo, alphaReg, regularization,
    WeightingMatrix, and ncond} must be specified.
-   }
+}
 }
 
 \strong{Estim-Class} Class storing all the information about the estimation
 method; output of this function.
 \strong{Slots of the return class}
 \describe{
-  \item{par:}{Object of class "\code{numeric}"; Value of the estimated
-  parameters.}
-  \item{par0:}{Object of class "\code{numeric}"; Initial guess for the
-  parameters.}
-  \item{vcov:}{Object of class "\code{matrix}" representing the covariance
-  matrix.}
-  \item{confint:}{Object of class "\code{matrix}" representing the confidence
-  interval computed at a specific level (attribute of the object).}
-  \item{data:}{Object of class "\code{numeric}" used to compute the
-  estimation.}
-  \item{sampleSize:}{Object of class "\code{numeric}" ; length of the data.}
-  \item{others:}{Object of class "\code{list}" ; more information about the
-  estimation method.}
-  \item{duration:}{Object of class "\code{numeric}" ; duration in seconds.}
-  \item{failure:}{Object of class "\code{numeric}" representing the status of
-   the procedure: 0 failure or 1 success.}
-  \item{method:}{Object of class "\code{character}" description of the
-  parameter used in the estimation.}
+\item{par:}{Object of class "\code{numeric}"; Value of the estimated
+parameters.}
+\item{par0:}{Object of class "\code{numeric}"; Initial guess for the
+parameters.}
+\item{vcov:}{Object of class "\code{matrix}" representing the covariance
+matrix.}
+\item{confint:}{Object of class "\code{matrix}" representing the confidence
+interval computed at a specific level (attribute of the object).}
+\item{data:}{Object of class "\code{numeric}" used to compute the
+estimation.}
+\item{sampleSize:}{Object of class "\code{numeric}" ; length of the data.}
+\item{others:}{Object of class "\code{list}" ; more information about the
+estimation method.}
+\item{duration:}{Object of class "\code{numeric}" ; duration in seconds.}
+\item{failure:}{Object of class "\code{numeric}" representing the status of
+the procedure: 0 failure or 1 success.}
+\item{method:}{Object of class "\code{character}" description of the
+parameter used in the estimation.}
 }
 }
 \examples{

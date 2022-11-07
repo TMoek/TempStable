@@ -56,8 +56,8 @@ Relies on fast Fourier transform (FFT) applied to the characteristic function.
 }
 \details{
 \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
- individually OR provide \code{theta}.
- Currently, the only method is FFT.
+individually OR provide \code{theta}.
+Currently, the only method is FFT.
 }
 \examples{
 x <- seq(0,15,0.25)

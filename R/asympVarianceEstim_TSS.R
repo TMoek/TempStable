@@ -1,13 +1,57 @@
 ##### ML#####
 .asymptoticVarianceEstimML_TSS <- function(data, EstimObj,
-                                           type = "Subordinator", ...) {
+                                           type = "Subordinator",
+                                           eps,
+                                           algo,
+                                           regularization,
+                                           WeightingMatrix,
+                                           t_scheme,
+                                           alphaReg,
+                                           t_free,
+                                           subdivisions,
+                                           IntegrationMethod,
+                                           randomIntegrationLaw,
+                                           s_min,
+                                           s_max,
+                                           ncond,
+                                           ...) {
     asymptoticVarianceEstimML_TSS(thetaEst = EstimObj$Estim$par,
-                                  n_sample = length(data), type = type, ...)
+                                  n_sample = length(data), type = type,
+                                  eps = eps,
+                                  algo = algo,
+                                  regularization = regularization,
+                                  WeightingMatrix =
+                                    WeightingMatrix,
+                                  t_scheme = t_scheme,
+                                  alphaReg = alphaReg,
+                                  t_free = t_free,
+                                  subdivisions = subdivisions,
+                                  IntegrationMethod =
+                                    IntegrationMethod,
+                                  randomIntegrationLaw =
+                                    randomIntegrationLaw,
+                                  s_min = s_min,
+                                  s_max = s_max,
+                                  ncond = ncond,
+                                  ...)
 }
 
 asymptoticVarianceEstimML_TSS <- function(thetaEst, n_sample,
                                           type = "Subordinator",
-                                          subdivisions = 100, ...) {
+                                          subdivisions = 100,
+                                          eps,
+                                          algo,
+                                          regularization,
+                                          WeightingMatrix,
+                                          t_scheme,
+                                          alphaReg,
+                                          t_free,
+                                          IntegrationMethod,
+                                          randomIntegrationLaw,
+                                          s_min,
+                                          s_max,
+                                          ncond,
+                                          ...) {
     NameParamsObjectsTemp(invFisherMatrix_TSS(as.numeric(thetaEst),
                                               subdivisions)/n_sample,
                           type = type)
@@ -23,9 +67,9 @@ invFisherMatrix_TSS <- function(theta, subdivisions = 100) {
     }
     for (i in 1:3) {
         for (j in 1:i) {
-            mat[i, j] <- stats::integrate(f = integrand, lower = -Inf, upper = Inf,
-                                   i = i, j = j,
-                                   subdivisions = subdivisions)$value
+            mat[i, j] <- stats::integrate(f = integrand, lower = -Inf,
+                                          upper = Inf, i = i, j = j,
+                                          subdivisions = subdivisions)$value
             mat[j, i] <- mat[i, j]
         }
     }
@@ -48,18 +92,78 @@ NumDeriv_jacobian_TSS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
 
 ##### GMM#####
 .asymptoticVarianceEstimGMM_TSS <- function(data, EstimObj,
-                                            type = "Subordinator", eps, ...) {
+                                            type = "Subordinator", eps,
+                                            algo,
+                                            regularization,
+                                            WeightingMatrix,
+                                            t_scheme,
+                                            alphaReg,
+                                            t_free,
+                                            subdivisions,
+                                            IntegrationMethod,
+                                            randomIntegrationLaw,
+                                            s_min,
+                                            s_max,
+                                            ncond,
+                                            ...) {
     V <- solve(GMMasymptoticVarianceEstim_TSS(theta = EstimObj$Estim$par,
                                               t = EstimObj$tEstim, x = data,
-                                              eps = eps, ...))/length(data)
+                                              eps = eps,
+                                              algo = algo,
+                                              regularization = regularization,
+                                              WeightingMatrix =
+                                                WeightingMatrix,
+                                              t_scheme = t_scheme,
+                                              alphaReg = alphaReg,
+                                              t_free = t_free,
+                                              subdivisions = subdivisions,
+                                              IntegrationMethod =
+                                                IntegrationMethod,
+                                              randomIntegrationLaw =
+                                                randomIntegrationLaw,
+                                              s_min = s_min,
+                                              s_max = s_max,
+                                              ncond = ncond,
+                                              ...))/length(data)
     NameParamsObjects(V, type = type)
 }
 
 ##### CGMM#####
 .asymptoticVarianceEstimCgmm_TSS <- function(data, EstimObj,
-                                             type = "Subordinator", ...) {
+                                             type = "Subordinator",
+                                             eps,
+                                             algo,
+                                             regularization,
+                                             WeightingMatrix,
+                                             t_scheme,
+                                             alphaReg,
+                                             t_free,
+                                             subdivisions,
+                                             IntegrationMethod,
+                                             randomIntegrationLaw,
+                                             s_min,
+                                             s_max,
+                                             ncond,
+                                             ...) {
     V <- ComputeCovarianceCgmm_TSS(theta = EstimObj$Estim$par,
-                                   thetaHat = EstimObj$Estim$par, x = data, ...)
+                                   thetaHat = EstimObj$Estim$par, x = data,
+                                   eps = eps,
+                                   algo = algo,
+                                   regularization = regularization,
+                                   WeightingMatrix =
+                                     WeightingMatrix,
+                                   t_scheme = t_scheme,
+                                   alphaReg = alphaReg,
+                                   t_free = t_free,
+                                   subdivisions = subdivisions,
+                                   IntegrationMethod =
+                                     IntegrationMethod,
+                                   randomIntegrationLaw =
+                                     randomIntegrationLaw,
+                                   s_min = s_min,
+                                   s_max = s_max,
+                                   ncond = ncond,
+                                   ...)
     NameParamsObjects(Mod(ComputeCutOffInverse(V))/length(data), type = type)
 }
 
@@ -119,10 +223,38 @@ getSingularValueDecomposition <- function(Kn){
 
 ##### GMC#####
 .asymptoticVarianceEstimGMC_TSS <- function(data, EstimObj,
-                                            type = "Subordinator", eps, ...) {
+                                            type = "Subordinator", eps,
+                                            algo,
+                                            regularization,
+                                            WeightingMatrix,
+                                            t_scheme,
+                                            alphaReg,
+                                            t_free,
+                                            subdivisions,
+                                            IntegrationMethod,
+                                            randomIntegrationLaw,
+                                            s_min,
+                                            s_max,
+                                            ncond,
+                                            ...) {
     V <- solve(GMCasymptoticVarianceEstim_TSS(theta = EstimObj$Estim$par,
                                               ncond = EstimObj$ncond, x = data,
-                                              eps = eps, ...))/length(data)
+                                              eps = eps,
+                                              algo = algo,
+                                              regularization = regularization,
+                                              WeightingMatrix =
+                                                WeightingMatrix,
+                                              t_scheme = t_scheme,
+                                              alphaReg = alphaReg,
+                                              t_free = t_free,
+                                              subdivisions = subdivisions,
+                                              IntegrationMethod =
+                                                IntegrationMethod,
+                                              randomIntegrationLaw =
+                                                randomIntegrationLaw,
+                                              s_min = s_min,
+                                              s_max = s_max,
+                                              ...))/length(data)
     NameParamsObjects(V, type = type)
 }
 

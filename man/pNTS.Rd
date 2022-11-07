@@ -41,7 +41,7 @@ pNTS(
 \item{nf}{Pieces the fast Fourier transformation is divided in. Limited to
 power-of-two size. 2^11 by default.}
 
-\item{...}{Change parameters in [dNST()]}
+\item{...}{Change parameters in \code{\link[=dNTS]{dNTS()}}}
 }
 \value{
 As \code{q} is a numeric vector, the return value is also a numeric
@@ -52,7 +52,7 @@ The cumulative probability distribution function (CDF) of the normal tempered st
 }
 \details{
 \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
- individually OR provide \code{theta}.
+individually OR provide \code{theta}.
 The function integrates the PDF numerically with \code{integrate()}.
 }
 \examples{
@@ -64,5 +64,5 @@ plot(x,y)
 
 }
 \seealso{
-See also the [dNTS()] density-function.
+See also the \code{\link[=dNTS]{dNTS()}} density-function.
 }

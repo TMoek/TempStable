@@ -204,7 +204,7 @@ test_that("TemperedEstim_with_Subordinator_GMC_gives_correct_return", {
     expect_equal(round(TestObject@par[["alpha"]],
                        digits = 8), 0.99999894)
     expect_equal(round(TestObject@par[["delta"]],
-                       digits = 11), 0.0000021782686)
+                       digits = 13), 0.0000021782686)
     expect_equal(round(TestObject@par[["lambda"]],
                        digits = 7), 6.3841874)
 

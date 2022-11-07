@@ -122,12 +122,12 @@ sample data and move on to the next Monte Carlo step.
 side effect of saving a csv file in the working directory. This file will
 have \code{MCparam*length(SampleSizes)} lines and its columns will be:
 \describe{
-  \item{alphaT, ...:}{the true value of the parameters.}
-  \item{data size:}{the sample size used to generate the simulated data.}
-  \item{seed:}{the seed value used to generate the simulated data.}
-  \item{alphaE, ...:}{the estimate of the parameters.}
-  \item{failure:}{binary: 0 for success, 1 for failure.}
-  \item{time:}{estimation running time in seconds.}
+\item{alphaT, ...:}{the true value of the parameters.}
+\item{data size:}{the sample size used to generate the simulated data.}
+\item{seed:}{the seed value used to generate the simulated data.}
+\item{alphaE, ...:}{the estimate of the parameters.}
+\item{failure:}{binary: 0 for success, 1 for failure.}
+\item{time:}{estimation running time in seconds.}
 }
 The file name is informative to let the user identify the value of the true
 parameters, the MC parameters as well as the options selected for the
@@ -140,61 +140,61 @@ more useful when they wants to cut the simulation (even for one parameter
 value) into pieces. In that case, they can control which part of the seed
 vector they want to use.
 \describe{
-  \item{MCtot:}{total values of MC simulations in the entire process.}
-  \item{seedStart:}{starting index in the seed vector. The vector extracted
-  will be of size MCparam.}
+\item{MCtot:}{total values of MC simulations in the entire process.}
+\item{seedStart:}{starting index in the seed vector. The vector extracted
+will be of size MCparam.}
 }
 
 \strong{Estimfct} Additional parameters are needed for different estimation
 functions. These are listed below for each function. The list of additional
 parameters starts after the parameter \code{eps} in the parameter list.
 \describe{
-  \item{For ML:}{ See usage of Maximum likelihood estimation in Kim et al.
-  (2008).No additional parameters are needed.}
-  \item{For GMM:}{Generalized Method of Moments by Feuerverger (1981).
-  The parameters \code{algo, alphaReg, regularization, WeightingMatrix, and
+\item{For ML:}{ See usage of Maximum likelihood estimation in Kim et al.
+(2008).No additional parameters are needed.}
+\item{For GMM:}{Generalized Method of Moments by Feuerverger (1981).
+The parameters \code{algo, alphaReg, regularization, WeightingMatrix, and
   t_scheme} must be specified.
 
-  Parameter \code{t_scheme}: One of the most important features of this
-  method is that it allows the user to choose how to place the points where
-  the moment conditions are evaluated. One can choose among 6 different
-  options. Depending on the option, further parameters have to be passed.
-  \describe{
-    \item{"equally":}{equally placed points in [min_t,max_t]. When provided,
-     user's \code{min_t} and \code{max_t} will be used (when
-     \code{Coinstrained == FALSE}).
-    }
-    \item{"NonOptAr":}{non optimal arithmetic placement.
-    }
-    \item{"uniformOpt":}{uniform optimal placement.
-    }
-    \item{"ArithOpt":}{arithmetic optimal placement.
-    }
-    \item{"Var Opt":}{optimal variance placement as explained above.
-    }
-    \item{"free":}{user needs to pass own set of points in \code{t_free}.
-    }
-  }
+Parameter \code{t_scheme}: One of the most important features of this
+method is that it allows the user to choose how to place the points where
+the moment conditions are evaluated. One can choose among 6 different
+options. Depending on the option, further parameters have to be passed.
+\describe{
+\item{"equally":}{equally placed points in \code{min_t,max_t}. When provided,
+user's \code{min_t} and \code{max_t} will be used (when
+\code{Coinstrained == FALSE}).
+}
+\item{"NonOptAr":}{non optimal arithmetic placement.
+}
+\item{"uniformOpt":}{uniform optimal placement.
+}
+\item{"ArithOpt":}{arithmetic optimal placement.
+}
+\item{"Var Opt":}{optimal variance placement as explained above.
+}
+\item{"free":}{user needs to pass own set of points in \code{t_free}.
+}
+}
 
-  Parameter \code{WeightingMatrix}: One can choose among 3 different options:
-  \describe{
-    \item{"OptAsym":}{the optimal asymptotic choice.
-    }
-    \item{"DataVar":}{the covariance matrix of the data provided.
-    }
-    \item{"Id":}{the identity matrix.
-    }
-  }
-  }
-  \item{For Cgmm:}{Continuum Generalized Methods of Moments by Carrasco &
-  Kotchoni (2017). The parameters \code{algo, alphaReg, subdivisions,
+Parameter \code{WeightingMatrix}: One can choose among 3 different options:
+\describe{
+\item{"OptAsym":}{the optimal asymptotic choice.
+}
+\item{"DataVar":}{the covariance matrix of the data provided.
+}
+\item{"Id":}{the identity matrix.
+}
+}
+}
+\item{For Cgmm:}{Continuum Generalized Methods of Moments by Carrasco &
+Kotchoni (2017). The parameters \code{algo, alphaReg, subdivisions,
   IntegrationMethod, randomIntegrationLaw, s_min, and s_max} must be
-  specified.
-  }
-  \item{For GMC:}{Generalized Method of Cumulants (GMC) by Massing, T.
-   (2022). The parameters \code{algo, alphaReg, regularization,
+specified.
+}
+\item{For GMC:}{Generalized Method of Cumulants (GMC) by Massing, T.
+(2022). The parameters \code{algo, alphaReg, regularization,
    WeightingMatrix, and ncond} must be specified.
-   }
+}
 }
 }
 \examples{

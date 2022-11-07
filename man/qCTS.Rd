@@ -39,7 +39,7 @@ number >0 and <1.}
 \item{qmin, qmax}{Limits of the interval. Will be computed if
 \code{==NULL}.}
 
-\item{...}{Modify [pTSS()] and [stats::uniroot()].}
+\item{...}{Modify \code{\link[=pTSS]{pTSS()}} and \code{\link[stats:uniroot]{stats::uniroot()}}.}
 }
 \value{
 As \code{p} is a numeric vector, the return value is also a numeric
@@ -50,7 +50,7 @@ The quantile function of the classic tempered stable (CTS).
 }
 \details{
 \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
- individually OR provide \code{theta}.
+individually OR provide \code{theta}.
 The function searches for a root between \code{qmin} and \code{qmax} with \code{uniroot}.
 Boundaries can either be supplied by the user or a built-in approach using the stable distribution is used.
 }
@@ -62,5 +62,5 @@ Boundaries can either be supplied by the user or a built-in approach using the s
 
 }
 \seealso{
-See also the [pCTS()] probability function.
+See also the \code{\link[=pCTS]{pCTS()}} probability function.
 }

@@ -69,5 +69,5 @@ plot(x,y)
 
 }
 \seealso{
-See also the [dCTS()] density-function.
+See also the \code{\link[=dCTS]{dCTS()}} density-function.
 }

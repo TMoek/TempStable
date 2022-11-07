@@ -21,7 +21,7 @@ N. Boshnakov.
 \section{Brief describtion of functions}{
 
 
- \strong{TemperedEstim()} computes all the information about the
+\strong{TemperedEstim()} computes all the information about the
 estimator. It allows the user to choose the preferred method and several
 related options.
 

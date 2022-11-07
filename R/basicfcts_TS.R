@@ -63,7 +63,7 @@ charTSS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
 #' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
 #' \code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
 #' \deqn{f_{TSS}(y;\theta)=\mathrm{e}^{-\lambda y-\lambda^{\alpha}\delta\Gamma(-\alpha)}f_{S(\alpha,\delta)}(y),}
-#' where f_{S\alpha,\delta)} is the density of the stable subordinator.
+#' where \deqn{f_{S(\alpha,\delta)}} is the density of the stable subordinator.
 #'
 #' @param x A numeric vector of positive quantiles.
 #' @param alpha Stability parameter. A real number between 0 and 1.
@@ -1010,7 +1010,7 @@ dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
 #' @param b Ending point of integrate density function. 40 by default.
 #' @param nf Pieces the fast Fourier transformation is divided in. Limited to
 #' power-of-two size. 2^11 by default.
-#' @param ... Change parameters in [dNST()]
+#' @param ... Change parameters in [dNTS()]
 #'
 #' @return  As \code{q} is a numeric vector, the return value is also a numeric
 #' vector of probabilities.

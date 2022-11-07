@@ -59,9 +59,9 @@ Relies on fast Fourier transform (FFT) applied to the characteristic function.
 }
 \details{
 \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
- individually OR provide \code{theta}.
- Methods include the FFT or alternatively by convolving two totally positively skewed
- tempered stable distributions, see Massing (2022).
+individually OR provide \code{theta}.
+Methods include the FFT or alternatively by convolving two totally positively skewed
+tempered stable distributions, see Massing (2022).
 }
 \examples{
 x <- seq(0,15,0.25)

@@ -29,6 +29,7 @@ Imports:
     rootSolve (>= 1.8.2.3),
     VGAM (>= 1.1-7)
 RoxygenNote: 7.2.1
+Roxygen: list(markdown = TRUE)
 Suggests: 
     knitr (>= 1.4),
     rmarkdown (>= 2.17),

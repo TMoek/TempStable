@@ -30,7 +30,7 @@ using the \code{stabledist} package.
 \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
 \code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
 \deqn{f_{TSS}(y;\theta)=\mathrm{e}^{-\lambda y-\lambda^{\alpha}\delta\Gamma(-\alpha)}f_{S(\alpha,\delta)}(y),}
-where f_{S\alpha,\delta)} is the density of the stable subordinator.
+where \deqn{f_{S(\alpha,\delta)}} is the density of the stable subordinator.
 }
 \examples{
 x <- seq(0,15,0.25)

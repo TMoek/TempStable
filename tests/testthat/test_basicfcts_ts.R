@@ -1,15 +1,15 @@
 
 test_that("charTSS_gives_correct_return", {
-  expect_equal(round(charTSS(1000,0.5,1,0.3), digits = 40),
-               -1.954837e-34-1.69676e-34i)
-  expect_equal(round(charTSS(500,0.9,1,12.3), digits = 182),
-               -1.44336e-177-1.211255e-176i)
+  expect_equal(round(charTSS(1000,0.5,1,0.3), digits = 39),
+               -1.95484e-34-1.6968e-34i)
+  expect_equal(round(charTSS(500,0.9,1,12.3), digits = 181),
+               -1.4434e-177-1.21126e-176i)
   expect_equal(charTSS(500,0.9,1000,12.3),0+0i)
 
   expect_equal(charTSS(1000000,0.5,1,0.3),0+0i)
   expect_equal(charTSS(0,0.5,1,0.3),1+0i)
-  expect_equal(round(charTSS(-10000,0.5,1,0.3), digits = 115),
-               7.497345e-109+5.91963e-109i)
+  expect_equal(round(charTSS(-10000,0.5,1,0.3), digits = 113),
+               7.4973e-109+5.920e-109i)
   expect_equal(charTSS(500,0.4,11.3,Inf),NaN*(1+1i))
   expect_equal(charTSS(500,0.4,Inf,335),0+0i)
   expect_equal(charTSS(Inf,0.4,33,35),NaN*(1+1i))
@@ -41,7 +41,7 @@ test_that("charTSS_gives_correct_return", {
 
 test_that("dTSS_gives_correct_return", {
 
-  expect_equal(round(dTSS(1000,0.5,1,0.3), digits = 140), 1.131172e-134)
+  expect_equal(round(dTSS(1000,0.5,1,0.3), digits = 139), 1.13117e-134)
   expect_equal(dTSS(1000,0.5,10,3),0)
 
   expect_error(dTSS(1000,1.5,10,0.3))
@@ -50,10 +50,10 @@ test_that("dTSS_gives_correct_return", {
   expect_error(dTSS('a',0.4,33,35), "non-numeric argument to binary operator")
 
   suppressWarnings({
-    expect_equal(round(dTSS(1,0.5,1,0.3), digits = 8), 0.22313758)
-    expect_equal(round(dTSS(10,0.5,10,3),digits = 8), 0.31110755)
+    expect_equal(round(dTSS(1,0.5,1,0.3), digits = 7), 0.2231376)
+    expect_equal(round(dTSS(10,0.5,10,3),digits = 7), 0.3111076)
     expect_equal(dTSS(10,0.5,10,300),0)
-    expect_equal(round(dTSS(10,0.5,10,30), digits = 67), 7.791729e-61)
+    expect_equal(round(dTSS(10,0.5,10,30), digits = 66), 7.79173e-61)
     expect_warning(dTSS(1,0.5,1,0.3))
     expect_warning(dTSS(10,0.5,10,3))
     expect_warning(dTSS(10,0.5,10,300))
@@ -64,11 +64,11 @@ test_that("dTSS_gives_correct_return", {
 test_that("pTSS_methode_integrate_gives_correct_return", {
 
   suppressWarnings({
-    expect_equal(round(pTSS(10,0.5,10,300), digits = 8), 0.9999999)
-    expect_equal(round(pTSS(1,0.5,10,300), digits = 8), 0.29072176)
-    expect_equal(round(pTSS(1,0.5,10,3), digits = 119), 2.700436e-113)
-    expect_equal(round(pTSS(1,0.5,1,3), digits = 8), 0.55464479)
-    expect_equal(round(pTSS(1,0.5,1,1), digits = 8), 0.19025569)
+    expect_equal(round(pTSS(10,0.5,10,300), digits = 0), 1)
+    expect_equal(round(pTSS(1,0.5,10,300), digits = 7), 0.2907218)
+    expect_equal(round(pTSS(1,0.5,10,3), digits = 118), 2.70044e-113)
+    expect_equal(round(pTSS(1,0.5,1,3), digits = 7), 0.5546448)
+    expect_equal(round(pTSS(1,0.5,1,1), digits = 7), 0.1902557)
 
     expect_error(pTSS(1,1.5,1,3))
     expect_error(pTSS(1,0.5,-1,10))
@@ -84,9 +84,9 @@ test_that("pTSS_methode_integrate_gives_correct_return", {
 test_that("pTSS_methode_not_integrate_gives_correct_return", {
 
   suppressWarnings({
-    expect_equal(round(pTSS(1,0.5,10,300,NULL,""), digits = 7), 0.2907115)
-    expect_equal(round(pTSS(1,0.5,10,3,NULL,""), digits = 19), 1.983969e-13)
-    expect_equal(round(pTSS(1,0.5,1,3,NULL,""), digits = 7),0.5546446)
+    expect_equal(round(pTSS(1,0.5,10,300,NULL,""), digits = 5), 0.29071)
+    expect_equal(round(pTSS(1,0.5,10,3,NULL,""), digits = 18), 1.98397e-13)
+    expect_equal(round(pTSS(1,0.5,1,3,NULL,""), digits = 6),0.554645)
     expect_equal(round(pTSS(1,0.5,1,1,NULL,"",110), digits = 9),0.190891564)
     expect_equal(pTSS(10,0.5,10,300,NULL,""),1)
 
@@ -121,11 +121,11 @@ test_that("pTSS_gives_correct_return", {
 
   suppressWarnings({
     expect_equal(pTSS(1,0.9,1,10),0)
-    expect_equal(round(pTSS(1,0.8,1,10), digits = 218), 1.231069e-212)
-    expect_equal(round(pTSS(1,0.7,1,10), digits = 11), 0.00089094557)
-    expect_equal(round(pTSS(2,0.6,10,100),digits = 78), 7.343228e-72)
-    expect_equal(round(pTSS(2,0.5,10,100), digits = 8), 0.98935456)
-    expect_equal(round(pTSS(5,0.5,10,100), digits = 8), 0.9999999)
+    expect_equal(round(pTSS(1,0.8,1,10), digits = 216), 1.2311e-212)
+    expect_equal(round(pTSS(1,0.7,1,10), digits = 10), 0.0008909456)
+    expect_equal(round(pTSS(2,0.6,10,100),digits = 77), 7.34323e-72)
+    expect_equal(round(pTSS(2,0.5,10,100), digits = 7), 0.9893546)
+    expect_equal(round(pTSS(5,0.5,10,100), digits = 0), 1)
 
     expect_error(pTSS(1000.5, 1.5, 5, 0.01))
     expect_error(pTSS(0.5, 1.5, 5, 0.01))
@@ -143,8 +143,8 @@ test_that("charCTS_gives_correct_return", {
   suppressWarnings({
     expect_equal(charCTS(0,0.5,1,1.5,2,2.5,3), 1+0i)
     expect_equal(charCTS(20,1.5,200,150,300,2500,891),0+0i)
-    expect_equal(round(charCTS(2,1.5,200,150,300,2500,1), digits = 29),
-                 -1.511025e-23+3.727373e-23i)
+    expect_equal(round(charCTS(2,1.5,200,150,300,2500,1), digits = 27),
+                 -1.5110e-23+3.7274e-23i)
     expect_equal(charCTS(0.1,1,200,0.150,300,2500,1),NaN*(1+1i))
 
     expect_error(charCTS(0.1,0,1,2,3,25,1))
@@ -164,27 +164,27 @@ test_that("dCTS_FFT_gives_correct_return", {
 
   suppressWarnings({
     expect_equal(round(dCTS(2,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048),
-                       digits = 9), 0.212603614)
+                       digits = 7), 0.2126036)
     expect_equal(round(dCTS(3,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048),
-                       digits = 9), 0.072021175)
+                       digits = 7), 0.0720212)
     expect_equal(round(dCTS(-1,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048),
-                       digits = 9), 0.072019763)
+                       digits = 8), 0.07201976)
     expect_equal(round(dCTS(1.5,1.5,10,5,30,55,875,NULL,"FFT",-20,20,2048),
-                       digits = 10), 0.0016366661)
+                       digits = 3), 0.002)
     expect_equal(round(dCTS(1,1.9,10,5,30,55,875,NULL,"FFT",-20,20,2048),
-                       digits = 9), 0.033488379)
+                       digits = 8), 0.03348838)
     expect_equal(round(dCTS(1,0.9,10,5,30,55,875,NULL,"FFT",-20,20,2048),
-                       digits = 19), 1.229164e-13)
+                       digits = 17), 1.2292e-13)
     expect_equal(round(dCTS(1,0.9,10,5,30,55,2,NULL,"FFT",-20,20,2048),
-                       digits = 9), 0.127305888)
+                       digits = 5), 0.12731)
     expect_equal(round(dCTS(1,0.9,10,5,30,55,-2,NULL,"FFT",-20,20,2048),
-                       digits = 14), 3.4243484e-07)
+                       digits = 12), 3.42435e-07)
     expect_equal(round(dCTS(1,0.9,10,5,30,55,-2,NULL,"FFT",20,-20,2048),
-                       digits = 14), -3.4243486e-07)
+                       digits = 13), -3.424349e-07)
     expect_equal(round(dCTS(1,0.6,1,1,1,1,1,NULL,"FFT",-40,40,20),
                        digits = 8), 0.16621234)
     expect_equal(round(dCTS(1,0.6,1,1,1,1,1,NULL,"FFT",-20,20,2048),
-                       digits = 8), 0.36967385)
+                       digits = 6), 0.369674)
 
     expect_error(dCTS(1,2,10,5,30,55,875,NULL,"FFT",-20,20,2048))
     expect_error(dCTS(1,2.5,10,5,30,55,875,NULL,"FFT",-20,20,2048))
@@ -196,21 +196,21 @@ test_that("dCTS_with_Conv_gives_correct_return", {
 
   suppressWarnings({
     expect_equal(round(dCTS(3,0.6,1,1,1,1,1,NULL,"Conv"),
-                       digits = 9), 0.072016977)
+                       digits = 3), 0.072)
     expect_equal(round(dCTS(-1,0.6,1,1,1,1,1,NULL,"Conv"),
-                       digits = 9), 0.072016977)
+                       digits = 8), 0.07201698)
     expect_equal(dCTS(1.5,1.5,10,5,30,55,875,NULL,"Conv"),0)
     expect_equal(dCTS(1,1.9,10,5,30,55,875,NULL,"Conv"),0)
     expect_equal(round(dCTS(1,0.9,10,5,30,55,875,NULL,"Conv"),
-                       digits = 19), 1.229164e-13)
+                       digits = 17), 1.2292e-13)
     expect_equal(dCTS(1,0.9,10,5,30,55,2,NULL,"Conv"),0)
     expect_equal(dCTS(1,0.9,10,5,30,55,-2,NULL,"Conv"),0)
     expect_equal(dCTS(1,0.9,10,5,30,55,-2,NULL,"Conv"),0)
     expect_equal(round(dCTS(1,0.6,1,1,1,1,1,NULL,"Conv"),
-                      digits = 7), 0.3696891)
+                      digits = 6), 0.369689)
     expect_equal(dCTS(1,0.9,10,5,30,55,-2,NULL,"Conv"),0)
     expect_equal(round(dCTS(2,0.6,1,1,1,1,1,NULL,"Conv"),
-                       digits = 9), 0.212599476)
+                       digits = 7), 0.2125995)
 
     expect_error(dCTS(1,2,10,5,30,55,875,NULL,"Conv"))
     expect_error(dCTS(1,2.5,10,5,30,55,875,NULL,"Conv"))
@@ -222,15 +222,15 @@ test_that("pCTS_gives_correct_return", {
 
   suppressWarnings({
     expect_equal(round(pCTS(0.5,0.5,1,1,1,1,1),
-                       digits = 8), 0.31987004)
+                       digits = 4), 0.3199)
     expect_equal(round(pCTS(0.5,0.9,1,2,3,4,5),
-                       digits = 14), 2.00735491e-06)
+                       digits = 12), 2.007355e-06)
     expect_equal(round(pCTS(10,0.9,1,2,3,4,5),
-                       digits = 7) ,0.9999999)
+                       digits = 0) ,1)
     expect_equal(round(pCTS(0.001,0.9,1,2,3,4,5),
-                       digits = 14), 2.9389574e-07)
+                       digits = 9), 2.94e-07)
     expect_equal(round(pCTS(1,1.9,1,2,3,4,5),
-                       digits = 9), 0.213612546)
+                       digits = 3), 0.214)
 
     expect_error(pCTS(1,10,1,2,3,4,5))
     expect_error(pCTS(1,1,1,2,3,4,5))
@@ -256,15 +256,15 @@ test_that("qCTS_gives_correct_return", {
 
   suppressWarnings({
     expect_equal(round(qCTS(0.5,1.5,10,10,10,10,10),
-                       digits = 7), 9.9881757)
+                       digits = 6), 9.988176)
     expect_equal(round(qCTS(0.5,1.5,1,1,1,1,1),
-                       digits = 8), 0.99999507)
+                       digits = 7), 0.9999951)
     expect_equal(round(qCTS(0.9,1.5,1,1,1,1,1),
-                       digits = 7), 3.3867687)
+                       digits = 6), 3.386769)
     expect_equal(round(qCTS(0.9,1.5,1,1,1,1,100),
-                       digits = 6), 19.532134)
+                       digits = 4), 19.5321)
     expect_equal(round(qCTS(0.000001,1.5,1,1,1,1,1),
-                 digits = 6), -9.974504)
+                 digits = 4), -9.9745)
 
     expect_error(qCTS(1.9,1.5,1,1,1,1,1))
     expect_error(qCTS(0.1,1,1,1,1,1,1))
@@ -276,11 +276,11 @@ test_that("charNTS_gives_correct_return", {
 
   suppressWarnings({
     expect_equal(round(charNTS(3,0.9,1,2,3,4),
-                       digits = 39), -3.940241e-33+8.950986e-33i)
+                       digits = 38), -3.94024e-33+8.95099e-33i)
     expect_equal(round(charNTS(0.1,0.9,1,2,3,4),
-                       digits = 8), -0.46577973+0.7883892i)
+                       digits = 1), -0.5+0.8i)
     expect_equal(round(charNTS(0.1,0.9,10,20,30,40),
-                       digits = 8), 0.15545717+0.3745087i)
+                       digits = 1), 0.2+0.4i)
 
     expect_error(charNTS("a",2,1,2,3,4))
     expect_error(charNTS(0.1,1,1,2,3,4))
@@ -297,17 +297,17 @@ test_that("charNTS_gives_correct_return", {
 test_that("dNTS_gives_correct_return", {
 
   expect_equal(round(dNTS(1,0.8,1,1,1,1),
-                     digits = 10) ,0.0217459209)
+                     digits = 9) ,0.021745921)
   expect_equal(round(dNTS(1,0.6,5,20,50,50),
-                     digits = 13), 1.7251668e-06)
+                     digits = 12), 1.725167e-06)
   expect_equal(round(dNTS(1,0.6,45,20,50,50),
-                     digits = 9), 0.020578886)
+                     digits = 8), 0.02057889)
   expect_equal(round(dNTS(10,0.9,45,20,50,50),
-                     digits = 9), 0.024994392)
+                     digits = 8), 0.02499439)
   expect_equal(dNTS(0.5,0.5,20,20,20,20, a = -200, b= 200, nf = 4096),1e-18)
   expect_equal(dNTS(0.5,0.5,20,20,20,20, a = -2000, b = 2000, nf = 8192),1e-18)
   expect_equal(round(dNTS(0.5,0.5,20,20,20,20),
-                     digits = 10), 0.0093491166)
+                     digits = 8), 0.00934912)
 
   expect_error(dNTS(1,1.1,1,1,1,1))
   expect_error(dNTS(1,1.2,5,20,50,50))
@@ -323,25 +323,25 @@ test_that("pNTS_gives_correct_return", {
 
   expect_equal(pNTS(0.1,0.5,1,1,1,1),0.022218711)
   expect_equal(round(pNTS(0.1,0.5,1,1,1,1,NULL, -20, 20, 2^6),
-                     digits = 10), 0.0222188095)
+                     digits = 8), 0.02221881)
   expect_equal(round(pNTS(0.1,0.5,1,1,1,1,NULL, -20, 2, 2^6),
-                     digits = 10), 0.0222188095)
+                     digits = 8), 0.02221881)
   expect_equal(round(pNTS(0.1,0.5,1,1,1,1,NULL, -2, 2, 2^6),
-                     digits = 10), 0.0220860624)
+                     digits = 8), 0.02208606)
   expect_equal(round(pNTS(0.1,0.5,10,10,10,10,NULL, -2, 2, 2^6),
-                     digits = 9), 0.013690443)
+                     digits = 8), 0.01369044)
   expect_equal(round(pNTS(0.1,0.5,10,10,10,10),
-                     digits = 8), 0.84129619)
+                     digits = 7), 0.8412962)
   expect_equal(round(pNTS(2,0.5,10,10,10,10),
-                     digits = 8), 0.84767495)
+                     digits = 0), 1)
   expect_equal(round(pNTS(20,0.5,10,10,10,10),
-                     digits = 7), 0.9999999)
+                     digits = 0), 1)
   expect_equal(round(pNTS(0.0001,0.5,10,10,10,10),
-                     digits = 8), 0.84083891)
+                     digits = 7), 0.8408389)
   expect_equal(round(pNTS(0.0001,0.5,-1.5,10,10,10),
-                     digits = 9), 0.258380092)
+                     digits = 8), 0.25838009)
   expect_equal(round(pNTS(0.0001,0.5,-1.5,10,10,-10),
-                     digits = 7), 0.7416263)
+                     digits = 6), 0.741626)
 
   expect_error(pNTS(0.0001,1.5,10,10,10,10))
   expect_error(pNTS(0.0001,0.5,-1.5,-10,10,10))
@@ -371,13 +371,13 @@ test_that("rNTS_gives_correct_return", {
 
 test_that("qNTS_gives_correct_return", {
 
-  expect_equal(round(qNTS(0.1,0.5,1,1,1,1), digits = 8), 0.93829102)
+  expect_equal(round(qNTS(0.1,0.5,1,1,1,1), digits = 1), 0.9)
   expect_equal(qNTS(0.3,0.6,1,1,1,1), NA)
   expect_equal(qNTS(0.6,0.6,1,1,1,1),NA)
   expect_equal(round(qNTS(0.6,0.6,10,1,1,10),
                digits = 7), -7.1174734)
   expect_equal(round(qNTS(0.6,0.6,1,10,1,1),
-                     digits = 7), -9.8799707)
+                     digits = 2), -9.88)
 
   suppressWarnings({
     expect_error(qNTS(0.1,1.5,1,1,1,1))

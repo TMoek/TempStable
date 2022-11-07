@@ -41,7 +41,7 @@ stable distribution. See Kuechler & Tappe (2013) for details.
 }
 \details{
 \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
- individually OR provide \code{theta}.
+individually OR provide \code{theta}.
 \if{html}{
   \out{<div style="text-align: center">}\figure{charCTS.png}{options: style=
   "width:750px;max-width:75\%;"}\out{</div>}

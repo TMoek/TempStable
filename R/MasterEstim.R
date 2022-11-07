@@ -26,9 +26,9 @@
 #'   the moment conditions are evaluated. One can choose among 6 different
 #'   options. Depending on the option, further parameters have to be passed.
 #'   \describe{
-#'     \item{"equally":}{equally placed points in [min_t,max_t]. When provided,
-#'      user's \code{min_t} and \code{max_t} will be used (when
-#'      \code{Coinstrained == FALSE}).
+#'     \item{"equally":}{equally placed points in \code{min_t,max_t}. When
+#'     provided, user's \code{min_t} and \code{max_t} will be used (when
+#'     \code{Coinstrained == FALSE}).
 #'     }
 #'     \item{"NonOptAr":}{non optimal arithmetic placement.
 #'     }
@@ -297,7 +297,25 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
     OutputObj@method <- res$method
     if (ComputeCov) {
         OutputObj@vcov <- EstimFcts$CovarianceMat(data = OutputObj@data,
-                                                  EstimObj = res, ...)
+                                                  EstimObj = res,
+                                                  eps = eps,
+                                                  algo = algo,
+                                                  regularization =
+                                                    regularization,
+                                                  WeightingMatrix =
+                                                    WeightingMatrix,
+                                                  t_scheme = t_scheme,
+                                                  alphaReg = alphaReg,
+                                                  t_free = t_free,
+                                                  subdivisions = subdivisions,
+                                                  IntegrationMethod =
+                                                    IntegrationMethod,
+                                                  randomIntegrationLaw =
+                                                    randomIntegrationLaw,
+                                                  s_min = s_min,
+                                                  s_max = s_max,
+                                                  ncond = ncond,
+                                                  ...)
         OutputObj@confint <- AsymptoticConfidenceInterval(
           thetaEst = OutputObj@par, n_sample = OutputObj@sampleSize,
           Cov = OutputObj@vcov, qLaw = stats::qnorm, type = type, ...)
