@@ -237,7 +237,24 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     indexStatOutput <- 1
 
     CheckPointValues <- readCheckPoint(ParameterMatrix, TemperedType, Estimfct,
-                                       nab, npar, lS, MCparam, ...)
+                                       nab, npar, lS, MCparam,
+                                       eps = eps,
+                                       algo = algo,
+                                       regularization = regularization,
+                                       WeightingMatrix =
+                                         WeightingMatrix,
+                                       t_scheme = t_scheme,
+                                       alphaReg = alphaReg,
+                                       t_free = t_free,
+                                       subdivisions = subdivisions,
+                                       IntegrationMethod =
+                                         IntegrationMethod,
+                                       randomIntegrationLaw =
+                                         randomIntegrationLaw,
+                                       s_min = s_min,
+                                       s_max = s_max,
+                                       ncond = ncond,
+                                       ...)
     updatedCheckPointValues <- updateCheckPointValues(CheckPointValues, MCparam,
                                                       lS, nab)
 
@@ -295,7 +312,23 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                                npar = npar, ParameterMatrix,
                                                CheckPointValues =
                                                  updatedCheckPointValues,
-                                               saveOutput = saveOutput, eps,
+                                               saveOutput = saveOutput,
+                                               eps = eps,
+                                               algo = algo,
+                                               regularization = regularization,
+                                               WeightingMatrix =
+                                                 WeightingMatrix,
+                                               t_scheme = t_scheme,
+                                               alphaReg = alphaReg,
+                                               t_free = t_free,
+                                               subdivisions = subdivisions,
+                                               IntegrationMethod =
+                                                 IntegrationMethod,
+                                               randomIntegrationLaw =
+                                                 randomIntegrationLaw,
+                                               s_min = s_min,
+                                               s_max = s_max,
+                                               ncond = ncond,
                                                ...)
 
         OutputCollection <- EstimOutput
@@ -307,7 +340,24 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     }
 
     deleteCheckPoint(ParameterMatrix, TemperedType, Estimfct, nab, npar, lS,
-                     MCparam, ...)
+                     MCparam,
+                     eps = eps,
+                     algo = algo,
+                     regularization = regularization,
+                     WeightingMatrix =
+                       WeightingMatrix,
+                     t_scheme = t_scheme,
+                     alphaReg = alphaReg,
+                     t_free = t_free,
+                     subdivisions = subdivisions,
+                     IntegrationMethod =
+                       IntegrationMethod,
+                     randomIntegrationLaw =
+                       randomIntegrationLaw,
+                     s_min = s_min,
+                     s_max = s_max,
+                     ncond = ncond,
+                     ...)
 
     if (saveOutput == FALSE){
       return(returnList)
@@ -335,7 +385,10 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                     TemperedType, Estimfct, HandleError,
                                     ab_current, nab, npar, ParameterMatrix,
                                     CheckPointValues = NULL, saveOutput, eps,
-                                    ...) {
+                                    algo, regularization, WeightingMatrix,
+                                    t_scheme, alphaReg, t_free, subdivisions,
+                                    IntegrationMethod, randomIntegrationLaw,
+                                    s_min, s_max, ncond, ...) {
 
     if (TemperedType == "Classic") {
         Ncol <- 16
@@ -406,7 +459,22 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                    size = size, Ncol = Ncol,
                                    TemperedType = TemperedType,
                                    Estimfct = Estimfct,
-                                   HandleError = HandleError, eps, ...)
+                                   HandleError = HandleError, eps = eps,
+                                   algo = algo, regularization = regularization,
+                                   WeightingMatrix =
+                                     WeightingMatrix,
+                                   t_scheme = t_scheme,
+                                   alphaReg = alphaReg,
+                                   t_free = t_free,
+                                   subdivisions = subdivisions,
+                                   IntegrationMethod =
+                                     IntegrationMethod,
+                                   randomIntegrationLaw =
+                                     randomIntegrationLaw,
+                                   s_min = s_min,
+                                   s_max = s_max,
+                                   ncond = ncond,
+                                   ...)
 
         Output[iter, ] <- Estim$outputMat
         file <- Estim$file
@@ -414,7 +482,21 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         if (!is.null(CheckPointValues)) {
           writeCheckPoint(ParameterMatrix, TemperedType, Estimfct, ab_current,
                           nab, npar, sample, nSS, mc,
-                          MCparam, ...)
+                          MCparam,
+                          eps,
+                          algo,
+                          regularization,
+                          WeightingMatrix,
+                          t_scheme,
+                          alphaReg,
+                          t_free,
+                          subdivisions,
+                          IntegrationMethod,
+                          randomIntegrationLaw,
+                          s_min,
+                          s_max,
+                          ncond,
+                          ...)
         }
 
         if (saveOutput) updateOutputFile(thetaT, MCparam, TemperedType,
@@ -671,11 +753,58 @@ initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
 # No export.
 Estim_Des_Temp <- function(TemperedType = c("Classic", "Subordinator",
                                             "Normal"),
-                           EstimMethod = c("ML", "GMM", "Cgmm", "GMC"), ...) {
+                           EstimMethod = c("ML", "GMM", "Cgmm", "GMC"),
+                           eps,
+                           algo,
+                           regularization,
+                           WeightingMatrix,
+                           t_scheme,
+                           alphaReg,
+                           t_free,
+                           subdivisions,
+                           IntegrationMethod,
+                           randomIntegrationLaw,
+                           s_min,
+                           s_max,
+                           ncond,
+                           ...) {
     TemperedType <- match.arg(TemperedType)
     EstimMethod <- match.arg(EstimMethod)
-    EstimFcts <- getTempEstimFcts(TemperedType, EstimMethod)
-    EstimFcts$methodDes(...)
+    EstimFcts <- getTempEstimFcts(TemperedType, EstimMethod,
+                                  eps = eps,
+                                  algo = algo,
+                                  regularization = regularization,
+                                  WeightingMatrix =
+                                    WeightingMatrix,
+                                  t_scheme = t_scheme,
+                                  alphaReg = alphaReg,
+                                  t_free = t_free,
+                                  subdivisions = subdivisions,
+                                  IntegrationMethod =
+                                    IntegrationMethod,
+                                  randomIntegrationLaw =
+                                    randomIntegrationLaw,
+                                  s_min = s_min,
+                                  s_max = s_max,
+                                  ncond = ncond,
+                                  ...)
+    EstimFcts$methodDes(eps = eps,
+                        algo = algo,
+                        regularization = regularization,
+                        WeightingMatrix =
+                          WeightingMatrix,
+                        t_scheme = t_scheme,
+                        alphaReg = alphaReg,
+                        t_free = t_free,
+                        subdivisions = subdivisions,
+                        IntegrationMethod =
+                          IntegrationMethod,
+                        randomIntegrationLaw =
+                          randomIntegrationLaw,
+                        s_min = s_min,
+                        s_max = s_max,
+                        ncond = ncond,
+                        ...)
 }
 
 ##### for Checkpoints#####
@@ -683,8 +812,39 @@ Estim_Des_Temp <- function(TemperedType = c("Classic", "Subordinator",
 
 # No export.
 readCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
-                           nSS, MCparam, ...) {
-    method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
+                           nSS, MCparam,
+                           eps,
+                           algo,
+                           regularization,
+                           WeightingMatrix,
+                           t_scheme,
+                           alphaReg,
+                           t_free,
+                           subdivisions,
+                           IntegrationMethod,
+                           randomIntegrationLaw,
+                           s_min,
+                           s_max,
+                           ncond,
+                           ...) {
+    method <- Estim_Des_Temp(TemperedType, Estimfct,
+                             eps = eps,
+                             algo = algo,
+                             regularization = regularization,
+                             WeightingMatrix =
+                               WeightingMatrix,
+                             t_scheme = t_scheme,
+                             alphaReg = alphaReg,
+                             t_free = t_free,
+                             subdivisions = subdivisions,
+                             IntegrationMethod =
+                               IntegrationMethod,
+                             randomIntegrationLaw =
+                               randomIntegrationLaw,
+                             s_min = s_min,
+                             s_max = s_max,
+                             ncond = ncond,
+                             ...)
     fileName <- get_filename_checkPoint_Temp(ParameterMatrix, nab, npar,
                                              MCparam, method)
     if (!file.exists(fileName)) {
@@ -779,8 +939,39 @@ updateCheckPointValues <- function(CheckPointValues, MCparam, lS, nab) {
 
 # No export.
 deleteCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
-                             nSS, MCparam, ...) {
-    method <- Estim_Des_Temp(TemperedType, Estimfct, ...)
+                             nSS, MCparam,
+                             eps,
+                             algo,
+                             regularization,
+                             WeightingMatrix,
+                             t_scheme,
+                             alphaReg,
+                             t_free,
+                             subdivisions,
+                             IntegrationMethod,
+                             randomIntegrationLaw,
+                             s_min,
+                             s_max,
+                             ncond,
+                             ...) {
+    method <- Estim_Des_Temp(TemperedType, Estimfct,
+                             eps = eps,
+                             algo = algo,
+                             regularization = regularization,
+                             WeightingMatrix =
+                               WeightingMatrix,
+                             t_scheme = t_scheme,
+                             alphaReg = alphaReg,
+                             t_free = t_free,
+                             subdivisions = subdivisions,
+                             IntegrationMethod =
+                               IntegrationMethod,
+                             randomIntegrationLaw =
+                               randomIntegrationLaw,
+                             s_min = s_min,
+                             s_max = s_max,
+                             ncond = ncond,
+                             ...)
     fileName <- get_filename_checkPoint_Temp(ParameterMatrix, nab, npar,
                                              MCparam, method)
     unlink(x = fileName, force = TRUE)

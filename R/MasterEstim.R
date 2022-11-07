@@ -226,10 +226,44 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
     # }
     type <- match.arg(TemperedType)
     method <- match.arg(EstimMethod)
-    EstimFcts <- getTempEstimFcts(type, method)
+    EstimFcts <- getTempEstimFcts(type, method,
+                                  eps = eps,
+                                  algo = algo,
+                                  regularization = regularization,
+                                  WeightingMatrix =
+                                    WeightingMatrix,
+                                  t_scheme = t_scheme,
+                                  alphaReg = alphaReg,
+                                  t_free = t_free,
+                                  subdivisions = subdivisions,
+                                  IntegrationMethod =
+                                    IntegrationMethod,
+                                  randomIntegrationLaw =
+                                    randomIntegrationLaw,
+                                  s_min = s_min,
+                                  s_max = s_max,
+                                  ncond = ncond,
+                                  ...)
     res <- .initResTemp(type, method)
     if (HandleError) {
-        tr <- tryCatch(EstimFcts$Params(x = data, theta0 = theta0, ...),
+        tr <- tryCatch(EstimFcts$Params(x = data, theta0 = theta0,
+                                        eps = eps,
+                                        algo = algo,
+                                        regularization = regularization,
+                                        WeightingMatrix =
+                                          WeightingMatrix,
+                                        t_scheme = t_scheme,
+                                        alphaReg = alphaReg,
+                                        t_free = t_free,
+                                        subdivisions = subdivisions,
+                                        IntegrationMethod =
+                                          IntegrationMethod,
+                                        randomIntegrationLaw =
+                                          randomIntegrationLaw,
+                                        s_min = s_min,
+                                        s_max = s_max,
+                                        ncond = ncond,
+                                        ...),
                        error = function(e) e)
         err <- inherits(tr, "error")
         if (!err) {
@@ -237,7 +271,24 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
             OutputObj@failure <- 0
         }
     } else {
-        res <- EstimFcts$Params(x = data, theta0 = theta0, ...)
+        res <- EstimFcts$Params(x = data, theta0 = theta0,
+                                eps = eps,
+                                algo = algo,
+                                regularization = regularization,
+                                WeightingMatrix =
+                                  WeightingMatrix,
+                                t_scheme = t_scheme,
+                                alphaReg = alphaReg,
+                                t_free = t_free,
+                                subdivisions = subdivisions,
+                                IntegrationMethod =
+                                  IntegrationMethod,
+                                randomIntegrationLaw =
+                                  randomIntegrationLaw,
+                                s_min = s_min,
+                                s_max = s_max,
+                                ncond = ncond,
+                                ...)
         OutputObj@failure <- 0
     }
     OutputObj@par <- NameParamsObjectsTemp(res$Estim$par, type)
@@ -342,7 +393,21 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
 # No export.
 getTempEstimFcts <- function(
     type = c("Classic", "Subordinator", "Normal"),
-    method = c("ML", "GMM", "Cgmm", "GMC")) {
+    method = c("ML", "GMM", "Cgmm", "GMC"),
+    eps,
+    algo,
+    regularization,
+    WeightingMatrix,
+    t_scheme,
+    alphaReg,
+    t_free,
+    subdivisions,
+    IntegrationMethod,
+    randomIntegrationLaw,
+    s_min,
+    s_max,
+    ncond,
+    ...){
     if (type == "Classic") {
         Output <- switch(method, ML = {
             list(Params = MLParametersEstim_CTS,
