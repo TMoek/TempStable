@@ -53,15 +53,20 @@ As \code{x} is a numeric vector, the return value is also a numeric
 vector of densities.
 }
 \description{
-The probability density function (PDF) of the classical tempered stable distributions is
-not available in closed form.
-Relies on fast Fourier transform (FFT) applied to the characteristic function.
+The probability density function (PDF) of the classical tempered stable
+distributions is not available in closed form.
+Relies on fast Fourier transform (FFT) applied to the characteristic
+function.
 }
 \details{
-\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
-individually OR provide \code{theta}.
-Methods include the FFT or alternatively by convolving two totally positively skewed
-tempered stable distributions, see Massing (2022).
+\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
+lambdap, lambdam, mu)}. Either provide the parameters individually OR
+provide \code{theta}. Methods include the FFT or alternatively by convolving
+two totally positively skewed tempered stable distributions, see Massing
+(2022).
+
+The "FFT" method is automatically selected for Mac users, as the "Conv"
+method causes problems.
 }
 \examples{
 x <- seq(0,15,0.25)

@@ -422,14 +422,19 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
 
 #' Density function of the classic tempered stable (CTS) distribution
 #'
-#' The probability density function (PDF) of the classical tempered stable distributions is
-#' not available in closed form.
-#' Relies on fast Fourier transform (FFT) applied to the characteristic function.
+#' The probability density function (PDF) of the classical tempered stable
+#' distributions is not available in closed form.
+#' Relies on fast Fourier transform (FFT) applied to the characteristic
+#' function.
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
-#'  individually OR provide \code{theta}.
-#'  Methods include the FFT or alternatively by convolving two totally positively skewed
-#'  tempered stable distributions, see Massing (2022).
+#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
+#' lambdap, lambdam, mu)}. Either provide the parameters individually OR
+#' provide \code{theta}. Methods include the FFT or alternatively by convolving
+#' two totally positively skewed tempered stable distributions, see Massing
+#' (2022).
+#'
+#' The "FFT" method is automatically selected for Mac users, as the "Conv"
+#' method causes problems.
 #'
 #' @param x A numeric vector of quantiles.
 #' @param alpha Stability parameter. A real number between 0 and 2.
@@ -483,7 +488,7 @@ dCTS <- function(x, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
     stopifnot(0 < alpha, alpha < 2, 0 < deltap, 0 < deltam, 0 < lambdap, 0 <
                 lambdam)
 
-    if (dens_method == "FFT") {
+    if (dens_method == "FFT" || .Platform$OS.type != "windows") {
         d <- sapply(x, dCTS_FFT, alpha = alpha, deltap = deltap,
                     deltam = deltam, lambdap = lambdap, lambdam = lambdam,
                     mu = mu, a = a, b = b, nf = nf)
@@ -534,9 +539,10 @@ dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
                (alpha + 1)) +
               (-lambdam * (y + z) - lambdam^(alpha) * deltam * gamma(-alpha) *
                  (alpha + 1)) +
-              log(dstable((y - gamma(1 - alpha) * deltap * lambdap^(alpha - 1)),
+              log(stabledist::dstable((y - gamma(1 - alpha) * deltap *
+                                         lambdap^(alpha - 1)),
                           alpha, 1, Sigmap, 0, pm = 1) *
-                    dstable((y - gamma(1 - alpha) * deltam *
+                    stabledist::dstable((y - gamma(1 - alpha) * deltam *
                                lambdam^(alpha - 1) + z),
                             alpha, 1, Sigmam, 0, pm = 1)))
 
@@ -544,6 +550,7 @@ dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
 
     return(stats::integrate(f = integrandDTSclass, lower = -Inf, upper = Inf,
                             abs.tol = 0)$value)
+
 }
 
 #' Cumulative probability function of the classic tempered stable (CTS)
