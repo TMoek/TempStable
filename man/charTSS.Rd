@@ -25,15 +25,12 @@ Theoretical characteristic function (CF) of the distribution of the tempered
 stable subordinator. See Kawai & Masuda (2011) for details.
 }
 \details{
-\code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
-\code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
-\if{html}{
-  \out{<div style="text-align: center">}\figure{charTTS.png}{options: style=
-  "width:750px;max-width:75\%;"}\out{</div>}
-}
-\if{latex}{
-  \out{\begin{center}}\figure{charTTS.png}\out{\end{center}}
-}
+\code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}.
+Either provide the parameters \code{alpha}, \code{delta}, \code{lambda}
+individually OR provide \code{theta}.
+\deqn{\varphi_{TSS}(t;\theta):=E_{\theta}\left[
+\mathrm{e}^{\mathrm{i}tY}\right]= \exp\left(\delta\Gamma(-\alpha)
+\left((\lambda-\mathrm{i}t)^{\alpha}-\lambda^{\alpha}\right)\right)}
 }
 \examples{
 x <- seq(-10,10,0.25)

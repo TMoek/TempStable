@@ -49,10 +49,12 @@ vector of quantiles.
 The quantile function of the classic tempered stable (CTS).
 }
 \details{
-\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
-individually OR provide \code{theta}.
-The function searches for a root between \code{qmin} and \code{qmax} with \code{uniroot}.
-Boundaries can either be supplied by the user or a built-in approach using the stable distribution is used.
+\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
+lambdap, lambdam, mu)}. Either provide the parameters individually OR
+provide \code{theta}.
+The function searches for a root between \code{qmin} and \code{qmax} with
+\code{uniroot}. Boundaries can either be supplied by the user or a built-in
+approach using the stable distribution is used.
 }
 \examples{
 \donttest{

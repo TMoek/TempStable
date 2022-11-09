@@ -41,10 +41,12 @@ The quantile function of the tempered stable
 subordinator distribution.
 }
 \details{
-\code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
-\code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
-The function searches for a root between \code{qmin} and \code{qmax} with \code{uniroot}.
-Boundaries can either be supplied by the user or a built-in approach using the stable distribution is used.
+\code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}.
+Either provide the parameters \code{alpha}, \code{delta}, \code{lambda}
+individually OR provide \code{theta}. The function searches for a root
+between \code{qmin} and \code{qmax} with \code{uniroot}. Boundaries can
+either be supplied by the user or a built-in approach using the stable
+distribution is used.
 }
 \examples{
 qTSS(0.5,0.5,5,0.01)

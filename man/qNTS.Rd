@@ -46,10 +46,12 @@ vector of quantiles.
 The quantile function of the normal tempered stable (CTS).
 }
 \details{
-\code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
-individually OR provide \code{theta}.
-The function searches for a root between \code{qmin} and \code{qmax} with \code{uniroot}.
-Boundaries can either be supplied by the user or a built-in approach using the stable distribution is used.
+\code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda,
+mu)}. Either provide the parameters individually OR provide \code{theta}.
+The function searches for a root between \code{qmin} and \code{qmax} with
+\code{uniroot}.
+Boundaries can either be supplied by the user or a built-in approach using
+the stable distribution is used.
 }
 \examples{
 qNTS(0.1,0.5,1,1,1,1)

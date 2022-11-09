@@ -7,15 +7,13 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' Theoretical characteristic function (CF) of the distribution of the tempered
 #' stable subordinator. See Kawai & Masuda (2011) for details.
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
-#' \code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
-#' \if{html}{
-#'   \out{<div style="text-align: center">}\figure{charTTS.png}{options: style=
-#'   "width:750px;max-width:75\%;"}\out{</div>}
-#' }
-#' \if{latex}{
-#'   \out{\begin{center}}\figure{charTTS.png}\out{\end{center}}
-#' }
+#' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}.
+#' Either provide the parameters \code{alpha}, \code{delta}, \code{lambda}
+#' individually OR provide \code{theta}.
+#' \deqn{\varphi_{TSS}(t;\theta):=E_{\theta}\left[
+#' \mathrm{e}^{\mathrm{i}tY}\right]= \exp\left(\delta\Gamma(-\alpha)
+#' \left((\lambda-\mathrm{i}t)^{\alpha}-\lambda^{\alpha}\right)\right)}
+#'
 #'
 #' @param t A vector of real numbers where the CF is evaluated.
 #' @param alpha Stability parameter. A real number between 0 and 1.
@@ -285,10 +283,12 @@ rTSS_SR1 <- function(alpha, delta, lambda, k) {
 #' The quantile function of the tempered stable
 #' subordinator distribution.
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
-#' \code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
-#' The function searches for a root between \code{qmin} and \code{qmax} with \code{uniroot}.
-#' Boundaries can either be supplied by the user or a built-in approach using the stable distribution is used.
+#' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}.
+#' Either provide the parameters \code{alpha}, \code{delta}, \code{lambda}
+#' individually OR provide \code{theta}. The function searches for a root
+#' between \code{qmin} and \code{qmax} with \code{uniroot}. Boundaries can
+#' either be supplied by the user or a built-in approach using the stable
+#' distribution is used.
 #'
 #' @param p A numeric vector of probabilities. Each probability must be a real
 #' number >0 and <1.
@@ -357,15 +357,18 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' Theoretical characteristic function (CF) of the classical tempered
 #' stable distribution. See Kuechler & Tappe (2013) for details.
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
-#'  individually OR provide \code{theta}.
-#' \if{html}{
-#'   \out{<div style="text-align: center">}\figure{charCTS.png}{options: style=
-#'   "width:750px;max-width:75\%;"}\out{</div>}
-#' }
-#' \if{latex}{
-#'   \out{\begin{center}}\figure{charCTS.png}\out{\end{center}}
-#' }
+#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
+#' lambdap, lambdam, mu)}. Either provide the parameters individually OR
+#' provide \code{theta}.
+#' \deqn{\varphi_{CTS}(t;\theta):=
+#' E_{\theta}\left[
+#' \mathrm{e}^{\mathrm{i}tX}\right]=
+#' \exp\left(\mathrm{i}t\mu+\delta_+\Gamma(-\alpha)
+#' \left((\lambda_+-\mathrm{i}t)^{\alpha}-\lambda_+^{\alpha}+
+#' \mathrm{i}t\alpha\lambda_+^{\alpha-1}\right)+\delta_-\Gamma(-\alpha)
+#' \left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-\mathrm{i}t\alpha
+#' \lambda_-^{\alpha-1}\right)
+#' \right)}
 #'
 #'
 #' @param t A vector of real numbers where the CF is evaluated.
@@ -556,10 +559,12 @@ dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
 #' Cumulative probability function of the classic tempered stable (CTS)
 #' distribution
 #'
-#' The cumulative probability distribution function (CDF) of the classic tempered stable distribution.
+#' The cumulative probability distribution function (CDF) of the classic
+#' tempered stable distribution.
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
-#' individually OR provide \code{theta}.
+#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
+#' lambdap, lambdam, mu)}. Either provide the parameters individually OR
+#' provide \code{theta}.
 #' The function integrates the PDF numerically with \code{integrate()}.
 #'
 #' @param q A numeric vector of quantiles.
@@ -635,10 +640,12 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' Generates \code{n} random numbers distributed according to the classic
 #' tempered stable (CTS) distribution.
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
-#'  individually OR provide \code{theta}.
-#' "aAR" stands for the approximate Acceptance-Rejection Method and "SR" for a truncated
-#' infinite shot noise series representation. "aAR" is the standard method used.
+#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
+#' lambdap, lambdam, mu)}. Either provide the parameters individually OR
+#' provide \code{theta}.
+#' "aAR" stands for the approximate Acceptance-Rejection Method and "SR" for a
+#' truncated infinite shot noise series representation. "aAR" is the standard
+#' method used.
 #' For more details, see references.
 #'
 #' @param n sample size (integer).
@@ -652,7 +659,8 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @param method A String. Either "aAR" or "SR".
 #' @param k integer: the level of truncation, if \code{method == "SR"}. 10000
 #' by default.
-#' @param c A real number. Only relevant for \code{method == "aAR"}. 1 by default.
+#' @param c A real number. Only relevant for \code{method == "aAR"}.
+#' 1 by default.
 #'
 #' @return Generates \code{n} random numbers.
 #'
@@ -776,10 +784,12 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
 #'
 #' The quantile function of the classic tempered stable (CTS).
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
-#'  individually OR provide \code{theta}.
-#' The function searches for a root between \code{qmin} and \code{qmax} with \code{uniroot}.
-#' Boundaries can either be supplied by the user or a built-in approach using the stable distribution is used.
+#' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
+#' lambdap, lambdam, mu)}. Either provide the parameters individually OR
+#' provide \code{theta}.
+#' The function searches for a root between \code{qmin} and \code{qmax} with
+#' \code{uniroot}. Boundaries can either be supplied by the user or a built-in
+#' approach using the stable distribution is used.
 #'
 #' @param p A numeric vector of probabilities. Each probability must be a real
 #' number >0 and <1.
@@ -860,8 +870,8 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' stable distribution.
 #' See Rachev et al. (2011) for details.
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
-#'  individually OR provide \code{theta}.
+#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda,
+#' mu)}. Either provide the parameters individually OR provide \code{theta}.
 #' \deqn{\varphi_{NTS}(t;\theta)=E\left[\mathrm{e}^{\mathrm{i}tZ}\right]= \exp
 #' \left(\mathrm{i}t\mu+\delta\Gamma(-\alpha)\left((\lambda-\mathrm{i}t
 #' \beta+t^2/2)^{\alpha}-\lambda^{\alpha}\right)\right)
@@ -915,13 +925,14 @@ charNTS <- function(t, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 
 #' Density function of the normal tempered stable (NTS) distribution
 #'
-#' The probability density function (PDF) of the normal tempered stable distributions is
-#' not available in closed form.
-#' Relies on fast Fourier transform (FFT) applied to the characteristic function.
+#' The probability density function (PDF) of the normal tempered stable
+#' distributions is not available in closed form.
+#' Relies on fast Fourier transform (FFT) applied to the characteristic
+#' function.
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
-#'  individually OR provide \code{theta}.
-#'  Currently, the only method is FFT.
+#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda,
+#' mu)}. Either provide the parameters individually OR provide \code{theta}.
+#' Currently, the only method is FFT.
 #'
 #' @param x A numeric vector of quantile.
 #' @param alpha A real number between 0 and 1.
@@ -1000,10 +1011,11 @@ dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
 #' Cumulative probability function of the normal tempered stable (NTS)
 #' distribution
 #'
-#' The cumulative probability distribution function (CDF) of the normal tempered stable distribution.
+#' The cumulative probability distribution function (CDF) of the normal
+#' tempered stable distribution.
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
-#'  individually OR provide \code{theta}.
+#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda,
+#' mu)}. Either provide the parameters individually OR provide \code{theta}.
 #' The function integrates the PDF numerically with \code{integrate()}.
 #'
 #' @param q A numeric vector of quantile.
@@ -1073,12 +1085,13 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' Generates \code{n} random numbers distributed according
 #' of the normal tempered stable distribution.
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
-#'  individually OR provide \code{theta}.
-#' Works by a normal variance-mean mixture with a TSS distribution. Method parameter is for the method of
-#' simulating the TSS random variable, see the [rTSS()] function.
-#' "AR" stands for the Acceptance-Rejection Method and "SR" for a truncated infinite shot
-#' noise series representation. "AR" is the standard method used.
+#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda,
+#' mu)}. Either provide the parameters individually OR provide \code{theta}.
+#' Works by a normal variance-mean mixture with a TSS distribution. Method
+#' parameter is for the method of simulating the TSS random variable, see the
+#' [rTSS()] function.
+#' "AR" stands for the Acceptance-Rejection Method and "SR" for a truncated
+#' infinite shot noise series representation. "AR" is the standard method used.
 #'
 #' For more details, see references.
 #'
@@ -1158,10 +1171,12 @@ rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
 #'
 #' The quantile function of the normal tempered stable (CTS).
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
-#'  individually OR provide \code{theta}.
-#' The function searches for a root between \code{qmin} and \code{qmax} with \code{uniroot}.
-#' Boundaries can either be supplied by the user or a built-in approach using the stable distribution is used.
+#' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda,
+#' mu)}. Either provide the parameters individually OR provide \code{theta}.
+#' The function searches for a root between \code{qmin} and \code{qmax} with
+#' \code{uniroot}.
+#' Boundaries can either be supplied by the user or a built-in approach using
+#' the stable distribution is used.
 #'
 #' @param p A numeric vector of probabilities. Each probability must be a real
 #' number >0 and <1.

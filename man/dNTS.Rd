@@ -50,13 +50,14 @@ As \code{x} is a numeric vector, the return value is also a numeric
 vector of densities.
 }
 \description{
-The probability density function (PDF) of the normal tempered stable distributions is
-not available in closed form.
-Relies on fast Fourier transform (FFT) applied to the characteristic function.
+The probability density function (PDF) of the normal tempered stable
+distributions is not available in closed form.
+Relies on fast Fourier transform (FFT) applied to the characteristic
+function.
 }
 \details{
-\code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
-individually OR provide \code{theta}.
+\code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda,
+mu)}. Either provide the parameters individually OR provide \code{theta}.
 Currently, the only method is FFT.
 }
 \examples{

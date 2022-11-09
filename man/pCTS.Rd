@@ -53,11 +53,13 @@ As \code{q} is a numeric vector, the return value is also a numeric
 vector of probabilities.
 }
 \description{
-The cumulative probability distribution function (CDF) of the classic tempered stable distribution.
+The cumulative probability distribution function (CDF) of the classic
+tempered stable distribution.
 }
 \details{
-\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
-individually OR provide \code{theta}.
+\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
+lambdap, lambdam, mu)}. Either provide the parameters individually OR
+provide \code{theta}.
 The function integrates the PDF numerically with \code{integrate()}.
 }
 \examples{

@@ -38,8 +38,8 @@ stable distribution.
 See Rachev et al. (2011) for details.
 }
 \details{
-\code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
-individually OR provide \code{theta}.
+\code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda,
+mu)}. Either provide the parameters individually OR provide \code{theta}.
 \deqn{\varphi_{NTS}(t;\theta)=E\left[\mathrm{e}^{\mathrm{i}tZ}\right]= \exp
 \left(\mathrm{i}t\mu+\delta\Gamma(-\alpha)\left((\lambda-\mathrm{i}t
 \beta+t^2/2)^{\alpha}-\lambda^{\alpha}\right)\right)

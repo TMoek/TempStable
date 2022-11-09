@@ -54,9 +54,9 @@
 #'   the moment conditions are evaluated. One can choose among 6 different
 #'   options. Depending on the option, further parameters have to be passed.
 #'   \describe{
-#'     \item{"equally":}{equally placed points in \code{min_t,max_t}. When provided,
-#'      user's \code{min_t} and \code{max_t} will be used (when
-#'      \code{Coinstrained == FALSE}).
+#'     \item{"equally":}{equally placed points in \code{min_t,max_t}. When
+#'     provided, user's \code{min_t} and \code{max_t} will be used (when
+#'     \code{Coinstrained == FALSE}).
 #'     }
 #'     \item{"NonOptAr":}{non optimal arithmetic placement.
 #'     }

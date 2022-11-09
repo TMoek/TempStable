@@ -44,12 +44,13 @@ Generates \code{n} random numbers distributed according
 of the normal tempered stable distribution.
 }
 \details{
-\code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda, mu)}. Either provide the parameters
-individually OR provide \code{theta}.
-Works by a normal variance-mean mixture with a TSS distribution. Method parameter is for the method of
-simulating the TSS random variable, see the \code{\link[=rTSS]{rTSS()}} function.
-"AR" stands for the Acceptance-Rejection Method and "SR" for a truncated infinite shot
-noise series representation. "AR" is the standard method used.
+\code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda,
+mu)}. Either provide the parameters individually OR provide \code{theta}.
+Works by a normal variance-mean mixture with a TSS distribution. Method
+parameter is for the method of simulating the TSS random variable, see the
+\code{\link[=rTSS]{rTSS()}} function.
+"AR" stands for the Acceptance-Rejection Method and "SR" for a truncated
+infinite shot noise series representation. "AR" is the standard method used.
 
 For more details, see references.
 }

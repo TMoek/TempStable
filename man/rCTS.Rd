@@ -40,7 +40,8 @@ rCTS(
 \item{k}{integer: the level of truncation, if \code{method == "SR"}. 10000
 by default.}
 
-\item{c}{A real number. Only relevant for \code{method == "aAR"}. 1 by default.}
+\item{c}{A real number. Only relevant for \code{method == "aAR"}.
+1 by default.}
 }
 \value{
 Generates \code{n} random numbers.
@@ -50,10 +51,12 @@ Generates \code{n} random numbers distributed according to the classic
 tempered stable (CTS) distribution.
 }
 \details{
-\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
-individually OR provide \code{theta}.
-"aAR" stands for the approximate Acceptance-Rejection Method and "SR" for a truncated
-infinite shot noise series representation. "aAR" is the standard method used.
+\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
+lambdap, lambdam, mu)}. Either provide the parameters individually OR
+provide \code{theta}.
+"aAR" stands for the approximate Acceptance-Rejection Method and "SR" for a
+truncated infinite shot noise series representation. "aAR" is the standard
+method used.
 For more details, see references.
 }
 \examples{

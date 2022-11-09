@@ -40,15 +40,18 @@ Theoretical characteristic function (CF) of the classical tempered
 stable distribution. See Kuechler & Tappe (2013) for details.
 }
 \details{
-\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam, lambdap, lambdam, mu)}. Either provide the parameters
-individually OR provide \code{theta}.
-\if{html}{
-  \out{<div style="text-align: center">}\figure{charCTS.png}{options: style=
-  "width:750px;max-width:75\%;"}\out{</div>}
-}
-\if{latex}{
-  \out{\begin{center}}\figure{charCTS.png}\out{\end{center}}
-}
+\code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
+lambdap, lambdam, mu)}. Either provide the parameters individually OR
+provide \code{theta}.
+\deqn{\varphi_{CTS}(t;\theta):=
+E_{\theta}\left[
+\mathrm{e}^{\mathrm{i}tX}\right]=
+\exp\left(\mathrm{i}t\mu+\delta_+\Gamma(-\alpha)
+\left((\lambda_+-\mathrm{i}t)^{\alpha}-\lambda_+^{\alpha}+
+\mathrm{i}t\alpha\lambda_+^{\alpha-1}\right)+\delta_-\Gamma(-\alpha)
+\left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-\mathrm{i}t\alpha
+\lambda_-^{\alpha-1}\right)
+\right)}
 }
 \examples{
 x <- seq(-10,10,0.25)
