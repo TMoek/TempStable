@@ -26,6 +26,7 @@ TemperedEstim_Simulation(
   s_min = NULL,
   s_max = NULL,
   ncond = NULL,
+  IterationControl = NULL,
   ...
 )
 }
@@ -99,6 +100,9 @@ conditions are considered; numeric.}
 
 \item{ncond}{Integer. Number of moment conditions (until order \code{ncond}).
 Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.}
+
+\item{IterationControl}{only used if algo = "IT..." or algo = "Cue..."
+to control the iterations. See Details.}
 
 \item{...}{Other arguments to be passed to the estimation function.}
 }
@@ -195,6 +199,19 @@ specified.
 (2022). The parameters \code{algo, alphaReg, regularization,
    WeightingMatrix, and ncond} must be specified.
 }
+}
+
+\strong{IterationControl} If \code{algo = "IT..."} or \code{algo =
+"Cue..."} the user can control each iteration by setting up the list
+IterationControl which contains the following elements:
+\describe{
+\item{NbIter}{maximum number of iteration. The loop stops when NBIter is
+reached; default = 10.}
+\item{PrintIterlogical}{if set to TRUE, the value of the current parameter
+estimation is printed to the screen at each iteration; default = TRUE.}
+\item{RelativeErrMax}{the loop stops if the relative error between two
+consecutive estimation steps is smaller than RelativeErrMax;
+default = 1e-3.}
 }
 }
 \examples{

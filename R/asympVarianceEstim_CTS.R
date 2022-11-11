@@ -14,6 +14,7 @@
                                            s_min,
                                            s_max,
                                            ncond,
+                                           IterationControl,
                                            ...) {
     asymptoticVarianceEstimML_CTS(thetaEst = EstimObj$Estim$par,
                                   n_sample = length(data), type = type,
@@ -33,6 +34,7 @@
                                   s_min = s_min,
                                   s_max = s_max,
                                   ncond = ncond,
+                                  IterationControl = IterationControl,
                                   ...)
 }
 
@@ -51,6 +53,7 @@ asymptoticVarianceEstimML_CTS <- function(thetaEst, n_sample,
                                           s_min,
                                           s_max,
                                           ncond,
+                                          IterationControl,
                                           ...) {
     NameParamsObjectsTemp(invFisherMatrix_CTS(as.numeric(thetaEst),
                                               subdivisions)/n_sample,
@@ -105,6 +108,7 @@ NumDeriv_jacobian_CTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
                                             s_min,
                                             s_max,
                                             ncond,
+                                            IterationControl,
                                             ...) {
     V <- solve(GMMasymptoticVarianceEstim_CTS(theta = EstimObj$Estim$par,
                                               t = EstimObj$tEstim, x = data,
@@ -124,6 +128,8 @@ NumDeriv_jacobian_CTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
                                               s_min = s_min,
                                               s_max = s_max,
                                               ncond = ncond,
+                                              IterationControl =
+                                                IterationControl,
                                               ...))/length(data)
     NameParamsObjects(V, type = type)
 }
@@ -144,6 +150,7 @@ NumDeriv_jacobian_CTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
                                              s_min,
                                              s_max,
                                              ncond,
+                                             IterationControl,
                                              ...) {
     V <- ComputeCovarianceCgmm_CTS(theta = EstimObj$Estim$par,
                                    thetaHat = EstimObj$Estim$par, x = data,
@@ -163,6 +170,7 @@ NumDeriv_jacobian_CTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
                                    s_min = s_min,
                                    s_max = s_max,
                                    ncond = ncond,
+                                   IterationControl = IterationControl,
                                    ...)
     NameParamsObjects(Mod(ComputeCutOffInverse(V))/length(data), type = type)
 }
@@ -202,6 +210,7 @@ ComputeCovarianceCgmm_CTS <- function(theta, Cmat = NULL, x, alphaReg,
                                             s_min,
                                             s_max,
                                             ncond,
+                                            IterationControl,
                                             ...) {
     V <- solve(GMCasymptoticVarianceEstim_CTS(theta = EstimObj$Estim$par,
                                               ncond = EstimObj$ncond, x = data,
@@ -220,6 +229,8 @@ ComputeCovarianceCgmm_CTS <- function(theta, Cmat = NULL, x, alphaReg,
                                                 randomIntegrationLaw,
                                               s_min = s_min,
                                               s_max = s_max,
+                                              IterationControl =
+                                                IterationControl,
                                               ...))/length(data)
     NameParamsObjects(V, type = type)
 }

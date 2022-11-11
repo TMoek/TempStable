@@ -87,6 +87,19 @@
 #'   parameter used in the estimation.}
 #' }
 #'
+#' \strong{IterationControl} If \code{algo = "IT..."} or \code{algo =
+#' "Cue..."} the user can control each iteration by setting up the list
+#' IterationControl which contains the following elements:
+#' \describe{
+#'   \item{NbIter}{maximum number of iteration. The loop stops when NBIter is
+#'   reached; default = 10.}
+#'   \item{PrintIterlogical}{if set to TRUE, the value of the current parameter
+#'   estimation is printed to the screen at each iteration; default = TRUE.}
+#'   \item{RelativeErrMax}{the loop stops if the relative error between two
+#'   consecutive estimation steps is smaller than RelativeErrMax;
+#'   default = 1e-3.}
+#' }
+#'
 #' @seealso
 #' \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R}
 #'
@@ -156,6 +169,8 @@
 #' conditions are considered; numeric.
 #' @param ncond Integer. Number of moment conditions (until order \code{ncond}).
 #' Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.
+#' @param IterationControl only used if algo = "IT..." or algo = "Cue..."
+#' to control the iterations. See Details.
 #' @param ... Other arguments to be passed to the estimation function or the
 #' asymptotic confidence level.
 #'
@@ -187,7 +202,8 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
                           WeightingMatrix = NULL, t_scheme = NULL,
                           alphaReg = NULL, t_free = NULL, subdivisions = NULL,
                           IntegrationMethod = NULL, randomIntegrationLaw = NULL,
-                          s_min = NULL, s_max = NULL, ncond = NULL, ...) {
+                          s_min = NULL, s_max = NULL, ncond = NULL,
+                          IterationControl = NULL, ...) {
     if (missing(data))
         stop("data not provided !")
     if (is.null(theta0)) {
@@ -243,6 +259,7 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
                                   s_min = s_min,
                                   s_max = s_max,
                                   ncond = ncond,
+                                  IterationControl = IterationControl,
                                   ...)
     res <- .initResTemp(type, method)
     if (HandleError) {
@@ -263,6 +280,7 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
                                         s_min = s_min,
                                         s_max = s_max,
                                         ncond = ncond,
+                                        IterationControl = IterationControl,
                                         ...),
                        error = function(e) e)
         err <- inherits(tr, "error")
@@ -288,6 +306,7 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
                                 s_min = s_min,
                                 s_max = s_max,
                                 ncond = ncond,
+                                IterationControl = IterationControl,
                                 ...)
         OutputObj@failure <- 0
     }
@@ -315,6 +334,8 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
                                                   s_min = s_min,
                                                   s_max = s_max,
                                                   ncond = ncond,
+                                                  IterationControl =
+                                                    IterationControl,
                                                   ...)
         OutputObj@confint <- AsymptoticConfidenceInterval(
           thetaEst = OutputObj@par, n_sample = OutputObj@sampleSize,
@@ -425,6 +446,7 @@ getTempEstimFcts <- function(
     s_min,
     s_max,
     ncond,
+    IterationControl,
     ...){
     if (type == "Classic") {
         Output <- switch(method, ML = {
