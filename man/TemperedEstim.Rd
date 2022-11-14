@@ -164,6 +164,7 @@ specified.
 
 \strong{Estim-Class} Class storing all the information about the estimation
 method; output of this function.
+
 \strong{Slots of the return class}
 \describe{
 \item{par:}{Object of class "\code{numeric}"; Value of the estimated
@@ -198,6 +199,10 @@ estimation is printed to the screen at each iteration; default = TRUE.}
 consecutive estimation steps is smaller than RelativeErrMax;
 default = 1e-3.}
 }
+
+Since this package is structurally based on the \strong{"StableEstim"
+package by Tarak Kharrat and Georgi N. Boshnakov}, more detailed
+documentation can be found in their documentation.
 }
 \examples{
 \donttest{

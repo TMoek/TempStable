@@ -65,6 +65,7 @@
 #'
 #' \strong{Estim-Class} Class storing all the information about the estimation
 #' method; output of this function.
+#'
 #' \strong{Slots of the return class}
 #' \describe{
 #'   \item{par:}{Object of class "\code{numeric}"; Value of the estimated
@@ -99,6 +100,10 @@
 #'   consecutive estimation steps is smaller than RelativeErrMax;
 #'   default = 1e-3.}
 #' }
+#'
+#' Since this package is structurally based on the \strong{"StableEstim"
+#' package by Tarak Kharrat and Georgi N. Boshnakov}, more detailed
+#' documentation can be found in their documentation.
 #'
 #' @seealso
 #' \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R}

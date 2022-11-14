@@ -104,6 +104,10 @@
 #'   default = 1e-3.}
 #' }
 #'
+#' Since this package is structurally based on the \strong{"StableEstim"
+#' package by Tarak Kharrat and Georgi N. Boshnakov}, more detailed
+#' documentation can be found in their documentation.
+#'
 #' @seealso
 #' \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R}
 #'

@@ -213,6 +213,10 @@ estimation is printed to the screen at each iteration; default = TRUE.}
 consecutive estimation steps is smaller than RelativeErrMax;
 default = 1e-3.}
 }
+
+Since this package is structurally based on the \strong{"StableEstim"
+package by Tarak Kharrat and Georgi N. Boshnakov}, more detailed
+documentation can be found in their documentation.
 }
 \examples{
 \donttest{
