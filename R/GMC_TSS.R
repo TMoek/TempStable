@@ -45,7 +45,7 @@ GMCParametersEstim_TSS <-
                         ...
                       )
                     },
-                    ITGMM = {
+                    ITGMC = {
                       ComputeITGMCParametersEstim_TSS(
                         x = x,
                         ncond = ncondfl,
@@ -58,7 +58,7 @@ GMCParametersEstim_TSS <-
                         ...
                       )
                     },
-                    CueGMM = {
+                    CueGMC = {
                       ComputeCueGMCParametersEstim_TSS(
                         x = x,
                         ncond = ncondfl,

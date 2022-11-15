@@ -24,6 +24,7 @@ TemperedEstim(
   s_min = NULL,
   s_max = NULL,
   ncond = NULL,
+  IterationControl = NULL,
   ...
 )
 }
@@ -88,6 +89,9 @@ conditions are considered; numeric.}
 
 \item{ncond}{Integer. Number of moment conditions (until order \code{ncond}).
 Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.}
+
+\item{IterationControl}{only used if algo = "IT..." or algo = "Cue..."
+to control the iterations. See Details.}
 
 \item{...}{Other arguments to be passed to the estimation function or the
 asymptotic confidence level.}
@@ -160,6 +164,7 @@ specified.
 
 \strong{Estim-Class} Class storing all the information about the estimation
 method; output of this function.
+
 \strong{Slots of the return class}
 \describe{
 \item{par:}{Object of class "\code{numeric}"; Value of the estimated
@@ -181,6 +186,23 @@ the procedure: 0 failure or 1 success.}
 \item{method:}{Object of class "\code{character}" description of the
 parameter used in the estimation.}
 }
+
+\strong{IterationControl} If \code{algo = "IT..."} or \code{algo =
+"Cue..."} the user can control each iteration by setting up the list
+IterationControl which contains the following elements:
+\describe{
+\item{NbIter}{maximum number of iteration. The loop stops when NBIter is
+reached; default = 10.}
+\item{PrintIterlogical}{if set to TRUE, the value of the current parameter
+estimation is printed to the screen at each iteration; default = TRUE.}
+\item{RelativeErrMax}{the loop stops if the relative error between two
+consecutive estimation steps is smaller than RelativeErrMax;
+default = 1e-3.}
+}
+
+Since this package is structurally based on the \strong{"StableEstim"
+package by Tarak Kharrat and Georgi N. Boshnakov}, more detailed
+documentation can be found in their documentation.
 }
 \examples{
 \donttest{

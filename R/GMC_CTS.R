@@ -27,14 +27,14 @@ GMCParametersEstim_CTS <- function(x, algo = c("2SGMC", "ITGMC", "CueGMC"),
                                         regularization = regularization,
                                         WeightingMatrix = WeightingMatrix,
                                         eps = eps, ...)
-    }, ITGMM = {
+    }, ITGMC = {
         ComputeITGMCParametersEstim_CTS(x = x, ncond = ncondfl, theta0 = theta0,
                                         alphaReg = alphaReg,
                                         regularization = regularization,
                                         WeightingMatrix = WeightingMatrix,
                                         IterationControl = IterationControl,
                                         eps = eps, ...)
-    }, CueGMM = {
+    }, CueGMC = {
         ComputeCueGMCParametersEstim_CTS(x = x, ncond = ncondfl,
                                          theta0 = theta0, alphaReg = alphaReg,
                                          regularization = regularization,

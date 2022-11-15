@@ -14,6 +14,7 @@
                                            s_min,
                                            s_max,
                                            ncond,
+                                           IterationControl,
                                            ...) {
     asymptoticVarianceEstimML_NTS(thetaEst = EstimObj$Estim$par,
                                   n_sample = length(data), type = type,
@@ -33,6 +34,7 @@
                                   s_min = s_min,
                                   s_max = s_max,
                                   ncond = ncond,
+                                  IterationControl = IterationControl,
                                   ...)
 }
 
@@ -51,6 +53,7 @@ asymptoticVarianceEstimML_NTS <- function(thetaEst, n_sample,
                                           s_min,
                                           s_max,
                                           ncond,
+                                          IterationControl,
                                           ...) {
     NameParamsObjectsTemp(invFisherMatrix_NTS(as.numeric(thetaEst),
                                               subdivisions)/n_sample,
@@ -105,6 +108,7 @@ NumDeriv_jacobian_NTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
                                             s_min,
                                             s_max,
                                             ncond,
+                                            IterationControl,
                                             ...) {
     V <- solve(GMMasymptoticVarianceEstim_NTS(theta = EstimObj$Estim$par,
                                               t = EstimObj$tEstim, x = data,
@@ -124,6 +128,8 @@ NumDeriv_jacobian_NTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
                                               s_min = s_min,
                                               s_max = s_max,
                                               ncond = ncond,
+                                              IterationControl =
+                                                IterationControl,
                                               ...))/length(data)
     NameParamsObjects(V, type = type)
 }
@@ -144,6 +150,7 @@ NumDeriv_jacobian_NTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
                                              s_min,
                                              s_max,
                                              ncond,
+                                             IterationControl,
                                              ...) {
     V <- ComputeCovarianceCgmm_NTS(theta = EstimObj$Estim$par,
                                    thetaHat = EstimObj$Estim$par, x = data,
@@ -163,6 +170,7 @@ NumDeriv_jacobian_NTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
                                    s_min = s_min,
                                    s_max = s_max,
                                    ncond = ncond,
+                                   IterationControl = IterationControl,
                                    ...)
     NameParamsObjects(Mod(ComputeCutOffInverse(V))/length(data), type = type)
 }
