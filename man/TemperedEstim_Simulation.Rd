@@ -56,7 +56,7 @@ information is saved in the current directory. See details.}
 
 \item{SeedOptions}{List to control the seed generation. See details.}
 
-\item{eps}{Error tolerance. \code{1e-06} by default.}
+\item{eps}{Numerical error tolerance. \code{1e-06} by default.}
 
 \item{algo}{algorithm: For GMM: \code{"2SGMM"} is the two step GMM proposed
 by Hansen (1982). \code{"CueGMM"} and \code{"ITGMM"} are respectively the
@@ -64,15 +64,15 @@ continuous updated and the iterative GMM proposed by Hansen, Eaton et Yaron
 (1996) and adapted to the continuum case. For GMC: \code{"2SGMC", "CueGMC"}.
 For Cgmm: \code{"2SCgmm", "CueCgmm", ...}.}
 
-\item{regularization}{regularization scheme to be used, one of
+\item{regularization}{regularization scheme to be used for moment methods, one of
 \code{"Tikhonov"} (Tikhonov), \code{"LF"} (Landweber-Fridmann) and
 \code{"cut-off"} (spectral cut-off).}
 
 \item{WeightingMatrix}{type of weighting matrix used to compute the
-objective function, one of \code{"OptAsym"} (the optimal asymptotic),
-\code{"DataVar"} (the data driven) and \code{"Id"} (the identity matrix).}
+objective function for the GMM and GMC methods, one of \code{"OptAsym"} (the optimal asymptotic),
+\code{"DataVar"} (the data driven, only for GMM) and \code{"Id"} (the identity matrix).}
 
-\item{t_scheme}{scheme used to select the points where the moment conditions
+\item{t_scheme}{scheme used to select the points for the GMM method where the moment conditions
 are evaluated, one of \code{"equally"} (equally placed), \code{"NonOptAr"}
 (non optimal arithmetic placement), \code{"uniformOpt"}
 (uniform optimal placement), \code{"ArithOpt"} (arithmetic optimal
@@ -84,21 +84,21 @@ placement), \code{"Var Opt"} (optimal variance placement) and \code{"free"}
 \item{t_free}{sequence, if \code{t_scheme=="free"}.}
 
 \item{subdivisions}{Number of subdivisions used to compute the different
-integrals involved in the computation of the objective function (to
+integrals involved in the computation of the objective function for the Cgmm method (to
 minimise); numeric.}
 
 \item{IntegrationMethod}{Numerical integration method to be used to
-approximate the (vectorial) integrals. Users can choose between "Uniform"
+approximate the (vectorial) integrals for the Cgmm method. Users can choose between "Uniform"
 discretization or the "Simpson"'s rule (the 3-point Newton-Cotes quadrature
 rule).}
 
 \item{randomIntegrationLaw}{Probability measure associated to the Hilbert
-space spanned by the moment conditions.}
+space spanned by the moment conditions for the Cgmm method.}
 
 \item{s_min, s_max}{Lower and Upper bounds of the interval where the moment
-conditions are considered; numeric.}
+conditions are considered for the Cgmm method; numeric.}
 
-\item{ncond}{Integer. Number of moment conditions (until order \code{ncond}).
+\item{ncond}{Integer. Number of moment conditions (until order \code{ncond}) for the GMC method.
 Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.}
 
 \item{IterationControl}{only used if algo = "IT..." or algo = "Cue..."
@@ -213,6 +213,11 @@ estimation is printed to the screen at each iteration; default = TRUE.}
 consecutive estimation steps is smaller than RelativeErrMax;
 default = 1e-3.}
 }
+
+\strong{Parallelisation}  At the moment, parallelisation of the function is
+not yet implemented. If someone wants to parallelise the functions
+externally, the parameter \code{MCparam} must be set to \code{1} and the
+parameter \code{SeedOption} must be changed for each iteration.
 
 Since this package is structurally based on the \strong{"StableEstim"
 package by Tarak Kharrat and Georgi N. Boshnakov}, more detailed

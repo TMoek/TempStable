@@ -104,6 +104,11 @@
 #'   default = 1e-3.}
 #' }
 #'
+#' \strong{Parallelisation}  At the moment, parallelisation of the function is
+#' not yet implemented. If someone wants to parallelise the functions
+#' externally, the parameter \code{MCparam} must be set to \code{1} and the
+#' parameter \code{SeedOption} must be changed for each iteration.
+#'
 #' Since this package is structurally based on the \strong{"StableEstim"
 #' package by Tarak Kharrat and Georgi N. Boshnakov}, more detailed
 #' documentation can be found in their documentation.
