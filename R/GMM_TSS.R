@@ -138,21 +138,74 @@ checkIterationControl <- function(IterationControl) {
 }
 
 PrintIteration <- function(theta, iter, nbIterMax) {
-  print(
-    paste(
-      "---------------iteration ",
-      iter,
-      "/",
-      nbIterMax,
-      "------------------------ (",
-      theta[1],
-      ",",
-      theta[2],
-      ",",
-      theta[3],
-      ")"
+
+  #Subordinator
+  if(length(theta)==3){
+    print(
+      paste(
+        "---------------iteration ",
+        iter,
+        "/",
+        nbIterMax,
+        "------------------------ (",
+        theta[1],
+        ",",
+        theta[2],
+        ",",
+        theta[3],
+        ")"
+      )
     )
-  )
+  }
+
+  #Normal
+  if(length(theta)==5){
+    print(
+      paste(
+        "---------------iteration ",
+        iter,
+        "/",
+        nbIterMax,
+        "------------------------ (",
+        theta[1],
+        ",",
+        theta[2],
+        ",",
+        theta[3],
+        ",",
+        theta[4],
+        ",",
+        theta[5],
+        ")"
+      )
+    )
+  }
+
+  #Classic
+  if (length(theta)==6){
+    print(
+      paste(
+        "---------------iteration ",
+        iter,
+        "/",
+        nbIterMax,
+        "------------------------ (",
+        theta[1],
+        ",",
+        theta[2],
+        ",",
+        theta[3],
+        ",",
+        theta[4],
+        ",",
+        theta[5],
+        ",",
+        theta[6],
+        ")"
+      )
+    )
+  }
+
   cat(" \n")
 }
 
