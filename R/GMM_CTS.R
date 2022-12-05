@@ -186,9 +186,16 @@ ComputeITGMMParametersEstim_CTS <-
     theta1 <- (AllCurrentEstim$OptInfo)$par
     t <- AllCurrentEstim$t
     PrevEstimParVal <- theta1
-    RelativeErr = Control$RelativeErrMax + 5
+    RelativeErr <- rep(Control$RelativeErrMax + 5, times = length(theta0))
+    RelativeErrMaxArray <- rep(Control$RelativeErrMax, times = length(theta0))
     while ((iter < Control$NbIter) &&
-           (RelativeErr > Control$RelativeErrMax)) {
+           ((RelativeErr[1] > RelativeErrMaxArray[1]) ||
+            (RelativeErr[2] > RelativeErrMaxArray[2]) ||
+            (RelativeErr[3] > RelativeErrMaxArray[3]) ||
+            (RelativeErr[4] > RelativeErrMaxArray[4]) ||
+            (RelativeErr[5] > RelativeErrMaxArray[5]) ||
+            (RelativeErr[6] > RelativeErrMaxArray[6])
+           )) {
       ProvidedWeightingMatrix <-
         ComputeWeightingMatrix_CTS(
           t = t,
@@ -234,9 +241,16 @@ ComputeCueGMMParametersEstim_CTS <-
     iter = 0
     Control <- checkIterationControl(IterationControl)
     PrevEstimParVal <- theta0
-    RelativeErr = Control$RelativeErrMax + 5
+    RelativeErr <- rep(Control$RelativeErrMax + 5, times = length(theta0))
+    RelativeErrMaxArray <- rep(Control$RelativeErrMax, times = length(theta0))
     while ((iter < Control$NbIter) &&
-           (RelativeErr > Control$RelativeErrMax)) {
+           ((RelativeErr[1] > RelativeErrMaxArray[1]) ||
+            (RelativeErr[2] > RelativeErrMaxArray[2]) ||
+            (RelativeErr[3] > RelativeErrMaxArray[3]) ||
+            (RelativeErr[4] > RelativeErrMaxArray[4]) ||
+            (RelativeErr[5] > RelativeErrMaxArray[5]) ||
+            (RelativeErr[6] > RelativeErrMaxArray[6])
+            )) {
       AllCurrentEstim <-
         ComputeCurrentEstim_CTS(
           t_scheme = t_scheme,

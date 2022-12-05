@@ -1347,3 +1347,4 @@ c_err <- function(t) {if(abs(t)<1){(1-t)*cos(pi*t)+1/pi*abs(sin(pi*t))} else 0}
       trace = trace
     )$root
   }
+

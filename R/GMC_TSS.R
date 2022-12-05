@@ -180,9 +180,13 @@ ComputeITGMCParametersEstim_TSS <-
       )
     theta1 <- (AllCurrentEstim$OptInfo)$par
     PrevEstimParVal <- theta1
-    RelativeErr = Control$RelativeErrMax + 5
+    RelativeErr <- rep(Control$RelativeErrMax + 5, times = length(theta0))
+    RelativeErrMaxArray <- rep(Control$RelativeErrMax, times = length(theta0))
     while ((iter < Control$NbIter) &&
-           (RelativeErr > Control$RelativeErrMax)) {
+           ((RelativeErr[1] > RelativeErrMaxArray[1]) ||
+            (RelativeErr[2] > RelativeErrMaxArray[2]) ||
+            (RelativeErr[3] > RelativeErrMaxArray[3])
+           )) {
       ProvidedWeightingMatrix <-
         ComputeWeightingMatrix_TSS(
           theta = PrevEstimParVal,
@@ -227,9 +231,13 @@ ComputeCueGMCParametersEstim_TSS <-
     iter = 0
     Control <- checkIterationControl(IterationControl)
     PrevEstimParVal <- theta0
-    RelativeErr = Control$RelativeErrMax + 5
+    RelativeErr <- rep(Control$RelativeErrMax + 5, times = length(theta0))
+    RelativeErrMaxArray <- rep(Control$RelativeErrMax, times = length(theta0))
     while ((iter < Control$NbIter) &&
-           (RelativeErr > Control$RelativeErrMax)) {
+           ((RelativeErr[1] > RelativeErrMaxArray[1]) ||
+            (RelativeErr[2] > RelativeErrMaxArray[2]) ||
+            (RelativeErr[3] > RelativeErrMaxArray[3])
+           )) {
       AllCurrentEstim <-
         ComputeCurrentGMC_TSS(
           theta0 = PrevEstimParVal,

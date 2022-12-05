@@ -265,6 +265,7 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
                                   s_max = s_max,
                                   ncond = ncond,
                                   IterationControl = IterationControl,
+                                  x = data,
                                   ...)
     res <- .initResTemp(type, method)
     if (HandleError) {
@@ -452,6 +453,7 @@ getTempEstimFcts <- function(
     s_max,
     ncond,
     IterationControl,
+    x,
     ...){
     if (type == "Classic") {
         Output <- switch(method, ML = {

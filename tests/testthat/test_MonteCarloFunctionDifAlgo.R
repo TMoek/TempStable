@@ -4,27 +4,23 @@
 
 test_that("TemperedEstim_Simulation_with_Classic_GMM_CueGMM_cutoff", {
 
-  suppressWarnings({
-    TestObject <- TemperedEstim_Simulation(
-      ParameterMatrix = rbind(c(1.5,1,1,1,1,0)),
-      SampleSizes = 4, MCparam = 4, TemperedType = "Classic",
-      Estimfct = "GMM", saveOutput = FALSE, algo = "CueGMM",
-      regularization = "cut-off", WeightingMatrix = "OptAsym",
-      t_scheme = "free", alphaReg = 0.005, t_free = seq(0.1,2,length.out=12))
+  TestObject <- TemperedEstim_Simulation(
+    ParameterMatrix = rbind(c(1.5,1,1,1,1,0)),
+    SampleSizes = 4, MCparam = 4, TemperedType = "Classic",
+    Estimfct = "GMM", saveOutput = FALSE, algo = "CueGMM",
+    regularization = "cut-off", WeightingMatrix = "OptAsym",
+    t_scheme = "free", alphaReg = 0.005, t_free = seq(0.1,2,length.out=12))
 
-
-    expect_equal(length(TestObject$outputMat),64)
-    expect_equal(TestObject$outputMat[1],1.5)
-    expect_equal(colnames(TestObject$outputMat), c("alphaT", "delta+T",
-                                                   "delta-T", "lambda+T",
-                                                   "lambda-T", "muT",
-                                                   "data size", "seed",
-                                                   "alphaE", "delta+E",
-                                                   "delta-E", "lambda+E",
-                                                   "lambda-E", "muE", "failure",
-                                                   "time"))
-
-  })
+  expect_equal(length(TestObject$outputMat),64)
+  expect_equal(TestObject$outputMat[1],1.5)
+  expect_equal(colnames(TestObject$outputMat), c("alphaT", "delta+T",
+                                                 "delta-T", "lambda+T",
+                                                 "lambda-T", "muT",
+                                                 "data size", "seed",
+                                                 "alphaE", "delta+E",
+                                                 "delta-E", "lambda+E",
+                                                 "lambda-E", "muE", "failure",
+                                                 "time"))
 })
 
 test_that("TemperedEstim_Simulation_with_Classic_GMM_CueGMM_Tikhonov", {

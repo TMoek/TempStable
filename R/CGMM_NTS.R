@@ -156,9 +156,17 @@ ComputeITCgmmParametersEstim_NTS <- function(x, theta0, alphaReg, eps, s_min,
                                 lower = c(eps, -Inf, eps, eps, -Inf),
                                 upper = c(1 - eps, Inf, Inf, Inf, Inf))$par)
     PrevEstimParVal <- theta1
-    RelativeErr = IterationControl$RelativeErrMax + 5
+    RelativeErr = rep(IterationControl$RelativeErrMax + 5,
+                      times = length(theta0))
+    RelativeErrMaxArray <- rep(IterationControl$RelativeErrMax,
+                               times = length(theta0))
     while ((iter < IterationControl$NbIter) &&
-           (RelativeErr > IterationControl$RelativeErrMax)) {
+           ((RelativeErr[1] > RelativeErrMaxArray[1]) ||
+            (RelativeErr[2] > RelativeErrMaxArray[2]) ||
+            (RelativeErr[3] > RelativeErrMaxArray[3]) ||
+            (RelativeErr[4] > RelativeErrMaxArray[4]) ||
+            (RelativeErr[5] > RelativeErrMaxArray[5])
+           )) {
         Cmat <- ComputeCmat_NTS(x = x, thetaHat = PrevEstimParVal,
                                 s_min = s_min, s_max = s_max,
                                 IntegrationMethod = IntegrationMethod,
@@ -224,9 +232,17 @@ ComputeCueCgmmParametersEstim_NTS <- function(x, theta0, alphaReg, eps, s_min,
                                 lower = c(eps, -Inf, eps, eps, -Inf),
                                 upper = c(1 - eps, Inf, Inf, Inf, Inf))$par)
     PrevEstimParVal <- theta1
-    RelativeErr = IterationControl$RelativeErrMax + 5
+    RelativeErr = rep(IterationControl$RelativeErrMax + 5,
+                      times = length(theta0))
+    RelativeErrMaxArray <- rep(IterationControl$RelativeErrMax,
+                               times = length(theta0))
     while ((iter < IterationControl$NbIter) &&
-           (RelativeErr > IterationControl$RelativeErrMax)) {
+           ((RelativeErr[1] > RelativeErrMaxArray[1]) ||
+            (RelativeErr[2] > RelativeErrMaxArray[2]) ||
+            (RelativeErr[3] > RelativeErrMaxArray[3]) ||
+            (RelativeErr[4] > RelativeErrMaxArray[4]) ||
+            (RelativeErr[5] > RelativeErrMaxArray[5])
+           )) {
         dots <- list(...)
         if (is.null(dots$control)) {
             control <- list(abs.tol = 1e-15, rel.tol = 1e-07, x.tol = 1.5e-05,
