@@ -412,7 +412,7 @@ ComputeCmat_CTS <- function(x, thetaHat, s_min, s_max, IntegrationMethod,
                                                g_fct = f_fct, Y = x,
                                                s_min = s_min, s_max = s_max,
                                                subdivisions = subdivisions,
-                                               IntegrationMethod =
+                                               method =
                                                  IntegrationMethod,
                                                randomIntegrationLaw =
                                                  randomIntegrationLaw, ...)

@@ -116,7 +116,7 @@ ComputeITGMCParametersEstim_CTS <- function(x, ncond, theta0, alphaReg,
             (RelativeErr[6] > RelativeErrMaxArray[6])
            )) {
         ProvidedWeightingMatrix <-
-          ComputeWeightingMatrix_CTS(theta = PrevEstimParVal, x = x,
+          ComputeGMCWeightingMatrix_CTS(theta = PrevEstimParVal, x = x,
                                      ncond = ncond,
                                      WeightingMatrix = WeightingMatrix, ...)
         AllCurrentEstim <-

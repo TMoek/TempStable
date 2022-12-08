@@ -188,7 +188,7 @@ ComputeITGMCParametersEstim_TSS <-
             (RelativeErr[3] > RelativeErrMaxArray[3])
            )) {
       ProvidedWeightingMatrix <-
-        ComputeWeightingMatrix_TSS(
+        ComputeGMCWeightingMatrix_TSS(
           theta = PrevEstimParVal,
           x = x,
           ncond = ncond,

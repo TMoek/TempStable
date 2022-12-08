@@ -110,7 +110,7 @@ ComputeITGMCParametersEstim_CGMY <- function(x, ncond, theta0, alphaReg,
     RelativeErr = Control$RelativeErrMax + 5
     while ((iter < Control$NbIter) && (RelativeErr > Control$RelativeErrMax)) {
         ProvidedWeightingMatrix <-
-          ComputeWeightingMatrix_CGMY(theta = PrevEstimParVal, x = x,
+          ComputeGMCWeightingMatrix_CGMY(theta = PrevEstimParVal, x = x,
                                       ncond = ncond,
                                       WeightingMatrix = WeightingMatrix, ...)
         AllCurrentEstim <- ComputeCurrentGMC_CGMY(theta0 = PrevEstimParVal,

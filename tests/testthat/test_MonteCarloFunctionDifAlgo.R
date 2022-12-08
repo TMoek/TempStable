@@ -383,6 +383,70 @@ test_that("TemperedEstim_Simulation_with_Normal_Cgmm_Cue", {
   })
 })
 
+## GMC Tests ##
+
+test_that("TemperedEstim_Simulation_with_Subordinator_GMC_IT", {
+  suppressWarnings({
+    TestObject <- TemperedEstim_Simulation(ParameterMatrix = rbind(c(0.5,1,1)),
+                                           SampleSizes = c(4), MCparam = 4,
+                                           TemperedType = "Subordinator",
+                                           Estimfct = "GMC",
+                                           saveOutput = FALSE, algo = "ITGMC",
+                                           alphaReg = 0.01,
+                                           WeightingMatrix = "OptAsym",
+                                           regularization = "cut-off",
+                                           ncond = 8)
+    expect_equal(all(!is.na(TestObject)), TRUE)
+  })
+})
+
+test_that("TemperedEstim_Simulation_with_Classic_GMC_IT", {
+  suppressWarnings({
+    TestObject <- TemperedEstim_Simulation(ParameterMatrix =
+                                             rbind(c(1.45,0.55,1,1,1,0)),
+                                           SampleSizes = c(4), MCparam = 4,
+                                           TemperedType = "Classic",
+                                           Estimfct = "GMC",
+                                           saveOutput = FALSE, algo = "ITGMC",
+                                           alphaReg = 0.01,
+                                           WeightingMatrix = "OptAsym",
+                                           regularization = "cut-off",
+                                           ncond = 8)
+    expect_equal(all(!is.na(TestObject)), TRUE)
+  })
+})
+
+test_that("TemperedEstim_Simulation_with_Classic_GMC_2S", {
+  suppressWarnings({
+    TestObject <- TemperedEstim_Simulation(ParameterMatrix =
+                                             rbind(c(1.45,0.55,1,1,1,0)),
+                                           SampleSizes = c(4), MCparam = 4,
+                                           TemperedType = "Classic",
+                                           Estimfct = "GMC",
+                                           saveOutput = FALSE, algo = "2SGMC",
+                                           alphaReg = 0.01,
+                                           WeightingMatrix = "OptAsym",
+                                           regularization = "cut-off",
+                                           ncond = 8)
+    expect_equal(all(!is.na(TestObject)), TRUE)
+  })
+})
+
+test_that("TemperedEstim_Simulation_with_Classic_GMC_Cue", {
+  suppressWarnings({
+    TestObject <- TemperedEstim_Simulation(ParameterMatrix =
+                                             rbind(c(1.45,0.55,1,1,1,0)),
+                                           SampleSizes = c(4), MCparam = 4,
+                                           TemperedType = "Classic",
+                                           Estimfct = "GMC",
+                                           saveOutput = FALSE, algo = "CueGMC",
+                                           alphaReg = 0.01,
+                                           WeightingMatrix = "OptAsym",
+                                           regularization = "cut-off",
+                                           ncond = 8)
+    expect_equal(all(!is.na(TestObject)), TRUE)
+  })
+})
 
 
 
