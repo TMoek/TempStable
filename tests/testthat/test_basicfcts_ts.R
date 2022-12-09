@@ -1,4 +1,7 @@
 
+# supressWarnings() used, as -Inf is sometimes changed with highest negative
+# value.
+
 test_that("charTSS_gives_correct_return", {
   expect_equal(round(charTSS(1000,0.5,1,0.3), digits = 39),
                -1.95484e-34-1.6968e-34i)
