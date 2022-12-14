@@ -48,7 +48,8 @@ E_{\theta}\left[
 \mathrm{e}^{\mathrm{i}tX}\right]=
 \exp\left(\mathrm{i}t\mu+\delta_+\Gamma(-\alpha)
 \left((\lambda_+-\mathrm{i}t)^{\alpha}-\lambda_+^{\alpha}+
-\mathrm{i}t\alpha\lambda_+^{\alpha-1}\right)+\delta_-\Gamma(-\alpha)
+\mathrm{i}t\alpha\lambda_+^{\alpha-1}\right)\right.\\}
+\deqn{\left. +\delta_-\Gamma(-\alpha)
 \left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-\mathrm{i}t\alpha
 \lambda_-^{\alpha-1}\right)
 \right)}
@@ -59,7 +60,7 @@ y <- charCTS(x,1.5,1,1,1,1,0)
 
 }
 \references{
-Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws';
+Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
 
 Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
 processes' \doi{10.1016/j.spa.2013.06.012}
