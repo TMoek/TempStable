@@ -28,6 +28,6 @@ structurally similar. In the function, the user's file system is written to
 during each iteration of the simulation.
 
 
-## Downsteam dependencies
+## Downstream dependencies
 
-First version, no downsteam dependencies
+First version, no downstream dependencies
