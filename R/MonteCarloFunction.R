@@ -238,7 +238,7 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                      TemperedType = c("Classic", "Subordinator",
                                                       "Normal"),
                                      Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
-                                     HandleError = TRUE, saveOutput = TRUE,
+                                     HandleError = TRUE, saveOutput = FALSE,
                                      SeedOptions = NULL, eps = 1e-06,
                                      algo = NULL, regularization = NULL,
                                      WeightingMatrix = NULL, t_scheme = NULL,
@@ -401,6 +401,99 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     }
 
 }
+#' title
+#'
+#' description
+#'
+#' details
+#'
+#' @param ParameterMatrix The matrix is to be composed of vectors, row by row.
+#' Each vector must fit the pattern of theta of the \code{TemperedType}.
+#' @param SampleSizes Sample sizes to be used to simulate the data. By default,
+#'  we use 200 (small sample size) and 1600 (large sample size);
+#'  vector of integer.
+#' @param MCparam Number of Monte Carlo simulation for each couple of parameter,
+#'  default=100; integer
+#' @param TemperedType A String. Either "Classic", "Subordinator", or "Normal".
+#' @param Estimfct The estimation function to be used. A String.
+#'  Either "ML", "GMM", "Cgmm", or "GMC".
+#' @param HandleError Logical flag: if set to TRUE, the simulation doesn't stop
+#'  when an error in the estimation function is encountered. A vector of
+#'  (size 4) NA is saved and the the simulation carries on. See details..
+#' @param eps Numerical error tolerance. \code{1e-06} by default.
+#' @param cores size of cluster for parallelization. Positive Integer.
+#'
+#' @return The return object is a list of 2. Results of the simulation are
+#'  listed in \code{$outputMat}.
+#'
+#'@export
+#' @importFrom foreach %dopar%
+parallelizeMCsimulation <- function(
+    ParameterMatrix,
+    SampleSizes = c(1000),
+    MCparam = 10000,
+    TemperedType = c("Classic", "Subordinator",
+                     "Normal"),
+    Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
+    HandleError = TRUE,
+    eps = 1e-06,
+    cores = NULL,
+    ...){
+  #ParameterMatrix must have only 1 row
+  #SampleSize must be length == 1
+  #saveOutput = FALSE
+  #Bedingung für cores, dass es auch ein positiver int ist. Gedeckelt durch Anzahl der MC-runs
+  # SeedOptions wird von der Funktion benutzt und kann nicht übergeben werden
+
+  if (is.null(cores)){
+    cores <- parallel::detectCores()
+  }
+  MCparam <- MCparam
+  R <- MCparam #MonteCarloRuns
+
+  cl <- parallel::makeCluster(4)
+
+  doParallel::registerDoParallel(cl)
+
+  parallel::clusterExport(cl,
+                          varlist = ls("package:TempStable",
+                                                   all.names = TRUE),
+                          envir = .GlobalEnv)
+
+  doRNG::registerDoRNG(123)
+
+  resultOfSimulation <- foreach::foreach(mc = 1:R, .combine = rbind)%dopar%{
+    returnValue <- TemperedEstim_Simulation(
+      ParameterMatrix = ParameterMatrix,
+      SampleSizes = SampleSizes, MCparam = 1,
+      TemperedType = TemperedType, Estimfct = Estimfct,
+      SeedOptions = list(MCtot = R, seedStart = mc),
+      ... = ...
+    )
+    # (
+    #
+    #                                         SeedOptions = list(MCtot = MCparam,
+    #                                                            SeedStart = mc),
+    #                                         MCparam = 1,
+    #                                         ParameterMatrix =
+    #                                           rbind(c(1.5,1,1,1,1,0)),
+    #                                         SampleSizes = c(10),
+    #                                         TemperedType = "Classic",
+    #                                         Estimfct = "ML",
+    #                                         ...)
+    utils::write.table(mc, file = base::paste("iterationDocumentation.txt"),
+                       sep = "\t", row.names = FALSE)
+    returnValue$outputMat
+  }
+
+  parallel::stopCluster(cl)
+
+  attr(resultOfSimulation, "rng") <- NULL
+  attr(resultOfSimulation, "doRNG_version") <- NULL
+
+  return(resultOfSimulation)
+}
+
 
 # No export.
 getSeedVector <- function(Outputsize, SeedOptions = NULL) {

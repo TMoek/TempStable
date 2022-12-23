@@ -11,7 +11,7 @@ TemperedEstim_Simulation(
   TemperedType = c("Classic", "Subordinator", "Normal"),
   Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
   HandleError = TRUE,
-  saveOutput = TRUE,
+  saveOutput = FALSE,
   SeedOptions = NULL,
   eps = 1e-06,
   algo = NULL,
