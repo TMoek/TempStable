@@ -401,26 +401,17 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     }
 
 }
-#' title
+#' Function to parallelize the Monte Carlo Simulation
 #'
-#' description
+#' Since the Monte Carlo Simulation is very computationally intensive, it may
+#' be worthwhile to split it across all available processor cores. To do this,
+#' simply pass all the parameters from the [TemperedEstim_Simulation()]
+#' function to this function in the same way.
 #'
 #' details
 #'
-#' @param ParameterMatrix The matrix is to be composed of vectors, row by row.
-#' Each vector must fit the pattern of theta of the \code{TemperedType}.
-#' @param SampleSizes Sample sizes to be used to simulate the data. By default,
-#'  we use 200 (small sample size) and 1600 (large sample size);
-#'  vector of integer.
 #' @param MCparam Number of Monte Carlo simulation for each couple of parameter,
 #'  default=100; integer
-#' @param TemperedType A String. Either "Classic", "Subordinator", or "Normal".
-#' @param Estimfct The estimation function to be used. A String.
-#'  Either "ML", "GMM", "Cgmm", or "GMC".
-#' @param HandleError Logical flag: if set to TRUE, the simulation doesn't stop
-#'  when an error in the estimation function is encountered. A vector of
-#'  (size 4) NA is saved and the the simulation carries on. See details..
-#' @param eps Numerical error tolerance. \code{1e-06} by default.
 #' @param cores size of cluster for parallelization. Positive Integer.
 #'
 #' @return The return object is a list of 2. Results of the simulation are
@@ -429,18 +420,13 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 #'@export
 #' @importFrom foreach %dopar%
 parallelizeMCsimulation <- function(
-    ParameterMatrix,
-    SampleSizes = c(1000),
     MCparam = 10000,
-    TemperedType = c("Classic", "Subordinator",
-                     "Normal"),
-    Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
-    HandleError = TRUE,
-    eps = 1e-06,
     cores = NULL,
     ...){
   #ParameterMatrix must have only 1 row
   #SampleSize must be length == 1
+  #TemperedType must be either "Classic", "Subordinator", or "Normal"
+  #Estimfct must be  Either "ML", "GMM", "Cgmm", or "GMC".
   #saveOutput = FALSE
   #Bedingung für cores, dass es auch ein positiver int ist. Gedeckelt durch Anzahl der MC-runs
   # SeedOptions wird von der Funktion benutzt und kann nicht übergeben werden
@@ -451,9 +437,15 @@ parallelizeMCsimulation <- function(
   MCparam <- MCparam
   R <- MCparam #MonteCarloRuns
 
-  cl <- parallel::makeCluster(4)
+  cl <- parallel::makeCluster(cores)
 
   doParallel::registerDoParallel(cl)
+
+  #Environment options
+  #ls(parent.env(globalenv()))
+  #Egal wie man es macht, wenn "TempStable" nicht schon installiert wurde,
+  # lässt sich die foreach-schleife nicht ausführen. Das könnte später zum
+  # Problem werden.
 
   parallel::clusterExport(cl,
                           varlist = ls("package:TempStable",
@@ -464,24 +456,12 @@ parallelizeMCsimulation <- function(
 
   resultOfSimulation <- foreach::foreach(mc = 1:R, .combine = rbind)%dopar%{
     returnValue <- TemperedEstim_Simulation(
-      ParameterMatrix = ParameterMatrix,
-      SampleSizes = SampleSizes, MCparam = 1,
-      TemperedType = TemperedType, Estimfct = Estimfct,
+      MCparam = 1,
       SeedOptions = list(MCtot = R, seedStart = mc),
       ... = ...
     )
-    # (
-    #
-    #                                         SeedOptions = list(MCtot = MCparam,
-    #                                                            SeedStart = mc),
-    #                                         MCparam = 1,
-    #                                         ParameterMatrix =
-    #                                           rbind(c(1.5,1,1,1,1,0)),
-    #                                         SampleSizes = c(10),
-    #                                         TemperedType = "Classic",
-    #                                         Estimfct = "ML",
-    #                                         ...)
-    utils::write.table(mc, file = base::paste("iterationDocumentation.txt"),
+    utils::write.table(paste("Last Monte Carlo run: ", mc) , file =
+                         base::paste("IterationControlForParallelization.txt"),
                        sep = "\t", row.names = FALSE)
     returnValue$outputMat
   }
@@ -490,6 +470,10 @@ parallelizeMCsimulation <- function(
 
   attr(resultOfSimulation, "rng") <- NULL
   attr(resultOfSimulation, "doRNG_version") <- NULL
+
+  #Delete txt file
+  unlink(x = base::paste("IterationControlForParallelization.txt"),
+         force = TRUE)
 
   return(resultOfSimulation)
 }
