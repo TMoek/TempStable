@@ -250,8 +250,10 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                      IterationControl = NULL, ...) {
     #seeAlso: https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R
     SeedVector <- getSeedVector(MCparam, SeedOptions)
-    Estimfct <- match.arg(Estimfct)
-    TemperedType <- match.arg(TemperedType)
+    Estimfct <- match.arg(arg = Estimfct,
+                          choices = c("ML", "GMM", "Cgmm", "GMC"))
+    TemperedType <- match.arg(arg = TemperedType, choices =
+                                c("Classic", "Subordinator","Normal"))
     nab <- nrow(ParameterMatrix)
     npar <- ncol(ParameterMatrix)
     lS <- length(SampleSizes)
@@ -262,8 +264,8 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     indexStatOutput <- 1
 
     if(MCparam != 1){
-      CheckPointValues <- readCheckPoint(ParameterMatrix, TemperedType, Estimfct,
-                                         nab, npar, lS, MCparam,
+      CheckPointValues <- readCheckPoint(ParameterMatrix, TemperedType,
+                                         Estimfct, nab, npar, lS, MCparam,
                                          eps = eps,
                                          algo = algo,
                                          regularization = regularization,
@@ -408,10 +410,30 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 #' simply pass all the parameters from the [TemperedEstim_Simulation()]
 #' function to this function in the same way.
 #'
-#' details
+#' In this function exactly the arguments must be passed, which are also needed
+#' for the function [TemperedEstim_Simulation()]. However, a few functions of
+#' [TemperedEstim_Simulation()] are not possible here. The restrictions are
+#' described in more detail for the individual arguments.
 #'
+#' In addition to the arguments of function [TemperedEstim_Simulation()], the
+#' argument "cores" can be assigned an integer value. This value determines how
+#' many different processes are to be parallelized. If no value is specified
+#' here, R tries to read out how many cores the processor has and passes this
+#' value to "cores".
+#'
+#' @param ParameterMatrix The matrix is to be composed of vectors, row by row.
+#' Each vector must fit the pattern of theta of the \code{TemperedType}.
+#' Compared to the function [TemperedEstim_Simulation()], the matrix here may
+#' contain only one parameter vector.
 #' @param MCparam Number of Monte Carlo simulation for each couple of parameter,
 #'  default=100; integer
+#' @param SampleSizes Sample sizes to be used to simulate the data. By default,
+#'  we use 200 (small sample size). Vector of integer. Compared to the function
+#'  [TemperedEstim_Simulation()], the vector here may contain only one integer.
+#' @param saveOutput Logical flag: In the function [TemperedEstim_Simulation()]
+#' the argument can be true. Then an external csv file is created. Here the
+#' argument must be false. The output of the values works in this function
+#' exclusively via the return of the function.
 #' @param cores size of cluster for parallelization. Positive Integer.
 #'
 #' @return The return object is a list of 2. Results of the simulation are
@@ -420,21 +442,49 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 #'@export
 #' @importFrom foreach %dopar%
 parallelizeMCsimulation <- function(
+    ParameterMatrix,
     MCparam = 10000,
+    SampleSizes = c(200),
+    saveOutput = FALSE,
     cores = NULL,
     ...){
-  #ParameterMatrix must have only 1 row
-  #SampleSize must be length == 1
-  #TemperedType must be either "Classic", "Subordinator", or "Normal"
-  #Estimfct must be  Either "ML", "GMM", "Cgmm", or "GMC".
-  #saveOutput = FALSE
-  #Bedingung für cores, dass es auch ein positiver int ist. Gedeckelt durch Anzahl der MC-runs
-  # SeedOptions wird von der Funktion benutzt und kann nicht übergeben werden
 
-  if (is.null(cores)){
+  if (!methods::hasArg(ParameterMatrix) || !methods::hasArg(SampleSizes)
+      || !methods::hasArg(TemperedType) || !methods::hasArg(Estimfct)
+      || !methods::hasArg(MCparam)){
+    stop("To perform a parallelization of the Monte Carlo simulation, all
+         parameters must be passed that are also necessary for the function
+         TemperedEstim_Simulation(). This includes at least ParameterMatrix,
+         SampleSize, TemperedType, MCparam and Estimfct.")
+  }
+
+  if (methods::hasArg(SeedOptions)){
+    stop("SeedOptions is used by the function and cannot be passed as an
+         argument")
+  }
+
+  if(is.null(ParameterMatrix) || nrow(ParameterMatrix) != 1){
+    stop("Compared to the function TemperedEstim_Simulation(), the matrix here
+    may contain only one parameter vector.")
+  }
+
+  if(is.null(SampleSizes) || length(SampleSizes) != 1){
+    stop("Compared to the function TemperedEstim_Simulation(), the SampleSizes
+    vector here may contain only one integer.")
+  }
+
+  if(is.null(saveOutput) || saveOutput){
+    stop("Compared to the function TemperedEstim_Simulation(), saveOutput
+    must be FALSE.")
+  }
+
+  if (is.null(cores) || cores < 1){
     cores <- parallel::detectCores()
   }
-  MCparam <- MCparam
+  if(MCparam < cores){
+    cores <- MCparam
+  }
+
   R <- MCparam #MonteCarloRuns
 
   cl <- parallel::makeCluster(cores)
@@ -456,7 +506,10 @@ parallelizeMCsimulation <- function(
 
   resultOfSimulation <- foreach::foreach(mc = 1:R, .combine = rbind)%dopar%{
     returnValue <- TemperedEstim_Simulation(
+      ParameterMatrix = ParameterMatrix,
       MCparam = 1,
+      SampleSizes = SampleSizes,
+      saveOutput = saveOutput,
       SeedOptions = list(MCtot = R, seedStart = mc),
       ... = ...
     )
