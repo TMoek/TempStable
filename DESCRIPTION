@@ -21,6 +21,9 @@ License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 Imports:
+    doParallel (>= 1.0.17),
+    doRNG (>= 1.8.2),
+    foreach (>= 1.5.2),
     methods (>= 4.1.2),
     moments (>= 0.14.1),
     numDeriv (>= 2016.8-1.1),

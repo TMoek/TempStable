@@ -421,6 +421,9 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 #' here, R tries to read out how many cores the processor has and passes this
 #' value to "cores".
 #'
+#' During the simulation, the progress of the simulation can be viewed in a
+#' file in the workspace named "IterationControlForParallelization.txt".
+#'
 #' @param ParameterMatrix The matrix is to be composed of vectors, row by row.
 #' Each vector must fit the pattern of theta of the \code{TemperedType}.
 #' Compared to the function [TemperedEstim_Simulation()], the matrix here may
@@ -434,7 +437,12 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 #' the argument can be true. Then an external csv file is created. Here the
 #' argument must be false. The output of the values works in this function
 #' exclusively via the return of the function.
+#' @param SeedOptions is an argument what can be used in
+#' [TemperedEstim_Simulation()] but must be NULL here.
 #' @param cores size of cluster for parallelization. Positive Integer.
+#' @param ... The function works only if all necessary arguments from the
+#' function [TemperedEstim_Simulation()] are passed. See description and
+#' details.
 #'
 #' @return The return object is a list of 2. Results of the simulation are
 #'  listed in \code{$outputMat}.
@@ -447,18 +455,11 @@ parallelizeMCsimulation <- function(
     SampleSizes = c(200),
     saveOutput = FALSE,
     cores = NULL,
+    SeedOptions = NULL,
     ...){
+  mc <- NULL
 
-  if (!methods::hasArg(ParameterMatrix) || !methods::hasArg(SampleSizes)
-      || !methods::hasArg(TemperedType) || !methods::hasArg(Estimfct)
-      || !methods::hasArg(MCparam)){
-    stop("To perform a parallelization of the Monte Carlo simulation, all
-         parameters must be passed that are also necessary for the function
-         TemperedEstim_Simulation(). This includes at least ParameterMatrix,
-         SampleSize, TemperedType, MCparam and Estimfct.")
-  }
-
-  if (methods::hasArg(SeedOptions)){
+  if (!is.null(SeedOptions)){
     stop("SeedOptions is used by the function and cannot be passed as an
          argument")
   }
@@ -525,7 +526,7 @@ parallelizeMCsimulation <- function(
   attr(resultOfSimulation, "doRNG_version") <- NULL
 
   #Delete txt file
-  unlink(x = base::paste("IterationControlForParallelization.txt"),
+  base::unlink(x = base::paste("IterationControlForParallelization.txt"),
          force = TRUE)
 
   return(resultOfSimulation)
