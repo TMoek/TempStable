@@ -14,24 +14,25 @@
 #'
 #' @section Brief describtion of functions:
 #'
-#'  \strong{TemperedEstim()} computes all the information about the
+#'  \strong{TemperedEstim()} [TemperedEstim()]computes all the information about the
 #' estimator. It allows the user to choose the preferred method and several
 #' related options.
 #'
 #' Characteristic function, density function, probability function and other
 #' functions for every tempered stable distribution mentioned above.
-#' E.g. charTSS(), dCTS(), ...
+#' E.g. [charTSS()], [dCTS()], ...
 #'
 #' \strong{Monte Carlo simulation:} a tool to run a Monte Carlo simulation
-#' (TemperedEstim_Simulation()) is provided and can save output files or
-#' produce statistical summary.
+#' [TemperedEstim_Simulation()] is provided and can save output files or
+#' produce statistical summary.To parallelize this function, you can use
+#' [parallelizeMCsimulation()].
 #'
 #'
 #' @examples
 #' ## basic example code
 #' # Such a simulation can take a very long time. Therefore, it can make sense
-#' # to parallelise after Monte Carlo runs. Parallelisation of the simulation is
-#' # not yet part of the package.
+#' # to parallelize after Monte Carlo runs. Parallelization of the simulation is
+#' # now possible with [parallelizeMCsimulation()].
 #'
 #' # For testing purposes, the amount of runs and parameters is greatly reduced.
 #' # Therefore, the result is not meaningful. To start a meaningful simulation,

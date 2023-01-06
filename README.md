@@ -63,21 +63,21 @@ res_CTS_ML_size10 <- TemperedEstim_Simulation(ParameterMatrix = rbind(thetaT),
                                                TemperedType = "Classic", Estimfct = "ML",
                                                saveOutput = FALSE)
 #> ---------------- Alpha=1.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- 
-#> *** Iter 1/10 *** Estimated Remaining Time: 0h2min6sec. *** 
-#> *** Iter 2/10 *** Estimated Remaining Time: 0h2min4sec. *** 
-#> *** Iter 3/10 *** Estimated Remaining Time: 0h4min8sec. *** 
-#> *** Iter 4/10 *** Estimated Remaining Time: 0h2min59sec. ***
+#> *** Iter 1/10 *** Estimated Remaining Time: 0h3min10sec. *** 
+#> *** Iter 2/10 *** Estimated Remaining Time: 0h3min8sec. *** 
+#> *** Iter 3/10 *** Estimated Remaining Time: 0h6min20sec. *** 
+#> *** Iter 4/10 *** Estimated Remaining Time: 0h4min37sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
 
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 5/10 *** Estimated Remaining Time: 0h0min45sec. ***
+#> *** Iter 5/10 *** Estimated Remaining Time: 0h1min10sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 6/10 *** Estimated Remaining Time: 0h0min30sec. *** 
-#> *** Iter 7/10 *** Estimated Remaining Time: 0h0min50sec. ***
+#> *** Iter 6/10 *** Estimated Remaining Time: 0h0min45sec. *** 
+#> *** Iter 7/10 *** Estimated Remaining Time: 0h1min19sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 8/10 *** Estimated Remaining Time: 0h0min15sec. ***
+#> *** Iter 8/10 *** Estimated Remaining Time: 0h0min23sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 9/10 *** Estimated Remaining Time: 0h0min8sec. ***
+#> *** Iter 9/10 *** Estimated Remaining Time: 0h0min12sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
 #> *** Iter 10/10 *** Estimated Remaining Time: 0h0min0sec. ***
 

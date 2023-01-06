@@ -214,9 +214,9 @@ consecutive estimation steps is smaller than RelativeErrMax;
 default = 1e-3.}
 }
 
-\strong{Parallelisation}  At the moment, parallelisation of the function is
-not yet implemented. If someone wants to parallelise the functions
-externally, the parameter \code{MCparam} must be set to \code{1} and the
+\strong{Parallelization}  Parallelization of the function is possible with
+using \code{\link[=parallelizeMCsimulation]{parallelizeMCsimulation()}}. If someone wants to parallelize the
+function manually, the parameter \code{MCparam} must be set to \code{1} and the
 parameter \code{SeedOption} must be changed for each iteration.
 
 Since this package is structurally based on the \strong{"StableEstim"

@@ -356,13 +356,12 @@ characteristic function procedures'
 <span class="r-in"><span><span class="fu">TemperedEstim</span><span class="op">(</span>TemperedType <span class="op">=</span> <span class="st">"Classic"</span>, EstimMethod <span class="op">=</span> <span class="st">"ML"</span>,</span></span>
 <span class="r-in"><span>               data <span class="op">=</span> <span class="fu"><a href="rCTS.html">rCTS</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1.5</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>               theta0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.5</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span> <span class="op">-</span> <span class="fl">0.1</span><span class="op">)</span>;</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Tempered Estim Classic, method Show *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ** Method ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Classic_ML_failed"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ML_OptimAlgo=L-BFGS-B"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ** Parameters Estimation ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    alpha  delta +  delta - lambda + lambda -       mu </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      NaN      NaN      NaN      NaN      NaN      NaN </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       alpha     delta +     delta -    lambda +    lambda -          mu </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1.93841752  0.00000100  0.07049272  8.41998326  7.23096754 -2.97692208 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ** Covariance Matrix Estimation ** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3] [,4] [,5] [,6]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    0    0    0    0    0    0</span>
@@ -384,9 +383,9 @@ characteristic function procedures'
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"level")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ** Estimation time ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] " :duration= 0  h, 0  min, 0  sec. "</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] " :duration= 0  h, 0  min, 8  sec. "</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ** Estimation status ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> failure</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> success</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ******* End Show (Tempered Estim Classic) ******* </span>
 <span class="r-in"><span><span class="fu">TemperedEstim</span><span class="op">(</span><span class="st">"Subordinator"</span>, <span class="st">"GMM"</span>, <span class="fu"><a href="rTSS.html">rTSS</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, algo <span class="op">=</span> <span class="st">"2SGMM"</span>,</span></span>
 <span class="r-in"><span>              alphaReg <span class="op">=</span> <span class="fl">0.01</span>, regularization <span class="op">=</span> <span class="st">"cut-off"</span>,</span></span>
@@ -397,7 +396,7 @@ characteristic function procedures'
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2SGMM_nb_t=12_alphaReg=0.01_regularization=cut-off_WeightingMatrix=OptAsym_t_scheme=free_OptimAlgo=nlminb"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ** Parameters Estimation ** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     alpha     delta    lambda </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.2294105 2.0323456 1.4709930 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5084724 1.1189486 1.3921384 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ** Covariance Matrix Estimation ** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    0    0    0</span>
@@ -429,8 +428,8 @@ characteristic function procedures'
 <span class="r-out co"><span class="r-pr">#&gt;</span> ** Method ** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Cgmm_algo=2SCgmm_alphaReg=0.01_OptimAlgo=nlminb_sd=20_IM=Uniform_RIL=unif_s_min=0_s_max=1"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ** Parameters Estimation ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         alpha          beta         delta        lambda            mu </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1.000249e-06  4.227803e+00  1.509025e+00  2.351399e+00 -1.520211e+00 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      alpha       beta      delta     lambda         mu </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.4043844 13.0958080  4.8742162 40.5663829 -8.4242642 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ** Covariance Matrix Estimation ** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3] [,4] [,5]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    0    0    0    0    0</span>
@@ -450,42 +449,15 @@ characteristic function procedures'
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"level")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ** Estimation time ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] " :duration= 0  h, 0  min, 3  sec. "</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] " :duration= 0  h, 0  min, 10  sec. "</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ** Estimation status ** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> success</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ******* End Show (Tempered Estim Normal) ******* </span>
 <span class="r-in"><span><span class="fu">TemperedEstim</span><span class="op">(</span><span class="st">"Subordinator"</span>, <span class="st">"GMC"</span>, <span class="fu"><a href="rTSS.html">rTSS</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, algo <span class="op">=</span> <span class="st">"2SGMC"</span>,</span></span>
 <span class="r-in"><span>              alphaReg <span class="op">=</span> <span class="fl">0.01</span>, WeightingMatrix <span class="op">=</span> <span class="st">"OptAsym"</span>,</span></span>
 <span class="r-in"><span>              regularization <span class="op">=</span> <span class="st">"cut-off"</span>, ncond <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>;</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>error during factorisation of matrix (dgefa);         singular matrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> diagonal element is zero </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>steady-state not reached</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Tempered Estim Sub, method Show *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ** Method ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2SGMC_ncond=8_alphaReg=0.01_regularization=cut-off_WeightingMatrix=OptAsym_OptimAlgo=nlminb"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ** Parameters Estimation ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    alpha    delta   lambda </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.000001 8.999338 2.110109 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ** Covariance Matrix Estimation ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    0    0    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0    0    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0    0    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ** Confidence interval Estimation ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confidence level= 0"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "data length= 20"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    0    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"level")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ** Estimation time ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] " :duration= 0  h, 0  min, 0  sec. "</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ** Estimation status ** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> success</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ******* End Show (Tempered Estim Sub) ******* </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (theta[1] &lt; 0) {    theta &lt;- theta0}:</span> missing value where TRUE/FALSE needed</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

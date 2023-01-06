@@ -104,9 +104,9 @@
 #'   default = 1e-3.}
 #' }
 #'
-#' \strong{Parallelisation}  At the moment, parallelisation of the function is
-#' not yet implemented. If someone wants to parallelise the functions
-#' externally, the parameter \code{MCparam} must be set to \code{1} and the
+#' \strong{Parallelization}  Parallelization of the function is possible with
+#' using [parallelizeMCsimulation()]. If someone wants to parallelize the
+#' function manually, the parameter \code{MCparam} must be set to \code{1} and the
 #' parameter \code{SeedOption} must be changed for each iteration.
 #'
 #' Since this package is structurally based on the \strong{"StableEstim"
@@ -447,7 +447,7 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 #' @return The return object is a list of 2. Results of the simulation are
 #'  listed in \code{$outputMat}.
 #'
-#'@export
+#' @export
 #' @importFrom foreach %dopar%
 parallelizeMCsimulation <- function(
     ParameterMatrix,
@@ -502,8 +502,6 @@ parallelizeMCsimulation <- function(
                           varlist = ls("package:TempStable",
                                                    all.names = TRUE),
                           envir = .GlobalEnv)
-
-  doRNG::registerDoRNG(123)
 
   resultOfSimulation <- foreach::foreach(mc = 1:R, .combine = rbind)%dopar%{
     returnValue <- TemperedEstim_Simulation(

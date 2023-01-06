@@ -333,9 +333,9 @@ consecutive estimation steps is smaller than RelativeErrMax;
 default = 1e-3.</p></dd>
 
 
-</dl><p><strong>Parallelisation</strong>  At the moment, parallelisation of the function is
-not yet implemented. If someone wants to parallelise the functions
-externally, the parameter <code>MCparam</code> must be set to <code>1</code> and the
+</dl><p><strong>Parallelization</strong>  Parallelization of the function is possible with
+using <code><a href="parallelizeMCsimulation.html">parallelizeMCsimulation()</a></code>. If someone wants to parallelize the
+function manually, the parameter <code>MCparam</code> must be set to <code>1</code> and the
 parameter <code>SeedOption</code> must be changed for each iteration.</p>
 <p>Since this package is structurally based on the <strong>"StableEstim"
 package by Tarak Kharrat and Georgi N. Boshnakov</strong>, more detailed
@@ -374,37 +374,37 @@ characteristic function' <a href="https://doi.org/10.1017/S0266466616000025" cla
 <span class="r-in"><span>                         TemperedType <span class="op">=</span> <span class="st">"Classic"</span>, Estimfct <span class="op">=</span> <span class="st">"ML"</span>,</span></span>
 <span class="r-in"><span>                         saveOutput <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------- Alpha=1.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/10 *** Estimated Remaining Time: 0h1min25sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/10 *** Estimated Remaining Time: 0h1min25sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/10 *** Estimated Remaining Time: 0h2min53sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/10 *** Estimated Remaining Time: 0h2min16sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/10 *** Estimated Remaining Time: 0h2min58sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/10 *** Estimated Remaining Time: 0h3min1sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/10 *** Estimated Remaining Time: 0h6min4sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/10 *** Estimated Remaining Time: 0h4min23sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 5/10 *** Estimated Remaining Time: 0h0min32sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 5/10 *** Estimated Remaining Time: 0h1min7sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 6/10 *** Estimated Remaining Time: 0h0min21sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 7/10 *** Estimated Remaining Time: 0h0min36sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 6/10 *** Estimated Remaining Time: 0h0min42sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 7/10 *** Estimated Remaining Time: 0h1min21sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 8/10 *** Estimated Remaining Time: 0h0min10sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 8/10 *** Estimated Remaining Time: 0h0min22sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 9/10 *** Estimated Remaining Time: 0h0min5sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 9/10 *** Estimated Remaining Time: 0h0min11sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 10/10 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------- Alpha=0.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/10 *** Estimated Remaining Time: 0h2min6sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/10 *** Estimated Remaining Time: 0h5min51sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/10 *** Estimated Remaining Time: 0h0min25sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/10 *** Estimated Remaining Time: 0h0min52sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/10 *** Estimated Remaining Time: 0h0min9sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/10 *** Estimated Remaining Time: 0h0min19sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/10 *** Estimated Remaining Time: 0h0min33sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/10 *** Estimated Remaining Time: 0h1min12sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 5/10 *** Estimated Remaining Time: 0h0min9sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 6/10 *** Estimated Remaining Time: 0h1min16sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 5/10 *** Estimated Remaining Time: 0h0min15sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 6/10 *** Estimated Remaining Time: 0h2min37sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 7/10 *** Estimated Remaining Time: 0h0min23sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 8/10 *** Estimated Remaining Time: 0h0min22sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 9/10 *** Estimated Remaining Time: 0h0min15sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 7/10 *** Estimated Remaining Time: 0h0min48sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 8/10 *** Estimated Remaining Time: 0h0min48sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 9/10 *** Estimated Remaining Time: 0h0min33sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 10/10 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outputMat</span>
@@ -430,25 +430,25 @@ characteristic function' <a href="https://doi.org/10.1017/S0266466616000025" cla
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19,]    0.5       1       1        1        1   0        10    9 0.0000010</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20,]    0.5       1       1        1        1   0        10    2       NaN</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          delta+E    delta-E    lambda+E  lambda-E         muE failure  time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]  0.6422503  0.4339281 1.113048701 0.3424624 -0.51469069       0  9.36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]  0.9534560  0.1873769 0.820703768 0.3572749  0.98222314       0 10.63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]  0.0000010 16.2718628 6.507556463 2.6364859  1.11577311       0 24.70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]  0.0000010  6.0584029 0.019151849 3.5772032 -0.07073078       0 22.70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]  0.6422503  0.4339281 1.113048701 0.3424624 -0.51469069       0 19.77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]  0.9534512  0.1874224 0.820659245 0.3573659  0.98227225       0 22.59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]  0.0000010 16.2718628 6.507556463 2.6364859  1.11577311       0 52.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]  0.0000010  6.0584029 0.019151849 3.5772032 -0.07073078       0 43.81</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]        NaN        NaN         NaN       NaN         NaN       1  0.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]        NaN        NaN         NaN       NaN         NaN       1  0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,] 16.7686506  0.0000010 2.822096764 5.8613166  0.53310815       0 12.07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,] 16.7686506  0.0000010 2.822096764 5.8613166  0.53310815       0 26.86</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]        NaN        NaN         NaN       NaN         NaN       1  0.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]        NaN        NaN         NaN       NaN         NaN       1  0.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10,]        NaN        NaN         NaN       NaN         NaN       1  0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11,]  0.3292384  0.7041044 1.170582677 2.7906080 -0.09748521       0 14.03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11,]  0.3294759  0.7038471 1.168866691 2.7851732 -0.09727607       0 38.93</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [12,]        NaN        NaN         NaN       NaN         NaN       1  0.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13,]        NaN        NaN         NaN       NaN         NaN       1  0.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [14,]        NaN        NaN         NaN       NaN         NaN       1  0.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [15,]        NaN        NaN         NaN       NaN         NaN       1  0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16,]  0.0000010 15.3241450 0.002254388 3.1897304 -0.20528197       0 19.03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16,]  0.0000010 15.3240499 0.002306115 3.1896860 -0.20533131       0 39.34</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17,]        NaN        NaN         NaN       NaN         NaN       1  0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18,]  1.0845178  0.0000010 0.953728035 1.6255790  0.09580610       0 10.89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19,]  0.2427847  0.6376896 0.753585927 0.6469205  0.28425570       0 15.03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18,]  1.0845178  0.0000010 0.953728035 1.6255790  0.09580610       0 23.91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19,]  0.2427847  0.6376896 0.753585927 0.6469205  0.28425570       0 33.22</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20,]        NaN        NaN         NaN       NaN         NaN       1  0.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
@@ -461,170 +461,170 @@ characteristic function' <a href="https://doi.org/10.1017/S0266466616000025" cla
 <span class="r-in"><span>                         alphaReg <span class="op">=</span> <span class="fl">0.005</span>,</span></span>
 <span class="r-in"><span>                         t_free <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">2</span>,length.out<span class="op">=</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------- Alpha=1.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/40 *** Estimated Remaining Time: 0h0min50sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/40 *** Estimated Remaining Time: 0h0min46sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/40 *** Estimated Remaining Time: 0h0min34sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/40 *** Estimated Remaining Time: 0h0min31sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 5/40 *** Estimated Remaining Time: 0h0min14sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 6/40 *** Estimated Remaining Time: 0h1min12sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 7/40 *** Estimated Remaining Time: 0h0min23sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 8/40 *** Estimated Remaining Time: 0h0min51sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 9/40 *** Estimated Remaining Time: 0h0min52sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 10/40 *** Estimated Remaining Time: 0h0min20sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 11/40 *** Estimated Remaining Time: 0h0min18sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 12/40 *** Estimated Remaining Time: 0h0min15sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 13/40 *** Estimated Remaining Time: 0h0min19sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 14/40 *** Estimated Remaining Time: 0h0min11sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 15/40 *** Estimated Remaining Time: 0h0min24sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 16/40 *** Estimated Remaining Time: 0h0min15sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 17/40 *** Estimated Remaining Time: 0h0min10sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 18/40 *** Estimated Remaining Time: 0h0min13sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 19/40 *** Estimated Remaining Time: 0h0min34sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 20/40 *** Estimated Remaining Time: 0h0min24sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 21/40 *** Estimated Remaining Time: 0h0min15sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 22/40 *** Estimated Remaining Time: 0h0min11sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 23/40 *** Estimated Remaining Time: 0h0min30sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 24/40 *** Estimated Remaining Time: 0h0min14sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 25/40 *** Estimated Remaining Time: 0h0min9sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 26/40 *** Estimated Remaining Time: 0h0min11sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 27/40 *** Estimated Remaining Time: 0h0min20sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 28/40 *** Estimated Remaining Time: 0h0min7sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 29/40 *** Estimated Remaining Time: 0h0min9sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 30/40 *** Estimated Remaining Time: 0h0min5sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 31/40 *** Estimated Remaining Time: 0h0min4sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 32/40 *** Estimated Remaining Time: 0h0min6sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 33/40 *** Estimated Remaining Time: 0h0min8sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 34/40 *** Estimated Remaining Time: 0h0min5sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 35/40 *** Estimated Remaining Time: 0h0min3sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 36/40 *** Estimated Remaining Time: 0h0min2sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 37/40 *** Estimated Remaining Time: 0h0min2sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 38/40 *** Estimated Remaining Time: 0h0min2sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 39/40 *** Estimated Remaining Time: 0h0min2sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/40 *** Estimated Remaining Time: 0h1min32sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/40 *** Estimated Remaining Time: 0h1min46sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/40 *** Estimated Remaining Time: 0h1min8sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/40 *** Estimated Remaining Time: 0h1min3sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 5/40 *** Estimated Remaining Time: 0h0min31sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 6/40 *** Estimated Remaining Time: 0h2min31sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 7/40 *** Estimated Remaining Time: 0h0min42sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 8/40 *** Estimated Remaining Time: 0h1min59sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 9/40 *** Estimated Remaining Time: 0h1min41sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 10/40 *** Estimated Remaining Time: 0h0min34sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 11/40 *** Estimated Remaining Time: 0h0min33sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 12/40 *** Estimated Remaining Time: 0h0min35sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 13/40 *** Estimated Remaining Time: 0h0min33sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 14/40 *** Estimated Remaining Time: 0h0min24sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 15/40 *** Estimated Remaining Time: 0h0min30sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 16/40 *** Estimated Remaining Time: 0h0min31sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 17/40 *** Estimated Remaining Time: 0h0min22sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 18/40 *** Estimated Remaining Time: 0h0min23sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 19/40 *** Estimated Remaining Time: 0h1min11sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 20/40 *** Estimated Remaining Time: 0h0min50sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 21/40 *** Estimated Remaining Time: 0h0min28sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 22/40 *** Estimated Remaining Time: 0h0min21sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 23/40 *** Estimated Remaining Time: 0h1min0sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 24/40 *** Estimated Remaining Time: 0h0min27sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 25/40 *** Estimated Remaining Time: 0h0min16sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 26/40 *** Estimated Remaining Time: 0h0min21sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 27/40 *** Estimated Remaining Time: 0h0min32sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 28/40 *** Estimated Remaining Time: 0h0min13sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 29/40 *** Estimated Remaining Time: 0h0min18sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 30/40 *** Estimated Remaining Time: 0h0min8sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 31/40 *** Estimated Remaining Time: 0h0min8sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 32/40 *** Estimated Remaining Time: 0h0min11sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 33/40 *** Estimated Remaining Time: 0h0min19sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 34/40 *** Estimated Remaining Time: 0h0min10sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 35/40 *** Estimated Remaining Time: 0h0min6sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 36/40 *** Estimated Remaining Time: 0h0min4sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 37/40 *** Estimated Remaining Time: 0h0min4sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 38/40 *** Estimated Remaining Time: 0h0min4sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 39/40 *** Estimated Remaining Time: 0h0min3sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 40/40 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outputMat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       alphaT delta+T delta-T lambda+T lambda-T muT data size seed       alphaE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]    1.5       1       1        1        1   0        40   93 1.032407e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]    1.5       1       1        1        1   0        40   93 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]    1.5       1       1        1        1   0        40   87 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]    1.5       1       1        1        1   0        40   83 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]    1.5       1       1        1        1   0        40   95 4.815543e-01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]    1.5       1       1        1        1   0        40   21 1.000000e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]    1.5       1       1        1        1   0        40   50 1.149583e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]    1.5       1       1        1        1   0        40   50 1.320234e+00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]    1.5       1       1        1        1   0        40   60 1.000000e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]    1.5       1       1        1        1   0        40   84 1.140006e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]    1.5       1       1        1        1   0        40   28 7.695203e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]    1.5       1       1        1        1   0        40  104 1.007927e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]    1.5       1       1        1        1   0        40   84 1.140703e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]    1.5       1       1        1        1   0        40   28 4.069148e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]    1.5       1       1        1        1   0        40  104 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [11,]    1.5       1       1        1        1   0        40   97 1.000000e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [12,]    1.5       1       1        1        1   0        40  105 1.000000e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12,]    1.5       1       1        1        1   0        40  105 1.000002e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13,]    1.5       1       1        1        1   0        40   66 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [14,]    1.5       1       1        1        1   0        40   89 1.000000e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15,]    1.5       1       1        1        1   0        40   90 1.038321e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15,]    1.5       1       1        1        1   0        40   90 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [16,]    1.5       1       1        1        1   0        40   19 1.353216e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17,]    1.5       1       1        1        1   0        40   37 1.000238e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17,]    1.5       1       1        1        1   0        40   37 1.000164e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [18,]    1.5       1       1        1        1   0        40    3 1.000000e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19,]    1.5       1       1        1        1   0        40   69 8.626621e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19,]    1.5       1       1        1        1   0        40   69 9.198965e-02</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20,]    1.5       1       1        1        1   0        40  109 1.197901e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [21,]    1.5       1       1        1        1   0        40   45 1.000792e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [22,]    1.5       1       1        1        1   0        40   47 1.010584e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [23,]    1.5       1       1        1        1   0        40   61 9.582554e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23,]    1.5       1       1        1        1   0        40   61 8.911980e-01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [24,]    1.5       1       1        1        1   0        40   33 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25,]    1.5       1       1        1        1   0        40  120 1.000000e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [26,]    1.5       1       1        1        1   0        40   32 1.000000e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [27,]    1.5       1       1        1        1   0        40   16 1.000000e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [26,]    1.5       1       1        1        1   0        40   32 1.439096e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [27,]    1.5       1       1        1        1   0        40   16 1.994502e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [28,]    1.5       1       1        1        1   0        40   40 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [29,]    1.5       1       1        1        1   0        40   94 1.587891e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [30,]    1.5       1       1        1        1   0        40    7 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [31,]    1.5       1       1        1        1   0        40   96 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [32,]    1.5       1       1        1        1   0        40   27 1.551562e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [33,]    1.5       1       1        1        1   0        40  103 1.000003e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [34,]    1.5       1       1        1        1   0        40   75 1.069226e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [33,]    1.5       1       1        1        1   0        40  103 1.000000e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [34,]    1.5       1       1        1        1   0        40   75 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [35,]    1.5       1       1        1        1   0        40   91 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [36,]    1.5       1       1        1        1   0        40  108 1.000811e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [37,]    1.5       1       1        1        1   0        40   26 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [38,]    1.5       1       1        1        1   0        40    2 1.000000e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [39,]    1.5       1       1        1        1   0        40   18 1.000000e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [40,]    1.5       1       1        1        1   0        40  117 1.000602e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            delta+E      delta-E   lambda+E    lambda-E          muE failure</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]   0.00000100  64.11872497 22.1018927   5.5082741  0.109223359       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]   4.19309058  48.04829165 77.7186423   4.0355932 -0.121550018       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]  13.08918513   0.00000100  1.8677723   5.3622481  0.302623916       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]   6.40873708   0.00000100  1.4829395  41.7512614  0.366742666       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]   0.00000100   5.29375629  3.4646052   1.1853736 -0.069630379       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,] 131.39585295   0.09974619  7.4462090   0.1318159 -0.459865241       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]   0.11180214   3.66748145  0.2660403   1.3036934 -0.266751923       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]  20.15360735  48.13213424 56.0822491  71.4401084  0.003582456       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]   1.46600846  42.18510791  0.6483973  12.2924346  0.193952669       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]   1.27000927   3.28167991  1.0263134   1.2410908 -0.082686339       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11,]   0.06262066   2.35061797  0.2137002   0.8257519  0.049505138       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [12,]   1.62066114   0.40507283  0.8673380   0.5851388 -0.922087273       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13,]   0.60985693   3.11564799  0.6386286   0.9529515 -0.546435135       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14,]   1.56655224   0.91937369  1.0199150   0.7784263  0.048132692       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15,]   2.95953291   1.58677691  1.0231564   2.5196932 -0.363600292       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16,]  18.98977132  20.49012734  6.0221119   2.3629321  0.149728589       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17,]   0.59987315   1.02234775  0.6025759   0.6973580 -0.346772939       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18,]   1.24296274   0.71380250  0.8281116   0.4321607 -0.370458835       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19,] 107.95484097   0.00000100  5.8692944   6.1325934 -0.233891738       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20,]   0.35885387   2.33273012  0.4169530   1.0509957 -0.277032852       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [21,]   0.43248855   1.87411487  0.5043396   0.7311574  0.407521837       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22,]   3.20016789   0.59615479  1.6647849   0.5510478 -0.370861641       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [23,]  22.49945436   0.00000100  8.3888861 272.7474581 -0.686279338       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [24,]   0.00000100   9.19750854  6.2930264   1.5115818 -0.151779896       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25,]   1.70087107   1.52200416  0.9718651   0.9031965 -0.487400194       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [26,]  17.12091111   0.02582529  2.3376815  24.4518720  0.543458797       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [27,]  44.40018128   1.18276627  3.9553470  93.8413400  0.339788710       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [28,]   0.89267429   0.70592211  0.5220227   0.6838168  0.700483723       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29,]   0.00000100  24.55073003  7.3079622   3.0760665  0.160631202       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [30,]   0.38330472   4.91720218  0.5273256   2.2034317  0.048697854       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [31,]   0.00000100   3.46090704  2.9001893   0.9372084 -0.069814512       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [32,]   4.93755601   6.22235601  2.8473295   1.4939591  0.040308377       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [33,]   6.29226270   0.00000100  1.1915922   2.2236042  0.224974873       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [34,]  26.91154697   0.02476123  3.6863457  12.8956999  0.186534441       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [35,]   1.06648313   2.56510895  0.6102690   1.6188488  0.070600018       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36,]   0.73208472   1.18411623  0.6724073   0.7735817 -0.041337968       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [37,]   0.44684953   3.94825632  0.5685245   1.0812749 -0.239215365       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [38,]   9.91100805   0.04848395  1.7976917   0.2283979  0.510197601       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [39,]   2.18530615 111.92420422  0.7350997  19.7772446 -0.136694266       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [40,] 215.69576273   0.00000100  7.7989331  20.0050891 -0.561152059       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [40,]    1.5       1       1        1        1   0        40  117 1.000000e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            delta+E      delta-E    lambda+E     lambda-E         muE failure</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]   0.00000100 6.120422e+01  22.4107867 5.378148e+00  0.10875302       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]   4.77608256 5.156961e+01  88.5183117 4.188004e+00 -0.12279286       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]  13.08918513 1.000000e-06   1.8677723 5.362248e+00  0.30262392       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]   6.40873708 1.000000e-06   1.4829395 4.175126e+01  0.36674267       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]   0.00000100 5.293756e+00   3.4646052 1.185374e+00 -0.06963038       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,] 100.40553695 2.813864e-01 358.1511264 6.191061e-03 -0.46602784       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]   0.11180214 3.667481e+00   0.2660403 1.303693e+00 -0.26675192       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]  17.90701008 3.990714e+01  46.9531681 5.904474e+01  0.00356567       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]   1.70987614 1.107431e+02   0.8057242 1.215474e+01  0.19441068       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]   1.30098064 3.243356e+00   1.0377756 1.233805e+00 -0.08296592       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11,]   0.06262066 2.350618e+00   0.2137002 8.257519e-01  0.04950514       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12,]   1.61436862 4.062290e-01   0.8651233 5.861872e-01 -0.92173887       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13,]   0.60985693 3.115648e+00   0.6386286 9.529515e-01 -0.54643514       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14,]   1.56655224 9.193737e-01   1.0199150 7.784263e-01  0.04813269       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15,]   3.15725271 7.210207e-01   1.0517741 1.826896e+00 -0.36597059       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16,]  18.98977132 2.049013e+01   6.0221119 2.362932e+00  0.14972859       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17,]   0.59947297 1.021494e+00   0.6023489 6.969417e-01 -0.34689935       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18,]   1.24296274 7.138025e-01   0.8281116 4.321607e-01 -0.37045883       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19,] 105.84517500 1.000000e-06   5.8330986 6.126585e+00 -0.23392950       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20,]   0.35885387 2.332730e+00   0.4169530 1.050996e+00 -0.27703285       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21,]   0.43248855 1.874115e+00   0.5043396 7.311574e-01  0.40752184       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22,]   3.20016789 5.961548e-01   1.6647849 5.510478e-01 -0.37086164       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23,]  26.08311924 1.000000e-06   8.2051982 2.987322e+02 -0.68633578       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [24,]   0.00000100 9.197509e+00   6.2930264 1.511582e+00 -0.15177990       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25,]   1.70087107 1.522004e+00   0.9718651 9.031965e-01 -0.48740019       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [26,]  17.35321902 2.088350e-02   2.3549137 2.481128e+01  0.54299708       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [27,]  44.82803870 6.297276e-02   3.9722545 9.651572e+01  0.34009151       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [28,]   0.89267429 7.059221e-01   0.5220227 6.838168e-01  0.70048372       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29,]   0.00000100 2.455073e+01   7.3079622 3.076066e+00  0.16063120       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [30,]   0.38330472 4.917202e+00   0.5273256 2.203432e+00  0.04869785       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [31,]   0.00000100 3.460907e+00   2.9001893 9.372084e-01 -0.06981451       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [32,]   4.93755601 6.222356e+00   2.8473295 1.493959e+00  0.04030838       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [33,]   6.07652247 1.000000e-06   1.1686294 3.216626e+00  0.22169273       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [34,]  26.52890992 1.879483e-04   3.6710066 1.286241e+01  0.18605828       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [35,]   1.06648313 2.565109e+00   0.6102690 1.618849e+00  0.07060002       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [36,]   0.73208472 1.184116e+00   0.6724073 7.735817e-01 -0.04133797       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [37,]   0.44684953 3.948256e+00   0.5685245 1.081275e+00 -0.23921536       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [38,]   9.85420514 4.909340e-02   1.7927841 2.308988e-01  0.51049807       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [39,]   2.18530615 1.119242e+02   0.7350997 1.977724e+01 -0.13669427       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [40,] 232.49867233 1.868291e-02   8.1049341 8.522688e+01 -0.56169718       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,] 1.26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,] 1.20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,] 0.91</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,] 0.86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,] 0.39</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,] 2.11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,] 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,] 1.59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,] 1.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10,] 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11,] 0.61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [12,] 0.53</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13,] 0.71</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14,] 0.44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15,] 0.94</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16,] 0.62</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17,] 0.45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18,] 0.60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19,] 1.62</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20,] 1.22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [21,] 0.76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22,] 0.63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [23,] 1.79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [24,] 0.90</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25,] 0.56</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [26,] 0.77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [27,] 1.50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [28,] 0.60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29,] 0.84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [30,] 0.47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [31,] 0.42</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [32,] 0.75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [33,] 1.15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [34,] 0.83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [35,] 0.61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36,] 0.58</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [37,] 0.78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [38,] 1.21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [39,] 1.61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [40,] 2.06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,] 2.36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,] 2.77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,] 1.83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,] 1.74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,] 0.86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,] 4.45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,] 1.26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,] 3.70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,] 3.23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10,] 1.14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11,] 1.15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12,] 1.23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13,] 1.22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14,] 0.92</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15,] 1.19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16,] 1.30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17,] 0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18,] 1.03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19,] 3.37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20,] 2.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21,] 1.48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22,] 1.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23,] 3.53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [24,] 1.70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25,] 1.08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [26,] 1.46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [27,] 2.42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [28,] 1.08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29,] 1.60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [30,] 0.78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [31,] 0.85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [32,] 1.35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [33,] 2.78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [34,] 1.59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [35,] 1.11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [36,] 1.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [37,] 1.49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [38,] 2.14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [39,] 3.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [40,] 4.45</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">TemperedEstim_Simulation</span><span class="op">(</span>ParameterMatrix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.45</span>,<span class="fl">0.55</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
@@ -636,21 +636,21 @@ characteristic function' <a href="https://doi.org/10.1017/S0266466616000025" cla
 <span class="r-in"><span>                         randomIntegrationLaw <span class="op">=</span> <span class="st">"unif"</span>,</span></span>
 <span class="r-in"><span>                         s_min <span class="op">=</span> <span class="fl">0</span>, s_max<span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------- Alpha=1.45 *** DeltaP=0.55 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/4 *** Estimated Remaining Time: 0h0min2sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/4 *** Estimated Remaining Time: 0h0min2sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/4 *** Estimated Remaining Time: 0h0min1sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/4 *** Estimated Remaining Time: 0h0min3sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/4 *** Estimated Remaining Time: 0h0min5sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/4 *** Estimated Remaining Time: 0h0min3sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/4 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outputMat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      alphaT delta+T delta-T lambda+T lambda-T muT data size seed   alphaE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   1.45    0.55       1        1        1   0         4    7 0.537590</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   1.45    0.55       1        1        1   0         4    3 1.298427</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   1.45    0.55       1        1        1   0         4    3 1.298441</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   1.45    0.55       1        1        1   0         4    5 1.777365</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]   1.45    0.55       1        1        1   0         4    2 1.231844</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]   1.45    0.55       1        1        1   0         4    2 1.258112</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        delta+E   delta-E lambda+E lambda-E        muE failure time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.1227878 0.3741399 1.018714 1.310856 -1.0111589       0 0.61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4712832 0.0000010 1.434854 1.656058  0.7931241       0 1.19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1642108 0.0000010 1.657464 1.866165 -0.7490188       0 1.39</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.0000010 2.8481252 1.648827 3.459522 -0.9115966       0 2.47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.1227878 0.3741399 1.018714 1.310856 -1.0111589       0 0.87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4712582 0.0000010 1.434787 1.656026  0.7931246       0 2.55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1642108 0.0000010 1.657464 1.866165 -0.7490188       0 2.62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.0000010 2.6877508 1.644431 3.476055 -0.9106118       0 5.14</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">TemperedEstim_Simulation</span><span class="op">(</span>ParameterMatrix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.45</span>,<span class="fl">0.55</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
@@ -660,21 +660,21 @@ characteristic function' <a href="https://doi.org/10.1017/S0266466616000025" cla
 <span class="r-in"><span>                         alphaReg <span class="op">=</span> <span class="fl">0.01</span>, WeightingMatrix <span class="op">=</span> <span class="st">"OptAsym"</span>,</span></span>
 <span class="r-in"><span>                         regularization <span class="op">=</span> <span class="st">"cut-off"</span>, ncond <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------- Alpha=1.45 *** DeltaP=0.55 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/4 *** Estimated Remaining Time: 0h0min3sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/4 *** Estimated Remaining Time: 0h0min3sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/4 *** Estimated Remaining Time: 0h0min0sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/4 *** Estimated Remaining Time: 0h0min5sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/4 *** Estimated Remaining Time: 0h0min5sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/4 *** Estimated Remaining Time: 0h0min1sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/4 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outputMat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      alphaT delta+T delta-T lambda+T lambda-T muT data size seed    alphaE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   1.45    0.55       1        1        1   0         4    7 1.0071494</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   1.45    0.55       1        1        1   0         4    3 0.2555984</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   1.45    0.55       1        1        1   0         4    3 0.2554630</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   1.45    0.55       1        1        1   0         4    5 0.9999964</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,]   1.45    0.55       1        1        1   0         4    2 1.6603913</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        delta+E      delta-E  lambda+E  lambda-E         muE failure time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.000001 1.000000e-06 11.093087 10.168951  -0.8131496       0 0.95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 13.088435 5.305584e+04  2.990510 87.780647 -11.5502957       0 1.36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.000001 1.000000e-06  6.911297  5.968896  -0.6495758       0 0.41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]  0.000001 3.237970e-03  1.854717  2.373008  -0.4168512       0 0.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.000001 1.000000e-06 11.093087 10.168951  -0.8131496       0 1.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 13.182909 5.849044e+04  2.993486 93.064799 -11.5293848       0 2.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.000001 1.000000e-06  6.911297  5.968896  -0.6495758       0 0.72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]  0.000001 3.237970e-03  1.854717  2.373008  -0.4168512       0 0.25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
