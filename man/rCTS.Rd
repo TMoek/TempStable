@@ -13,7 +13,7 @@ rCTS(
   lambdam = NULL,
   mu = NULL,
   theta = NULL,
-  method = "aAR",
+  methodR = "aAR",
   k = 10000,
   c = 1
 )
@@ -35,12 +35,12 @@ rCTS(
 
 \item{theta}{Parameters stacked as a vector.}
 
-\item{method}{A String. Either "aAR" or "SR".}
+\item{methodR}{A String. Either "aAR" or "SR".}
 
-\item{k}{integer: the level of truncation, if \code{method == "SR"}. 10000
+\item{k}{integer: the level of truncation, if \code{methodR == "SR"}. 10000
 by default.}
 
-\item{c}{A real number. Only relevant for \code{method == "aAR"}.
+\item{c}{A real number. Only relevant for \code{methodR == "aAR"}.
 1 by default.}
 }
 \value{

@@ -657,10 +657,10 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @param lambdam Tempering parameter for the left tail. A real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta Parameters stacked as a vector.
-#' @param method A String. Either "aAR" or "SR".
-#' @param k integer: the level of truncation, if \code{method == "SR"}. 10000
+#' @param methodR A String. Either "aAR" or "SR".
+#' @param k integer: the level of truncation, if \code{methodR == "SR"}. 10000
 #' by default.
-#' @param c A real number. Only relevant for \code{method == "aAR"}.
+#' @param c A real number. Only relevant for \code{methodR == "aAR"}.
 #' 1 by default.
 #'
 #' @return Generates \code{n} random numbers.
@@ -677,7 +677,7 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #'
 #' @export
 rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
-                 lambdam = NULL, mu = NULL, theta = NULL, method = "aAR",
+                 lambdam = NULL, mu = NULL, theta = NULL, methodR = "aAR",
                  k = 10000, c = 1) {
     if ((missing(alpha) | missing(deltap) | missing(deltam) | missing(lambdap) |
          missing(lambdam) | missing(mu)) & is.null(theta))
@@ -699,7 +699,7 @@ rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
     stopifnot(0 < alpha, alpha < 2, 0 < deltap, 0 < deltam, 0 < lambdap, 0 <
                 lambdam)
 
-    x <- switch(method,
+    x <- switch(methodR,
                 aAR = rCTS_aAR(n = n, alpha = alpha, deltap = deltap,
                                        deltam = deltam, lambdap = lambdap,
                                        lambdam = lambdam, mu = mu, c = c),

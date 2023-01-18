@@ -609,13 +609,13 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         if (TemperedType == "Classic") {
           x <- rCTS(n = size, alpha = thetaT[1], deltap = thetaT[2],
                     deltam = thetaT[3], lambdap = thetaT[4],
-                    lambdam = thetaT[5], mu = thetaT[6])
+                    lambdam = thetaT[5], mu = thetaT[6], ...)
         } else if (TemperedType == "Subordinator") {
           x <- rTSS(n = size, alpha = thetaT[1], delta = thetaT[2],
-                    lambda = thetaT[3])
+                    lambda = thetaT[3], ...)
         } else if (TemperedType == "Normal") {
           x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
-                    delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5])
+                    delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5], ...)
         }
 
         # else {
