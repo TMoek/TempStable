@@ -159,7 +159,7 @@
 #' (uniform optimal placement), \code{"ArithOpt"} (arithmetic optimal
 #' placement), \code{"Var Opt"} (optimal variance placement) and \code{"free"}
 #' (users need to pass their own set of points in ...).
-#' @param alphaReg value of the regularisation parameter; numeric.
+#' @param alphaReg value of the regularisation parameter; numeric. Example Value could be ==0.01.
 #' @param t_free sequence, if \code{t_scheme=="free"}.
 #' @param subdivisions 	Number of subdivisions used to compute the different
 #' integrals involved in the computation of the objective function for the Cgmm method (to
@@ -192,7 +192,7 @@
 #'               WeightingMatrix = "OptAsym", t_scheme = "free",
 #'               t_free = seq(0.1,2,length.out = 12));
 #' TemperedEstim("Normal", "Cgmm", rNTS(20,0.5,1,1,1,0), algo = "2SCgmm",
-#'               alphaReg = 0.01, subdivisions = 20,
+#'               alphaReg = 0.01, subdivisions = 50,
 #'               IntegrationMethod = "Uniform", randomIntegrationLaw = "unif",
 #'               s_min = 0, s_max= 1);
 #' TemperedEstim("Subordinator", "GMC", rTSS(20, 0.5, 1, 1), algo = "2SGMC",

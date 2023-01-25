@@ -1,6 +1,6 @@
 ##### ML#####
 .asymptoticVarianceEstimML_CTS <- function(data, EstimObj,
-                                           type = "Subordinator",
+                                           type = "Classic",
                                            eps,
                                            algo,
                                            regularization,
@@ -39,7 +39,7 @@
 }
 
 asymptoticVarianceEstimML_CTS <- function(thetaEst, n_sample,
-                                          type = "Subordinator",
+                                          type = "Classic",
                                           subdivisions = 100,
                                           eps,
                                           algo,
@@ -95,7 +95,7 @@ NumDeriv_jacobian_CTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
 
 ##### GMM#####
 .asymptoticVarianceEstimGMM_CTS <- function(data, EstimObj,
-                                            type = "Subordinator", eps,
+                                            type = "Classic", eps,
                                             algo,
                                             regularization,
                                             WeightingMatrix,
@@ -136,7 +136,7 @@ NumDeriv_jacobian_CTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
 
 ##### CGMM#####
 .asymptoticVarianceEstimCgmm_CTS <- function(data, EstimObj,
-                                             type = "Subordinator",
+                                             type = "Classic",
                                              eps,
                                              algo,
                                              regularization,
@@ -197,7 +197,7 @@ ComputeCovarianceCgmm_CTS <- function(theta, Cmat = NULL, x, alphaReg,
 
 ##### GMC#####
 .asymptoticVarianceEstimGMC_CTS <- function(data, EstimObj,
-                                            type = "Subordinator", eps,
+                                            type = "Classic", eps,
                                             algo,
                                             regularization,
                                             WeightingMatrix,

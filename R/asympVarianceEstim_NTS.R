@@ -1,6 +1,6 @@
 ##### ML#####
 .asymptoticVarianceEstimML_NTS <- function(data, EstimObj,
-                                           type = "Subordinator",
+                                           type = "Normal",
                                            eps,
                                            algo,
                                            regularization,
@@ -39,7 +39,7 @@
 }
 
 asymptoticVarianceEstimML_NTS <- function(thetaEst, n_sample,
-                                          type = "Subordinator",
+                                          type = "Normal",
                                           subdivisions = 100,
                                           eps,
                                           algo,
@@ -95,7 +95,7 @@ NumDeriv_jacobian_NTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
 
 ##### GMM#####
 .asymptoticVarianceEstimGMM_NTS <- function(data, EstimObj,
-                                            type = "Subordinator", eps,
+                                            type = "Normal", eps,
                                             algo,
                                             regularization,
                                             WeightingMatrix,
@@ -136,7 +136,7 @@ NumDeriv_jacobian_NTS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
 
 ##### CGMM#####
 .asymptoticVarianceEstimCgmm_NTS <- function(data, EstimObj,
-                                             type = "Subordinator",
+                                             type = "Normal",
                                              eps,
                                              algo,
                                              regularization,

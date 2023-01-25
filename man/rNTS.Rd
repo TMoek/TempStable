@@ -12,7 +12,7 @@ rNTS(
   lambda = NULL,
   mu = NULL,
   theta = NULL,
-  method = "AR",
+  methodR = "AR",
   k = 10000
 )
 }
@@ -31,9 +31,9 @@ rNTS(
 
 \item{theta}{A vector of all other arguments.}
 
-\item{method}{A String. Either "AR" or "SR". "AR" by default.}
+\item{methodR}{A String. Either "AR" or "SR". "AR" by default.}
 
-\item{k}{integer: the number of replications, if \code{method == "SR"}. 10000
+\item{k}{integer: the number of replications, if \code{methodR == "SR"}. 10000
 by default.}
 }
 \value{

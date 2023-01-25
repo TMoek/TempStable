@@ -10,7 +10,7 @@ rTSS(
   delta = NULL,
   lambda = NULL,
   theta = NULL,
-  method = "AR",
+  methodR = "AR",
   k = 10000
 )
 }
@@ -25,9 +25,9 @@ rTSS(
 
 \item{theta}{Parameters stacked as a vector.}
 
-\item{method}{A String. Either "AR" or "SR".}
+\item{methodR}{A String. Either "AR" or "SR".}
 
-\item{k}{integer: the level of truncation, if \code{method == "SR"}. 10000
+\item{k}{integer: the level of truncation, if \code{methodR == "SR"}. 10000
 by default.}
 }
 \value{

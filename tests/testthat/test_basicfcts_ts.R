@@ -65,7 +65,7 @@ test_that("dTSS_gives_correct_return", {
   })
 })
 
-test_that("pTSS_methode_integrate_gives_correct_return", {
+test_that("pTSS_method_integrate_gives_correct_return", {
 
   suppressWarnings({
     expect_equal(round(pTSS(10,0.5,10,300), digits = 0), 1)
@@ -85,7 +85,7 @@ test_that("pTSS_methode_integrate_gives_correct_return", {
   })
 })
 
-test_that("pTSS_methode_not_integrate_gives_correct_return", {
+test_that("pTSS_method_not_integrate_gives_correct_return", {
 
   suppressWarnings({
     expect_equal(round(pTSS(1,0.5,10,300,NULL,""), digits = 5), 0.29071)
@@ -251,10 +251,10 @@ test_that("rCTS_gives_correct_return", {
     expect_equal(length(rCTS(10,0.5,1,1,1,1,1,NULL,"SR",10)),10)
     expect_equal(rCTS(1,1,1,1,1,1,0,NULL,"SR",100), NaN)
 
-    expect_equal(length(rCTS(10,0.5,1,1,1,1,1,NULL,"aAR")), 10)
+    expect_equal(length(rCTS(10,0.5,1,1,1,1,1,NULL,"AR")), 10)
 
     expect_error(rCTS(1,2.5,1,1,1,1,0,NULL,"SR",100))
-    expect_error(rCTS(1,1,1,1,1,1,0,NULL,"aAR"))
+    expect_error(rCTS(1,1,1,1,1,1,0,NULL,"AR"))
 
   })
 })

@@ -174,7 +174,7 @@
 #' (uniform optimal placement), \code{"ArithOpt"} (arithmetic optimal
 #' placement), \code{"Var Opt"} (optimal variance placement) and \code{"free"}
 #' (users need to pass their own set of points in ...).
-#' @param alphaReg value of the regularisation parameter; numeric.
+#' @param alphaReg value of the regularisation parameter; numeric. Example Value could be ==0.01.
 #' @param t_free sequence, if \code{t_scheme=="free"}.
 #' @param subdivisions 	Number of subdivisions used to compute the different
 #' integrals involved in the computation of the objective function for the Cgmm method (to
@@ -191,6 +191,7 @@
 #' Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.
 #' @param IterationControl only used if algo = "IT..." or algo = "Cue..."
 #' to control the iterations. See Details.
+#' @param methodR A string. It selects the method in rCTS/rNTS/rTTS. "AR" by default.
 #' @param ... Other arguments to be passed to the estimation function.
 #'
 #' @return If \code{saveOutput == FALSE}, the return object is a list of 2.
@@ -211,14 +212,14 @@
 #'                          saveOutput = FALSE, algo = "2SGMM",
 #'                          regularization = "cut-off",
 #'                          WeightingMatrix = "OptAsym", t_scheme = "free",
-#'                          alphaReg = 0.005,
+#'                          alphaReg = 0.01,
 #'                          t_free = seq(0.1,2,length.out=12))
 #'
 #' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
 #'                          SampleSizes = c(4), MCparam = 4,
 #'                          TemperedType = "Classic", Estimfct = "Cgmm",
 #'                          saveOutput = FALSE, algo = "2SCgmm",
-#'                          alphaReg = 0.01, subdivisions = 20,
+#'                          alphaReg = 0.01, subdivisions = 50,
 #'                          IntegrationMethod = "Uniform",
 #'                          randomIntegrationLaw = "unif",
 #'                          s_min = 0, s_max= 1)
@@ -247,7 +248,8 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                      IntegrationMethod = NULL,
                                      randomIntegrationLaw = NULL, s_min = NULL,
                                      s_max = NULL, ncond = NULL,
-                                     IterationControl = NULL, ...) {
+                                     IterationControl = NULL,
+                                     methodR = "AR", ...) {
     #seeAlso: https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R
     SeedVector <- getSeedVector(MCparam, SeedOptions)
     Estimfct <- match.arg(arg = Estimfct,
@@ -365,6 +367,7 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                                ncond = ncond,
                                                IterationControl =
                                                  IterationControl,
+                                               methodR = methodR,
                                                ...)
 
         OutputCollection <- EstimOutput
@@ -395,6 +398,7 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                        s_max = s_max,
                        ncond = ncond,
                        IterationControl = IterationControl,
+                       methodR = methodR,
                        ...)
     }
 
@@ -554,7 +558,8 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                     algo, regularization, WeightingMatrix,
                                     t_scheme, alphaReg, t_free, subdivisions,
                                     IntegrationMethod, randomIntegrationLaw,
-                                    s_min, s_max, ncond, IterationControl, ...)
+                                    s_min, s_max, ncond, IterationControl,
+                                    methodR, ...)
   {
 
     if (TemperedType == "Classic") {
@@ -609,13 +614,14 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         if (TemperedType == "Classic") {
           x <- rCTS(n = size, alpha = thetaT[1], deltap = thetaT[2],
                     deltam = thetaT[3], lambdap = thetaT[4],
-                    lambdam = thetaT[5], mu = thetaT[6], ...)
+                    lambdam = thetaT[5], mu = thetaT[6], methodR = methodR)
         } else if (TemperedType == "Subordinator") {
           x <- rTSS(n = size, alpha = thetaT[1], delta = thetaT[2],
-                    lambda = thetaT[3], ...)
+                    lambda = thetaT[3], methodR = methodR)
         } else if (TemperedType == "Normal") {
           x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
-                    delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5], ...)
+                    delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5],
+                    methodR = methodR)
         }
 
         # else {

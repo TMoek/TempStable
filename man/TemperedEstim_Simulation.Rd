@@ -27,6 +27,7 @@ TemperedEstim_Simulation(
   s_max = NULL,
   ncond = NULL,
   IterationControl = NULL,
+  methodR = "AR",
   ...
 )
 }
@@ -79,7 +80,7 @@ are evaluated, one of \code{"equally"} (equally placed), \code{"NonOptAr"}
 placement), \code{"Var Opt"} (optimal variance placement) and \code{"free"}
 (users need to pass their own set of points in ...).}
 
-\item{alphaReg}{value of the regularisation parameter; numeric.}
+\item{alphaReg}{value of the regularisation parameter; numeric. Example Value could be ==0.01.}
 
 \item{t_free}{sequence, if \code{t_scheme=="free"}.}
 
@@ -103,6 +104,8 @@ Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.}
 
 \item{IterationControl}{only used if algo = "IT..." or algo = "Cue..."
 to control the iterations. See Details.}
+
+\item{methodR}{A string. It selects the method in rCTS/rNTS/rTTS. "AR" by default.}
 
 \item{...}{Other arguments to be passed to the estimation function.}
 }
@@ -237,14 +240,14 @@ TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0)),
                          saveOutput = FALSE, algo = "2SGMM",
                          regularization = "cut-off",
                          WeightingMatrix = "OptAsym", t_scheme = "free",
-                         alphaReg = 0.005,
+                         alphaReg = 0.01,
                          t_free = seq(0.1,2,length.out=12))
 
 TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
                          SampleSizes = c(4), MCparam = 4,
                          TemperedType = "Classic", Estimfct = "Cgmm",
                          saveOutput = FALSE, algo = "2SCgmm",
-                         alphaReg = 0.01, subdivisions = 20,
+                         alphaReg = 0.01, subdivisions = 50,
                          IntegrationMethod = "Uniform",
                          randomIntegrationLaw = "unif",
                          s_min = 0, s_max= 1)

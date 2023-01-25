@@ -195,8 +195,8 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' @param delta Scale parameter. A real number > 0.
 #' @param lambda Tempering parameter. A real number > 0.
 #' @param theta Parameters stacked as a vector.
-#' @param method A String. Either "AR" or "SR".
-#' @param k integer: the level of truncation, if \code{method == "SR"}. 10000
+#' @param methodR A String. Either "AR" or "SR".
+#' @param k integer: the level of truncation, if \code{methodR == "SR"}. 10000
 #' by default.
 #'
 #' @return Generates \code{n} random numbers.
@@ -213,7 +213,7 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #'
 #' @export
 rTSS <- function(n, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
-                   method = "AR", k = 10000) {
+                   methodR = "AR", k = 10000) {
     if ((missing(alpha) | missing(delta) | missing(lambda)) & is.null(theta))
       stop("No or not enough parameters supplied")
     theta0 <- c(alpha, delta, lambda)
@@ -227,7 +227,7 @@ rTSS <- function(n, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
       lambda <- theta[3]
     }
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
-    x <- switch(method,
+    x <- switch(methodR,
                 AR = rTSS_AR(n = n, alpha = alpha, delta = delta,
                              lambda = lambda),
                 SR = rTSS_SR(n = n, alpha = alpha, delta = delta,
@@ -644,8 +644,8 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
 #' lambdap, lambdam, mu)}. Either provide the parameters individually OR
 #' provide \code{theta}.
-#' "aAR" stands for the approximate Acceptance-Rejection Method and "SR" for a
-#' truncated infinite shot noise series representation. "aAR" is the standard
+#' "AR" stands for the approximate Acceptance-Rejection Method and "SR" for a
+#' truncated infinite shot noise series representation. "AR" is the standard
 #' method used.
 #' For more details, see references.
 #'
@@ -657,10 +657,10 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @param lambdam Tempering parameter for the left tail. A real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta Parameters stacked as a vector.
-#' @param methodR A String. Either "aAR" or "SR".
+#' @param methodR A String. Either "AR" or "SR".
 #' @param k integer: the level of truncation, if \code{methodR == "SR"}. 10000
 #' by default.
-#' @param c A real number. Only relevant for \code{methodR == "aAR"}.
+#' @param c A real number. Only relevant for \code{methodR == "AR"}.
 #' 1 by default.
 #'
 #' @return Generates \code{n} random numbers.
@@ -677,7 +677,7 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #'
 #' @export
 rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
-                 lambdam = NULL, mu = NULL, theta = NULL, methodR = "aAR",
+                 lambdam = NULL, mu = NULL, theta = NULL, methodR = "AR",
                  k = 10000, c = 1) {
     if ((missing(alpha) | missing(deltap) | missing(deltam) | missing(lambdap) |
          missing(lambdam) | missing(mu)) & is.null(theta))
@@ -700,7 +700,7 @@ rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
                 lambdam)
 
     x <- switch(methodR,
-                aAR = rCTS_aAR(n = n, alpha = alpha, deltap = deltap,
+                AR = rCTS_aAR(n = n, alpha = alpha, deltap = deltap,
                                        deltam = deltam, lambdap = lambdap,
                                        lambdam = lambdam, mu = mu, c = c),
                 SR = rCTS_SR(n = n, alpha = alpha, deltap = deltap,
@@ -1103,8 +1103,8 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' @param lambda A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
-#' @param method A String. Either "AR" or "SR". "AR" by default.
-#' @param k integer: the number of replications, if \code{method == "SR"}. 10000
+#' @param methodR A String. Either "AR" or "SR". "AR" by default.
+#' @param k integer: the number of replications, if \code{methodR == "SR"}. 10000
 #' by default.
 #'
 #' @return Generates \code{n} random numbers.
@@ -1125,7 +1125,7 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #'
 #' @export
 rNTS <- function(n, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
-                 mu = NULL, theta = NULL, method = "AR", k = 10000) {
+                 mu = NULL, theta = NULL, methodR = "AR", k = 10000) {
     if ((missing(alpha) | missing(beta) | missing(delta) | missing(lambda) |
          missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -1143,7 +1143,7 @@ rNTS <- function(n, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
       mu <- theta[5]
     }
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
-    x <- switch(method,
+    x <- switch(methodR,
                 AR = rNTS_AR(n = n, alpha = alpha, beta = beta,
                              delta = delta, lambda = lambda, mu = mu),
                 SR = rNTS_SR(n = n, alpha = alpha, beta = beta, delta = delta,
@@ -1273,9 +1273,9 @@ dCGMY <- function(x, C, G, M, Y, dens_method = "FFT", a = -20, b = 20,
 # examples
 # rCGMY(100,1,1,1,0.5)
 # rCGMY(100,1,1,1,0.5, "SR", k= 100)
-rCGMY <- function(n, C, G, M, Y, method = "SR", k = 100, ...) {
+rCGMY <- function(n, C, G, M, Y, methodR = "SR", k = 100, ...) {
     rCTS(n = n, alpha = Y, deltap = C, deltam = C, lambdap = G, lambdam = M,
-         mu = 0, method = method, k = k, ...)
+         mu = 0, methodR = methodR, k = k, ...)
 }
 
 

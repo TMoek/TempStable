@@ -13,7 +13,7 @@ rCTS(
   lambdam = NULL,
   mu = NULL,
   theta = NULL,
-  methodR = "aAR",
+  methodR = "AR",
   k = 10000,
   c = 1
 )
@@ -35,12 +35,12 @@ rCTS(
 
 \item{theta}{Parameters stacked as a vector.}
 
-\item{methodR}{A String. Either "aAR" or "SR".}
+\item{methodR}{A String. Either "AR" or "SR".}
 
 \item{k}{integer: the level of truncation, if \code{methodR == "SR"}. 10000
 by default.}
 
-\item{c}{A real number. Only relevant for \code{methodR == "aAR"}.
+\item{c}{A real number. Only relevant for \code{methodR == "AR"}.
 1 by default.}
 }
 \value{
@@ -54,8 +54,8 @@ tempered stable (CTS) distribution.
 \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
 lambdap, lambdam, mu)}. Either provide the parameters individually OR
 provide \code{theta}.
-"aAR" stands for the approximate Acceptance-Rejection Method and "SR" for a
-truncated infinite shot noise series representation. "aAR" is the standard
+"AR" stands for the approximate Acceptance-Rejection Method and "SR" for a
+truncated infinite shot noise series representation. "AR" is the standard
 method used.
 For more details, see references.
 }
