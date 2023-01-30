@@ -12,7 +12,7 @@
 #' structurally based on the "StableEstim" package by Tarak Kharrat and Georgi
 #' N. Boshnakov.
 #'
-#' @section Brief describtion of functions:
+#' @section Brief description of functions:
 #'
 #'  \strong{TemperedEstim()} [TemperedEstim()]computes all the information about the
 #' estimator. It allows the user to choose the preferred method and several

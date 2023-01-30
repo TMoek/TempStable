@@ -18,7 +18,7 @@ The package was developed by Till Massing and Cedric Juessen and is
 structurally based on the "StableEstim" package by Tarak Kharrat and Georgi
 N. Boshnakov.
 }
-\section{Brief describtion of functions}{
+\section{Brief description of functions}{
 
 
 \strong{TemperedEstim()} \code{\link[=TemperedEstim]{TemperedEstim()}}computes all the information about the
