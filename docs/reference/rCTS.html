@@ -68,7 +68,7 @@ tempered stable (CTS) distribution.</p>
 <span>  lambdam <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  mu <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  theta <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"aAR"</span>,</span>
+<span>  methodR <span class="op">=</span> <span class="st">"AR"</span>,</span>
 <span>  k <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  c <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -108,17 +108,17 @@ tempered stable (CTS) distribution.</p>
 <dd><p>Parameters stacked as a vector.</p></dd>
 
 
-<dt>method</dt>
-<dd><p>A String. Either "aAR" or "SR".</p></dd>
+<dt>methodR</dt>
+<dd><p>A String. Either "AR" or "SR".</p></dd>
 
 
 <dt>k</dt>
-<dd><p>integer: the level of truncation, if <code>method == "SR"</code>. 10000
+<dd><p>integer: the level of truncation, if <code>methodR == "SR"</code>. 10000
 by default.</p></dd>
 
 
 <dt>c</dt>
-<dd><p>A real number. Only relevant for <code>method == "aAR"</code>.
+<dd><p>A real number. Only relevant for <code>methodR == "AR"</code>.
 1 by default.</p></dd>
 
 </dl></div>
@@ -133,8 +133,8 @@ by default.</p></dd>
     <p><code>theta</code> denotes the parameter vector <code>(alpha, deltap, deltam,
 lambdap, lambdam, mu)</code>. Either provide the parameters individually OR
 provide <code>theta</code>.
-"aAR" stands for the approximate Acceptance-Rejection Method and "SR" for a
-truncated infinite shot noise series representation. "aAR" is the standard
+"AR" stands for the approximate Acceptance-Rejection Method and "SR" for a
+truncated infinite shot noise series representation. "AR" is the standard
 method used.
 For more details, see references.</p>
     </div>
@@ -148,11 +148,11 @@ variates' <a href="https://doi.org/10.1016/j.cam.2010.12.014" class="external-li
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">rCTS</span><span class="op">(</span><span class="fl">10</span>,<span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="cn">NULL</span>,<span class="st">"SR"</span>,<span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  5.839561911  1.341460297 -1.325316627  0.831697073  0.629460365</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6]  0.744685569  0.645218174  0.000724403  0.737357140  0.121983312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1.2790736 1.2023219 0.6174762 0.3276039 3.6763412 0.8607184 1.5039839</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 0.9945741 1.2780424 7.5362603</span>
 <span class="r-in"><span><span class="fu">rCTS</span><span class="op">(</span><span class="fl">10</span>,<span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="cn">NULL</span>,<span class="st">"aAR"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1.38487816  1.58646363  0.06101302  1.15463657 -1.17238854 -2.47504548</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] -0.09771343  1.20956535  1.84126196  0.89538420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1.156230021  1.355761791  2.085146833 -0.005073483  1.737099507</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6]  2.371040832  1.967021373  1.006126620 -1.354558808  0.895244436</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

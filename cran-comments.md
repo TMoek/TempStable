@@ -1,6 +1,6 @@
 ## Test environment
 * local Windows 8.1, R 4.2.2
-* using devtools::check_win_release(), R 4.2.2
+* using devtools::check_win_release(), R 4.2.2 and devtools::check_win_devel()
 * using devtools::check_mac_release(), R 4.2.1
 
 ## R CMD check results
