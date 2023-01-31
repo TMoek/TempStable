@@ -46,15 +46,15 @@ produce statistical summary.To parallelize this function, you can use
 # the SampleSize could be, for example, 1000 and MCParam also 1000.
 \donttest{
 thetaT <- c(1.5,1,1,1,1,0)
-res_CTS_ML_size10 <- TemperedEstim_Simulation(ParameterMatrix =
+res_CTS_ML_size4 <- TemperedEstim_Simulation(ParameterMatrix =
                                                 rbind(thetaT),
-                                              SampleSizes = c(10),
-                                              MCparam = 10,
+                                              SampleSizes = c(4),
+                                              MCparam = 4,
                                               TemperedType = "Classic",
                                               Estimfct = "ML",
                                               saveOutput = FALSE)
 
-colMeans(sweep(res_CTS_ML_size10$outputMat[,9:14],2,thetaT), na.rm = TRUE)
+colMeans(sweep(res_CTS_ML_size4$outputMat[,9:14],2,thetaT), na.rm = TRUE)
 }
 
 }

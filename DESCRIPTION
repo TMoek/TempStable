@@ -35,6 +35,7 @@ Roxygen: list(markdown = TRUE)
 Suggests: 
     knitr (>= 1.4),
     rmarkdown (>= 2.17),
-    testthat (>= 3.1.5)
+    testthat (>= 3.1.5),
+    V8 (>= 4.2.2)
 VignetteBuilder: knitr
 Config/testthat/edition: 3

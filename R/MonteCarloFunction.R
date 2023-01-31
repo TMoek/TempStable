@@ -202,12 +202,12 @@
 #' \donttest{
 #' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
 #'                                                  c(0.5,1,1,1,1,0)),
-#'                          SampleSizes = c(10), MCparam = 10,
+#'                          SampleSizes = c(4), MCparam = 4,
 #'                          TemperedType = "Classic", Estimfct = "ML",
 #'                          saveOutput = FALSE)
 #'
 #' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0)),
-#'                          SampleSizes = c(40), MCparam = 40,
+#'                          SampleSizes = c(4), MCparam = 4,
 #'                          TemperedType = "Classic", Estimfct = "GMM",
 #'                          saveOutput = FALSE, algo = "2SGMM",
 #'                          regularization = "cut-off",

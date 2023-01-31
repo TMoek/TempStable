@@ -50,7 +50,7 @@ The function integrates the PDF numerically with \code{integrate()}.
 }
 \examples{
 \donttest{
-x <- seq(0,15,0.25)
+x <- seq(0,15,0.5)
 y <- pTSS(x,0.7,1.354,0.3)
 plot(x,y)
 }

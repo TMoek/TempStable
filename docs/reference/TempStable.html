@@ -105,34 +105,25 @@ produce statistical summary.To parallelize this function, you can use
 <span class="r-in"><span><span class="co"># the SampleSize could be, for example, 1000 and MCParam also 1000.</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">thetaT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.5</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">res_CTS_ML_size10</span> <span class="op">&lt;-</span> <span class="fu"><a href="TemperedEstim_Simulation.html">TemperedEstim_Simulation</a></span><span class="op">(</span>ParameterMatrix <span class="op">=</span></span></span>
+<span class="r-in"><span><span class="va">res_CTS_ML_size4</span> <span class="op">&lt;-</span> <span class="fu"><a href="TemperedEstim_Simulation.html">TemperedEstim_Simulation</a></span><span class="op">(</span>ParameterMatrix <span class="op">=</span></span></span>
 <span class="r-in"><span>                                                <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">thetaT</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                                              SampleSizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                                              MCparam <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>                                              SampleSizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                              MCparam <span class="op">=</span> <span class="fl">4</span>,</span></span>
 <span class="r-in"><span>                                              TemperedType <span class="op">=</span> <span class="st">"Classic"</span>,</span></span>
 <span class="r-in"><span>                                              Estimfct <span class="op">=</span> <span class="st">"ML"</span>,</span></span>
 <span class="r-in"><span>                                              saveOutput <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------- Alpha=1.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/10 *** Estimated Remaining Time: 0h3min9sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/10 *** Estimated Remaining Time: 0h3min11sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/10 *** Estimated Remaining Time: 0h6min28sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/10 *** Estimated Remaining Time: 0h4min42sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/4 *** Estimated Remaining Time: 0h0min7sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 5/10 *** Estimated Remaining Time: 0h1min11sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/4 *** Estimated Remaining Time: 0h0min10sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 6/10 *** Estimated Remaining Time: 0h0min46sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 7/10 *** Estimated Remaining Time: 0h1min21sec. *** </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 8/10 *** Estimated Remaining Time: 0h0min23sec. *** </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 9/10 *** Estimated Remaining Time: 0h0min11sec. *** </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 10/10 *** Estimated Remaining Time: 0h0min0sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/4 *** Estimated Remaining Time: 0h0min1sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/4 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sweep.html" class="external-link">sweep</a></span><span class="op">(</span><span class="va">res_CTS_ML_size10</span><span class="op">$</span><span class="va">outputMat</span><span class="op">[</span>,<span class="fl">9</span><span class="op">:</span><span class="fl">14</span><span class="op">]</span>,<span class="fl">2</span>,<span class="va">thetaT</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sweep.html" class="external-link">sweep</a></span><span class="op">(</span><span class="va">res_CTS_ML_size4</span><span class="op">$</span><span class="va">outputMat</span><span class="op">[</span>,<span class="fl">9</span><span class="op">:</span><span class="fl">14</span><span class="op">]</span>,<span class="fl">2</span>,<span class="va">thetaT</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     alphaE    delta+E    delta-E   lambda+E   lambda-E        muE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -1.3042931  2.6728708  3.5903234  1.2565026  1.5549668  0.4091464 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.4565504 -0.9999990 -0.8943679  1.2760100  1.1447646  0.1126863 </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

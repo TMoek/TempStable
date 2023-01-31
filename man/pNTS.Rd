@@ -58,7 +58,7 @@ The function integrates the PDF numerically with \code{integrate()}.
 }
 \examples{
 \donttest{
-x <- seq(-15,15,0.25)
+x <- seq(-5,5,0.25)
 y <- pNTS(x,0.5,1,1,1,1)
 plot(x,y)
 }

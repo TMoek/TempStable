@@ -197,7 +197,7 @@
 #'               s_min = 0, s_max= 1);
 #' TemperedEstim("Subordinator", "GMC", rTSS(20, 0.5, 1, 1), algo = "2SGMC",
 #'               alphaReg = 0.01, WeightingMatrix = "OptAsym",
-#'               regularization = "cut-off", ncond = 8);
+#'               regularization = "cut-off", ncond = 8, theta0 = c(0.5,1,1));
 #' }
 #' @export
 TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),

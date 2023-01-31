@@ -139,7 +139,7 @@ dTSS <- function(x, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL) {
 #'
 #' @examples
 #' \donttest{
-#' x <- seq(0,15,0.25)
+#' x <- seq(0,15,0.5)
 #' y <- pTSS(x,0.7,1.354,0.3)
 #' plot(x,y)
 #' }
@@ -813,7 +813,6 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
 #'
 #' @examples
 #' \donttest{
-#'   qCTS(0.5,1.5,10,10,10,10,10)
 #'   qCTS(0.5,1.5,1,1,1,1,1)
 #' }
 #'
@@ -1040,7 +1039,7 @@ dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
 #'
 #' @examples
 #' \donttest{
-#' x <- seq(-15,15,0.25)
+#' x <- seq(-5,5,0.25)
 #' y <- pNTS(x,0.5,1,1,1,1)
 #' plot(x,y)
 #' }

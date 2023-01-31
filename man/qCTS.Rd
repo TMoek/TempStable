@@ -58,7 +58,6 @@ approach using the stable distribution is used.
 }
 \examples{
 \donttest{
-  qCTS(0.5,1.5,10,10,10,10,10)
   qCTS(0.5,1.5,1,1,1,1,1)
 }
 

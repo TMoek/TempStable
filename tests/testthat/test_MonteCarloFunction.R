@@ -35,13 +35,13 @@ test_that("TemperedEstim_Simulation_with_Classic_GMM_gives_correct_return", {
 
   TestObject <- TemperedEstim_Simulation(
     ParameterMatrix = rbind(c(1.5,1,1,1,1,0)),
-    SampleSizes = 40, MCparam = 40, TemperedType = "Classic",
+    SampleSizes = 4, MCparam = 4, TemperedType = "Classic",
     Estimfct = "GMM", saveOutput = FALSE, algo = "2SGMM",
     regularization = "cut-off", WeightingMatrix = "OptAsym",
     t_scheme = "free", alphaReg = 0.005, t_free = seq(0.1,2,length.out=12))
 
 
-  expect_equal(length(TestObject$outputMat),640)
+  expect_equal(length(TestObject$outputMat),64)
   expect_equal(TestObject$outputMat[1],1.5)
   expect_equal(colnames(TestObject$outputMat), c("alphaT", "delta+T",
                                                  "delta-T", "lambda+T",
@@ -104,11 +104,11 @@ test_that("TemperedEstim_Simulation_with_Subordinator_ML_gives_correct_return",
 
   suppressWarnings({
     TestObject <- TemperedEstim_Simulation(
-      ParameterMatrix = rbind(c(0.5,1,1)), SampleSizes = 10, MCparam = 10,
+      ParameterMatrix = rbind(c(0.5,1,1)), SampleSizes = 4, MCparam = 4,
       TemperedType = "Subordinator", Estimfct = "ML", saveOutput = FALSE)
 
 
-    expect_equal(length(TestObject$outputMat), 100)
+    expect_equal(length(TestObject$outputMat), 40)
     expect_equal(TestObject$outputMat[1],0.5)
     expect_equal(colnames(TestObject$outputMat), c("alphaT", "deltaT",
                                                    "lambdaT", "data size",
@@ -122,13 +122,13 @@ test_that("TemperedEstim_Simulation_with_Subordinator_GMM_gives_correct_return",
   {
 
     TestObject <- TemperedEstim_Simulation(
-      ParameterMatrix = rbind(c(0.5,1,1)), SampleSizes = 40, MCparam = 40,
+      ParameterMatrix = rbind(c(0.5,1,1)), SampleSizes = 4, MCparam = 4,
       TemperedType = "Subordinator", Estimfct = "GMM", saveOutput = FALSE,
       algo = "2SGMM", regularization = "cut-off", WeightingMatrix = "OptAsym",
       t_scheme = "free", alphaReg = 0.005, t_free = seq(0.1,2,length.out=12))
 
 
-    expect_equal(length(TestObject$outputMat), 400)
+    expect_equal(length(TestObject$outputMat), 40)
     expect_equal(TestObject$outputMat[1],0.5)
     expect_equal(colnames(TestObject$outputMat), c("alphaT", "deltaT",
                                                    "lambdaT", "data size",
@@ -180,11 +180,11 @@ test_that("TemperedEstim_Simulation_with_Normal_ML_gives_correct_return", {
 
   suppressWarnings({
     TestObject <- TemperedEstim_Simulation(
-      ParameterMatrix = rbind(c(0.5,1,1,1,1)), SampleSizes = 10, MCparam = 10,
+      ParameterMatrix = rbind(c(0.5,1,1,1,1)), SampleSizes = 4, MCparam = 4,
       TemperedType = "Normal", Estimfct = "ML", saveOutput = FALSE)
 
 
-    expect_equal(length(TestObject$outputMat), 140)
+    expect_equal(length(TestObject$outputMat), 56)
     expect_equal(TestObject$outputMat[1],0.5)
     expect_equal(colnames(TestObject$outputMat), c("alphaT", "betaT", "deltaT",
                                                    "lambdaT", "muT",
@@ -199,7 +199,7 @@ test_that("TemperedEstim_Simulation_with_Normal_ML_gives_correct_return", {
 test_that("TemperedEstim_Simulation_with_Normal_GMM_gives_correct_return", {
 
   TestObject <- TemperedEstim_Simulation(
-    ParameterMatrix = rbind(c(0.5,1,1,1,1)), SampleSizes = 40, MCparam = 4,
+    ParameterMatrix = rbind(c(0.5,1,1,1,1)), SampleSizes = 4, MCparam = 4,
     TemperedType = "Normal", Estimfct = "GMM", saveOutput = FALSE,
     algo = "2SGMM", regularization = "cut-off", WeightingMatrix = "OptAsym",
     t_scheme = "free", alphaReg = 0.005, t_free = seq(0.1,2,length.out=12))
