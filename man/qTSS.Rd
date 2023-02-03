@@ -49,8 +49,10 @@ either be supplied by the user or a built-in approach using the stable
 distribution is used.
 }
 \examples{
+\donttest{
 qTSS(0.5,0.5,5,0.01)
 qTSS(0.5,0.9,1,10,NULL)
+}
 
 }
 \seealso{

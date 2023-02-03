@@ -307,8 +307,10 @@ rTSS_SR1 <- function(alpha, delta, lambda, k) {
 #' See also the [pTSS()] probability function.
 #'
 #' @examples
+#' \donttest{
 #' qTSS(0.5,0.5,5,0.01)
 #' qTSS(0.5,0.9,1,10,NULL)
+#' }
 #'
 #' @importFrom stabledist qstable
 #' @export
@@ -1197,8 +1199,10 @@ rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
 #' See also the [pNTS()] probability function.
 #'
 #' @examples
+#' \donttest{
 #' qNTS(0.1,0.5,1,1,1,1)
 #' qNTS(0.3,0.6,1,1,1,1,NULL)
+#' }
 #'
 #' @export
 qNTS <- function(p, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,

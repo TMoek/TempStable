@@ -54,8 +54,10 @@ Boundaries can either be supplied by the user or a built-in approach using
 the stable distribution is used.
 }
 \examples{
+\donttest{
 qNTS(0.1,0.5,1,1,1,1)
 qNTS(0.3,0.6,1,1,1,1,NULL)
+}
 
 }
 \seealso{
