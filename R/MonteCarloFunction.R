@@ -265,8 +265,8 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     #returnList <- matrix(data = NA, ncol = npar, nrow = nab*MCparam)
     indexStatOutput <- 1
 
-    #Values that needs to be set in the beginning when checkpoint file is
-    # unavailable
+    #Values that needs to be set in the beginning as checkpoint files are not
+    # allowed
     ab <- 1
     sample <- 1
     mc <- 0
@@ -451,6 +451,8 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 #' @param SeedOptions is an argument what can be used in
 #' [TemperedEstim_Simulation()] but must be NULL here.
 #' @param cores size of cluster for parallelization. Positive Integer.
+#' @param iterationDisplayToFileSystem creates a text file in your file system
+#' that displays the current iteration of the simulation.
 #' @param ... The function works only if all necessary arguments from the
 #' function [TemperedEstim_Simulation()] are passed. See description and
 #' details.
@@ -467,6 +469,7 @@ parallelizeMCsimulation <- function(
     saveOutput = FALSE,
     cores = 2,
     SeedOptions = NULL,
+    iterationDisplayToFileSystem = FALSE,
     ...){
   mc <- NULL
 
@@ -503,18 +506,10 @@ parallelizeMCsimulation <- function(
 
   doParallel::registerDoParallel(cl)
 
-  #Environment options
-  #ls(parent.env(globalenv()))
-  #Egal wie man es macht, wenn "TempStable" nicht schon installiert wurde,
-  # lässt sich die foreach-schleife nicht ausführen. Das könnte später zum
-  # Problem werden.
-
-  parallel::clusterExport(cl,
-                          varlist = ls("package:TempStable",
-                                                   all.names = TRUE),
-                          envir = .GlobalEnv)
-
-  resultOfSimulation <- foreach::foreach(mc = 1:R, .combine = rbind)%dopar%{
+  resultOfSimulation <- foreach::foreach(mc = 1:R, .combine = rbind,
+                                         .export = ls("package:TempStable",
+                                                      all.names = TRUE)
+                                         )%dopar%{
     returnValue <- TemperedEstim_Simulation(
       ParameterMatrix = ParameterMatrix,
       MCparam = 1,
@@ -523,9 +518,13 @@ parallelizeMCsimulation <- function(
       SeedOptions = list(MCtot = R, seedStart = mc),
       ... = ...
     )
-    utils::write.table(paste("Last Monte Carlo run: ", mc) , file =
-                         base::paste("IterationControlForParallelization.txt"),
-                       sep = "\t", row.names = FALSE)
+    if (iterationDisplayToFileSystem){
+      utils::write.table(
+        paste("Last Monte Carlo run: ", mc) ,
+        file = base::paste("IterationControlForParallelization.txt"),
+        sep = "\t", row.names = FALSE)
+    }
+
     returnValue$outputMat
   }
 
@@ -535,8 +534,10 @@ parallelizeMCsimulation <- function(
   attr(resultOfSimulation, "doRNG_version") <- NULL
 
   #Delete txt file
-  base::unlink(x = base::paste("IterationControlForParallelization.txt"),
-         force = TRUE)
+  if (iterationDisplayToFileSystem){
+    base::unlink(x = base::paste("IterationControlForParallelization.txt"),
+                 force = TRUE)
+  }
 
   return(resultOfSimulation)
 }
