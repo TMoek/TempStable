@@ -9,7 +9,7 @@ parallelizeMCsimulation(
   MCparam = 10000,
   SampleSizes = c(200),
   saveOutput = FALSE,
-  cores = NULL,
+  cores = 2,
   SeedOptions = NULL,
   ...
 )
@@ -59,8 +59,8 @@ described in more detail for the individual arguments.
 
 In addition to the arguments of function \code{\link[=TemperedEstim_Simulation]{TemperedEstim_Simulation()}}, the
 argument "cores" can be assigned an integer value. This value determines how
-many different processes are to be parallelized. If no value is specified
-here, R tries to read out how many cores the processor has and passes this
+many different processes are to be parallelized. If value is \code{NULL}, R
+tries to read out how many cores the processor has and passes this
 value to "cores".
 
 During the simulation, the progress of the simulation can be viewed in a

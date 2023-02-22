@@ -265,6 +265,12 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     #returnList <- matrix(data = NA, ncol = npar, nrow = nab*MCparam)
     indexStatOutput <- 1
 
+    #Values that needs to be set in the beginning when checkpoint file is
+    # unavailable
+    ab <- 1
+    sample <- 1
+    mc <- 0
+
     if(MCparam != 1){
       CheckPointValues <- readCheckPoint(ParameterMatrix, TemperedType,
                                          Estimfct, nab, npar, lS, MCparam,
@@ -285,11 +291,12 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
                                          s_max = s_max,
                                          ncond = ncond,
                                          IterationControl = IterationControl,
+                                         ab = ab, sample = sample, mc = mc,
                                          ...)
     }
     else{
-      CheckPointValues <- list(ab = 1, nab = nab, npar = npar, sample = 1,
-                               nSS = lS, mc = 0, MCparam = 1)
+      CheckPointValues <- list(ab = ab, nab = nab, npar = npar, sample = sample,
+                               nSS = lS, mc = mc, MCparam = 1)
     }
     updatedCheckPointValues <- updateCheckPointValues(CheckPointValues, MCparam,
                                                       lS, nab)
@@ -378,29 +385,29 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
         }
     }
 
-    if(MCparam != 1){
-      deleteCheckPoint(ParameterMatrix, TemperedType, Estimfct, nab, npar, lS,
-                       MCparam,
-                       eps = eps,
-                       algo = algo,
-                       regularization = regularization,
-                       WeightingMatrix =
-                         WeightingMatrix,
-                       t_scheme = t_scheme,
-                       alphaReg = alphaReg,
-                       t_free = t_free,
-                       subdivisions = subdivisions,
-                       IntegrationMethod =
-                         IntegrationMethod,
-                       randomIntegrationLaw =
-                         randomIntegrationLaw,
-                       s_min = s_min,
-                       s_max = s_max,
-                       ncond = ncond,
-                       IterationControl = IterationControl,
-                       methodR = methodR,
-                       ...)
-    }
+    # if(MCparam != 1){
+    #   deleteCheckPoint(ParameterMatrix, TemperedType, Estimfct, nab, npar, lS,
+    #                    MCparam,
+    #                    eps = eps,
+    #                    algo = algo,
+    #                    regularization = regularization,
+    #                    WeightingMatrix =
+    #                      WeightingMatrix,
+    #                    t_scheme = t_scheme,
+    #                    alphaReg = alphaReg,
+    #                    t_free = t_free,
+    #                    subdivisions = subdivisions,
+    #                    IntegrationMethod =
+    #                      IntegrationMethod,
+    #                    randomIntegrationLaw =
+    #                      randomIntegrationLaw,
+    #                    s_min = s_min,
+    #                    s_max = s_max,
+    #                    ncond = ncond,
+    #                    IterationControl = IterationControl,
+    #                    methodR = methodR,
+    #                    ...)
+    # }
 
     if (saveOutput == FALSE){
       return(returnList)
@@ -421,8 +428,8 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
 #'
 #' In addition to the arguments of function [TemperedEstim_Simulation()], the
 #' argument "cores" can be assigned an integer value. This value determines how
-#' many different processes are to be parallelized. If no value is specified
-#' here, R tries to read out how many cores the processor has and passes this
+#' many different processes are to be parallelized. If value is \code{NULL}, R
+#' tries to read out how many cores the processor has and passes this
 #' value to "cores".
 #'
 #' During the simulation, the progress of the simulation can be viewed in a
@@ -458,7 +465,7 @@ parallelizeMCsimulation <- function(
     MCparam = 10000,
     SampleSizes = c(200),
     saveOutput = FALSE,
-    cores = NULL,
+    cores = 2,
     SeedOptions = NULL,
     ...){
   mc <- NULL
@@ -653,26 +660,27 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         Output[iter, ] <- Estim$outputMat
         file <- Estim$file
 
-        if (!is.null(CheckPointValues) && MCparam != 1) {
-          writeCheckPoint(ParameterMatrix, TemperedType, Estimfct, ab_current,
-                          nab, npar, sample, nSS, mc,
-                          MCparam,
-                          eps,
-                          algo,
-                          regularization,
-                          WeightingMatrix,
-                          t_scheme,
-                          alphaReg,
-                          t_free,
-                          subdivisions,
-                          IntegrationMethod,
-                          randomIntegrationLaw,
-                          s_min,
-                          s_max,
-                          ncond,
-                          IterationControl,
-                          ...)
-        }
+        #When checkpoint file should be availabe again
+        # if (!is.null(CheckPointValues) && MCparam != 1) {
+        #   writeCheckPoint(ParameterMatrix, TemperedType, Estimfct, ab_current,
+        #                   nab, npar, sample, nSS, mc,
+        #                   MCparam,
+        #                   eps,
+        #                   algo,
+        #                   regularization,
+        #                   WeightingMatrix,
+        #                   t_scheme,
+        #                   alphaReg,
+        #                   t_free,
+        #                   subdivisions,
+        #                   IntegrationMethod,
+        #                   randomIntegrationLaw,
+        #                   s_min,
+        #                   s_max,
+        #                   ncond,
+        #                   IterationControl,
+        #                   ...)
+        # }
 
         if (saveOutput) updateOutputFile(thetaT, MCparam, TemperedType,
                                          Estim)
@@ -1034,6 +1042,9 @@ readCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
                            s_max,
                            ncond,
                            IterationControl,
+                           ab,
+                           sample,
+                           mc,
                            ...) {
     method <- Estim_Des_Temp(TemperedType, Estimfct,
                              eps = eps,
@@ -1052,30 +1063,31 @@ readCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
                              s_min = s_min,
                              s_max = s_max,
                              ncond = ncond,
-                             IterationControl = IterationControl,
-                             ...)
-    fileName <- get_filename_checkPoint_Temp(ParameterMatrix, nab, npar,
-                                             MCparam, method)
-    if (!file.exists(fileName)) {
-        write(x = "## ab;nab;npar;sample;nSS;mc;MCparam", file = fileName,
-              sep = "\n")
-        ab <- 1
-        sample <- 1
-        mc <- 0
-        write(x = paste("--", ab, nab, npar, sample, nSS, mc, MCparam,
-                        sep = ";"), file = fileName, sep = "\n", append = TRUE)
-    } else {
-        tab <- as.numeric(utils::read.table(file = fileName,
-                                            header = F, sep = ";"))
-        ab <- tab[2]
-        sample <- tab[5]
-        mc <- tab[7]
-        n_ab <- tab[3]
-        n_par <- tab[4]
-        n_SS <- tab[6]
-        mc_Param <- tab[8]
-        stopifnot(nab == n_ab, npar == n_par, nSS == n_SS, mc_Param == MCparam)
-    }
+                             IterationControl = IterationControl, ...)
+    #This code can be used to create a checkpoint text file.
+    # fileName <- get_filename_checkPoint_Temp(ParameterMatrix, nab, npar,
+    #                                          MCparam, method)
+    # if (!file.exists(fileName)) {
+    #     write(x = "## ab;nab;npar;sample;nSS;mc;MCparam", file = fileName,
+    #           sep = "\n")
+    #     ab <- 1
+    #     sample <- 1
+    #     mc <- 0
+    #     write(x = paste("--", ab, nab, npar, sample, nSS, mc, MCparam,
+    #                     sep = ";"), file = fileName, sep = "\n", append = TRUE)
+    # } else {
+    #     tab <- as.numeric(utils::read.table(file = fileName,
+    #                                         header = F, sep = ";"))
+    #     ab <- tab[2]
+    #     sample <- tab[5]
+    #     mc <- tab[7]
+    #     n_ab <- tab[3]
+    #     n_par <- tab[4]
+    #     n_SS <- tab[6]
+    #     mc_Param <- tab[8]
+    #     stopifnot(nab == n_ab, npar == n_par, nSS == n_SS, mc_Param == MCparam)
+    # }
+
     list(ab = ab, nab = nab, npar = npar, sample = sample, nSS = nSS, mc = mc,
          MCparam = MCparam)
 }
@@ -1183,9 +1195,10 @@ deleteCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, nab, npar,
                              ncond = ncond,
                              IterationControl = IterationControl,
                              ...)
-    fileName <- get_filename_checkPoint_Temp(ParameterMatrix, nab, npar,
-                                             MCparam, method)
-    unlink(x = fileName, force = TRUE)
+    ##This code can be used to create a checkpoint text file.
+    # fileName <- get_filename_checkPoint_Temp(ParameterMatrix, nab, npar,
+    #                                          MCparam, method)
+    # unlink(x = fileName, force = TRUE)
 }
 
 # No export.
