@@ -16,7 +16,6 @@ CgmmParametersEstim_NTS <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
                                     randomIntegrationLaw = randomIntegrationLaw,
                                     s_min = s_min, s_max = s_max)
     Estim <- switch(algo, `2SCgmm` = {
-      browser()
         Compute2SCgmmParametersEstim_NTS(x = x, theta0 = theta0,
                                          alphaReg = alphaReg, eps = eps,
                                          s_min = s_min, s_max = s_max,

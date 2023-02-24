@@ -22,9 +22,8 @@ MoCObjective_NTS <- function(x, parms) {
 #' @importFrom rootSolve multiroot
 MoC_NTS <- function(x, theta0 = c(0.5, 0, 1, 1, 0), eps = 1e-06) {
     cumulants <- CumFinder_NTS(x)
-    parroot <- rootSolve::multiroot(MoCObjective_NTS, theta0, parms = cumulants,
-                                    verbose = TRUE)
-    browser()
+    capture.output(parroot <-
+        rootSolve::multiroot(MoCObjective_NTS, theta0, parms = cumulants))
     theta <- parroot$root
     if (theta[1] < 0) {
         theta <- theta0

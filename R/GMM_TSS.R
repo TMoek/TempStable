@@ -133,7 +133,8 @@ checkIterationControl <- function(IterationControl) {
       IterationControl$RelativeErrMax
     )
   list(NbIter = NbIter,
-       PrintIter = PrintIter,
+       #Change to TRUE, to see results for each Iteration in console
+       PrintIter = FALSE,
        RelativeErrMax = RelativeErrMax)
 }
 

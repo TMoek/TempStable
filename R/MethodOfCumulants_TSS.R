@@ -36,7 +36,10 @@ MoCObjective_TSS <- function(x, parms) {
 #' @importFrom rootSolve multiroot
 MoC_TSS <- function(x, theta0 = c(0.5, 1, 1), eps = 1e-06) {
     cumulants <- CumFinder_TSS(x)
-    parroot <- rootSolve::multiroot(MoCObjective_TSS, theta0, parms = cumulants)
+    capture.output(
+      parroot <-
+        rootSolve::multiroot(MoCObjective_TSS, theta0, parms = cumulants)
+    )
     theta <- parroot$root
     if (theta[1] < 0) {
         theta <- theta0

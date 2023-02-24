@@ -218,7 +218,6 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
             theta0 <- MoC_TSS(x <- data, c(0.5, 1, 1))
         } else if (TemperedType == "Normal") {
             theta0 <- MoC_NTS(x <- data, c(0.5, 0, 1, 1, 0))
-            browser()
         }
       # else {
       #       theta0 <- MoC_CGMY(x <- data, c(1, 1, 1, 1.5))
@@ -235,12 +234,10 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
                                   confint = matrix(0, 3, 2), data = data,
                                   failure = 1)
     } else if (TemperedType == "Normal") {
-      browser()
         OutputObj <- methods::new(Class = "EstimNormalClass", par = numeric(5),
                                   par0 = theta0, vcov = matrix(0, 5, 5),
                                   confint = matrix(0, 5, 2), data = data,
                                   failure = 1)
-        browser()
     }
     # else {
     #     OutputObj <- methods::new(Class = "EstimCGMYClass", par = numeric(4),
