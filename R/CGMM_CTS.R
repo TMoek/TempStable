@@ -378,23 +378,37 @@ ComputeV_CTS <- function(Fct = c("Objective", "Covariance"), theta, thetaHat, X,
         jacobianSampleComplexCFMoment_CTS(t = s, theta = theta)
     }
     if (Fct == "Covariance") {
-        res <- IntegrateRandomVectorsProduct(f_fct = g_bar_fct, X = X,
-                                             g_fct = Jac_g_hat_fct, Y = X,
-                                             s_min = s_min, s_max = s_max,
-                                             subdivisions = subdivisions,
-                                             IntegrationMethod =
-                                               IntegrationMethod,
-                                             randomIntegrationLaw =
-                                               randomIntegrationLaw, ...)
+      res <-
+        StableEstim::IntegrateRandomVectorsProduct(
+          f_fct = g_bar_fct,
+          X = X,
+          g_fct = Jac_g_hat_fct,
+          Y = X,
+          s_min = s_min,
+          s_max = s_max,
+          subdivisions = subdivisions,
+          IntegrationMethod =
+            IntegrationMethod,
+          randomIntegrationLaw =
+            randomIntegrationLaw,
+          ...
+        )
     } else if (Fct == "Objective") {
-        res <- IntegrateRandomVectorsProduct(f_fct = g_bar_fct, X = X,
-                                             g_fct = g_hat_fct, Y = X,
-                                             s_min = s_min, s_max = s_max,
-                                             subdivisions = subdivisions,
-                                             IntegrationMethod =
-                                               IntegrationMethod,
-                                             randomIntegrationLaw =
-                                               randomIntegrationLaw, ...)
+      res <-
+        StableEstim::IntegrateRandomVectorsProduct(
+          f_fct = g_bar_fct,
+          X = X,
+          g_fct = g_hat_fct,
+          Y = X,
+          s_min = s_min,
+          s_max = s_max,
+          subdivisions = subdivisions,
+          IntegrationMethod =
+            IntegrationMethod,
+          randomIntegrationLaw =
+            randomIntegrationLaw,
+          ...
+        )
     }
     res
 }

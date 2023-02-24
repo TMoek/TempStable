@@ -16,6 +16,7 @@ CgmmParametersEstim_NTS <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
                                     randomIntegrationLaw = randomIntegrationLaw,
                                     s_min = s_min, s_max = s_max)
     Estim <- switch(algo, `2SCgmm` = {
+      browser()
         Compute2SCgmmParametersEstim_NTS(x = x, theta0 = theta0,
                                          alphaReg = alphaReg, eps = eps,
                                          s_min = s_min, s_max = s_max,
@@ -328,17 +329,22 @@ ComputeCgmmFcts_NTS <- function(Fct = c("Objective", "Covariance"), theta,
     }
     ghatFctOft <- function(t_var, X) Conj(ghatBarFctOft(t_var, X))
     if (Weighting == "Id") {
-        ObjectiveVal <- IntegrateRandomVectorsProduct(f_fct = ghatFctOft, X = x,
-                                                      g_fct = ghatBarFctOft,
-                                                      Y = x, s_min = s_min,
-                                                      s_max = s_max,
-                                                      subdivisions =
-                                                        subdivisions,
-                                                      IntegrationMethod =
-                                                        IntegrationMethod,
-                                                      randomIntegrationLaw =
-                                                        randomIntegrationLaw,
-                                                      ...)
+      ObjectiveVal <-
+        StableEstim::IntegrateRandomVectorsProduct(
+          f_fct = ghatFctOft,
+          X = x,
+          g_fct = ghatBarFctOft,
+          Y = x,
+          s_min = s_min,
+          s_max = s_max,
+          subdivisions =
+            subdivisions,
+          IntegrationMethod =
+            IntegrationMethod,
+          randomIntegrationLaw =
+            randomIntegrationLaw,
+          ...
+        )
     } else {
         V <- ComputeV_NTS(Fct = Fct, theta = theta, thetaHat = thetaHat, X = x,
                           IntegrationMethod = IntegrationMethod, s_min = s_min,
@@ -376,23 +382,37 @@ ComputeV_NTS <- function(Fct = c("Objective", "Covariance"), theta, thetaHat, X,
         jacobianSampleComplexCFMoment_NTS(t = s, theta = theta)
     }
     if (Fct == "Covariance") {
-        res <- IntegrateRandomVectorsProduct(f_fct = g_bar_fct, X = X,
-                                             g_fct = Jac_g_hat_fct, Y = X,
-                                             s_min = s_min, s_max = s_max,
-                                             subdivisions = subdivisions,
-                                             IntegrationMethod =
-                                               IntegrationMethod,
-                                             randomIntegrationLaw =
-                                               randomIntegrationLaw, ...)
+      res <-
+        StableEstim::IntegrateRandomVectorsProduct(
+          f_fct = g_bar_fct,
+          X = X,
+          g_fct = Jac_g_hat_fct,
+          Y = X,
+          s_min = s_min,
+          s_max = s_max,
+          subdivisions = subdivisions,
+          IntegrationMethod =
+            IntegrationMethod,
+          randomIntegrationLaw =
+            randomIntegrationLaw,
+          ...
+        )
     } else if (Fct == "Objective") {
-        res <- IntegrateRandomVectorsProduct(f_fct = g_bar_fct, X = X,
-                                             g_fct = g_hat_fct, Y = X,
-                                             s_min = s_min, s_max = s_max,
-                                             subdivisions = subdivisions,
-                                             IntegrationMethod =
-                                               IntegrationMethod,
-                                             randomIntegrationLaw =
-                                               randomIntegrationLaw, ...)
+      res <-
+        StableEstim::IntegrateRandomVectorsProduct(
+          f_fct = g_bar_fct,
+          X = X,
+          g_fct = g_hat_fct,
+          Y = X,
+          s_min = s_min,
+          s_max = s_max,
+          subdivisions = subdivisions,
+          IntegrationMethod =
+            IntegrationMethod,
+          randomIntegrationLaw =
+            randomIntegrationLaw,
+          ...
+        )
     }
     res
 }
@@ -406,11 +426,17 @@ ComputeCmat_NTS <- function(x, thetaHat, s_min, s_max, IntegrationMethod,
     f_bar_fct <- function(s, x) {
         Conj(f_fct(s, x))
     }
-    IntegrateRandomVectorsProduct(f_fct = f_bar_fct, X = x, g_fct = f_fct,
-                                  Y = x, s_min = s_min, s_max = s_max,
-                                  subdivisions = subdivisions,
-                                  IntegrationMethod = IntegrationMethod,
-                                  randomIntegrationLaw = randomIntegrationLaw,
-                                  ...)
+    StableEstim::IntegrateRandomVectorsProduct(
+      f_fct = f_bar_fct,
+      X = x,
+      g_fct = f_fct,
+      Y = x,
+      s_min = s_min,
+      s_max = s_max,
+      subdivisions = subdivisions,
+      IntegrationMethod = IntegrationMethod,
+      randomIntegrationLaw = randomIntegrationLaw,
+      ...
+    )
 }
 
