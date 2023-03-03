@@ -223,7 +223,7 @@ TemperedEstim("Subordinator", "GMC", rTSS(20, 0.5, 1, 1), algo = "2SGMC",
 }
 }
 \references{
-Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
+Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 
 Kim, Y. s., Rachev, S. T., Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
 market models with lévy processes and time-varying volatility'

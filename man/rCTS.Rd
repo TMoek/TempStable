@@ -65,7 +65,7 @@ rCTS(10,0.5,1,1,1,1,1,NULL,"aAR")
 
 }
 \references{
-Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
+Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 
 Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
 variates' \doi{10.1016/j.cam.2010.12.014}

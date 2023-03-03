@@ -54,6 +54,5 @@ y <- charNTS(x,0.5,1,1,1,0)
 Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
 
 Rachev, S., Kim, Y., Bianchi, M. & Fabozzi, F. (2011), 'Financial Models with
-Levy Processes and Volatility Clustering'
-\url{https://books.google.de/books?id=XKvUUrcS_twC}
+Levy Processes and Volatility Clustering' \doi{10.1002/9781118268070}
 }

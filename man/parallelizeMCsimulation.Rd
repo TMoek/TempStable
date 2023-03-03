@@ -11,6 +11,7 @@ parallelizeMCsimulation(
   saveOutput = FALSE,
   cores = 2,
   SeedOptions = NULL,
+  iterationDisplayToFileSystem = FALSE,
   ...
 )
 }
@@ -36,6 +37,9 @@ exclusively via the return of the function.}
 
 \item{SeedOptions}{is an argument what can be used in
 \code{\link[=TemperedEstim_Simulation]{TemperedEstim_Simulation()}} but must be NULL here.}
+
+\item{iterationDisplayToFileSystem}{creates a text file in your file system
+that displays the current iteration of the simulation.}
 
 \item{...}{The function works only if all necessary arguments from the
 function \code{\link[=TemperedEstim_Simulation]{TemperedEstim_Simulation()}} are passed. See description and

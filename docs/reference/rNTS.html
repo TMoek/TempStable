@@ -130,7 +130,7 @@ infinite shot noise series representation. "AR" is the standard method used.</p>
     </div>
     <div id="references">
     <h2>References</h2>
-    <p>Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'</p>
+    <p>Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'</p>
 <p>Kawai, R &amp; Masuda, H (2011), 'On simulation of tempered stable random
 variates' <a href="https://doi.org/10.1016/j.cam.2010.12.014" class="external-link">doi:10.1016/j.cam.2010.12.014</a></p>
     </div>
@@ -142,29 +142,29 @@ variates' <a href="https://doi.org/10.1016/j.cam.2010.12.014" class="external-li
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">rNTS</span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0.5</span>, <span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  3.4904193  5.9431509  4.5634337  2.1174863  2.7706177  3.6709787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [7]  2.9705611  3.4522113  1.0468999  2.9675688  2.5943476  3.2811287</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [13]  2.1480500  3.5247386  1.8529067  3.8226529  2.7587417  1.7230027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [19]  2.9173858  2.8593691  2.5115106  2.3262728  1.8288129  1.5227047</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [25]  1.9502849  3.5494692  3.0340852  1.1639826  3.9017360  3.0369028</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [31]  0.9656511  3.8610688  2.9242135  2.8330924  3.0443856 -0.2161404</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [37]  2.3626760  3.0244616  0.8463324  0.7200955  4.7440536  2.5682344</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43]  3.2702152  3.2961326  4.6286816  1.1329659  1.8665613  0.1717705</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [49]  8.4802081  3.0911481  2.4257426  2.8341576  2.6680903  1.9495628</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [55]  0.9998896  2.7869870  3.0860426  5.7100848  1.7770833  3.3531307</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [61]  3.4096909  2.9610401  1.2366132  1.2683042  0.7640391  2.6457599</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [67]  2.2621338  2.6692661  3.2009347  1.3319624  3.7393893  2.7051509</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [73]  3.2475281  2.1258351  2.1789233  0.9058303  3.6716893  0.8930669</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [79]  4.1666279  0.8341212  1.0865771  2.7998270  2.7605834  2.4907893</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  0.8057941  0.1145367  2.5639686  2.1764439  2.0159046  3.1080604</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [91]  1.9061890  2.0472686  4.5286788  3.3238653  3.7563700  2.0608545</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [97]  1.2550249  2.7699320  1.7011671  0.9978634</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  1.5712849  3.3636296  2.4740426  1.5215607  2.0658730  0.4807176</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [7]  0.7406872  2.4997099  2.5857043  2.8491652 -0.2358095  3.1666370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [13]  1.0752192  2.1868949  2.8364707  1.7243228  1.1922663  1.5751490</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [19] -0.3167525  1.9710819 -0.1957847  4.7997657  3.3248553  1.4995481</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [25] -0.2447276  1.6288385  0.3170280 -0.1327327  4.3402985  2.7004308</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [31]  3.4632336  3.0269011  6.0459818  1.2117190  2.7880124  4.2405516</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [37]  3.5703224  2.4220313  2.8450260 -0.2452927  0.1356603  2.4938152</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43]  0.5389849  0.8782596  2.8527085  3.9477392  1.1046180  4.5820824</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [49]  3.2315282  0.9278475  2.7158734  1.9341037  6.3430118  2.1328378</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [55]  3.8006981  3.6448575  0.2494114  2.0932060  3.6112306  0.3421005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [61]  1.8984201  6.4682684  2.8564083  3.0981928  1.8527094  2.5233967</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [67]  3.5156693  1.0986529  2.1363264  2.9883262  3.1504111  2.4303381</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [73]  4.5263933  2.8400382  4.9971386  2.0981375  1.6673353  7.3503265</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [79]  1.9798463  4.1344922  1.8737605  2.5236578  3.4956309  4.5539077</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] -0.3102539  2.9336845  1.8932272  0.5349852  1.9146472  2.9524863</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [91]  2.3078019  0.8541859  3.3793188  0.9168764  0.8307787  5.2549604</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [97] -0.3446385  0.8357621  4.5551545  2.8064830</span>
 <span class="r-in"><span><span class="fu">rNTS</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0.6</span>, <span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1.1594469  0.8842630  1.8691250 -0.1249010  1.8395036  1.7417994</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7]  0.7666264  1.0940996 -1.8978522  1.2594814</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] -1.2029884 -2.3903645  0.4151353 -0.6232252 -1.4448662 -2.0968086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7]  0.1934787  0.4232655 -2.2662249  0.3898931</span>
 <span class="r-in"><span><span class="fu">rNTS</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0.5</span>, <span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>, <span class="cn">NULL</span>, <span class="st">"SR"</span>, <span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1.831907 3.866511 2.397166 2.271924 1.935243 5.438435 4.756782 4.995528</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 4.658126 1.185406</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 3.64822144 0.02420164 1.19749873 1.49062579 3.19217803 1.34502080</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 4.24344013 1.72546722 1.61571815 2.48972600</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -180,7 +180,7 @@ variates' <a href="https://doi.org/10.1016/j.cam.2010.12.014" class="external-li
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

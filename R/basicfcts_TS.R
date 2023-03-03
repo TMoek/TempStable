@@ -24,10 +24,13 @@ imagN <- (0 + (0 + (0 + (0+1i))))
 #' @return The CF of the tempered stable subordinator distribution.
 #'
 #' @references
-#' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
+#' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kawai, R. & Masuda, H. (2011), 'On simulation of tempered stable random
 #' variates' \doi{10.1016/j.cam.2010.12.014}
+#'
+#' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
+#' processes' \doi{10.1016/j.spa.2013.06.012}
 #'
 #' @examples
 #' x <- seq(-10,10,0.25)
@@ -73,10 +76,7 @@ charTSS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
 #' vector of probability densities.
 #'
 #' @references
-#' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
-#'
-#' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
-#' processes' \doi{10.1016/j.spa.2013.06.012}
+#' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kawai, R. & Masuda, H. (2011), 'On simulation of tempered stable random
 #' variates' \doi{10.1016/j.cam.2010.12.014}
@@ -206,7 +206,7 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' rTSS(100,0.5,1,1,NULL,"SR",50)
 #'
 #' @references
-#' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
+#' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
 #' variates' \doi{10.1016/j.cam.2010.12.014}
@@ -386,7 +386,7 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' @return The CF of the tempered stable subordinator distribution.
 #'
 #' @references
-#' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
+#' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
 #' processes' \doi{10.1016/j.spa.2013.06.012}
@@ -463,7 +463,7 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
 #' vector of densities.
 #'
 #' @references
-#' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
+#' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' @examples
 #' x <- seq(0,15,0.25)
@@ -668,7 +668,7 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @return Generates \code{n} random numbers.
 #'
 #' @references
-#' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
+#' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
 #' variates' \doi{10.1016/j.cam.2010.12.014}
@@ -893,8 +893,7 @@ qCTS <- function(p, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Rachev, S., Kim, Y., Bianchi, M. & Fabozzi, F. (2011), 'Financial Models with
-#' Levy Processes and Volatility Clustering'
-#' \url{https://books.google.de/books?id=XKvUUrcS_twC}
+#' Levy Processes and Volatility Clustering' \doi{10.1002/9781118268070}
 #'
 #' @examples
 #' x <- seq(-10,10,0.25)
@@ -956,7 +955,7 @@ charNTS <- function(t, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' vector of densities.
 #'
 #' @references
-#' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
+#' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' @examples
 #' x <- seq(0,15,0.25)
@@ -1114,7 +1113,7 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' See also the [rTSS()] function.
 #'
 #' @references
-#' Massing, Till (2022), 'Parametric Estimation of Tempered Stable Laws'
+#' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
 #' variates' \doi{10.1016/j.cam.2010.12.014}

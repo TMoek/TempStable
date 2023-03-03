@@ -105,7 +105,7 @@ Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.}
 \item{IterationControl}{only used if algo = "IT..." or algo = "Cue..."
 to control the iterations. See Details.}
 
-\item{methodR}{A string. It selects the method in rCTS/rNTS/rTTS. "AR" by default.}
+\item{methodR}{A string. It selects the method in rCTS/rNTS/rTSS. "AR" by default.}
 
 \item{...}{Other arguments to be passed to the estimation function.}
 }
@@ -262,7 +262,7 @@ TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
 
 }
 \references{
-Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
+Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 
 Kim, Y. s.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
 market models with lévy processes and time-varying volatility'

@@ -38,8 +38,11 @@ y <- charTSS(x,0.5,1,1)
 
 }
 \references{
-Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
+Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 
 Kawai, R. & Masuda, H. (2011), 'On simulation of tempered stable random
 variates' \doi{10.1016/j.cam.2010.12.014}
+
+Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
+processes' \doi{10.1016/j.spa.2013.06.012}
 }

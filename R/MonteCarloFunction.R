@@ -117,7 +117,7 @@
 #' \url{https://github.com/GeoBosh/StableEstim/blob/master/R/Simulation.R}
 #'
 #' @references
-#' Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
+#' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kim, Y. s.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
 #' market models with lévy processes and time-varying volatility'
@@ -191,7 +191,7 @@
 #' Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.
 #' @param IterationControl only used if algo = "IT..." or algo = "Cue..."
 #' to control the iterations. See Details.
-#' @param methodR A string. It selects the method in rCTS/rNTS/rTTS. "AR" by default.
+#' @param methodR A string. It selects the method in rCTS/rNTS/rTSS. "AR" by default.
 #' @param ... Other arguments to be passed to the estimation function.
 #'
 #' @return If \code{saveOutput == FALSE}, the return object is a list of 2.

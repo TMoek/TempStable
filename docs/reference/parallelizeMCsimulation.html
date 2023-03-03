@@ -68,8 +68,9 @@ function to this function in the same way.</p>
 <span>  MCparam <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  SampleSizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span>,</span>
 <span>  saveOutput <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  cores <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cores <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  SeedOptions <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  iterationDisplayToFileSystem <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -110,6 +111,11 @@ exclusively via the return of the function.</p></dd>
 <code><a href="TemperedEstim_Simulation.html">TemperedEstim_Simulation()</a></code> but must be NULL here.</p></dd>
 
 
+<dt>iterationDisplayToFileSystem</dt>
+<dd><p>creates a text file in your file system
+that displays the current iteration of the simulation.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>The function works only if all necessary arguments from the
 function <code><a href="TemperedEstim_Simulation.html">TemperedEstim_Simulation()</a></code> are passed. See description and
@@ -131,8 +137,8 @@ for the function <code><a href="TemperedEstim_Simulation.html">TemperedEstim_Sim
 described in more detail for the individual arguments.</p>
 <p>In addition to the arguments of function <code><a href="TemperedEstim_Simulation.html">TemperedEstim_Simulation()</a></code>, the
 argument "cores" can be assigned an integer value. This value determines how
-many different processes are to be parallelized. If no value is specified
-here, R tries to read out how many cores the processor has and passes this
+many different processes are to be parallelized. If value is <code>NULL</code>, R
+tries to read out how many cores the processor has and passes this
 value to "cores".</p>
 <p>During the simulation, the progress of the simulation can be viewed in a
 file in the workspace named "IterationControlForParallelization.txt".</p>
@@ -150,7 +156,7 @@ file in the workspace named "IterationControlForParallelization.txt".</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
