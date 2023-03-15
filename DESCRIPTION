@@ -17,7 +17,7 @@ Description:
   The package also provides functions to compute density and probability 
   functions and tools to run Monte Carlo simulations.
   This package has already been used for the estimation of tempered stable 
-  distributions (Massing (2023) <arXiv:example.example>).
+  distributions (Massing (2023) <arXiv:http://arxiv.org/abs/2303.07060>).
   The following references form the theoretical background for various functions
   in this package. References for each function are explicitly listed in its 
   documentation:
