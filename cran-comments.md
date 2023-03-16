@@ -76,10 +76,19 @@ There were no ERRORs or WARNINGs.
 There were 2 NOTEs:
 
 * checking CRAN incoming feasibility: Possibly misspelled words in DESCRIPTION:
+  Carrasco (24:3)
+  Feuerverger (25:3)
+  Kawai (28:3)
+  Kuechler (30:3)
+  Masuda (28:11)
+  Rachev (31:3)
+  Tappe (30:14)
+  al (26:13, 29:10, 31:13)
+  et (26:10, 29:7, 31:10)
   subordinator (15:49)
 
   This note appears only for devtools::check_rhub().
-  The term is used like this in the research field.
+  Terms are names and other terms that are used like this in the research field.
   
   
 * checking for detritus in the temp directory ... NOTE: Found the following
