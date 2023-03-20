@@ -35,6 +35,13 @@ Georgi N. Boshnakov.
 
 ## Installation
 
+TempStable is now available on CRAN! In R-Studio the package can be
+installed directly with the following command:
+
+``` r
+install.packages("TempStable")
+```
+
 You can install the development version of TempStable from
 [GitHub](https://github.com/) with:
 
@@ -63,21 +70,21 @@ res_CTS_ML_size10 <- TemperedEstim_Simulation(ParameterMatrix = rbind(thetaT),
                                                TemperedType = "Classic", Estimfct = "ML",
                                                saveOutput = FALSE)
 #> ---------------- Alpha=1.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- 
-#> *** Iter 1/10 *** Estimated Remaining Time: 0h3min10sec. *** 
-#> *** Iter 2/10 *** Estimated Remaining Time: 0h3min8sec. *** 
-#> *** Iter 3/10 *** Estimated Remaining Time: 0h6min20sec. *** 
-#> *** Iter 4/10 *** Estimated Remaining Time: 0h4min37sec. ***
+#> *** Iter 1/10 *** Estimated Remaining Time: 0h2min2sec. *** 
+#> *** Iter 2/10 *** Estimated Remaining Time: 0h2min1sec. *** 
+#> *** Iter 3/10 *** Estimated Remaining Time: 0h4min9sec. *** 
+#> *** Iter 4/10 *** Estimated Remaining Time: 0h3min12sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
 
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 5/10 *** Estimated Remaining Time: 0h1min10sec. ***
+#> *** Iter 5/10 *** Estimated Remaining Time: 0h0min50sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 6/10 *** Estimated Remaining Time: 0h0min45sec. *** 
-#> *** Iter 7/10 *** Estimated Remaining Time: 0h1min19sec. ***
+#> *** Iter 6/10 *** Estimated Remaining Time: 0h0min31sec. *** 
+#> *** Iter 7/10 *** Estimated Remaining Time: 0h1min0sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 8/10 *** Estimated Remaining Time: 0h0min23sec. ***
+#> *** Iter 8/10 *** Estimated Remaining Time: 0h0min15sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 9/10 *** Estimated Remaining Time: 0h0min12sec. ***
+#> *** Iter 9/10 *** Estimated Remaining Time: 0h0min8sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
 #> *** Iter 10/10 *** Estimated Remaining Time: 0h0min0sec. ***
 

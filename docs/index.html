@@ -28,7 +28,7 @@
   The package also provides functions to compute density and probability 
   functions and tools to run Monte Carlo simulations.
   This package has already been used for the estimation of tempered stable 
-  distributions (Massing (2023) &lt;arXiv:example.example&gt;).
+  distributions (Massing (2023) &lt;arXiv:2303.07060&gt;).
   The following references form the theoretical background for various functions
   in this package. References for each function are explicitly listed in its 
   documentation:
@@ -38,8 +38,8 @@
   Hansen (1982) &lt;doi:10.2307/1912775&gt;
   Kawai &amp; Masuda (2011) &lt;doi:10.1016/j.cam.2010.12.014&gt;
   Kim et al. (2008) &lt;doi:10.1016/j.jbankfin.2007.11.004&gt;
-  Kuechler &amp; Tappe (2013) &lt;doi:10.1016/j.spa.2013.06.012
-  Rachev et al. (2011) &lt;doi:10.1002/9781118268070&gt;">
+  Kuechler &amp; Tappe (2013) &lt;doi:10.1016/j.spa.2013.06.012&gt;
+  Rachev et al. (2011) &lt;doi:10.1002/9781118268070&gt;.">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -101,7 +101,10 @@
 <div class="section level1">
 <div class="page-header"><h1 id="tempstable-">TempStable <img src="reference/figures/logo.png" align="right" width="120"><a class="anchor" aria-label="anchor" href="#tempstable-"></a>
 </h1></div>
-<!-- badges: start --><!-- badges: end --><!-- Start of my description --><p>A collection of methods to estimate parameters of different tempered stable distributions. Currently, there are three different tempered stable distributions to choose from: Tempered stable subordinator distribution, classical tempered stable distribution, normal tempered stable distribution. The package also provides functions to compute density and probability functions and tools to run Monte Carlo simulations.</p>
+<!-- badges: start -->
+<!-- badges: end -->
+<!-- Start of my description -->
+<p>A collection of methods to estimate parameters of different tempered stable distributions. Currently, there are three different tempered stable distributions to choose from: Tempered stable subordinator distribution, classical tempered stable distribution, normal tempered stable distribution. The package also provides functions to compute density and probability functions and tools to run Monte Carlo simulations.</p>
 <p>The main function of this package are briefly described below:</p>
 <ul>
 <li>Main function: TemperedEstim() computes all the information about the estimator. It allows the user to choose the preferred method and several related options.</li>
@@ -109,11 +112,15 @@
 <li>Monte Carlo simulation: a tool to run a Monte Carlo simulation (TemperedEstim_Simulation()) is provided and can save output files or produce statistical summary.</li>
 </ul>
 <p>The package was developed by Till Massing and Cedric Jüssen and is structurally based on the “StableEstim” package by Tarak Kharrat and Georgi N. Boshnakov.</p>
-<!-- End of my description --><div class="section level2">
+<!-- End of my description -->
+<div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of TempStable from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>TempStable is now available on CRAN! In R-Studio the package can be installed directly with the following command:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"TempStable"</span><span class="op">)</span></span></code></pre></div>
+<p>You can install the development version of TempStable from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"cedricjuessen/TempStable"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -121,7 +128,7 @@
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <p>This is a basic example which shows you how to solve a common problem:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cedricjuessen.github.io/TempStable/" class="external-link">TempStable</a></span><span class="op">)</span></span>
 <span><span class="co">## basic example code</span></span>
 <span><span class="co"># Such a simulation can take a very long time. Therefore, it can make sense to </span></span>
@@ -137,21 +144,21 @@
 <span>                                               TemperedType <span class="op">=</span> <span class="st">"Classic"</span>, Estimfct <span class="op">=</span> <span class="st">"ML"</span>,</span>
 <span>                                               saveOutput <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ---------------- Alpha=1.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- </span></span>
-<span><span class="co">#&gt; *** Iter 1/10 *** Estimated Remaining Time: 0h3min10sec. *** </span></span>
-<span><span class="co">#&gt; *** Iter 2/10 *** Estimated Remaining Time: 0h3min8sec. *** </span></span>
-<span><span class="co">#&gt; *** Iter 3/10 *** Estimated Remaining Time: 0h6min20sec. *** </span></span>
-<span><span class="co">#&gt; *** Iter 4/10 *** Estimated Remaining Time: 0h4min37sec. ***</span></span>
+<span><span class="co">#&gt; *** Iter 1/10 *** Estimated Remaining Time: 0h2min2sec. *** </span></span>
+<span><span class="co">#&gt; *** Iter 2/10 *** Estimated Remaining Time: 0h2min1sec. *** </span></span>
+<span><span class="co">#&gt; *** Iter 3/10 *** Estimated Remaining Time: 0h4min9sec. *** </span></span>
+<span><span class="co">#&gt; *** Iter 4/10 *** Estimated Remaining Time: 0h3min12sec. ***</span></span>
 <span><span class="co">#&gt; Warning in log(densis): NaNs wurden erzeugt</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(densis): NaNs wurden erzeugt</span></span>
-<span><span class="co">#&gt; *** Iter 5/10 *** Estimated Remaining Time: 0h1min10sec. ***</span></span>
+<span><span class="co">#&gt; *** Iter 5/10 *** Estimated Remaining Time: 0h0min50sec. ***</span></span>
 <span><span class="co">#&gt; Warning in log(densis): NaNs wurden erzeugt</span></span>
-<span><span class="co">#&gt; *** Iter 6/10 *** Estimated Remaining Time: 0h0min45sec. *** </span></span>
-<span><span class="co">#&gt; *** Iter 7/10 *** Estimated Remaining Time: 0h1min19sec. ***</span></span>
+<span><span class="co">#&gt; *** Iter 6/10 *** Estimated Remaining Time: 0h0min31sec. *** </span></span>
+<span><span class="co">#&gt; *** Iter 7/10 *** Estimated Remaining Time: 0h1min0sec. ***</span></span>
 <span><span class="co">#&gt; Warning in log(densis): NaNs wurden erzeugt</span></span>
-<span><span class="co">#&gt; *** Iter 8/10 *** Estimated Remaining Time: 0h0min23sec. ***</span></span>
+<span><span class="co">#&gt; *** Iter 8/10 *** Estimated Remaining Time: 0h0min15sec. ***</span></span>
 <span><span class="co">#&gt; Warning in log(densis): NaNs wurden erzeugt</span></span>
-<span><span class="co">#&gt; *** Iter 9/10 *** Estimated Remaining Time: 0h0min12sec. ***</span></span>
+<span><span class="co">#&gt; *** Iter 9/10 *** Estimated Remaining Time: 0h0min8sec. ***</span></span>
 <span><span class="co">#&gt; Warning in log(densis): NaNs wurden erzeugt</span></span>
 <span><span class="co">#&gt; *** Iter 10/10 *** Estimated Remaining Time: 0h0min0sec. ***</span></span>
 <span></span>
@@ -163,7 +170,14 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="license">
+    <div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://cloud.r-project.org/package=TempStable" class="external-link">View on CRAN</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>GPL (&gt;= 2)</li>
