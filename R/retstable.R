@@ -1,3 +1,10 @@
+testFunc <- function(a,b){
+  .Call("add",a,b, PACKAGE = "TempStable")
+}
+
+
+
+
 ### fast rejection algorithm, R version
 
 ##' Sample a vector of random variates St ~ \tilde{S}(alpha, 1,
