@@ -43,7 +43,7 @@ As \code{p} is a numeric vector, the return value is also a numeric
 vector of quantiles.
 }
 \description{
-The quantile function of the normal tempered stable (CTS).
+The quantile function of the normal tempered stable (NTS).
 }
 \details{
 \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda,

@@ -76,7 +76,7 @@ GMMParametersEstim_TSS <-
                     stop(paste(algo, " not taken into account !")))
     if (PrintTime) {
       CallingFct <-
-        paste("Subordinator", "GMMParametersEstim", algo, t_scheme, sep = "_")
+        paste("TSS", "GMMParametersEstim", algo, t_scheme, sep = "_")
       StableEstim::PrintDuration(
         StableEstim::ComputeDuration(t_init, StableEstim::getTime_()),
         CallingFct)

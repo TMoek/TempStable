@@ -1,17 +1,17 @@
 
-### Classic ###
+### CTS ###
 # For ML, warnings will occur as NaNs will be produced --> suppressWarning()
 
 
 
-test_that("TemperedEstim_Simulation_with_Classic_ML_gives_correct_return", {
+test_that("TemperedEstim_Simulation_with_CTS_ML_gives_correct_return", {
 
   suppressWarnings({
     TestObject <- TemperedEstim_Simulation(
       ParameterMatrix = rbind(c(1.5,1,1,1,1,0),c(0.5,1,1,1,1,0)),
       SampleSizes = 2,
       MCparam = 2,
-      TemperedType = "Classic",
+      TemperedType = "CTS",
       Estimfct = "ML",
       saveOutput = FALSE)
 
@@ -31,11 +31,11 @@ test_that("TemperedEstim_Simulation_with_Classic_ML_gives_correct_return", {
 })
 
 
-test_that("TemperedEstim_Simulation_with_Classic_GMM_gives_correct_return", {
+test_that("TemperedEstim_Simulation_with_CTS_GMM_gives_correct_return", {
 
   TestObject <- TemperedEstim_Simulation(
     ParameterMatrix = rbind(c(1.5,1,1,1,1,0)),
-    SampleSizes = 4, MCparam = 2, TemperedType = "Classic",
+    SampleSizes = 4, MCparam = 2, TemperedType = "CTS",
     Estimfct = "GMM", saveOutput = FALSE, algo = "2SGMM",
     regularization = "cut-off", WeightingMatrix = "OptAsym",
     t_scheme = "free", alphaReg = 0.005, t_free = seq(0.1,2,length.out=12))
@@ -53,11 +53,11 @@ test_that("TemperedEstim_Simulation_with_Classic_GMM_gives_correct_return", {
                                                  "time"))
 })
 
-test_that("TemperedEstim_Simulation_with_Classic_Cgmm_gives_correct_return", {
+test_that("TemperedEstim_Simulation_with_CTS_Cgmm_gives_correct_return", {
 
   TestObject <- TemperedEstim_Simulation(
     ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)), SampleSizes = 4,
-    MCparam = 1, TemperedType = "Classic", Estimfct = "Cgmm",
+    MCparam = 1, TemperedType = "CTS", Estimfct = "Cgmm",
     saveOutput = FALSE, algo = "2SCgmm", alphaReg = 0.01, subdivisions = 20,
     IntegrationMethod = "Uniform", randomIntegrationLaw = "unif", s_min = 0,
     s_max= 1)
@@ -75,11 +75,11 @@ test_that("TemperedEstim_Simulation_with_Classic_Cgmm_gives_correct_return", {
                                                  "time"))
 })
 
-test_that("TemperedEstim_Simulation_with_Classic_GMC_gives_correct_return", {
+test_that("TemperedEstim_Simulation_with_CTS_GMC_gives_correct_return", {
 
   TestObject <- TemperedEstim_Simulation(
     ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)), SampleSizes = 4,
-    MCparam = 2, TemperedType = "Classic", Estimfct = "GMC",
+    MCparam = 2, TemperedType = "CTS", Estimfct = "GMC",
     saveOutput = FALSE, algo = "2SGMC", alphaReg = 0.01,
     WeightingMatrix = "OptAsym", regularization = "cut-off", ncond = 8)
 
@@ -97,15 +97,15 @@ test_that("TemperedEstim_Simulation_with_Classic_GMC_gives_correct_return", {
 })
 
 
-### Subordinator ###
+### TSS ###
 
-test_that("TemperedEstim_Simulation_with_Subordinator_ML_gives_correct_return",
+test_that("TemperedEstim_Simulation_with_TSS_ML_gives_correct_return",
           {
 
   suppressWarnings({
     TestObject <- TemperedEstim_Simulation(
       ParameterMatrix = rbind(c(0.5,1,1)), SampleSizes = 4, MCparam = 1,
-      TemperedType = "Subordinator", Estimfct = "ML", saveOutput = FALSE)
+      TemperedType = "TSS", Estimfct = "ML", saveOutput = FALSE)
 
 
     expect_equal(length(TestObject$outputMat), 10)
@@ -118,12 +118,12 @@ test_that("TemperedEstim_Simulation_with_Subordinator_ML_gives_correct_return",
   })
 })
 
-test_that("TemperedEstim_Simulation_with_Subordinator_GMM_gives_correct_return",
+test_that("TemperedEstim_Simulation_with_TSS_GMM_gives_correct_return",
   {
 
     TestObject <- TemperedEstim_Simulation(
       ParameterMatrix = rbind(c(0.5,1,1)), SampleSizes = 4, MCparam = 1,
-      TemperedType = "Subordinator", Estimfct = "GMM", saveOutput = FALSE,
+      TemperedType = "TSS", Estimfct = "GMM", saveOutput = FALSE,
       algo = "2SGMM", regularization = "cut-off", WeightingMatrix = "OptAsym",
       t_scheme = "free", alphaReg = 0.005, t_free = seq(0.1,2,length.out=12))
 
@@ -137,11 +137,11 @@ test_that("TemperedEstim_Simulation_with_Subordinator_GMM_gives_correct_return",
 })
 
 
-test_that("TemperedEstim_Simulation_with_Subordinator_Cgmm_gives_correct_re", {
+test_that("TemperedEstim_Simulation_with_TSS_Cgmm_gives_correct_re", {
 
   TestObject <- TemperedEstim_Simulation(
     ParameterMatrix = rbind(c(0.45,0.55,1)), SampleSizes = 4,
-    MCparam = 1, TemperedType = "Subordinator", Estimfct = "Cgmm",
+    MCparam = 1, TemperedType = "TSS", Estimfct = "Cgmm",
     saveOutput = FALSE, algo = "2SCgmm", alphaReg = 0.01, subdivisions = 20,
     IntegrationMethod = "Uniform", randomIntegrationLaw = "unif", s_min = 0,
     s_max= 1)
@@ -155,12 +155,12 @@ test_that("TemperedEstim_Simulation_with_Subordinator_Cgmm_gives_correct_re", {
                                                  "lambdaE", "failure","time"))
 })
 
-test_that("TemperedEstim_Simulation_with_Subordinator_GMC_gives_correct_re",
+test_that("TemperedEstim_Simulation_with_TSS_GMC_gives_correct_re",
           {
 
             TestObject <- TemperedEstim_Simulation(
               ParameterMatrix = rbind(c(0.45,0.55,1)), SampleSizes = 4,
-              MCparam = 2, TemperedType = "Subordinator", Estimfct = "GMC",
+              MCparam = 2, TemperedType = "TSS", Estimfct = "GMC",
               saveOutput = FALSE, algo = "2SGMC", alphaReg = 0.01,
               WeightingMatrix = "OptAsym", regularization = "cut-off",
               ncond = 8)
@@ -174,14 +174,14 @@ test_that("TemperedEstim_Simulation_with_Subordinator_GMC_gives_correct_re",
           })
 
 
-### Normal ###
+### NTS ###
 
-test_that("TemperedEstim_Simulation_with_Normal_ML_gives_correct_return", {
+test_that("TemperedEstim_Simulation_with_NTS_ML_gives_correct_return", {
 
   suppressWarnings({
     TestObject <- TemperedEstim_Simulation(
       ParameterMatrix = rbind(c(0.5,1,1,1,1)), SampleSizes = 4, MCparam = 1,
-      TemperedType = "Normal", Estimfct = "ML", saveOutput = FALSE)
+      TemperedType = "NTS", Estimfct = "ML", saveOutput = FALSE)
 
 
     expect_equal(length(TestObject$outputMat), 14)
@@ -196,11 +196,11 @@ test_that("TemperedEstim_Simulation_with_Normal_ML_gives_correct_return", {
   })
 })
 
-test_that("TemperedEstim_Simulation_with_Normal_GMM_gives_correct_return", {
+test_that("TemperedEstim_Simulation_with_NTS_GMM_gives_correct_return", {
 
   TestObject <- TemperedEstim_Simulation(
     ParameterMatrix = rbind(c(0.5,1,1,1,1)), SampleSizes = 4, MCparam = 2,
-    TemperedType = "Normal", Estimfct = "GMM", saveOutput = FALSE,
+    TemperedType = "NTS", Estimfct = "GMM", saveOutput = FALSE,
     algo = "2SGMM", regularization = "cut-off", WeightingMatrix = "OptAsym",
     t_scheme = "free", alphaReg = 0.005, t_free = seq(0.1,2,length.out=12))
 
@@ -215,11 +215,11 @@ test_that("TemperedEstim_Simulation_with_Normal_GMM_gives_correct_return", {
                                                  "time"))
 })
 
-test_that("TemperedEstim_Simulation_with_Normal_Cgmm_gives_correct_return", {
+test_that("TemperedEstim_Simulation_with_NTS_Cgmm_gives_correct_return", {
 
   TestObject <- TemperedEstim_Simulation(
     ParameterMatrix = rbind(c(0.55,0.55,1,1,1)), SampleSizes = 4,
-    MCparam = 1, TemperedType = "Normal", Estimfct = "Cgmm",
+    MCparam = 1, TemperedType = "NTS", Estimfct = "Cgmm",
     saveOutput = FALSE, algo = "2SCgmm", alphaReg = 0.01, subdivisions = 20,
     IntegrationMethod = "Uniform", randomIntegrationLaw = "unif", s_min = 0,
     s_max= 1)

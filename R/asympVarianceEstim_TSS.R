@@ -1,6 +1,6 @@
 ##### ML#####
 .asymptoticVarianceEstimML_TSS <- function(data, EstimObj,
-                                           type = "Subordinator",
+                                           type = "TSS",
                                            eps,
                                            algo,
                                            regularization,
@@ -39,7 +39,7 @@
 }
 
 asymptoticVarianceEstimML_TSS <- function(thetaEst, n_sample,
-                                          type = "Subordinator",
+                                          type = "TSS",
                                           subdivisions = 100,
                                           eps,
                                           algo,
@@ -95,7 +95,7 @@ NumDeriv_jacobian_TSS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
 
 ##### GMM#####
 .asymptoticVarianceEstimGMM_TSS <- function(data, EstimObj,
-                                            type = "Subordinator", eps,
+                                            type = "TSS", eps,
                                             algo,
                                             regularization,
                                             WeightingMatrix,
@@ -136,7 +136,7 @@ NumDeriv_jacobian_TSS <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
 
 ##### CGMM#####
 .asymptoticVarianceEstimCgmm_TSS <- function(data, EstimObj,
-                                             type = "Subordinator",
+                                             type = "TSS",
                                              eps,
                                              algo,
                                              regularization,
@@ -231,7 +231,7 @@ getSingularValueDecomposition <- function(Kn){
 
 ##### GMC#####
 .asymptoticVarianceEstimGMC_TSS <- function(data, EstimObj,
-                                            type = "Subordinator", eps,
+                                            type = "TSS", eps,
                                             algo,
                                             regularization,
                                             WeightingMatrix,

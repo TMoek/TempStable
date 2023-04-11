@@ -43,7 +43,7 @@ GMCParametersEstim_CTS <- function(x, algo = c("2SGMC", "ITGMC", "CueGMC"),
                                          eps = eps, ...)
     }, stop(paste(algo, " not taken into account !")))
     if (PrintTime) {
-        CallingFct <- paste("Classic", "GMCParametersEstim", algo, "ncond=",
+        CallingFct <- paste("CTS", "GMCParametersEstim", algo, "ncond=",
                             ncondfl, sep = "_")
         StableEstim::PrintDuration(
           StableEstim::ComputeDuration(t_init, StableEstim::getTime_()),

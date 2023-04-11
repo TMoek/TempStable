@@ -45,7 +45,7 @@ CgmmParametersEstim_NTS <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
                                           ...)
     }, stop(paste(algo, " not taken into account for Cgmm procedure")))
     if (PrintTime) {
-        CallingFct <- paste("Normal", "CgmmParametersEstim", algo, sep = "_")
+        CallingFct <- paste("NTS", "CgmmParametersEstim", algo, sep = "_")
         StableEstim::PrintDuration(
           StableEstim::ComputeDuration(t_init, StableEstim::getTime_()),
           CallingFct)

@@ -16,7 +16,8 @@ dCTS(
   dens_method = "FFT",
   a = -20,
   b = 20,
-  nf = 2048
+  nf = 2048,
+  ...
 )
 }
 \arguments{

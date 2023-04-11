@@ -5,7 +5,7 @@
 \title{Estimation function}
 \usage{
 TemperedEstim(
-  TemperedType = c("Classic", "Subordinator", "Normal"),
+  TemperedType = c("CTS", "TSS", "NTS", "MTS", "GTS", "KRTS", "RDTS"),
   EstimMethod = c("ML", "GMM", "Cgmm", "GMC"),
   data,
   theta0 = NULL,
@@ -29,7 +29,8 @@ TemperedEstim(
 )
 }
 \arguments{
-\item{TemperedType}{A String. Either "Classic", "Subordinator", or "Normal"}
+\item{TemperedType}{A String. Either "CTS", "TSS", "NTS", "MTS", "GTS",
+"KRTS", "RDTS".}
 
 \item{EstimMethod}{A String. Either "ML", "GMM", "Cgmm", or "GMC".}
 
@@ -108,7 +109,7 @@ preferred estimation method and several related options.
 \details{
 \strong{TemperedType} Detailed documentation of the individual tempered
 stable distributions can be viewed in the respective characteristic function.
-Use \code{\link[=charTSS]{charTSS()}}, \code{\link[=charCTS]{charCTS()}}, or \code{\link[=charNTS]{charNTS()}}.
+Use \code{\link[=charTSS]{charTSS()}}, \code{\link[=charCTS]{charCTS()}}, or \code{\link[=charNTS]{charNTS()}}. TODO: For all other
 
 \strong{Estimfct} Additional parameters are needed for different estimation
 functions. These are listed below for each function. The list of additional
@@ -206,18 +207,18 @@ documentation can be found in their documentation.
 }
 \examples{
 \donttest{
-TemperedEstim(TemperedType = "Classic", EstimMethod = "ML",
+TemperedEstim(TemperedType = "CTS", EstimMethod = "ML",
                data = rCTS(2,1.5,1,1,1,1,0),
                theta0 = c(1.5,1,1,1,1,0) - 0.1);
-TemperedEstim("Subordinator", "GMM", rTSS(20,0.5,1,1), algo = "2SGMM",
+TemperedEstim("TSS", "GMM", rTSS(20,0.5,1,1), algo = "2SGMM",
               alphaReg = 0.01, regularization = "cut-off",
               WeightingMatrix = "OptAsym", t_scheme = "free",
               t_free = seq(0.1,2,length.out = 12));
-TemperedEstim("Normal", "Cgmm", rNTS(20,0.5,1,1,1,0), algo = "2SCgmm",
+TemperedEstim("NTS", "Cgmm", rNTS(20,0.5,1,1,1,0), algo = "2SCgmm",
               alphaReg = 0.01, subdivisions = 50,
               IntegrationMethod = "Uniform", randomIntegrationLaw = "unif",
               s_min = 0, s_max= 1);
-TemperedEstim("Subordinator", "GMC", rTSS(20, 0.5, 1, 1), algo = "2SGMC",
+TemperedEstim("TSS", "GMC", rTSS(20, 0.5, 1, 1), algo = "2SGMC",
               alphaReg = 0.01, WeightingMatrix = "OptAsym",
               regularization = "cut-off", ncond = 8, theta0 = c(0.5,1,1));
 }

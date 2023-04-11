@@ -38,10 +38,11 @@ Generates \code{n} random numbers distributed according
 of the tempered stable subordinator distribution.
 }
 \details{
-\code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
-\code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
-"AR" stands for the Acceptance-Rejection Method and "SR" for a truncated infinite shot
-noise series representation. "AR" is the standard method used.
+\code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}.
+Either provide the parameters \code{alpha}, \code{delta}, \code{lambda}
+individually OR provide \code{theta}.
+"AR" stands for the Acceptance-Rejection Method and "SR" for a truncated
+infinite shot noise series representation. "AR" is the standard method used.
 For more details, see references.
 }
 \examples{

@@ -12,7 +12,8 @@ charCTS(
   lambdap = NULL,
   lambdam = NULL,
   mu = NULL,
-  theta = NULL
+  theta = NULL,
+  functionOrigin = "massing"
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ charCTS(
 \item{mu}{A location parameter, any real number.}
 
 \item{theta}{Parameters stacked as a vector.}
+
+\item{functionOrigin}{A string. Either "massing", or "kim10".}
 }
 \value{
 The CF of the tempered stable subordinator distribution.
@@ -42,7 +45,8 @@ stable distribution. See Kuechler & Tappe (2013) for details.
 \details{
 \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
 lambdap, lambdam, mu)}. Either provide the parameters individually OR
-provide \code{theta}.
+provide \code{theta}. Characteristic function shown here is from Massing
+(2023).
 \deqn{\varphi_{CTS}(t;\theta):=
 E_{\theta}\left[
 \mathrm{e}^{\mathrm{i}tX}\right]=
@@ -53,6 +57,16 @@ E_{\theta}\left[
 \left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-\mathrm{i}t\alpha
 \lambda_-^{\alpha-1}\right)
 \right)}
+
+\strong{Origin of functions}
+TODO: scheinbar unterscheiden sich beide Ansätze kaum. Meistens werden sind
+die Werte identisch, werfen aber hier und da für verschiedene Werte mal
+andere Werte.
+\describe{
+\item{massing}{TODO}
+\item{kim10}{Origin of this function in: Kim et al. (2010) Tempered stable
+and tempered infinitely divisible GARCH models.}
+}
 }
 \examples{
 x <- seq(-10,10,0.25)

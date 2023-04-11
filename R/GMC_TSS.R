@@ -74,7 +74,7 @@ GMCParametersEstim_TSS <-
                     stop(paste(algo, " not taken into account !")))
     if (PrintTime) {
       CallingFct <-
-        paste("Subordinator",
+        paste("TSS",
               "GMCParametersEstim",
               algo,
               "ncond=",

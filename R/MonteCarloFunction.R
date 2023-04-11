@@ -6,6 +6,8 @@
 #' can save results in a file.
 #'
 #' @details
+#' \strong{TemperedTyp} TODO: bulletlist with all different tempered types.
+#'
 #' \strong{Error Handling} It is advisable to set it to TRUE when user is
 #' planning to launch long simulations as it will prevent the procedure to stop
 #' if an error occurs for one sample data. The estimation function will produce
@@ -146,7 +148,8 @@
 #'  vector of integer.
 #' @param MCparam Number of Monte Carlo simulation for each couple of parameter,
 #'  default=100; integer
-#' @param TemperedType A String. Either "Classic", "Subordinator", or "Normal".
+#' @param TemperedType A String. Either "CTS", "TSS", "NTS", "MTS", "GTS",
+#' "KRTS", "RDTS".
 #' @param Estimfct The estimation function to be used. A String.
 #'  Either "ML", "GMM", "Cgmm", or "GMC".
 #' @param HandleError Logical flag: if set to TRUE, the simulation doesn't stop
@@ -203,12 +206,12 @@
 #' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
 #'                                                  c(0.5,1,1,1,1,0)),
 #'                          SampleSizes = c(4), MCparam = 4,
-#'                          TemperedType = "Classic", Estimfct = "ML",
+#'                          TemperedType = "CTS", Estimfct = "ML",
 #'                          saveOutput = FALSE)
 #'
 #' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0)),
 #'                          SampleSizes = c(4), MCparam = 4,
-#'                          TemperedType = "Classic", Estimfct = "GMM",
+#'                          TemperedType = "CTS", Estimfct = "GMM",
 #'                          saveOutput = FALSE, algo = "2SGMM",
 #'                          regularization = "cut-off",
 #'                          WeightingMatrix = "OptAsym", t_scheme = "free",
@@ -217,7 +220,7 @@
 #'
 #' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
 #'                          SampleSizes = c(4), MCparam = 4,
-#'                          TemperedType = "Classic", Estimfct = "Cgmm",
+#'                          TemperedType = "CTS", Estimfct = "Cgmm",
 #'                          saveOutput = FALSE, algo = "2SCgmm",
 #'                          alphaReg = 0.01, subdivisions = 50,
 #'                          IntegrationMethod = "Uniform",
@@ -226,7 +229,7 @@
 #'
 #' TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
 #'                          SampleSizes = c(4), MCparam = 4,
-#'                          TemperedType = "Classic", Estimfct = "GMC",
+#'                          TemperedType = "CTS", Estimfct = "GMC",
 #'                          saveOutput = FALSE, algo = "2SGMC",
 #'                          alphaReg = 0.01, WeightingMatrix = "OptAsym",
 #'                          regularization = "cut-off", ncond = 8)
@@ -236,8 +239,9 @@
 TemperedEstim_Simulation <- function(ParameterMatrix,
                                      SampleSizes = c(200, 1600),
                                      MCparam = 100,
-                                     TemperedType = c("Classic", "Subordinator",
-                                                      "Normal"),
+                                     TemperedType = c("CTS", "TSS",
+                                                      "NTS", "MTS", "GTS",
+                                                      "KRTS", "RDTS"),
                                      Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
                                      HandleError = TRUE, saveOutput = FALSE,
                                      SeedOptions = NULL, eps = 1e-06,
@@ -255,7 +259,8 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
     Estimfct <- match.arg(arg = Estimfct,
                           choices = c("ML", "GMM", "Cgmm", "GMC"))
     TemperedType <- match.arg(arg = TemperedType, choices =
-                                c("Classic", "Subordinator","Normal"))
+                                c("CTS", "TSS","NTS", "MTS", "GTS",
+                                  "KRTS", "RDTS"))
     nab <- nrow(ParameterMatrix)
     npar <- ncol(ParameterMatrix)
     lS <- length(SampleSizes)
@@ -316,21 +321,45 @@ TemperedEstim_Simulation <- function(ParameterMatrix,
         thetaT <- ParameterMatrix[ab, ]
 
         outputString <- switch(TemperedType,
-                               Classic = paste("Alpha=", thetaT[1] ,
-                                               " *** DeltaP=", thetaT[2],
-                                               " *** DeltaM=", thetaT[3],
-                                               " *** LambdaP=", thetaT[4],
-                                               " *** LambdaM=", thetaT[5],
-                                               " *** mu=", thetaT[6], sep = ""),
-                               Subordinator = paste("Alpha=", thetaT[1] ,
-                                                    " *** Delta=", thetaT[2],
-                                                    " *** Lambda=", thetaT[3],
-                                                    sep = ""),
-                               Normal = paste("Alpha=", thetaT[1] ,
-                                              " *** Beta=", thetaT[2],
-                                              " *** Delta=", thetaT[3],
-                                              " *** Lambda=", thetaT[4],
-                                              " *** mu=", thetaT[5], sep = "")
+                               CTS = paste("Alpha=", thetaT[1] ,
+                                           " *** DeltaP=", thetaT[2],
+                                           " *** DeltaM=", thetaT[3],
+                                           " *** LambdaP=", thetaT[4],
+                                           " *** LambdaM=", thetaT[5],
+                                           " *** mu=", thetaT[6], sep = ""),
+                               TSS = paste("Alpha=", thetaT[1] ,
+                                           " *** Delta=", thetaT[2],
+                                           " *** Lambda=", thetaT[3], sep = ""),
+                               NTS = paste("Alpha=", thetaT[1] ,
+                                            " *** Beta=", thetaT[2],
+                                            " *** Delta=", thetaT[3],
+                                            " *** Lambda=", thetaT[4],
+                                            " *** mu=", thetaT[5], sep = ""),
+                               MTS = paste("Alpha=", thetaT[1] ,
+                                           " *** Delta=", thetaT[2],
+                                           " *** LambdaP=", thetaT[3],
+                                           " *** LambdaM=", thetaT[4],
+                                           " *** mu=", thetaT[5], sep = ""),
+                               GTS = paste("AlphaP=", thetaT[1] ,
+                                           " *** AlphaM=", thetaT[2],
+                                           " *** DeltaP=", thetaT[3],
+                                           " *** DeltaM=", thetaT[4],
+                                           " *** LambdaP=", thetaT[5],
+                                           " *** LambdaM=", thetaT[6],
+                                           " *** mu=", thetaT[7], sep = ""),
+                               KRTS = paste("Alpha=", thetaT[1] ,
+                                            " *** kP=", thetaT[2],
+                                            " *** kM=", thetaT[3],
+                                            " *** rP=", thetaT[4],
+                                            " *** rM=", thetaT[5],
+                                            " *** pP=", thetaT[6],
+                                            " *** pM=", thetaT[7],
+                                            " *** mu=", thetaT[8], sep = ""),
+                               RDTS = paste("Alpha=", thetaT[1] ,
+                                           " *** Delta=", thetaT[2],
+                                           " *** LambdaP=", thetaT[3],
+                                           " *** LambdaM=", thetaT[4],
+                                           " *** mu=", thetaT[5], sep = "")
                                # ,CGMY = paste("C=", thetaT[1] ,
                                #              " *** G=", thetaT[2],
                                #              " *** M=", thetaT[3],
@@ -570,11 +599,11 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                                     methodR, ...)
   {
 
-    if (TemperedType == "Classic") {
+    if (TemperedType == "CTS") {
         Ncol <- 16
-    } else if (TemperedType == "Subordinator") {
+    } else if (TemperedType == "TSS") {
         Ncol <- 10
-    } else if (TemperedType == "Normal") {
+    } else if (TemperedType == "NTS") {
         Ncol <- 14
     }
     # else {
@@ -584,20 +613,39 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
     Nrow <- nSS * MCparam
     Output <- matrix(data = NA, ncol = Ncol, nrow = Nrow)
 
-    if (TemperedType == "Classic") {
+    if (TemperedType == "CTS") {
         colnames(Output) <- c("alphaT", "delta+T", "delta-T", "lambda+T",
                               "lambda-T", "muT", "data size", "seed", "alphaE",
                               "delta+E", "delta-E", "lambda+E", "lambda-E",
                               "muE", "failure", "time")
-    } else if (TemperedType == "Subordinator") {
+    } else if (TemperedType == "TSS") {
         colnames(Output) <- c("alphaT", "deltaT", "lambdaT", "data size",
                               "seed", "alphaE", "deltaE", "lambdaE",
                               "failure", "time")
-    } else if (TemperedType == "Normal") {
+    } else if (TemperedType == "NTS") {
         colnames(Output) <- c("alphaT", "betaT", "deltaT", "lambdaT", "muT",
                               "data size", "seed", "alphaE", "betaE", "deltaE",
                               "lambdaE", "muE", "failure", "time")
+    } else if (TemperedType == "MTS") {
+      colnames(Output) <- c("alphaT", "delta", "lambda+T", "lambda-T", "muT",
+                            "data size", "seed", "alphaE", "deltaE", "lambda+E",
+                            "lambda-E", "muE", "failure", "time")
+    } else if (TemperedType == "GTS") {
+      colnames(Output) <- c("alpha+T", "alpha-T", "delta+T", "delta-T",
+                            "lambda+T", "lambda-T", "muT", "data size", "seed",
+                            "alpha+E", "alpha-E", "delta+E", "delta-E",
+                            "lambda+E", "lambda-E", "muE", "failure", "time")
+    } else if (TemperedType == "KRTS") {
+      colnames(Output) <- c("alphaT", "k+T", "k-T", "r+T", "r-T",
+                            "p+T", "p-T", "muT", "data size", "seed",
+                            "alphaE", "k+E", "k-E", "r+E", "r-E",
+                            "p+E", "p-E", "muE", "failure", "time")
+    } else if (TemperedType == "RDTS") {
+      colnames(Output) <- c("alphaT", "delta", "lambda+T", "lambda-T", "muT",
+                            "data size", "seed", "alphaE", "deltaE", "lambda+E",
+                            "lambda-E", "muE", "failure", "time")
     }
+
     # else {
     #     colnames(Output) <- c("C.T", "G.T", "M.T", "Y.T", "data size", "seed",
     #                           "C.E", "G.E", "M.E", "Y.E", "failure", "time")
@@ -619,18 +667,21 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         tIter <- getTime_()
         iter <- mc + (sample - 1) * MCparam
         set.seed(seed <- SeedVector[mc])
-        if (TemperedType == "Classic") {
+        if (TemperedType == "CTS") {
           x <- rCTS(n = size, alpha = thetaT[1], deltap = thetaT[2],
                     deltam = thetaT[3], lambdap = thetaT[4],
                     lambdam = thetaT[5], mu = thetaT[6], methodR = methodR)
-        } else if (TemperedType == "Subordinator") {
+        } else if (TemperedType == "TSS") {
           x <- rTSS(n = size, alpha = thetaT[1], delta = thetaT[2],
                     lambda = thetaT[3], methodR = methodR)
-        } else if (TemperedType == "Normal") {
+        } else if (TemperedType == "NTS") {
           x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
                     delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5],
                     methodR = methodR)
         }
+
+        #TODO: Different options. For r-values out of density function it would
+        # make sense to create this funtion befor MC
 
         # else {
         #     x <- rCGMY(n = size, C = thetaT[1], M = thetaT[2],
@@ -717,14 +768,22 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
                               IterationControl,
                               ...) {
     output <- vector(length = Ncol)
-    if (TemperedType == "Classic") {
+    if (TemperedType == "CTS") {
         output[1:8] <- c(thetaT, size, seed)
-    } else if (TemperedType == "Subordinator") {
+    } else if (TemperedType == "TSS") {
         output[1:5] <- c(thetaT, size, seed)
-    } else if (TemperedType == "Normal") {
+    } else if (TemperedType == "NTS") {
+        output[1:7] <- c(thetaT, size, seed)
+    } else if (TemperedType == "MTS") {
+        output[1:7] <- c(thetaT, size, seed)
+    } else if (TemperedType == "GTS") {
+        output[1:9] <- c(thetaT, size, seed)
+    } else if (TemperedType == "KRTS") {
+        output[1:10] <- c(thetaT, size, seed)
+    } else if (TemperedType == "RDTS") {
         output[1:7] <- c(thetaT, size, seed)
     }
-    # else {
+    # else { #CGMY
     #     output[1:6] <- c(thetaT, size, seed)
     # }
     theta0 <- thetaT - 0.1  #noise
@@ -747,21 +806,37 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
                               s_max = s_max,
                               ncond = ncond,
                               IterationControl = IterationControl, ...)
-    if (TemperedType == "Classic") {
+    if (TemperedType == "CTS") {
         output[9:14] <- EstimRes@par
-    } else if (TemperedType == "Subordinator") {
+    } else if (TemperedType == "TSS") {
         output[6:8] <- EstimRes@par
-    } else if (TemperedType == "Normal") {
+    } else if (TemperedType == "NTS") {
+        output[8:12] <- EstimRes@par
+    } else if (TemperedType == "MTS") {
+        output[8:12] <- EstimRes@par
+    } else if (TemperedType == "GTS") {
+        output[10:16] <- EstimRes@par
+    } else if (TemperedType == "KRTS") {
+        output[11:18] <- EstimRes@par
+    } else if (TemperedType == "RDTS") {
         output[8:12] <- EstimRes@par
     }
     # else {
     #     output[7:10] <- EstimRes@par
     # }
-    if (TemperedType == "Classic") {
+    if (TemperedType == "CTS") {
         output[15:16] <- c(EstimRes@failure, EstimRes@duration)
-    } else if (TemperedType == "Subordinator") {
+    } else if (TemperedType == "TSS") {
         output[9:10] <- c(EstimRes@failure, EstimRes@duration)
-    } else if (TemperedType == "Normal") {
+    } else if (TemperedType == "NTS") {
+        output[13:14] <- c(EstimRes@failure, EstimRes@duration)
+    } else if (TemperedType == "MTS") {
+        output[13:14] <- c(EstimRes@failure, EstimRes@duration)
+    } else if (TemperedType == "GTS") {
+        output[17:18] <- c(EstimRes@failure, EstimRes@duration)
+    } else if (TemperedType == "KRTS") {
+        output[19:20] <- c(EstimRes@failure, EstimRes@duration)
+    } else if (TemperedType == "RDTS") {
         output[13:14] <- c(EstimRes@failure, EstimRes@duration)
     }
     # else {
@@ -774,41 +849,41 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
 # Merge with EstimSimulation
 #
 # @examples
-# ComputeMCSimForTempered_parallel(1,c(1.5, 1, 1, 1, 1, 0),10,"Classic","ML")
-# ComputeMCSimForTempered_parallel(1,c(0.5, 1, 1),10,"Subordinator","Cgmm",
+# ComputeMCSimForTempered_parallel(1,c(1.5, 1, 1, 1, 1, 0),10,"CTS","ML")
+# ComputeMCSimForTempered_parallel(1,c(0.5, 1, 1),10,"TSS","Cgmm",
 #                                  IntegrationMethod = "Simpson",
 #                                  randomIntegrationLaw = "unif")
 #
 # No export.
 # ComputeMCSimForTempered_parallel <- function(MCparam, thetaT, size,
-#                                              TemperedType = c("Classic",
-#                                                               "Subordinator",
-#                                                               "Normal","CGMY"),
+#                                              TemperedType = c("CTS",
+#                                                               "TSS",
+#                                                               "NTS","CGMY"),
 #                                              Estimfct = c("ML", "GMM", "Cgmm",
 #                                                           "GMC"),
 #                                              HandleError = TRUE, eps, ...) {
 #     Estimfct <- match.arg(Estimfct)
 #     TemperedType <- match.arg(TemperedType)
-#     Ncol <- ifelse(TemperedType == "Classic", 15, 9)
-#     if (TemperedType == "Classic") {
+#     Ncol <- ifelse(TemperedType == "CTS", 15, 9)
+#     if (TemperedType == "CTS") {
 #         Ncol <- 15
-#     } else if (TemperedType == "Subordinator") {
+#     } else if (TemperedType == "TSS") {
 #         Ncol <- 9
-#     } else if (TemperedType == "Normal") {
+#     } else if (TemperedType == "NTS") {
 #         Ncol <- 13
 #     } else {
 #         Ncol <- 11
 #     }
 #     Output <- numeric(Ncol)
-#     if (TemperedType == "Classic") {
+#     if (TemperedType == "CTS") {
 #         names(Output) <- c("alphaT", "delta+T", "delta-T", "lambda+T",
 #                            "lambda-T", "muT", "data size", "alphaE", "delta+E",
 #                            "delta-E", "lambda+E", "lambda-E", "muE", "failure",
 #                            "time")
-#     } else if (TemperedType == "Subordinator") {
+#     } else if (TemperedType == "TSS") {
 #         names(Output) <- c("alphaT", "deltaT", "lambdaT", "data size", "alphaE",
 #                            "deltaE", "lambdaE", "failure", "time")
-#     } else if (TemperedType == "Normal") {
+#     } else if (TemperedType == "NTS") {
 #         names(Output) <- c("alphaT", "betaT", "deltaT", "lambdaT", "muT",
 #                            "data size", "alphaE", "betaE", "deltaE", "lambdaE",
 #                            "muE", "failure", "time")
@@ -817,14 +892,14 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
 #                            "G.E", "M.E", "Y.E", "failure", "time")
 #     }
 #
-#     if (TemperedType == "Classic") {
+#     if (TemperedType == "CTS") {
 #         x <- rCTS(n = size, alpha = thetaT[1], deltap = thetaT[2],
 #                   deltam = thetaT[3], lambdap = thetaT[4], lambdam = thetaT[5],
 #                   mu = thetaT[6])
-#     } else if (TemperedType == "Subordinator") {
+#     } else if (TemperedType == "TSS") {
 #         x <- rTSS(n = size, alpha = thetaT[1], delta = thetaT[2],
 #                   lambda = thetaT[3])
-#     } else if (TemperedType == "Normal") {
+#     } else if (TemperedType == "NTS") {
 #         x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
 #                   delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5])
 #     } else {
@@ -847,11 +922,11 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
 # getTempEstimation_parallel <- function(thetaT, x, size, Ncol, TemperedType,
 #                                        Estimfct, HandleError, eps, ...) {
 #     output <- vector(length = Ncol)
-#     if (TemperedType == "Classic") {
+#     if (TemperedType == "CTS") {
 #         output[1:7] <- c(thetaT, size)
-#     } else if (TemperedType == "Subordinator") {
+#     } else if (TemperedType == "TSS") {
 #         output[1:4] <- c(thetaT, size)
-#     } else if (TemperedType == "Normal") {
+#     } else if (TemperedType == "NTS") {
 #         output[1:6] <- c(thetaT, size)
 #     } else {
 #         output[1:5] <- c(thetaT, size)
@@ -861,20 +936,20 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
 #                                  EstimMethod = Estimfct, data = x,
 #                                  theta0 = theta0, ComputeCov = FALSE,
 #                                  HandleError = HandleError, eps = eps, ...)
-#     if (TemperedType == "Classic") {
+#     if (TemperedType == "CTS") {
 #         output[8:13] <- EstimRes$par
-#     } else if (TemperedType == "Subordinator") {
+#     } else if (TemperedType == "TSS") {
 #         output[5:7] <- EstimRes$par
-#     } else if (TemperedType == "Normal") {
+#     } else if (TemperedType == "NTS") {
 #         output[7:11] <- EstimRes$par
 #     } else {
 #         output[6:9] <- EstimRes$par
 #     }
-#     if (TemperedType == "Classic") {
+#     if (TemperedType == "CTS") {
 #         output[14:15] <- c(EstimRes$failure, EstimRes$duration)
-#     } else if (TemperedType == "Subordinator") {
+#     } else if (TemperedType == "TSS") {
 #         output[8:9] <- c(EstimRes$failure, EstimRes$duration)
-#     } else if (TemperedType == "Normal") {
+#     } else if (TemperedType == "NTS") {
 #         output[12:13] <- c(EstimRes$failure, EstimRes$duration)
 #     } else {
 #         output[10:11] <- c(EstimRes$failure, EstimRes$duration)
@@ -940,19 +1015,35 @@ initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
   fileName <- get_filename(thetaT, MCparam, TemperedType, method)
   if (!file.exists(fileName)) {
     x <- switch(TemperedType,
-                Classic = paste("alphaT", "delta+T", "delta-T", "lambda+T",
+                CTS = paste("alphaT", "delta+T", "delta-T", "lambda+T",
                                 "lambda-T", "muT", "data size", "seed",
                                 "alphaE", "delta+E", "delta-E", "lambda+E",
                                 "lambda-E", "muE", "failure", "time",
                                 sep = ","),
-                Subordinator =  paste("alphaT", "deltaT", "lambdaT",
+                TSS =  paste("alphaT", "deltaT", "lambdaT",
                                       "data size", "seed", "alphaE", "deltaE",
                                       "lambdaE", "failure", "time",
                                       sep = ","),
-                Normal = paste("alphaT", "betaT", "deltaT", "lambdaT", "muT",
+                NTS = paste("alphaT", "betaT", "deltaT", "lambdaT", "muT",
                                "data size", "seed", "alphaE", "betaE", "deltaE",
                                "lambdaE", "muE", "failure", "time",
-                               sep = ",")
+                               sep = ","),
+                MTS = paste("alphaT", "delta", "lambda+T", "lambda-T", "muT",
+                            "data size", "seed", "alphaE", "deltaE", "lambda+E",
+                            "lambda-E", "muE", "failure", "time", sep = ""),
+                GTS = paste("alpha+T", "alpha-T", "delta+T", "delta-T",
+                            "lambda+T", "lambda-T", "muT", "data size", "seed",
+                            "alpha+E", "alpha-E", "delta+E", "delta-E",
+                            "lambda+E", "lambda-E", "muE", "failure", "time",
+                            sep = ""),
+                KRTS = paste("alphaT", "k+T", "k-T", "r+T", "r-T",
+                             "p+T", "p-T", "muT", "data size", "seed",
+                             "alphaE", "k+E", "k-E", "r+E", "r-E",
+                             "p+E", "p-E", "muE", "failure", "time", sep = ""),
+                RDTS = paste("alphaT", "delta", "lambda+T", "lambda-T", "muT",
+                             "data size", "seed", "alphaE", "deltaE",
+                             "lambda+E", "lambda-E", "muE", "failure", "time",
+                             sep = "")
                 # ,CGMY = paste("CT", "GT", "MT", "YT", "data size", "seed", "CE",
                 #              "GE", "ME", "YE","failure", "time",
                 #              sep = ",")
@@ -964,8 +1055,8 @@ initOutputFile <- function(thetaT, MCparam, TemperedType, Estimfct, ...) {
 
 
 # No export.
-Estim_Des_Temp <- function(TemperedType = c("Classic", "Subordinator",
-                                            "Normal"),
+Estim_Des_Temp <- function(TemperedType = c("CTS", "TSS", "NTS", "MTS", "GTS",
+                                            "KRTS", "RDTS"),
                            EstimMethod = c("ML", "GMM", "Cgmm", "GMC"),
                            eps,
                            algo,
@@ -1114,7 +1205,7 @@ get_filename_checkPoint_Temp <- function(ParameterMatrix, nab, npar, MCparam,
     #                 paste("lambdan=", ParameterMatrix[nab, 3], sep = ""),
     #                 paste("MCparam", MCparam, sep = ""), sep = "_")
     # } else {
-    # case: "Classic"
+    # case: "CTS"
     #     MC <- paste(paste("alpha0=", ParameterMatrix[1, 1], sep = ""),
     #                 paste("delta+0=", ParameterMatrix[1, 2], sep = ""),
     #                 paste("delta-0=", ParameterMatrix[1, 3], sep = ""),
@@ -1228,23 +1319,52 @@ writeCheckPoint <- function(ParameterMatrix, TemperedType, Estimfct, ab, nab,
 get_filename <- function(thetaT, MCparam, TemperedType, method,
                          extension = ".csv") {
   MC <- switch(TemperedType,
-               Classic = paste(paste("Alpha=", thetaT[1]),
+               CTS = paste(paste("Alpha=", thetaT[1]),
                                paste("DeltaP=", thetaT[2]),
                                paste("DeltaM=", thetaT[3]),
                                paste("LambdaP=", thetaT[4]),
                                paste("LambdaM=", thetaT[5]),
                                paste("mu=", thetaT[6]),
                                "MCparam", MCparam, sep = "_"),
-               Subordinator = paste(paste("Alpha=", thetaT[1]),
+               TSS = paste(paste("Alpha=", thetaT[1]),
                                     paste("Delta=", thetaT[2]),
                                     paste("Lambda=", thetaT[3]),
                                     "MCparam", MCparam,  sep = "_"),
-               Normal = paste(paste("Alpha=", thetaT[1]),
+               NTS = paste(paste("Alpha=", thetaT[1]),
                               paste("Beta=", thetaT[2]),
                               paste("Delta=", thetaT[3]),
                               paste("Lambda=", thetaT[4]),
                               paste("mu=", thetaT[5]),
-                              "MCparam", MCparam, sep = "_")
+                              "MCparam", MCparam, sep = "_"),
+               MTS = paste(paste("Alpha=", thetaT[1]),
+                           paste("Delta=", thetaT[2]),
+                           paste("LambdaP=", thetaT[3]),
+                           paste("LambdaM=", thetaT[4]),
+                           paste("mu=", thetaT[5]),
+                           "MCparam", MCparam, sep = "_"),
+               GTS = paste(paste("AlphaP=", thetaT[1]),
+                           paste("AlphaM=", thetaT[2]),
+                           paste("DeltaP=", thetaT[3]),
+                           paste("DeltaM=", thetaT[4]),
+                           paste("LambdaP=", thetaT[5]),
+                           paste("LambdaM=", thetaT[6]),
+                           paste("mu=", thetaT[7]),
+                           "MCparam", MCparam, sep = "_"),
+               KRTS = paste(paste("Alpha=", thetaT[1]),
+                            paste("kP=", thetaT[2]),
+                            paste("kM=", thetaT[3]),
+                            paste("rP=", thetaT[4]),
+                            paste("rM=", thetaT[5]),
+                            paste("pP=", thetaT[6]),
+                            paste("pM=", thetaT[7]),
+                            paste("mu=", thetaT[8]),
+                            "MCparam", MCparam, sep = "_"),
+               RDTS = paste(paste("Alpha=", thetaT[1]),
+                            paste("Delta=", thetaT[2]),
+                            paste("LambdaP=", thetaT[3]),
+                            paste("LambdaM=", thetaT[4]),
+                            paste("mu=", thetaT[5]),
+                            "MCparam", MCparam, sep = "_")
                # ,CGMY = paste(paste("C=", thetaT[1]),
                #              paste("G=", thetaT[2]),
                #              paste("M=", thetaT[3]),
@@ -1265,19 +1385,35 @@ updateOutputFile <- function(thetaT, MCparam, TemperedType, Output){
 
   if (!file.exists(fileName)) {
     x <- switch(TemperedType,
-                Classic = paste("alphaT", "delta+T", "delta-T", "lambda+T",
+                CTS = paste("alphaT", "delta+T", "delta-T", "lambda+T",
                                 "lambda-T", "muT", "data size", "seed",
                                 "alphaE", "delta+E", "delta-E", "lambda+E",
                                 "lambda-E", "muE", "failure", "time",
                                 sep = ","),
-                Subordinator =  paste("alphaT", "deltaT", "lambdaT",
+                TSS =  paste("alphaT", "deltaT", "lambdaT",
                                       "data size", "seed", "alphaE", "deltaE",
                                       "lambdaE", "failure", "time",
                                       sep = ","),
-                Normal = paste("alphaT", "betaT", "deltaT", "lambdaT", "muT",
+                NTS = paste("alphaT", "betaT", "deltaT", "lambdaT", "muT",
                                "data size", "seed", "alphaE", "betaE", "deltaE",
                                "lambdaE", "muE", "failure", "time",
-                               sep = ",")
+                               sep = ","),
+                MTS = paste("alphaT", "delta", "lambda+T", "lambda-T", "muT",
+                            "data size", "seed", "alphaE", "deltaE", "lambda+E",
+                            "lambda-E", "muE", "failure", "time", sep = ","),
+                GTS = paste("alpha+T", "alpha-T", "delta+T", "delta-T",
+                            "lambda+T", "lambda-T", "muT", "data size", "seed",
+                            "alpha+E", "alpha-E", "delta+E", "delta-E",
+                            "lambda+E", "lambda-E", "muE", "failure", "time",
+                            sep = ","),
+                KRTS = paste("alphaT", "k+T", "k-T", "r+T", "r-T",
+                             "p+T", "p-T", "muT", "data size", "seed",
+                             "alphaE", "k+E", "k-E", "r+E", "r-E",
+                             "p+E", "p-E", "muE", "failure", "time", sep = ","),
+                RDTS = paste("alphaT", "delta", "lambda+T", "lambda-T", "muT",
+                             "data size", "seed", "alphaE", "deltaE",
+                             "lambda+E", "lambda-E", "muE", "failure", "time",
+                             sep = ",")
                 # ,CGMY = paste("CT", "GT", "MT", "YT", "data size", "seed", "CE",
                 #              "GE", "ME", "YE","failure", "time",
                 #              sep = ",")

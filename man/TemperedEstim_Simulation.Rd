@@ -8,7 +8,7 @@ TemperedEstim_Simulation(
   ParameterMatrix,
   SampleSizes = c(200, 1600),
   MCparam = 100,
-  TemperedType = c("Classic", "Subordinator", "Normal"),
+  TemperedType = c("CTS", "TSS", "NTS", "MTS", "GTS", "KRTS", "RDTS"),
   Estimfct = c("ML", "GMM", "Cgmm", "GMC"),
   HandleError = TRUE,
   saveOutput = FALSE,
@@ -42,7 +42,8 @@ vector of integer.}
 \item{MCparam}{Number of Monte Carlo simulation for each couple of parameter,
 default=100; integer}
 
-\item{TemperedType}{A String. Either "Classic", "Subordinator", or "Normal".}
+\item{TemperedType}{A String. Either "CTS", "TSS", "NTS", "MTS", "GTS",
+"KRTS", "RDTS".}
 
 \item{Estimfct}{The estimation function to be used. A String.
 Either "ML", "GMM", "Cgmm", or "GMC".}
@@ -119,6 +120,8 @@ Runs Monte Carlo simulation for a selected estimation method. The function
 can save results in a file.
 }
 \details{
+\strong{TemperedTyp} TODO: bulletlist with all different tempered types.
+
 \strong{Error Handling} It is advisable to set it to TRUE when user is
 planning to launch long simulations as it will prevent the procedure to stop
 if an error occurs for one sample data. The estimation function will produce
@@ -231,12 +234,12 @@ documentation can be found in their documentation.
 TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0),
                                                  c(0.5,1,1,1,1,0)),
                          SampleSizes = c(4), MCparam = 4,
-                         TemperedType = "Classic", Estimfct = "ML",
+                         TemperedType = "CTS", Estimfct = "ML",
                          saveOutput = FALSE)
 
 TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0)),
                          SampleSizes = c(4), MCparam = 4,
-                         TemperedType = "Classic", Estimfct = "GMM",
+                         TemperedType = "CTS", Estimfct = "GMM",
                          saveOutput = FALSE, algo = "2SGMM",
                          regularization = "cut-off",
                          WeightingMatrix = "OptAsym", t_scheme = "free",
@@ -245,7 +248,7 @@ TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.5,1,1,1,1,0)),
 
 TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
                          SampleSizes = c(4), MCparam = 4,
-                         TemperedType = "Classic", Estimfct = "Cgmm",
+                         TemperedType = "CTS", Estimfct = "Cgmm",
                          saveOutput = FALSE, algo = "2SCgmm",
                          alphaReg = 0.01, subdivisions = 50,
                          IntegrationMethod = "Uniform",
@@ -254,7 +257,7 @@ TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
 
 TemperedEstim_Simulation(ParameterMatrix = rbind(c(1.45,0.55,1,1,1,0)),
                          SampleSizes = c(4), MCparam = 4,
-                         TemperedType = "Classic", Estimfct = "GMC",
+                         TemperedType = "CTS", Estimfct = "GMC",
                          saveOutput = FALSE, algo = "2SGMC",
                          alphaReg = 0.01, WeightingMatrix = "OptAsym",
                          regularization = "cut-off", ncond = 8)

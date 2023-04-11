@@ -184,10 +184,11 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' Generates \code{n} random numbers distributed according
 #' of the tempered stable subordinator distribution.
 #'
-#' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}. Either provide the parameters
-#' \code{alpha}, \code{delta}, \code{lambda} individually OR provide \code{theta}.
-#' "AR" stands for the Acceptance-Rejection Method and "SR" for a truncated infinite shot
-#' noise series representation. "AR" is the standard method used.
+#' \code{theta} denotes the parameter vector \code{(alpha, delta, lambda)}.
+#' Either provide the parameters \code{alpha}, \code{delta}, \code{lambda}
+#' individually OR provide \code{theta}.
+#' "AR" stands for the Acceptance-Rejection Method and "SR" for a truncated
+#' infinite shot noise series representation. "AR" is the standard method used.
 #' For more details, see references.
 #'
 #' @param n sample size (integer).
@@ -361,7 +362,8 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #'
 #' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
 #' lambdap, lambdam, mu)}. Either provide the parameters individually OR
-#' provide \code{theta}.
+#' provide \code{theta}. Characteristic function shown here is from Massing
+#' (2023).
 #' \deqn{\varphi_{CTS}(t;\theta):=
 #' E_{\theta}\left[
 #' \mathrm{e}^{\mathrm{i}tX}\right]=
@@ -373,6 +375,16 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' \lambda_-^{\alpha-1}\right)
 #' \right)}
 #'
+#' \strong{Origin of functions}
+#' TODO: scheinbar unterscheiden sich beide Ansätze kaum. Meistens werden sind
+#' die Werte identisch, werfen aber hier und da für verschiedene Werte mal
+#' andere Werte.
+#' \describe{
+#'   \item{massing}{TODO}
+#'   \item{kim10}{Origin of this function in: Kim et al. (2010) Tempered stable
+#'   and tempered infinitely divisible GARCH models.}
+#' }
+#'
 #'
 #' @param t A vector of real numbers where the CF is evaluated.
 #' @param alpha Stability parameter. A real number between 0 and 2.
@@ -382,6 +394,7 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' @param lambdam Tempering parameter for the left tail. A real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta Parameters stacked as a vector.
+#' @param functionOrigin A string. Either "massing", or "kim10".
 #'
 #' @return The CF of the tempered stable subordinator distribution.
 #'
@@ -397,7 +410,8 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #'
 #' @export
 charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
-                    lambdap = NULL, lambdam = NULL, mu = NULL, theta = NULL) {
+                    lambdap = NULL, lambdam = NULL, mu = NULL, theta = NULL,
+                    functionOrigin = "massing") {
     if ((missing(alpha) | missing(deltap) | missing(deltam) | missing(lambdap) |
          missing(lambdam) | missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -417,13 +431,25 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
     }
     stopifnot(0 < alpha, alpha < 2, 0 < deltap, 0 < deltam, 0 < lambdap, 0 <
                 lambdam)
-    return(exp(imagN * t * mu + deltap * gamma(-alpha) *
-                 ((lambdap - imagN * t)^alpha - lambdap^alpha + imagN * t *
-                    alpha * lambdap^(alpha - 1)) +
-                 deltam * gamma(-alpha) *
-                 ((lambdam + imagN * t)^alpha - lambdam^alpha - imagN * t *
-                    alpha * lambdam^(alpha - 1))))
 
+    if(functionOrigin == "kim10"){
+      return(exp(imagN * t * mu - imagN * t * gamma(1 - alpha) *
+                   (deltap*lambdap^(alpha-1) - deltam*lambdam^(alpha-1))
+                 + deltap * gamma(-alpha) *
+                   ((lambdap-imagN*t)^(alpha) - lambdap^(alpha))
+                 + deltam * gamma(-alpha) *
+                   ((lambdam+imagN*t)^(alpha) - lambdam^(alpha))
+      ))
+    }
+
+    else {
+      return(exp(imagN * t * mu + deltap * gamma(-alpha) *
+                   ((lambdap - imagN * t)^alpha - lambdap^alpha + imagN * t *
+                      alpha * lambdap^(alpha - 1)) +
+                   deltam * gamma(-alpha) *
+                   ((lambdam + imagN * t)^alpha - lambdam^alpha - imagN * t *
+                      alpha * lambdam^(alpha - 1))))
+    }
 }
 
 #' Density function of the classic tempered stable (CTS) distribution
@@ -473,7 +499,7 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
 #' @export
 dCTS <- function(x, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
                  lambdam = NULL, mu = NULL, theta = NULL, dens_method = "FFT",
-                 a = -20, b = 20, nf = 2048) {
+                 a = -20, b = 20, nf = 2048, ...) {
     if ((missing(alpha) | missing(deltap) | missing(deltam) | missing(lambdap) |
          missing(lambdam) | missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -497,7 +523,8 @@ dCTS <- function(x, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
     if (dens_method == "FFT" || .Platform$OS.type != "windows") {
         d <- sapply(x, dCTS_FFT, alpha = alpha, deltap = deltap,
                     deltam = deltam, lambdap = lambdap, lambdam = lambdam,
-                    mu = mu, a = a, b = b, nf = nf)
+                    mu = mu, a = a, b = b, nf = nf,
+                    ...)
     } else {
         d <- sapply(x, dCTS_Conv, alpha = alpha, deltap = deltap,
                     deltam = deltam, lambdap = lambdap, lambdam = lambdam,
@@ -509,7 +536,7 @@ dCTS <- function(x, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 
 # No export.
 dCTS_FFT <- function(x, alpha, deltap, deltam, lambdap, lambdam,
-                          mu, a, b, nf) {
+                          mu, a, b, nf, ...) {
     dx <- ((b - a)/nf)
     dt <- (2 * pi/(nf * dx))
 
@@ -517,7 +544,7 @@ dCTS_FFT <- function(x, alpha, deltap, deltam, lambdap, lambdam,
     t <- (-nf/2 * dt + sq * dt)
     xgrid <- (a + dx * sq)
 
-    cft <- charCTS(t, alpha, deltap, deltam, lambdap, lambdam, mu)
+    cft <- charCTS(t, alpha, deltap, deltam, lambdap, lambdam, mu, ...)
 
     tX <- (exp(-imagN * sq * dt * a) * cft)
 
@@ -745,7 +772,6 @@ rCTS_aARp <- function(n, alpha, delta, lambda, c) {
     }
 
     return(returnVector)
-
 }
 
 # No export.
@@ -1170,7 +1196,7 @@ rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
 
 #' Quantile function of the normal tempered stable (NTS)
 #'
-#' The quantile function of the normal tempered stable (CTS).
+#' The quantile function of the normal tempered stable (NTS).
 #'
 #' \code{theta} denotes the parameter vector \code{(alpha, beta, delta, lambda,
 #' mu)}. Either provide the parameters individually OR provide \code{theta}.

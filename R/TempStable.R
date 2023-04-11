@@ -43,7 +43,7 @@
 #'                                                 rbind(thetaT),
 #'                                               SampleSizes = c(4),
 #'                                               MCparam = 4,
-#'                                               TemperedType = "Classic",
+#'                                               TemperedType = "CTS",
 #'                                               Estimfct = "ML",
 #'                                               saveOutput = FALSE)
 #'

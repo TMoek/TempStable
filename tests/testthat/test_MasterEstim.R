@@ -1,12 +1,12 @@
 
-test_that("TemperedEstim_with_Classic_ML_gives_correct_return", {
+test_that("TemperedEstim_with_CTS_ML_gives_correct_return", {
   testData <- c(1.8873152, -0.4843727,  0.4755897, -0.1257814,  1.3484823,
                 -0.3866821, -0.4258380, -0.4658479, -2.9774961,  0.9646364,
                 -0.5875601, -2.0316790,  0.3641900,  1.1882307,  1.6635770,
                 -0.0554876,  0.4005471,  0.7820444, -0.3786902,  1.5131663)
 
   suppressWarnings({
-    TestObject <- TemperedEstim("Classic","ML",testData)
+    TestObject <- TemperedEstim("CTS","ML",testData)
 
 
     expect_equal(TestObject@par[["alpha"]],1e-06)
@@ -44,14 +44,14 @@ test_that("TemperedEstim_with_Classic_ML_gives_correct_return", {
   })
 })
 
-test_that("TemperedEstim_with_Subordinator_ML_gives_correct_return", {
+test_that("TemperedEstim_with_TSS_ML_gives_correct_return", {
   testData <- c(3.0994626, 3.9490938, 1.2214726, 1.1447818, 1.2175446,
                 1.0107253, 2.3391506, 3.2869243, 2.0381353, 0.8264428,
                 0.9005004, 0.5014983, 1.5031865, 0.6169632, 1.4605593,
                 0.9551939, 6.2465224, 2.9974583, 3.3024097, 2.6519853)
 
   suppressWarnings({
-    TestObject <- TemperedEstim("Subordinator","ML",testData)
+    TestObject <- TemperedEstim("TSS","ML",testData)
 
 
     expect_equal(round(TestObject@par[["alpha"]],
@@ -79,11 +79,11 @@ test_that("TemperedEstim_with_Subordinator_ML_gives_correct_return", {
                  "ML_OptimAlgo=L-BFGS-B")
   })
 
-  expect_error(TemperedEstim("Subordinator","ML"))
+  expect_error(TemperedEstim("TSS","ML"))
 
 })
 
-test_that("TemperedEstim_with_Normal_ML_gives_correct_return", {
+test_that("TemperedEstim_with_NTS_ML_gives_correct_return", {
   testData <- c(1.20268116, 2.47354907, 1.50248870, 2.53324346, 4.57237410,
                 1.31064953, 2.74788769, 3.27900386, 0.15987725, 2.94092597,
                 0.06321566, 0.86256026, 0.97488549, 0.20086994, 1.21891900,
@@ -93,7 +93,7 @@ test_that("TemperedEstim_with_Normal_ML_gives_correct_return", {
     #This test works well for Mac, Windows and Linux(rHub). Somehow, it does not
     # work with release-check Debian
     if(.Platform$OS.type == "windows"){
-      TestObject <- TemperedEstim("Normal","ML",testData)
+      TestObject <- TemperedEstim("NTS","ML",testData)
 
 
       expect_equal(TestObject@par[["alpha"]],1.000000e-06)
@@ -126,7 +126,7 @@ test_that("TemperedEstim_with_Normal_ML_gives_correct_return", {
     }
   })
 
-  expect_error(TemperedEstim("Normal","ML"))
+  expect_error(TemperedEstim("NTS","ML"))
 
 })
 
@@ -166,14 +166,14 @@ test_that("TemperedEstim_with_Normal_ML_gives_correct_return", {
 #
 # })
 
-test_that("TemperedEstim_with_Subordinator_GMM_gives_correct_return", {
+test_that("TemperedEstim_with_TSS_GMM_gives_correct_return", {
   testData <- c(1.0306890, 1.5027451, 1.5030160, 1.5891460, 0.9589073,
                 0.7129186, 1.0200448, 3.4584815, 1.1106868, 0.7493848,
                 1.1104505, 2.4100007, 0.9076451, 4.2011003, 0.7050829,
                 2.3226794, 2.2397202, 1.0066137, 1.1703344, 0.7563997)
 
   suppressWarnings({
-    TestObject <- TemperedEstim("Subordinator", "GMM",testData, algo = "2SGMM",
+    TestObject <- TemperedEstim("TSS", "GMM",testData, algo = "2SGMM",
                                 alphaReg = 0.01, regularization = "cut-off",
                                 WeightingMatrix = "OptAsym", t_scheme = "free",
                                 t_free = seq(0.1,2,length.out = 12))
@@ -194,7 +194,7 @@ test_that("TemperedEstim_with_Subordinator_GMM_gives_correct_return", {
   })
 })
 
-test_that("TemperedEstim_with_Subordinator_GMC_gives_correct_return", {
+test_that("TemperedEstim_with_TSS_GMC_gives_correct_return", {
   testData <- c(2.7875940, 0.6474977, 3.6280734, 2.2341773, 2.9577528,
                 1.5241392, 3.6102109, 1.9597134, 2.8262536, 2.1545273,
                 1.5342798, 0.7227840, 2.9183721, 5.3106484, 0.8756254,
@@ -202,7 +202,7 @@ test_that("TemperedEstim_with_Subordinator_GMC_gives_correct_return", {
 
   suppressWarnings({
     if(.Platform$OS.type == "windows"){
-      TestObject <- TemperedEstim("Subordinator", "GMC", testData,
+      TestObject <- TemperedEstim("TSS", "GMC", testData,
                                   algo = "2SGMC", alphaReg = 0.01,
                                   WeightingMatrix = "OptAsym",
                                   regularization = "cut-off", ncond = 8)

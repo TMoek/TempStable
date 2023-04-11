@@ -9,7 +9,7 @@
 #'
 #' \strong{TemperedType} Detailed documentation of the individual tempered
 #' stable distributions can be viewed in the respective characteristic function.
-#' Use [charTSS()], [charCTS()], or [charNTS()].
+#' Use [charTSS()], [charCTS()], or [charNTS()]. TODO: For all other
 #'
 #' \strong{Estimfct} Additional parameters are needed for different estimation
 #' functions. These are listed below for each function. The list of additional
@@ -131,7 +131,8 @@
 #' characteristic function procedures'
 #' \doi{10.1111/j.2517-6161.1981.tb01143.x}
 #'
-#' @param TemperedType A String. Either "Classic", "Subordinator", or "Normal"
+#' @param TemperedType A String. Either "CTS", "TSS", "NTS", "MTS", "GTS",
+#' "KRTS", "RDTS".
 #' @param EstimMethod A String. Either "ML", "GMM", "Cgmm", or "GMC".
 #' @param data Data used to perform the estimation: numeric vector of length n.
 #' @param theta0 A vector of numeric values corresponding to the pattern of the
@@ -184,23 +185,24 @@
 #'
 #' @examples
 #' \donttest{
-#' TemperedEstim(TemperedType = "Classic", EstimMethod = "ML",
+#' TemperedEstim(TemperedType = "CTS", EstimMethod = "ML",
 #'                data = rCTS(2,1.5,1,1,1,1,0),
 #'                theta0 = c(1.5,1,1,1,1,0) - 0.1);
-#' TemperedEstim("Subordinator", "GMM", rTSS(20,0.5,1,1), algo = "2SGMM",
+#' TemperedEstim("TSS", "GMM", rTSS(20,0.5,1,1), algo = "2SGMM",
 #'               alphaReg = 0.01, regularization = "cut-off",
 #'               WeightingMatrix = "OptAsym", t_scheme = "free",
 #'               t_free = seq(0.1,2,length.out = 12));
-#' TemperedEstim("Normal", "Cgmm", rNTS(20,0.5,1,1,1,0), algo = "2SCgmm",
+#' TemperedEstim("NTS", "Cgmm", rNTS(20,0.5,1,1,1,0), algo = "2SCgmm",
 #'               alphaReg = 0.01, subdivisions = 50,
 #'               IntegrationMethod = "Uniform", randomIntegrationLaw = "unif",
 #'               s_min = 0, s_max= 1);
-#' TemperedEstim("Subordinator", "GMC", rTSS(20, 0.5, 1, 1), algo = "2SGMC",
+#' TemperedEstim("TSS", "GMC", rTSS(20, 0.5, 1, 1), algo = "2SGMC",
 #'               alphaReg = 0.01, WeightingMatrix = "OptAsym",
 #'               regularization = "cut-off", ncond = 8, theta0 = c(0.5,1,1));
 #' }
 #' @export
-TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
+TemperedEstim <- function(TemperedType = c("CTS", "TSS", "NTS", "MTS", "GTS",
+                                           "KRTS", "RDTS"),
                           EstimMethod = c("ML", "GMM", "Cgmm", "GMC"), data,
                           theta0 = NULL, ComputeCov = FALSE, HandleError = TRUE,
                           eps = 1e-06, algo = NULL, regularization = NULL,
@@ -212,33 +214,63 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
     if (missing(data))
         stop("data not provided !")
     if (is.null(theta0)) {
-        if (TemperedType == "Classic") {
+        if (TemperedType == "CTS") {
             theta0 <- MoC_CTS(x <- data, c(1.5, 1, 1, 1, 1, 0))
-        } else if (TemperedType == "Subordinator") {
+        } else if (TemperedType == "TSS") {
             theta0 <- MoC_TSS(x <- data, c(0.5, 1, 1))
-        } else if (TemperedType == "Normal") {
+        } else if (TemperedType == "NTS") {
             theta0 <- MoC_NTS(x <- data, c(0.5, 0, 1, 1, 0))
+        } else if (TemperedType == "MTS") {
+            theta0 <- MoC_MTS(x <- data, c(0.6, 1, 1, 1, 0))
+        } else if (TemperedType == "GTS") {
+            theta0 <- MoC_GTS(x <- data, c(1.5, 1.5, 1, 1, 1, 1, 0))
+        } else if (TemperedType == "KRTS") {
+            theta0 <- MoC_KRTS(x <- data, c(1.5, 1, 1, 1, 1, 1, 1, 0))
+        } else if (TemperedType == "RDTS") {
+          theta0 <- MoC_RDTS(x <- data, c(1.5, 1, 1, 1, 0))
         }
+
       # else {
       #       theta0 <- MoC_CGMY(x <- data, c(1, 1, 1, 1.5))
       #   }
     }
-    if (TemperedType == "Classic") {
-        OutputObj <- methods::new(Class="EstimClassicClass",par = numeric(6),
+    if (TemperedType == "CTS") {
+        OutputObj <- methods::new(Class="EstimCTSClass",par = numeric(6),
                                   par0 = theta0, vcov = matrix(0, 6, 6),
                                   confint = matrix(0, 6, 2), data = data,
                                   failure = 1)
-    } else if (TemperedType == "Subordinator") {
+    } else if (TemperedType == "TSS") {
         OutputObj <- methods::new(Class = "EstimSubClass", par = numeric(3),
                                   par0 = theta0, vcov = matrix(0, 3, 3),
                                   confint = matrix(0, 3, 2), data = data,
                                   failure = 1)
-    } else if (TemperedType == "Normal") {
-        OutputObj <- methods::new(Class = "EstimNormalClass", par = numeric(5),
+    } else if (TemperedType == "NTS") {
+        OutputObj <- methods::new(Class = "EstimNTSClass", par = numeric(5),
                                   par0 = theta0, vcov = matrix(0, 5, 5),
                                   confint = matrix(0, 5, 2), data = data,
                                   failure = 1)
+    } else if (TemperedType == "MTS") {
+      OutputObj <- methods::new(Class = "EstimMTSClass", par = numeric(5),
+                                par0 = theta0, vcov = matrix(0, 5, 5),
+                                confint = matrix(0, 5, 2), data = data,
+                                failure = 1)
+    } else if (TemperedType == "GTS") {
+      OutputObj <- methods::new(Class = "EstimGTSClass", par = numeric(7),
+                                par0 = theta0, vcov = matrix(0, 7, 7),
+                                confint = matrix(0, 7, 2), data = data,
+                                failure = 1)
+    } else if (TemperedType == "KRTS") {
+      OutputObj <- methods::new(Class = "EstimKRTSClass", par = numeric(8),
+                                par0 = theta0, vcov = matrix(0, 8, 8),
+                                confint = matrix(0, 8, 2), data = data,
+                                failure = 1)
+    } else if (TemperedType == "RDTS") {
+      OutputObj <- methods::new(Class = "EstimRDTSClass", par = numeric(5),
+                                par0 = theta0, vcov = matrix(0, 5, 5),
+                                confint = matrix(0, 5, 2), data = data,
+                                failure = 1)
     }
+
     # else {
     #     OutputObj <- methods::new(Class = "EstimCGMYClass", par = numeric(4),
     #                               par0 = theta0, vcov = matrix(0, 4, 4),
@@ -356,7 +388,7 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
 #
 # Gap holder for details.
 #
-# @param TemperedType A String. Either "Classic", "Subordinator", "Normal", or
+# @param TemperedType A String. Either "CTS", "TSS", "NTS", or
 # "CGMY".
 # @param EstimMethod A String. Either "ML", "GMM", "Cgmm", or "GMC".
 # @param data A gap holder.
@@ -368,33 +400,33 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
 # @return Gap holder for return.
 #
 # @export
-# TemperedEstim_v2 <- function(TemperedType = c("Classic", "Subordinator",
-#                                               "Normal", "CGMY"),
+# TemperedEstim_v2 <- function(TemperedType = c("CTS", "TSS",
+#                                               "NTS", "CGMY"),
 #                              EstimMethod = c("ML", "GMM", "Cgmm", "GMC"), data,
 #                              theta0 = NULL, ComputeCov = FALSE,
 #                              HandleError = TRUE, eps = 1e-06, ...) {
 #     if (missing(data))
 #         stop("data not provided !")
 #     if (is.null(theta0)) {
-#         if (TemperedType == "Classic") {
+#         if (TemperedType == "CTS") {
 #             theta0 <- MoC_CTS(x = data, c(1.5, 1, 1, 1, 1, 0), eps = eps)
-#         } else if (TemperedType == "Subordinator") {
+#         } else if (TemperedType == "TSS") {
 #             theta0 <- MoC_TSS(x = data, c(0.5, 1, 1), eps = eps)
-#         } else if (TemperedType == "Normal") {
+#         } else if (TemperedType == "NTS") {
 #             theta0 <- MoC_NTS(x = data, c(0.5, 0, 1, 1, 0), eps = eps)
 #         } else {
 #             theta0 <- MoC_CGMY(x = data, c(1, 1, 1, 1.5), eps = eps)
 #         }
 #     }
-#     if (TemperedType == "Classic") {
+#     if (TemperedType == "CTS") {
 #         OutputObj <- list(par = numeric(6), par0 = theta0,
 #                           vcov = matrix(0, 6, 6), confint = matrix(0, 6, 2),
 #                           data = data, failure = 1)
-#     } else if (TemperedType == "Subordinator") {
+#     } else if (TemperedType == "TSS") {
 #         OutputObj <- list(par = numeric(3), par0 = theta0,
 #                           vcov = matrix(0, 3, 3), confint = matrix(0, 3, 2),
 #                           data = data, failure = 1)
-#     } else if (TemperedType == "Normal") {
+#     } else if (TemperedType == "NTS") {
 #         OutputObj <- list(par = numeric(5), par0 = theta0,
 #                           vcov = matrix(0, 5, 5), confint = matrix(0, 5, 2),
 #                           data = data, failure = 1)
@@ -437,7 +469,7 @@ TemperedEstim <- function(TemperedType = c("Classic", "Subordinator", "Normal"),
 
 # No export.
 getTempEstimFcts <- function(
-    type = c("Classic", "Subordinator", "Normal"),
+    type = c("CTS", "TSS", "NTS", "MTS", "GTS", "KRTS", "RDTS"),
     method = c("ML", "GMM", "Cgmm", "GMC"),
     eps,
     algo,
@@ -455,7 +487,8 @@ getTempEstimFcts <- function(
     IterationControl,
     x,
     ...){
-    if (type == "Classic") {
+    #The extended TS only work with Cgmm.
+    if (type == "CTS") {
         Output <- switch(method, ML = {
             list(Params = MLParametersEstim_CTS,
                  CovarianceMat = .asymptoticVarianceEstimML_CTS,
@@ -474,7 +507,7 @@ getTempEstimFcts <- function(
                  methodDes = getGMCmethodName_CTS)
         }, stop(paste(method, " not taken into account !")))
         Output
-    } else if (type == "Subordinator") {
+    } else if (type == "TSS") {
         Output <- switch(method, ML = {
             list(Params = MLParametersEstim_TSS,
                  CovarianceMat = .asymptoticVarianceEstimML_TSS,
@@ -493,7 +526,7 @@ getTempEstimFcts <- function(
                  methodDes = getGMCmethodName_TSS)
         }, stop(paste(method, " not taken into account !")))
         Output
-    } else if (type == "Normal") {
+    } else if (type == "NTS") {
         Output <- switch(method, ML = {
             list(Params = MLParametersEstim_NTS,
                  CovarianceMat = .asymptoticVarianceEstimML_NTS,
@@ -508,6 +541,38 @@ getTempEstimFcts <- function(
                  methodDes = getCgmmMethodName_NTS)
         }, stop(paste(method, " not taken into account !")))
         Output
+    } else if (type == "MTS") {
+      Output <- switch(method, Cgmm = {
+        list(Params = CgmmParametersEstim_MTS,
+             CovarianceMat = .asymptoticVarianceEstimCgmm_MTS,
+             methodDes = getCgmmMethodName_MTS)
+      }, stop(paste(method, " not taken into account ! For now, only Cgmm works
+                    with this TS.")))
+      Output
+    } else if (type == "GTS") {
+      Output <- switch(method, Cgmm = {
+        list(Params = CgmmParametersEstim_GTS,
+             CovarianceMat = .asymptoticVarianceEstimCgmm_GTS,
+             methodDes = getCgmmMethodName_GTS)
+      }, stop(paste(method, " not taken into account ! For now, only Cgmm works
+                    with this TS.")))
+      Output
+    } else if (type == "KRTS") {
+      Output <- switch(method, Cgmm = {
+        list(Params = CgmmParametersEstim_KRTS,
+             CovarianceMat = .asymptoticVarianceEstimCgmm_KRTS,
+             methodDes = getCgmmMethodName_KRTS)
+      }, stop(paste(method, " not taken into account ! For now, only Cgmm works
+                    with this TS.")))
+      Output
+    } else if (type == "RDTS") {
+      Output <- switch(method, Cgmm = {
+        list(Params = CgmmParametersEstim_RDTS,
+             CovarianceMat = .asymptoticVarianceEstimCgmm_RDTS,
+             methodDes = getCgmmMethodName_RDTS)
+      }, stop(paste(method, " not taken into account ! For now, only Cgmm works
+                    with this TS.")))
+      Output
     }
   # else {
   #       Output <- switch(method, ML = {
@@ -533,19 +598,36 @@ getTempEstimFcts <- function(
 
 # No export.
 .initResTemp <- function(type, method) {
-    if (type == "Classic") {
+    if (type == "CTS") {
         npar <- 6
         list(Estim = list(par = rep(NaN, npar)), duration = 0,
              method = paste(type, method, "failed", sep = "_"))
-    } else if (type == "Subordinator") {
+    } else if (type == "TSS") {
         npar <- 3
         list(Estim = list(par = rep(NaN, npar)), duration = 0,
              method = paste(type, method, "failed", sep = "_"))
-    } else if (type == "Normal") {
+    } else if (type == "NTS") {
         npar <- 5
         list(Estim = list(par = rep(NaN, npar)), duration = 0,
              method = paste(type, method, "failed", sep = "_"))
+    } else if (type == "MTS") {
+        npar <- 5
+        list(Estim = list(par = rep(NaN, npar)), duration = 0,
+              method = paste(type, method, "failed", sep = "_"))
+    } else if (type == "GTS") {
+        npar <- 7
+        list(Estim = list(par = rep(NaN, npar)), duration = 0,
+              method = paste(type, method, "failed", sep = "_"))
+    } else if (type == "´KRTS") {
+        npar <- 8
+        list(Estim = list(par = rep(NaN, npar)), duration = 0,
+             method = paste(type, method, "failed", sep = "_"))
+    } else if (type == "RDTS") {
+      npar <- 5
+      list(Estim = list(par = rep(NaN, npar)), duration = 0,
+           method = paste(type, method, "failed", sep = "_"))
     }
+
     # else {
     #     npar <- 4
     #     list(Estim = list(par = rep(NaN, npar)), duration = 0,
@@ -554,9 +636,10 @@ getTempEstimFcts <- function(
 }
 
 # No export.
-NameParamsObjectsTemp <- function(mat, type = c("Classic", "Subordinator",
-                                                "Normal")) {
-    if (type == "Classic") {
+NameParamsObjectsTemp <- function(mat, type = c("CTS", "TSS",
+                                                "NTS", "MTS", "GTS", "KRTS",
+                                                "RDTS")) {
+    if (type == "CTS") {
         parNames <- c("alpha", "delta +", "delta -", "lambda +", "lambda -",
                       "mu")
         minMaxCol <- c("min", "max")
@@ -568,7 +651,7 @@ NameParamsObjectsTemp <- function(mat, type = c("Classic", "Subordinator",
                 colnames(mat) <- minMaxCol else if (ncol(mat) == 6)
                 colnames(mat) <- parNames
         }
-    } else if (type == "Subordinator") {
+    } else if (type == "TSS") {
         parNames <- c("alpha", "delta", "lambda")
         minMaxCol <- c("min", "max")
         if (length(mat) == 3) {
@@ -579,7 +662,7 @@ NameParamsObjectsTemp <- function(mat, type = c("Classic", "Subordinator",
                 colnames(mat) <- minMaxCol else if (ncol(mat) == 3)
                 colnames(mat) <- parNames
         }
-    } else if (type == "Normal") {
+    } else if (type == "NTS") {
         parNames <- c("alpha", "beta", "delta", "lambda", "mu")
         minMaxCol <- c("min", "max")
         if (length(mat) == 5) {
@@ -590,7 +673,53 @@ NameParamsObjectsTemp <- function(mat, type = c("Classic", "Subordinator",
                 colnames(mat) <- minMaxCol else if (ncol(mat) == 5)
                 colnames(mat) <- parNames
         }
+    } else if (type == "MTS") {
+      parNames <- c("alpha", "delta", "lambda +", "lambda -", "mu")
+      minMaxCol <- c("min", "max")
+      if (length(mat) == 5) {
+        names(mat) <- parNames
+      } else if (is.matrix(mat) && nrow(mat) == 5) {
+        rownames(mat) <- parNames
+        if (ncol(mat) == 2)
+          colnames(mat) <- minMaxCol else if (ncol(mat) == 5)
+            colnames(mat) <- parNames
+      }
+    } else if (type == "GTS") {
+      parNames <- c("alpha +", "alpha -", "delta +", "delta -", "lambda +",
+                    "lambda -", "mu")
+      minMaxCol <- c("min", "max")
+      if (length(mat) == 7) {
+        names(mat) <- parNames
+      } else if (is.matrix(mat) && nrow(mat) == 7) {
+        rownames(mat) <- parNames
+        if (ncol(mat) == 2)
+          colnames(mat) <- minMaxCol else if (ncol(mat) == 7)
+            colnames(mat) <- parNames
+      }
+    } else if (type == "KRTS") {
+      parNames <- c("alpha", "k +", "k -", "r +", "r -", "p +", "p -", "mu")
+      minMaxCol <- c("min", "max")
+      if (length(mat) == 8) {
+        names(mat) <- parNames
+      } else if (is.matrix(mat) && nrow(mat) == 8) {
+        rownames(mat) <- parNames
+        if (ncol(mat) == 2)
+          colnames(mat) <- minMaxCol else if (ncol(mat) == 8)
+            colnames(mat) <- parNames
+      }
+    } else if (type == "RDTS") {
+      parNames <- c("alpha", "delta", "lambda +", "lambda -", "mu")
+      minMaxCol <- c("min", "max")
+      if (length(mat) == 5) {
+        names(mat) <- parNames
+      } else if (is.matrix(mat) && nrow(mat) == 5) {
+        rownames(mat) <- parNames
+        if (ncol(mat) == 2)
+          colnames(mat) <- minMaxCol else if (ncol(mat) == 5)
+            colnames(mat) <- parNames
+      }
     }
+
     # else {
     #     parNames <- c("C", "G", "M", "Y")
     #     minMaxCol <- c("min", "max")
@@ -658,6 +787,88 @@ CheckParametersRange_NTS <- function(theta) {
 }
 
 # No Export.
+CheckParametersRange_MTS <- function(theta) {
+  alpha <- theta[1]
+  delta <- theta[2]
+  lambdap <- theta[3]
+  lambdam <- theta[4]
+  mu <- theta[5]
+  checkParams <- list(alpha = checkRange(alpha, -Inf, 1, "alpha"),
+                      delta = checkRange(delta, 0, Inf, "delta"),
+                      lambdap = checkRange(lambda, 0, Inf, "lambda+"),
+                      lambdam = checkRange(lambda, 0, Inf, "lambda-"),
+                      mu = checkRange(mu, -Inf, Inf, "mu"))
+  .printErr <- function(errList) if (!errList$bool)
+    stop(errList$msg)
+  lapply(checkParams, .printErr)
+}
+
+# No Export.
+CheckParametersRange_GTS <- function(theta) {
+  alphap <- theta[1]
+  alpham <- theta[2]
+  deltap <- theta[3]
+  deltam <- theta[4]
+  lambdap <- theta[5]
+  lambdam <- theta[6]
+  mu <- theta[7]
+  checkParams <- list(alphap = checkRange(alpha, 0, 2, "alpha+"),
+                      alpham = checkRange(alpha, 0, 2, "alpha-"),
+                      deltap = checkRange(deltap, 0, Inf, "delta+"),
+                      deltam = checkRange(deltam, 0, Inf, "delta-"),
+                      lambdap = checkRange(lambdap, 0, Inf, "lambda+"),
+                      lambdam = checkRange(lambdam, 0, Inf, "lambda-"),
+                      mu = checkRange(mu, -Inf, Inf, "mu"))
+  .printErr <- function(errList) if (!errList$bool)
+    stop(errList$msg)
+  lapply(checkParams, .printErr)
+}
+
+# No Export.
+CheckParametersRange_KRTS <- function(theta) {
+  alpha <- theta[1]
+  kp <- theta[2]
+  km <- theta[3]
+  rp <- theta[4]
+  rm <- theta[5]
+  pp <- theta[6]
+  pm <- theta[7]
+  mu <- theta[8]
+  checkParams <- list(alpha = checkRange(alpha, 0, 2, "alpha"),
+                      kp = checkRange(alpha, 0, 2, "k+"),
+                      km = checkRange(alpha, 0, 2, "k-"),
+                      rp = checkRange(deltap, 0, Inf, "r+"),
+                      rm = checkRange(deltam, 0, Inf, "r-"),
+                      pp = checkRange(lambdap, -alpha, Inf, "p+"),
+                      pm = checkRange(lambdam, -alpha, Inf, "p-"),
+                      mu = checkRange(mu, -Inf, Inf, "mu"))
+  .printErr <- function(errList) if (!errList$bool)
+    stop(errList$msg)
+  lapply(checkParams, .printErr)
+}
+
+# No Export.
+CheckParametersRange_RDTS <- function(theta) {
+  alpha <- theta[1]
+  delta <- theta[2]
+  lambdap <- theta[3]
+  lambdam <- theta[4]
+  mu <- theta[5]
+  checkParams <- list(alpha = checkRange(alpha, 0, 2, "alpha"),
+                      delta = checkRange(delta, 0, Inf, "delta"),
+                      lambdap = checkRange(lambda, 0, Inf, "lambda+"),
+                      lambdam = checkRange(lambda, 0, Inf, "lambda-"),
+                      mu = checkRange(mu, -Inf, Inf, "mu"))
+  .printErr <- function(errList) if (!errList$bool)
+    stop(errList$msg)
+  lapply(checkParams, .printErr)
+}
+
+
+
+
+
+# No Export.
 CheckParametersRange_CGMY <- function(theta) {
     C <- theta[1]
     G <- theta[2]
@@ -687,12 +898,20 @@ checkRange <- function(Parameter, min = -Inf, max = Inf, ParamName) {
 AsymptoticConfidenceInterval <- function(thetaEst, n_sample, Cov,
                                          qLaw = stats::qnorm, level = 0.95,
                                          type, ...) {
-    if (type == "Classic") {
+    if (type == "CTS") {
         nr <- 6
-    } else if (type == "Subordinator") {
+    } else if (type == "TSS") {
         nr <- 3
-    } else if (type == "Normal") {
+    } else if (type == "NTS") {
         nr <- 5
+    } else if (type == "MTS") {
+      nr <- 5
+    } else if (type == "GTS") {
+      nr <- 7
+    } else if (type == "KRTS") {
+      nr <- 8
+    } else if (type == "RDTS") {
+      nr <- 5
     }
     # else {
     #     nr <- 4
@@ -711,36 +930,31 @@ AsymptoticConfidenceInterval <- function(thetaEst, n_sample, Cov,
 # Added by Cedric 20220811
 NameParamsObjects <- function(mat, type = NULL) {
 
-  parNames <- c("alpha", "beta", "gamma", "delta")
+  parNames <- switch(type,
+                     CTS = c("Alpha", "DeltaP", "DeltaM", "LambdaP",
+                                 "LambdaM", "mu"),
+                     TSS = c("Alpha", "Delta", "Lambda"),
+                     NTS = c("Alpha", "Beta", "Delta", "Lambda",
+                                "mu"),
+                     MTS = c("Alpha", "Delta", "LambdaP", "LambdaM",
+                             "mu"),
+                     GTS = c("AlphaP", "AlphaM", "DeltaP", "DeltaM",
+                             "LambdaP", "LambdaM", "mu"),
+                     KRTS = c("Alpha", "kP", "kM", "rP", "rM",
+                             "pP", "pM", "mu"),
+                     CGMY = c("C", "G", "M", "Y"))
 
-  if (!is.null(type)){
-    parNames <- switch(type,
-                           Classic = c("Alpha", "DeltaP", "DeltaM", "LambdaP",
-                                       "LambdaM", "mu"),
-                           Subordinator = c("Alpha=", "Delta", "Lambda"),
-                           Normal = c("Alpha", "Beta", "Delta", "Lambda",
-                                      "mu"),
-                           CGMY = c("C", "G", "M", "Y"))
-  }
-  else {
-    if(length(mat) == 6) parNames = c("Alpha", "DeltaP", "DeltaM", "LambdaP",
-                                      "LambdaM", "mu")
-    else if(length(mat) == 3) parNames = c("Alpha=", "Delta", "Lambda")
-    else if(length(mat) == 5) parNames  = c("Alpha", "Beta", "Delta", "Lambda",
-                                            "mu")
-    else if(length(mat) == 4) parNames = c("C", "G", "M", "Y")
-  }
 
   minMaxCol <- c("min", "max")
 
-  if (length(mat) > 2 && length(mat) < 7) {
+  if (length(mat) > 2 && length(mat) < 9) {
     names(mat) <- parNames
   }
-  else if (is.matrix(mat) && nrow(mat) > 2 && is.matrix(mat) && nrow(mat) < 7) {
+  else if (is.matrix(mat) && nrow(mat) > 2 && is.matrix(mat) && nrow(mat) < 9) {
     rownames(mat) <- parNames
     if (ncol(mat) == 2)
       colnames(mat) <- minMaxCol
-    else if (ncol(mat) > 2 && ncol(mat) < 7)
+    else if (ncol(mat) > 2 && ncol(mat) < 9)
       colnames(mat) <- parNames
   }
   mat
@@ -748,6 +962,8 @@ NameParamsObjects <- function(mat, type = NULL) {
 
 
 ##### Classes#####
+
+#### Sub Class ####
 
 # No export.
 #' @importFrom methods new
@@ -864,9 +1080,12 @@ setMethod("show", "EstimSubClass",
             cat("\n ******* End Show (Tempered Estim Sub) ******* \n")
           })
 
+
+#### CTS Class ####
+
 # No export.
 #' @importFrom methods new
-EstimClassicClass <- setClass("EstimClassicClass",
+EstimCTSClass <- setClass("EstimCTSClass",
                               slots = list(par = "numeric", par0 = "numeric",
                                            vcov = "matrix", confint = "matrix",
                                            data = "numeric",
@@ -909,7 +1128,7 @@ EstimClassicClass <- setClass("EstimClassicClass",
 
 ## Init method
 
-setMethod("initialize", "EstimClassicClass",
+setMethod("initialize", "EstimCTSClass",
           function(.Object, par, par0, vcov, confint, method, level, others,
                    data, duration, failure, ...) {
             ## handle missing
@@ -936,10 +1155,10 @@ setMethod("initialize", "EstimClassicClass",
               failure    <- 0
 
             ## set up names
-            NameParamsObjects(par, "Classic")
-            NameParamsObjects(par0, "Classic")
-            NameParamsObjects(vcov, "Classic")
-            NameParamsObjects(confint, "Classic")
+            NameParamsObjects(par, "CTS")
+            NameParamsObjects(par0, "CTS")
+            NameParamsObjects(vcov, "CTS")
+            NameParamsObjects(confint, "CTS")
             attr(confint, "level") <- level
 
             methods::callNextMethod(
@@ -958,9 +1177,9 @@ setMethod("initialize", "EstimClassicClass",
             )
           })
 
-setMethod("show", "EstimClassicClass",
+setMethod("show", "EstimCTSClass",
           function(object) {
-            cat("*** Tempered Estim Classic, method Show *** \n")
+            cat("*** Tempered Estim CTS, method Show *** \n")
             cat("** Method ** \n")
             print(object@method)
             cat("** Parameters Estimation ** \n")
@@ -978,13 +1197,15 @@ setMethod("show", "EstimClassicClass",
               cat("success")
             else
               cat("failure")
-            cat("\n ******* End Show (Tempered Estim Classic) ******* \n")
+            cat("\n ******* End Show (Tempered Estim CTS) ******* \n")
           })
 
 
+#### NTS Class ####
+
 # No export.
 #' @importFrom methods new
-EstimNormalClass <- setClass("EstimNormalClass",
+EstimNTSClass <- setClass("EstimNTSClass",
                              slots = list(par = "numeric", par0 = "numeric",
                                           vcov = "matrix", confint = "matrix",
                                           data = "numeric",
@@ -1026,7 +1247,7 @@ EstimNormalClass <- setClass("EstimNormalClass",
 
 ## Init method
 
-setMethod("initialize", "EstimNormalClass",
+setMethod("initialize", "EstimNTSClass",
           function(.Object, par, par0, vcov, confint, method, level, others,
                    data, duration, failure, ...) {
             ## handle missing
@@ -1053,10 +1274,10 @@ setMethod("initialize", "EstimNormalClass",
               failure    <- 0
 
             ## set up names
-            NameParamsObjects(par, "Normal")
-            NameParamsObjects(par0, "Normal")
-            NameParamsObjects(vcov, "Normal")
-            NameParamsObjects(confint, "Normal")
+            NameParamsObjects(par, "NTS")
+            NameParamsObjects(par0, "NTS")
+            NameParamsObjects(vcov, "NTS")
+            NameParamsObjects(confint, "NTS")
             attr(confint, "level") <- level
 
             methods::callNextMethod(
@@ -1075,9 +1296,9 @@ setMethod("initialize", "EstimNormalClass",
             )
           })
 
-setMethod("show", "EstimNormalClass",
+setMethod("show", "EstimNTSClass",
           function(object) {
-            cat("*** Tempered Estim Normal, method Show *** \n")
+            cat("*** Tempered Estim NTS, method Show *** \n")
             cat("** Method ** \n")
             print(object@method)
             cat("** Parameters Estimation ** \n")
@@ -1095,9 +1316,488 @@ setMethod("show", "EstimNormalClass",
               cat("success")
             else
               cat("failure")
-            cat("\n ******* End Show (Tempered Estim Normal) ******* \n")
+            cat("\n ******* End Show (Tempered Estim NTS) ******* \n")
           })
 
+
+#### MTS Class ####
+
+# No export.
+#' @importFrom methods new
+EstimMTSClass <- setClass("EstimMTSClass",
+                          slots = list(par = "numeric", par0 = "numeric",
+                                       vcov = "matrix", confint = "matrix",
+                                       data = "numeric",
+                                       sampleSize = "numeric",
+                                       others = "list", duration = "numeric",
+                                       failure = "numeric",
+                                       method = "character"),
+                          contains = list(), validity = function(object) {
+                            par <- object@par
+                            if (length(par) == 5)
+                              ansp <- TRUE
+                            else ansp <- "Parameter of length different of 5"
+                            par0 <- object@par0
+                            if (length(par0) == 5)
+                              ansp0 <- TRUE
+                            else ansp0 <- "Initial Parameter of length different of 5"
+                            vcov <- object@vcov
+                            if (ncol(vcov) == 5 && nrow(vcov) == 5)
+                              anscov <- TRUE
+                            else anscov <- "covariance matrix of length different of 5x5"
+                            confint <- object@confint
+                            if (ncol(confint) == 2 && nrow(confint) == 5)
+                              ansconfint <- TRUE
+                            else ansconfint <-
+                              "confidance intervall matrix of length different of 5x2"
+                            if (ansp == TRUE && ansp0 == TRUE && anscov == TRUE &&
+                                ansconfint == TRUE)
+                              res <- TRUE
+                            else if (is.character(ansp))
+                              res <- ansp
+                            else if (is.character(ansp0))
+                              res <- ansp0
+                            else if (is.character(anscov))
+                              res <- anscov
+                            else if (is.character(ansconfint))
+                              res <- ansconfint
+                            res
+                          })
+
+## Init method
+
+setMethod("initialize", "EstimMTSClass",
+          function(.Object, par, par0, vcov, confint, method, level, others,
+                   data, duration, failure, ...) {
+            ## handle missing
+            if (missing(par))
+              par        <- numeric(5)
+            if (missing(par0))
+              par0       <- numeric(5)
+            if (missing(vcov))
+              vcov       <- matrix(nrow = 5, ncol = 5)
+            if (missing(confint))
+              confint    <- matrix(nrow = 5, ncol = 2)
+            if (missing(data))
+              data       <- numeric(100)
+            sampleSize <- length(data)
+            if (missing(method))
+              method     <- "Default"
+            if (missing(others))
+              others     <- list()
+            if (missing(level))
+              level      <- 0
+            if (missing(duration))
+              duration   <- 0
+            if (missing(failure))
+              failure    <- 0
+
+            ## set up names
+            NameParamsObjects(par, "MTS")
+            NameParamsObjects(par0, "MTS")
+            NameParamsObjects(vcov, "MTS")
+            NameParamsObjects(confint, "MTS")
+            attr(confint, "level") <- level
+
+            methods::callNextMethod(
+              .Object,
+              par = par,
+              par0 = par0,
+              vcov = vcov,
+              confint = confint,
+              data = data,
+              sampleSize = sampleSize,
+              method = method,
+              others = others,
+              duration = duration,
+              failure = failure,
+              ...
+            )
+          })
+
+setMethod("show", "EstimMTSClass",
+          function(object) {
+            cat("*** Tempered Estim MTS, method Show *** \n")
+            cat("** Method ** \n")
+            print(object@method)
+            cat("** Parameters Estimation ** \n")
+            print(object@par)
+            cat("** Covariance Matrix Estimation ** \n")
+            print(object@vcov)
+            cat("** Confidence interval Estimation ** \n")
+            print(paste("Confidence level=", attributes(object@confint)$level))
+            print(paste("data length=", object@sampleSize))
+            print(object@confint)
+            cat("** Estimation time ** \n")
+            PrintDuration(object@duration)
+            cat("** Estimation status ** \n")
+            if (object@failure == 0)
+              cat("success")
+            else
+              cat("failure")
+            cat("\n ******* End Show (Tempered Estim MTS) ******* \n")
+          })
+
+
+#### GTS Class ####
+
+# No export.
+#' @importFrom methods new
+EstimGTSClass <- setClass("EstimGTSClass",
+                          slots = list(par = "numeric", par0 = "numeric",
+                                       vcov = "matrix", confint = "matrix",
+                                       data = "numeric",
+                                       sampleSize = "numeric",
+                                       others = "list", duration = "numeric",
+                                       failure = "numeric",
+                                       method = "character"),
+                          contains = list(), validity = function(object) {
+                            par <- object@par
+                            if (length(par) == 7)
+                              ansp <- TRUE
+                            else ansp <- "Parameter of length different of 7"
+                            par0 <- object@par0
+                            if (length(par0) == 7)
+                              ansp0 <- TRUE
+                            else ansp0 <- "Initial Parameter of length different of 7"
+                            vcov <- object@vcov
+                            if (ncol(vcov) == 7 && nrow(vcov) == 7)
+                              anscov <- TRUE
+                            else anscov <- "covariance matrix of length different of 7x7"
+                            confint <- object@confint
+                            if (ncol(confint) == 2 && nrow(confint) == 7)
+                              ansconfint <- TRUE
+                            else ansconfint <-
+                              "confidance intervall matrix of length different of 7x2"
+                            if (ansp == TRUE && ansp0 == TRUE && anscov == TRUE &&
+                                ansconfint == TRUE)
+                              res <- TRUE
+                            else if (is.character(ansp))
+                              res <- ansp
+                            else if (is.character(ansp0))
+                              res <- ansp0
+                            else if (is.character(anscov))
+                              res <- anscov
+                            else if (is.character(ansconfint))
+                              res <- ansconfint
+                            res
+                          })
+
+## Init method
+
+setMethod("initialize", "EstimGTSClass",
+          function(.Object, par, par0, vcov, confint, method, level, others,
+                   data, duration, failure, ...) {
+            ## handle missing
+            if (missing(par))
+              par        <- numeric(7)
+            if (missing(par0))
+              par0       <- numeric(7)
+            if (missing(vcov))
+              vcov       <- matrix(nrow = 7, ncol = 7)
+            if (missing(confint))
+              confint    <- matrix(nrow = 7, ncol = 2)
+            if (missing(data))
+              data       <- numeric(100)
+            sampleSize <- length(data)
+            if (missing(method))
+              method     <- "Default"
+            if (missing(others))
+              others     <- list()
+            if (missing(level))
+              level      <- 0
+            if (missing(duration))
+              duration   <- 0
+            if (missing(failure))
+              failure    <- 0
+
+            ## set up names
+            NameParamsObjects(par, "GTS")
+            NameParamsObjects(par0, "GTS")
+            NameParamsObjects(vcov, "GTS")
+            NameParamsObjects(confint, "GTS")
+            attr(confint, "level") <- level
+
+            methods::callNextMethod(
+              .Object,
+              par = par,
+              par0 = par0,
+              vcov = vcov,
+              confint = confint,
+              data = data,
+              sampleSize = sampleSize,
+              method = method,
+              others = others,
+              duration = duration,
+              failure = failure,
+              ...
+            )
+          })
+
+setMethod("show", "EstimGTSClass",
+          function(object) {
+            cat("*** Tempered Estim GTS, method Show *** \n")
+            cat("** Method ** \n")
+            print(object@method)
+            cat("** Parameters Estimation ** \n")
+            print(object@par)
+            cat("** Covariance Matrix Estimation ** \n")
+            print(object@vcov)
+            cat("** Confidence interval Estimation ** \n")
+            print(paste("Confidence level=", attributes(object@confint)$level))
+            print(paste("data length=", object@sampleSize))
+            print(object@confint)
+            cat("** Estimation time ** \n")
+            PrintDuration(object@duration)
+            cat("** Estimation status ** \n")
+            if (object@failure == 0)
+              cat("success")
+            else
+              cat("failure")
+            cat("\n ******* End Show (Tempered Estim GTS) ******* \n")
+          })
+
+
+#### KRTS ####
+
+# No export.
+#' @importFrom methods new
+EstimKRTSClass <- setClass("EstimKRTSClass",
+                          slots = list(par = "numeric", par0 = "numeric",
+                                       vcov = "matrix", confint = "matrix",
+                                       data = "numeric",
+                                       sampleSize = "numeric",
+                                       others = "list", duration = "numeric",
+                                       failure = "numeric",
+                                       method = "character"),
+                          contains = list(), validity = function(object) {
+                            par <- object@par
+                            if (length(par) == 8)
+                              ansp <- TRUE
+                            else ansp <- "Parameter of length different of 8"
+                            par0 <- object@par0
+                            if (length(par0) == 8)
+                              ansp0 <- TRUE
+                            else ansp0 <- "Initial Parameter of length different of 8"
+                            vcov <- object@vcov
+                            if (ncol(vcov) == 8 && nrow(vcov) == 8)
+                              anscov <- TRUE
+                            else anscov <- "covariance matrix of length different of 8x8"
+                            confint <- object@confint
+                            if (ncol(confint) == 2 && nrow(confint) == 8)
+                              ansconfint <- TRUE
+                            else ansconfint <-
+                              "confidance intervall matrix of length different of 8x2"
+                            if (ansp == TRUE && ansp0 == TRUE && anscov == TRUE &&
+                                ansconfint == TRUE)
+                              res <- TRUE
+                            else if (is.character(ansp))
+                              res <- ansp
+                            else if (is.character(ansp0))
+                              res <- ansp0
+                            else if (is.character(anscov))
+                              res <- anscov
+                            else if (is.character(ansconfint))
+                              res <- ansconfint
+                            res
+                          })
+
+## Init method
+
+setMethod("initialize", "EstimKRTSClass",
+          function(.Object, par, par0, vcov, confint, method, level, others,
+                   data, duration, failure, ...) {
+            ## handle missing
+            if (missing(par))
+              par        <- numeric(8)
+            if (missing(par0))
+              par0       <- numeric(8)
+            if (missing(vcov))
+              vcov       <- matrix(nrow = 8, ncol = 8)
+            if (missing(confint))
+              confint    <- matrix(nrow = 8, ncol = 2)
+            if (missing(data))
+              data       <- numeric(100)
+            sampleSize <- length(data)
+            if (missing(method))
+              method     <- "Default"
+            if (missing(others))
+              others     <- list()
+            if (missing(level))
+              level      <- 0
+            if (missing(duration))
+              duration   <- 0
+            if (missing(failure))
+              failure    <- 0
+
+            ## set up names
+            NameParamsObjects(par, "KRTS")
+            NameParamsObjects(par0, "KRTS")
+            NameParamsObjects(vcov, "KRTS")
+            NameParamsObjects(confint, "KRTS")
+            attr(confint, "level") <- level
+
+            methods::callNextMethod(
+              .Object,
+              par = par,
+              par0 = par0,
+              vcov = vcov,
+              confint = confint,
+              data = data,
+              sampleSize = sampleSize,
+              method = method,
+              others = others,
+              duration = duration,
+              failure = failure,
+              ...
+            )
+          })
+
+setMethod("show", "EstimKRTSClass",
+          function(object) {
+            cat("*** Tempered Estim KRTS, method Show *** \n")
+            cat("** Method ** \n")
+            print(object@method)
+            cat("** Parameters Estimation ** \n")
+            print(object@par)
+            cat("** Covariance Matrix Estimation ** \n")
+            print(object@vcov)
+            cat("** Confidence interval Estimation ** \n")
+            print(paste("Confidence level=", attributes(object@confint)$level))
+            print(paste("data length=", object@sampleSize))
+            print(object@confint)
+            cat("** Estimation time ** \n")
+            PrintDuration(object@duration)
+            cat("** Estimation status ** \n")
+            if (object@failure == 0)
+              cat("success")
+            else
+              cat("failure")
+            cat("\n ******* End Show (Tempered Estim KRTS) ******* \n")
+          })
+
+
+
+#### RDTS Class ####
+
+# No export.
+#' @importFrom methods new
+EstimRDTSClass <- setClass("EstimRDTSClass",
+                          slots = list(par = "numeric", par0 = "numeric",
+                                       vcov = "matrix", confint = "matrix",
+                                       data = "numeric",
+                                       sampleSize = "numeric",
+                                       others = "list", duration = "numeric",
+                                       failure = "numeric",
+                                       method = "character"),
+                          contains = list(), validity = function(object) {
+                            par <- object@par
+                            if (length(par) == 5)
+                              ansp <- TRUE
+                            else ansp <- "Parameter of length different of 5"
+                            par0 <- object@par0
+                            if (length(par0) == 5)
+                              ansp0 <- TRUE
+                            else ansp0 <- "Initial Parameter of length different of 5"
+                            vcov <- object@vcov
+                            if (ncol(vcov) == 5 && nrow(vcov) == 5)
+                              anscov <- TRUE
+                            else anscov <- "covariance matrix of length different of 5x5"
+                            confint <- object@confint
+                            if (ncol(confint) == 2 && nrow(confint) == 5)
+                              ansconfint <- TRUE
+                            else ansconfint <-
+                              "confidance intervall matrix of length different of 5x2"
+                            if (ansp == TRUE && ansp0 == TRUE && anscov == TRUE &&
+                                ansconfint == TRUE)
+                              res <- TRUE
+                            else if (is.character(ansp))
+                              res <- ansp
+                            else if (is.character(ansp0))
+                              res <- ansp0
+                            else if (is.character(anscov))
+                              res <- anscov
+                            else if (is.character(ansconfint))
+                              res <- ansconfint
+                            res
+                          })
+
+## Init method
+
+setMethod("initialize", "EstimRDTSClass",
+          function(.Object, par, par0, vcov, confint, method, level, others,
+                   data, duration, failure, ...) {
+            ## handle missing
+            if (missing(par))
+              par        <- numeric(5)
+            if (missing(par0))
+              par0       <- numeric(5)
+            if (missing(vcov))
+              vcov       <- matrix(nrow = 5, ncol = 5)
+            if (missing(confint))
+              confint    <- matrix(nrow = 5, ncol = 2)
+            if (missing(data))
+              data       <- numeric(100)
+            sampleSize <- length(data)
+            if (missing(method))
+              method     <- "Default"
+            if (missing(others))
+              others     <- list()
+            if (missing(level))
+              level      <- 0
+            if (missing(duration))
+              duration   <- 0
+            if (missing(failure))
+              failure    <- 0
+
+            ## set up names
+            NameParamsObjects(par, "RDTS")
+            NameParamsObjects(par0, "RDTS")
+            NameParamsObjects(vcov, "RDTS")
+            NameParamsObjects(confint, "RDTS")
+            attr(confint, "level") <- level
+
+            methods::callNextMethod(
+              .Object,
+              par = par,
+              par0 = par0,
+              vcov = vcov,
+              confint = confint,
+              data = data,
+              sampleSize = sampleSize,
+              method = method,
+              others = others,
+              duration = duration,
+              failure = failure,
+              ...
+            )
+          })
+
+setMethod("show", "EstimRDTSClass",
+          function(object) {
+            cat("*** Tempered Estim RDTS, method Show *** \n")
+            cat("** Method ** \n")
+            print(object@method)
+            cat("** Parameters Estimation ** \n")
+            print(object@par)
+            cat("** Covariance Matrix Estimation ** \n")
+            print(object@vcov)
+            cat("** Confidence interval Estimation ** \n")
+            print(paste("Confidence level=", attributes(object@confint)$level))
+            print(paste("data length=", object@sampleSize))
+            print(object@confint)
+            cat("** Estimation time ** \n")
+            PrintDuration(object@duration)
+            cat("** Estimation status ** \n")
+            if (object@failure == 0)
+              cat("success")
+            else
+              cat("failure")
+            cat("\n ******* End Show (Tempered Estim RDTS) ******* \n")
+          })
+
+
+#### CGMY Class ####
 
 # No export.
 #' @importFrom methods new

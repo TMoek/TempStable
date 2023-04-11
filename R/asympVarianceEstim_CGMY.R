@@ -1,12 +1,12 @@
 ##### ML#####
 .asymptoticVarianceEstimML_CGMY <- function(data, EstimObj,
-                                            type = "Subordinator", ...) {
+                                            type = "TSS", ...) {
     asymptoticVarianceEstimML_CGMY(thetaEst = EstimObj$Estim$par,
                                    n_sample = length(data), type = type, ...)
 }
 
 asymptoticVarianceEstimML_CGMY <- function(thetaEst, n_sample,
-                                           type = "Subordinator", subdivisions = 100, ...) {
+                                           type = "TSS", subdivisions = 100, ...) {
     NameParamsObjectsTemp(invFisherMatrix_CGMY(as.numeric(thetaEst),
                                                subdivisions)/n_sample,
                           type = type)
@@ -47,7 +47,7 @@ NumDeriv_jacobian_CGMY <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
 
 ##### GMM#####
 .asymptoticVarianceEstimGMM_CGMY <- function(data, EstimObj,
-                                             type = "Subordinator", eps, ...) {
+                                             type = "TSS", eps, ...) {
     V <- solve(GMMasymptoticVarianceEstim_CGMY(theta = EstimObj$Estim$par,
                                                t = EstimObj$tEstim,
                                                x = data, eps = eps, ...))/
@@ -57,7 +57,7 @@ NumDeriv_jacobian_CGMY <- function(fctToDeriv, WhereFctIsEvaluated, ...) {
 
 ##### CGMM#####
 .asymptoticVarianceEstimCgmm_CGMY <- function(data, EstimObj,
-                                              type = "Subordinator", ...) {
+                                              type = "TSS", ...) {
     V <- ComputeCovarianceCgmm_CGMY(theta = EstimObj$Estim$par,
                                     thetaHat = EstimObj$Estim$par,
                                     x = data, ...)
@@ -87,7 +87,7 @@ ComputeCovarianceCgmm_CGMY <- function(theta, Cmat = NULL, x, alphaReg,
 
 ##### GMC#####
 .asymptoticVarianceEstimGMC_CGMY <- function(data, EstimObj,
-                                             type = "Subordinator", eps, ...) {
+                                             type = "TSS", eps, ...) {
     V <- solve(GMCasymptoticVarianceEstim_CGMY(theta = EstimObj$Estim$par,
                                                ncond = EstimObj$ncond, x = data,
                                                eps = eps, ...))/length(data)
