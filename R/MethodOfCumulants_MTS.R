@@ -23,9 +23,9 @@ MoCObjective_MTS <- function(x, parms) {
 # Function origin is kim09. See charMTS().
 #' @importFrom rootSolve multiroot
 MoC_MTS <- function(x, theta0 = c(0.6, 1, 1, 1, 0), eps = 1e-06) {
-    cumulants <- CumFinder_NTS(x)
+    cumulants <- CumFinder_MTS(x)
     utils::capture.output(parroot <-
-        rootSolve::multiroot(MoCObjective_NTS, theta0, parms = cumulants))
+        rootSolve::multiroot(MoCObjective_MTS, theta0, parms = cumulants))
     theta <- parroot$root
 
     if (theta[1] > 1) {
