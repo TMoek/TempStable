@@ -52,4 +52,5 @@
 #'
 #' @docType package
 #' @name TempStable
+#' @useDynLib TempStable, .registration=TRUE
 NULL

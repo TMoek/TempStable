@@ -261,6 +261,26 @@ rTSS_AR <- function(n, alpha, delta, lambda) {
 
 }
 
+
+
+
+
+##Tests
+rTSS_MM <- function(n, alpha, delta, lambda){
+  sigma <- ((1/alpha * gamma(1 - alpha) * delta *
+               cos(alpha * pi/2))^(1/alpha))
+
+  returnVector <- copula::retstable(alpha = alpha,
+                                    V0 = (stats::runif(n, 0, 1)/cos(alpha*pi/2))^(alpha),
+                                    h = sigma)
+
+  return(returnVector)
+}
+
+
+
+
+
 # No export.
 rTSS_SR <- function(n, alpha, delta, lambda, k) {
     base::replicate(n = n, rTSS_SR1(alpha = alpha, delta = delta,

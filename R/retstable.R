@@ -60,8 +60,8 @@ retstableC <- function(alpha, V0, h = 1, method = NULL) {
     if(is.null(method)) {
       if(any(diff(V.is.sml <- V0 * h^alpha < 4))) { ## use *both* methods
         r <- numeric(n)
-        r[ V.is.sml] <- .Call(retstable_c, V0[ V.is.sml], h = h, alpha, "MH")
-        r[!V.is.sml] <- .Call(retstable_c, V0[!V.is.sml], h = h, alpha, "LD")
+        r[ V.is.sml] <- .Call("retstable_c", V0[ V.is.sml], h = h, alpha, "MH", PACKAGE = "TempStable")
+        r[!V.is.sml] <- .Call("retstable_c", V0[!V.is.sml], h = h, alpha, "LD", PACKAGE = "TempStable")
         return(r)
       }
       else
@@ -69,7 +69,7 @@ retstableC <- function(alpha, V0, h = 1, method = NULL) {
     }
     else
       method <- match.arg(method, c("MH","LD"))
-    .Call(retstable_c, V0, h = h, alpha, method)
+    .Call("retstable_c", V0, h = h, alpha, method, PACKAGE = "TempStable")
   }
 }
 
