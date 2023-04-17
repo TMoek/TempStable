@@ -267,12 +267,30 @@ rTSS_AR <- function(n, alpha, delta, lambda) {
 
 ##Tests
 rTSS_MM <- function(n, alpha, delta, lambda){
+
   sigma <- ((1/alpha * gamma(1 - alpha) * delta *
                cos(alpha * pi/2))^(1/alpha))
 
-  returnVector <- copula::retstable(alpha = alpha,
-                                    V0 = (stats::runif(n, 0, 1)/cos(alpha*pi/2))^(alpha),
-                                    h = sigma)
+  #copula::retstableR und copula::retstable(C) geben unterschiedliche Werte, obwohl beide das
+  # gleiche ausgeben sollten und für rTSS_MM(n,0.5,1,1) hier sogar die gleiche Methode benutzen sollten ...
+
+  # Für copula::rstable1 und stabledist::rstable kommen die gleichen Werte raus. Der Unterschied in den Methoden ist,
+  # dass in rTSS_AR sigma(in der Funktion ist es delta) ein fester Wert ist, während in rTSS_MM delta == .gamm ist,
+  # welcher zum Teil aus V0 besteht und ein random-Vektor ist
+
+  #returnVector <- copula::retstableR(alpha = alpha,
+  #                                  V0 = (stats::runif(n, 0, 1)/cos(alpha*pi/2))^(alpha),
+  #                                  h = sigma)*8
+
+
+
+  #Dieser Ansatz sieht vielversprechend aus. Somit werden nicht zweimal Zufallszahlen geladen
+  # Performance rausholen, indem man sigma zum n-langen Vektor macht
+  returnVector <- c()
+
+  for(i in 1:n){
+    returnVector <- append(returnVector, copula::retstable(alpha,sigma))
+  }
 
   return(returnVector)
 }
