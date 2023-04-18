@@ -603,8 +603,13 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         Ncol <- 16
     } else if (TemperedType == "TSS") {
         Ncol <- 10
-    } else if (TemperedType == "NTS") {
+    } else if (TemperedType == "NTS" || TemperedType == "MTS" ||
+               TemperedType == "RDTS") {
         Ncol <- 14
+    } else if (TemperedType == "GTS") {
+        Ncol <- 18
+    } else if (TemperedType == "KRTS") {
+        Ncol <- 20
     }
     # else {
     #       Ncol <- 12
@@ -678,6 +683,14 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
           x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
                     delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5],
                     methodR = methodR)
+        } else if (TemperedType == "MTS") {
+            browser()
+        } else if (TemperedType == "GTS") {
+            x <- rGTS(n = size, theta = thetaT, methodR = methodR)
+        }  else if (TemperedType == "KRTS") {
+            browser()
+        } else if (TemperedType == "RDTS") {
+            browser()
         }
 
         #TODO: Different options. For r-values out of density function it would
@@ -787,6 +800,7 @@ getTempEstimation <- function(thetaT, x, seed, size, Ncol, TemperedType,
     #     output[1:6] <- c(thetaT, size, seed)
     # }
     theta0 <- thetaT - 0.1  #noise
+
     EstimRes <- TemperedEstim(TemperedType = TemperedType,
                               EstimMethod = Estimfct,
                               data = x, theta0 = theta0, ComputeCov = FALSE,
