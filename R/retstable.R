@@ -90,7 +90,8 @@ retstableC <- function(alpha, V0, h = 1, method = NULL) {
 ##' @return St
 ##' @author Marius Hofert, Martin Maechler
 retstablerej <- function(m, V0, alpha) {
-  gamm. <- (cospi2(alpha)*V0/m)^(1/alpha)
+  #gamm. <- (cospi2(alpha)*V0/m)^(1/alpha)
+  gamm. <- V0
   sum(unlist(lapply(integer(m),
                     function(.) {
                       ## apply standard rejection for sampling

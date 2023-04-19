@@ -278,21 +278,93 @@ rTSS_MM <- function(n, alpha, delta, lambda){
   # dass in rTSS_AR sigma(in der Funktion ist es delta) ein fester Wert ist, während in rTSS_MM delta == .gamm ist,
   # welcher zum Teil aus V0 besteht und ein random-Vektor ist
 
+
+  #Ansatz MM: Alles direkt in der neune Funktion eingeben
+  # --> Funktioniert noch nicht
   #returnVector <- copula::retstableR(alpha = alpha,
   #                                  V0 = (stats::runif(n, 0, 1)/cos(alpha*pi/2))^(alpha),
   #                                  h = sigma)*8
 
 
 
-  #Dieser Ansatz sieht vielversprechend aus. Somit werden nicht zweimal Zufallszahlen geladen
+  #Ansatz retstable ohne doppelte Zufallszahlen:
   # Performance rausholen, indem man sigma zum n-langen Vektor macht
+  # Funktioniert perfekt für c(0.5,1,3)
   returnVector <- c()
 
   for(i in 1:n){
-    returnVector <- append(returnVector, copula::retstable(alpha,sigma))
+    returnVector <- append(returnVector, copula::retstable(alpha,sigma) /
+                             (gamma(1-alpha)*delta*lambda^(alpha-1))/lambda)
   }
 
   return(returnVector)
+
+  #Ansatz Till:
+  returnVector <- c()
+
+  V0 <- -delta*gamma(-alpha)
+
+  for(i in 1:n){
+    returnVector <- append(returnVector, copula::retstable(alpha,V0,lambda))
+  }
+
+  return(returnVector)
+
+
+
+
+
+
+
+
+
+
+  #Ansatz Test
+  # returnVector <- c()
+  #
+  # for(i in 1:n){
+  #   returnVector <- append(returnVector, copula::retstable(alpha,sigma) /
+  #                            log(-lambda-delta*(alpha+1)*gamma(-alpha)*lambda^alpha))
+  # }
+  #
+  # return(returnVector)
+
+
+  # Austauschen von rstable in der ursprünglichen Funktion. Code zum Testen:
+  # plot(x, dTSS(x,0.5,1,3), col = "red")
+  # lines(density(rTSS(2000,0.5,1,3))) ~23Sekunden
+  # lines(density(rTSS_MM(2000,0.5,1,3))) ~21Sekunden + copula::rstable1 liegt eher auf der Dichtefunktion
+  # returnVector <- c()
+  #
+  # i <- 0
+  # while (i < n) {
+  #   U <- 2
+  #   V <- 0
+  #
+  #   while (U > exp(-min(c(lambda * V, 700)))) {
+  #     U <- stats::runif(1, 0, 1)
+  #     V <- copula::rstable1(1, alpha, 1, sigma, 0, pm = 1)
+  #   }
+  #
+  #   returnVector <- append(returnVector, V)
+  #   i <- i + 1
+  # }
+  #
+  # return(returnVector)
+
+  #Ansatz gamm. rauskürzen
+  returnVector <- c()
+
+  V0 <- (sigma^(alpha)*m.opt.retst(sigma))/cospi2(alpha)
+
+  returnVector <- c()
+
+  for(i in 1:n){
+    returnVector <- append(returnVector, retstableR(alpha,sigma,lambda = lambda))
+  }
+
+  return(returnVector)
+
 }
 
 
