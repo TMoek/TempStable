@@ -188,8 +188,10 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' Either provide the parameters \code{alpha}, \code{delta}, \code{lambda}
 #' individually OR provide \code{theta}.
 #' "AR" stands for the Acceptance-Rejection Method and "SR" for a truncated
-#' infinite shot noise series representation. "AR" is the standard method used.
-#' For more details, see references.
+#' infinite shot noise series representation. "TM" stands for Two Methods as
+#' two different methods are used depending on which will be faster. In this
+#' method the function [copula::retstable()] is called. "MM" is the standard
+#' method used. For more details, see references.
 #'
 #' @param n sample size (integer).
 #' @param alpha Stability parameter. A real number between 0 and 1.
@@ -201,6 +203,7 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' by default.
 #'
 #' @return Generates \code{n} random numbers.
+#' @seealso [copula::retstable()]
 #'
 #' @examples
 #' rTSS(100,0.5,1,1)
@@ -212,9 +215,12 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
 #' variates' \doi{10.1016/j.cam.2010.12.014}
 #'
+#' Hofert, M (2011), 'Sampling Exponentially Tilted Stable Distributions'
+#' \doi{10.1145/2043635.2043638}
+#'
 #' @export
 rTSS <- function(n, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
-                   methodR = "AR", k = 10000) {
+                   methodR = "TM", k = 10000) {
     if ((missing(alpha) | missing(delta) | missing(lambda)) & is.null(theta))
       stop("No or not enough parameters supplied")
     theta0 <- c(alpha, delta, lambda)
@@ -230,6 +236,8 @@ rTSS <- function(n, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
     x <- switch(methodR,
                 AR = rTSS_AR(n = n, alpha = alpha, delta = delta,
+                             lambda = lambda),
+                TM = rTSS_TM(n = n, alpha, delta = delta,
                              lambda = lambda),
                 SR = rTSS_SR(n = n, alpha = alpha, delta = delta,
                              lambda = lambda, k = k))
@@ -260,6 +268,20 @@ rTSS_AR <- function(n, alpha, delta, lambda) {
 
     return(returnVector)
 
+}
+
+# No export.
+rTSS_TM <- function(n, alpha, delta, lambda){
+
+  returnVector <- c()
+
+  V0 <- -delta*gamma(-alpha)
+
+  for(i in 1:n){
+    returnVector <- append(returnVector, copula::retstable(alpha,V0,lambda))
+  }
+
+  return(returnVector)
 }
 
 # No export.
@@ -772,6 +794,13 @@ rCTS_aARp <- function(n, alpha, delta, lambda, c) {
     }
 
     return(returnVector)
+}
+
+#No export.
+rCTS_TM <- function(n, alpha, deltap, deltam, lambdap, lambdam, mu) {
+  return(mu +
+           rTSS_TM(n, alpha = alpha, delta = deltap, lambda = lambdap) -
+           rTSS_TM(n, alpha = alpha, delta = deltam, lambda = lambdam))
 }
 
 # No export.

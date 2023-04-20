@@ -10,7 +10,7 @@ rTSS(
   delta = NULL,
   lambda = NULL,
   theta = NULL,
-  methodR = "AR",
+  methodR = "TM",
   k = 10000
 )
 }
@@ -42,8 +42,10 @@ of the tempered stable subordinator distribution.
 Either provide the parameters \code{alpha}, \code{delta}, \code{lambda}
 individually OR provide \code{theta}.
 "AR" stands for the Acceptance-Rejection Method and "SR" for a truncated
-infinite shot noise series representation. "AR" is the standard method used.
-For more details, see references.
+infinite shot noise series representation. "TM" stands for Two Methods as
+two different methods are used depending on which will be faster. In this
+method the function \code{\link[copula:retstable]{copula::retstable()}} is called. "MM" is the standard
+method used. For more details, see references.
 }
 \examples{
 rTSS(100,0.5,1,1)
@@ -55,4 +57,10 @@ Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 
 Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
 variates' \doi{10.1016/j.cam.2010.12.014}
+
+Hofert, M (2011), 'Sampling Exponentially Tilted Stable Distributions'
+\doi{10.1145/2043635.2043638}
+}
+\seealso{
+\code{\link[copula:retstable]{copula::retstable()}}
 }
