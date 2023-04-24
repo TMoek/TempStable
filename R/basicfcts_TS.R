@@ -799,8 +799,10 @@ rCTS_aARp <- function(n, alpha, delta, lambda, c) {
 #No export.
 rCTS_TM <- function(n, alpha, deltap, deltam, lambdap, lambdam, mu) {
   return(mu +
-           rTSS_TM(n, alpha = alpha, delta = deltap, lambda = lambdap) -
-           rTSS_TM(n, alpha = alpha, delta = deltam, lambda = lambdam))
+           (rTSS_TM(n, alpha = alpha, delta = deltap, lambda = lambdap)
+            + deltap * gamma(-alpha) * alpha * lambdap^(alpha-1)) -
+           (rTSS_TM(n, alpha = alpha, delta = deltam, lambda = lambdam)
+            + deltam * gamma(-alpha) * alpha * lambdam^(alpha-1)))
 }
 
 # No export.
@@ -1214,6 +1216,12 @@ rNTS_AR <- function(n, alpha, beta, delta, lambda, mu) {
     return(x)
 }
 
+# No export.
+rNTS_TM <- function(n, alpha, beta, delta, lambda, mu) {
+  z <- stats::rnorm(n = n)
+  y <- rTSS_TM(n, alpha = alpha, delta = delta, lambda = lambda)
+  return(mu + sqrt(y)*z + beta * y)
+}
 
 # No export.
 rNTS_SR <- function(n, alpha, beta, delta, lambda, mu, k) {
