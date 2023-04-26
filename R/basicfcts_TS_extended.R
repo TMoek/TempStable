@@ -585,28 +585,53 @@ charRDTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
   }
 
   returnVec <- NULL
+  nextG <- NULL
+  counterL <- 1
 
-  # Filter muss nochmal richtig gemacht werden. Z.B. geht es nicht fuer:
-  # dRDTS(x, 1.8037, 0.0842, 0.9095, 0.2975, 0). Aendert man alpha in 1.8 geht
-  # es.
+  # Each value is compared with the two values before the examined value and
+  # the one after, because there are errors in the function
+  # hypergeo::genhypergeo().
   for(x in t){
-    g <- exp(imagN * x * mu +
-               delta * (subfunctionG(imagN * x, alpha, lambdap) +
-               subfunctionG(-imagN * x, alpha, lambdam)))
-    if (is.nan(g)){
+
+    if(is.null(nextG)){
+      g <- exp(imagN * x * mu +
+                 delta * (subfunctionG(imagN * x, alpha, lambdap)
+                          + subfunctionG(-imagN * x, alpha, lambdam)))
+    }
+    else g <- nextG
+
+    if(counterL < length(t)){
+      nextG <- exp(imagN * t[counterL+1] * mu +
+                     delta * (subfunctionG(imagN * t[counterL+1], alpha,
+                                           lambdap)
+                              + subfunctionG(-imagN * t[counterL+1], alpha,
+                                             lambdam)))
+    }
+
+    if (is.nan(nextG) || is.infinite(Re(nextG)) || is.infinite(Im(nextG))){
+      nextG <- 0 + 0i
+    }
+
+    if (is.nan(g) || is.infinite(Re(g)) || is.infinite(Im(g))){
       returnVec <- append(returnVec,0 + 0i)
     }
-    else if (is.infinite(Re(g)) || is.infinite(Im(g))){
-      returnVec <- append(returnVec,0 + 0i)
+    else if(!is.null(returnVec)){
+      avLast2Re <- mean(c(Re(g),Re(returnVec[length(returnVec)]), Re(nextG)))
+      #avLast2Im <- mean(c(Im(g),Im(returnVec[length(returnVec)]), Im(nextG)))
+
+      if (Re(g) != 0 && (avLast2Re/Re(g) < 0.75 || avLast2Re/Re(g) > 1.5)){
+        returnVec <- append(returnVec,0 + 0i)
+      }
+      # Useless, as all errors can be catched with the real number check
+      # else if (Im(g) != 0 && (avLast2Im/Im(g) < 0.75 || avLast2Im/Im(g) > 1.5)){
+      #   returnVec <- append(returnVec,0 + 0i)
+      # }
+      else returnVec <- append(returnVec, g)
     }
-    else if (Re(g) < -1e+3 || Im(g) < -1e+3){
-      returnVec <- append(returnVec,0 + 0i)
-    }
-    else if (Re(g) > 1e+3 || Im(g) > 1e+3){
-      returnVec <- append(returnVec,0 + 0i)
-    }
-    else
-      returnVec <- append(returnVec,g)
+    else returnVec <- append(returnVec, g)
+
+    counterL <- counterL +1
+
   }
 
   return(returnVec)
@@ -685,6 +710,19 @@ pRDTS <- function(p, alpha = NULL, delta = NULL, lambdap = NULL,
 
 }
 
+
+#Funktioniert für theta(0.5,1,1,1,0). Für weitere Werte mit Alpha <1 probieren.
+# Funktioniert nicht für alpha > 1: In Binachi et al 2010b nachscheun seite77
+# theorem 4.6 einbauen
+rRDTS_SR <- function(n, alpha, delta, lambdap, lambdam, mu, k) {
+  replicate(n = n, rTSS_SR1(alpha = alpha, delta = delta,
+                             lambda = lambdap, k = k) -
+              rTSS_SR1(alpha = alpha, delta = delta,
+                        lambda = lambdam, k = k)
+            - (delta*gamma((1-alpha)/2)/(2^((alpha+1)/2)))*
+              (lambdap^(alpha-1)-lambdam^(alpha-1))
+            + mu)
+}
 
 #### Supportive functions ####
 
