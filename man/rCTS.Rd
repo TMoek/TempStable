@@ -13,7 +13,7 @@ rCTS(
   lambdam = NULL,
   mu = NULL,
   theta = NULL,
-  methodR = "AR",
+  methodR = "TM",
   k = 10000,
   c = 1
 )
@@ -35,7 +35,7 @@ rCTS(
 
 \item{theta}{Parameters stacked as a vector.}
 
-\item{methodR}{A String. Either "AR" or "SR".}
+\item{methodR}{A String. Either "TM","AR" or "SR".}
 
 \item{k}{integer: the level of truncation, if \code{methodR == "SR"}. 10000
 by default.}
@@ -55,8 +55,10 @@ tempered stable (CTS) distribution.
 lambdap, lambdam, mu)}. Either provide the parameters individually OR
 provide \code{theta}.
 "AR" stands for the approximate Acceptance-Rejection Method and "SR" for a
-truncated infinite shot noise series representation. "AR" is the standard
-method used.
+truncated infinite shot noise series representation. "TM" stands for Two
+Methods as two different methods are used depending on which will be faster.
+In this method the function \code{\link[copula:retstable]{copula::retstable()}} is called. For \link{alpha < 1},
+"TM" is the default method, while "AR" for \link{alpha > 1} is the default method.
 For more details, see references.
 }
 \examples{
@@ -69,4 +71,10 @@ Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 
 Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
 variates' \doi{10.1016/j.cam.2010.12.014}
+
+Hofert, M (2011), 'Sampling Exponentially Tilted Stable Distributions'
+\doi{10.1145/2043635.2043638}
+}
+\seealso{
+\code{\link[copula:retstable]{copula::retstable()}} as "TM" uses this function.
 }

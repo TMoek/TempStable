@@ -190,7 +190,7 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' "AR" stands for the Acceptance-Rejection Method and "SR" for a truncated
 #' infinite shot noise series representation. "TM" stands for Two Methods as
 #' two different methods are used depending on which will be faster. In this
-#' method the function [copula::retstable()] is called. "MM" is the standard
+#' method the function [copula::retstable()] is called. "TM" is the standard
 #' method used. For more details, see references.
 #'
 #' @param n sample size (integer).
@@ -198,12 +198,12 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' @param delta Scale parameter. A real number > 0.
 #' @param lambda Tempering parameter. A real number > 0.
 #' @param theta Parameters stacked as a vector.
-#' @param methodR A String. Either "AR" or "SR".
+#' @param methodR A String. Either "TM", "AR" or "SR".
 #' @param k integer: the level of truncation, if \code{methodR == "SR"}. 10000
 #' by default.
 #'
 #' @return Generates \code{n} random numbers.
-#' @seealso [copula::retstable()]
+#' @seealso [copula::retstable()] as "TM" uses this function.
 #'
 #' @examples
 #' rTSS(100,0.5,1,1)
@@ -543,40 +543,15 @@ dCTS <- function(x, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
                 lambdam)
 
     if (dens_method == "FFT" || .Platform$OS.type != "windows") {
-        d <- sapply(x, dCTS_FFT, alpha = alpha, deltap = deltap,
-                    deltam = deltam, lambdap = lambdap, lambdam = lambdam,
-                    mu = mu, a = a, b = b, nf = nf,
-                    ...)
+        d <- sapply(x, d_FFT, charFunc = charCTS,
+                    theta = c(alpha, deltap, deltam, lambdap, lambdam, mu),
+                    a = a, b = b, nf = nf, ...)
     } else {
         d <- sapply(x, dCTS_Conv, alpha = alpha, deltap = deltap,
                     deltam = deltam, lambdap = lambdap, lambdam = lambdam,
                     mu = mu)
     }
     return(d)
-}
-
-
-# No export.
-dCTS_FFT <- function(x, alpha, deltap, deltam, lambdap, lambdam,
-                          mu, a, b, nf, ...) {
-    dx <- ((b - a)/nf)
-    dt <- (2 * pi/(nf * dx))
-
-    sq <- seq(from = 0, to = nf - 1, 1)
-    t <- (-nf/2 * dt + sq * dt)
-    xgrid <- (a + dx * sq)
-
-    cft <- charCTS(t, alpha, deltap, deltam, lambdap, lambdam, mu, ...)
-
-    tX <- (exp(-imagN * sq * dt * a) * cft)
-
-    # fast Fourier transform
-    y <- stats::fft(tX, inverse = FALSE)
-
-    densityW <- Re((dt/(2 * pi)) * exp(-imagN * (nf/2 * dt) * xgrid) * y)
-
-    return (as.numeric(stats::approx(xgrid, densityW, xout=x,
-                              yleft = 1e-18, yright = 1e-18)[2]))
 }
 
 # No export.
@@ -696,8 +671,10 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' lambdap, lambdam, mu)}. Either provide the parameters individually OR
 #' provide \code{theta}.
 #' "AR" stands for the approximate Acceptance-Rejection Method and "SR" for a
-#' truncated infinite shot noise series representation. "AR" is the standard
-#' method used.
+#' truncated infinite shot noise series representation. "TM" stands for Two
+#' Methods as two different methods are used depending on which will be faster.
+#' In this method the function [copula::retstable()] is called. For [alpha < 1],
+#' "TM" is the default method, while "AR" for [alpha > 1] is the default method.
 #' For more details, see references.
 #'
 #' @param n sample size (integer).
@@ -708,7 +685,7 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @param lambdam Tempering parameter for the left tail. A real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta Parameters stacked as a vector.
-#' @param methodR A String. Either "AR" or "SR".
+#' @param methodR A String. Either "TM","AR" or "SR".
 #' @param k integer: the level of truncation, if \code{methodR == "SR"}. 10000
 #' by default.
 #' @param c A real number. Only relevant for \code{methodR == "AR"}.
@@ -716,11 +693,16 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #'
 #' @return Generates \code{n} random numbers.
 #'
+#' @seealso [copula::retstable()] as "TM" uses this function.
+#'
 #' @references
 #' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
 #' variates' \doi{10.1016/j.cam.2010.12.014}
+#'
+#' Hofert, M (2011), 'Sampling Exponentially Tilted Stable Distributions'
+#' \doi{10.1145/2043635.2043638}
 #'
 #' @examples
 #' rCTS(10,0.5,1,1,1,1,1,NULL,"SR",10)
@@ -728,7 +710,7 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #'
 #' @export
 rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
-                 lambdam = NULL, mu = NULL, theta = NULL, methodR = "AR",
+                 lambdam = NULL, mu = NULL, theta = NULL, methodR = "TM",
                  k = 10000, c = 1) {
     if ((missing(alpha) | missing(deltap) | missing(deltam) | missing(lambdap) |
          missing(lambdam) | missing(mu)) & is.null(theta))
@@ -750,13 +732,22 @@ rCTS <- function(n, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
     stopifnot(0 < alpha, alpha < 2, 0 < deltap, 0 < deltam, 0 < lambdap, 0 <
                 lambdam)
 
+
+    if(methodR == "TM" && alpha > 1){
+      methodR <- "AR"
+    }
+
+
     x <- switch(methodR,
                 AR = rCTS_aAR(n = n, alpha = alpha, deltap = deltap,
                                        deltam = deltam, lambdap = lambdap,
                                        lambdam = lambdam, mu = mu, c = c),
                 SR = rCTS_SR(n = n, alpha = alpha, deltap = deltap,
                              deltam = deltam, lambdap = lambdap,
-                             lambdam = lambdam, mu = mu, k = k))
+                             lambdam = lambdam, mu = mu, k = k),
+                TM = rCTS_TM(n = n, alpha = alpha, deltap = deltap,
+                              deltam = deltam, lambdap = lambdap,
+                              lambdam = lambdam, mu = mu))
     return(x)
 }
 
@@ -1041,29 +1032,10 @@ dNTS <- function(x, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
     }
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
 
-    d <- sapply(x, dNTS_FFT, alpha = alpha , beta = beta, delta = delta,
-                lambda = lambda, mu = mu, a = a, b = b , nf = nf)
+    d <- sapply(x, d_FFT, charFunc = charNTS,
+                theta = c(alpha, beta, delta,lambda, mu),
+                a = a, b = b , nf = nf)
     return(d)
-}
-
-
-# No export
-dNTS_FFT <- function(x, alpha, beta, delta, lambda, mu, a, b, nf) {
-    dx <- ((b - a)/nf)
-    dt <- (2 * pi/(nf * dx))
-    sq <- seq(from = 0, to = nf - 1, 1)
-    t <- (-nf/2 * dt + sq * dt)
-    xgrid <- (a + dx * sq)
-
-    cft <- charNTS(t, alpha, beta, delta, lambda, mu)
-
-    tX <- (exp(-(1i) * sq * dt * a) * cft)
-
-    y <- stats::fft(tX, inverse = FALSE)
-
-    densityW <- Re((dt/(2 * pi)) * exp(-(1i) * (nf/2 * dt) * xgrid) * y)
-    return (as.numeric(stats::approx(xgrid, densityW, xout=x,
-                              yleft = 1e-18, yright = 1e-18)[2]))
 }
 
 #' Cumulative probability function of the normal tempered stable (NTS)
@@ -1149,7 +1121,10 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' parameter is for the method of simulating the TSS random variable, see the
 #' [rTSS()] function.
 #' "AR" stands for the Acceptance-Rejection Method and "SR" for a truncated
-#' infinite shot noise series representation. "AR" is the standard method used.
+#' infinite shot noise series representation. "TM" stands for Two Methods as
+#' two different methods are used depending on which will be faster. In this
+#' method the function [copula::retstable()] is called. "TM" is the standard
+#' method used. For more details, see references.
 #'
 #' For more details, see references.
 #'
@@ -1160,7 +1135,7 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' @param lambda A  real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta A vector of all other arguments.
-#' @param methodR A String. Either "AR" or "SR". "AR" by default.
+#' @param methodR A String. Either "TM","AR" or "SR". "TM" by default.
 #' @param k integer: the number of replications, if \code{methodR == "SR"}. 10000
 #' by default.
 #'
@@ -1168,12 +1143,16 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #'
 #' @seealso
 #' See also the [rTSS()] function.
+#' [copula::retstable()] as "TM" uses this function.
 #'
 #' @references
 #' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
 #' variates' \doi{10.1016/j.cam.2010.12.014}
+#'
+#' Hofert, M (2011), 'Sampling Exponentially Tilted Stable Distributions'
+#' \doi{10.1145/2043635.2043638}
 #'
 #' @examples
 #' rNTS(100, 0.5, 1,1,1,1)
@@ -1182,7 +1161,7 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #'
 #' @export
 rNTS <- function(n, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
-                 mu = NULL, theta = NULL, methodR = "AR", k = 10000) {
+                 mu = NULL, theta = NULL, methodR = "TM", k = 10000) {
     if ((missing(alpha) | missing(beta) | missing(delta) | missing(lambda) |
          missing(mu)) & is.null(theta))
       stop("No or not enough parameters supplied")
@@ -1204,7 +1183,9 @@ rNTS <- function(n, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
                 AR = rNTS_AR(n = n, alpha = alpha, beta = beta,
                              delta = delta, lambda = lambda, mu = mu),
                 SR = rNTS_SR(n = n, alpha = alpha, beta = beta, delta = delta,
-                             lambda = lambda, mu = mu, k = k))
+                             lambda = lambda, mu = mu, k = k),
+                TM = rNTS_TM(n = n, alpha = alpha, beta = beta,
+                             delta = delta, lambda = lambda, mu = mu))
     return(x)
 }
 

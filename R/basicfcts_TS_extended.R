@@ -186,6 +186,33 @@ pMTS <- function(q, alpha = NULL, delta = NULL, lambdap = NULL,
   return(p)
 }
 
+rMTS <- function(n, alpha = NULL, delta = NULL, lambdap = NULL, lambdam = NULL,
+                 mu = NULL, theta = NULL, methodR = "TM", k = 10000) {
+  if ((missing(alpha) | missing(delta) | missing(lambdap) |
+       missing(lambdam) | missing(mu)) & is.null(theta))
+    stop("No or not enough parameters supplied")
+  theta0 <- c(alpha, delta, lambdap, lambdam, mu)
+  if (!is.null(theta) & !is.null(theta0)) {
+    if (!all(theta0 == theta))
+      stop("Parameters do not match")
+  }
+  if (missing(alpha) | missing(delta) | missing(lambdap) |
+      missing(lambdam) | missing(mu)) {
+    alpha <- theta[1]
+    delta <- theta[2]
+    lambdap <- theta[3]
+    lambdam <- theta[4]
+    mu <- theta[5]
+  }
+  stopifnot(0 < alpha, alpha < 2, 0 < delta, 0 < lambdap, 0 <
+              lambdam)
+  #TODO
+  x <- switch(methodR,
+              AR = 0,
+              SR = 0,
+              TM = 0)
+  return(x)
+}
 
 #### Generalized Classical Tempered Stable Distribution ####
 
@@ -348,6 +375,11 @@ rGTS <- function(n, alphap = NULL, alpham = NULL, deltap = NULL, deltam = NULL,
   }
   stopifnot(0 < alphap, alphap < 2, 0 < alpham, alpham < 2, 0 < deltap,
             0 < deltam, 0 < lambdap, 0 < lambdam)
+
+  #TODO Insert other methods
+  if(methodR == "TM" || methodR == "SR"){
+    methodR <- "AR"
+  }
 
   x <- switch(methodR,
               AR = rGTS_aAR(n = n, alphap = alphap, alpham = alpham,
@@ -530,6 +562,38 @@ pKRTS <- function(q, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
   return(p)
 }
 
+rKRTS <- function(alpha = NULL, kp = NULL, km = NULL, rp = NULL, rm = NULL,
+                  pp = NULL, pm = NULL, mu = NULL, theta = NULL, methodR = "TM",
+                  k = 10000) {
+  if ((missing(alpha) | missing(kp) | missing(km) | missing(rp) |
+       missing(rm) | missing(pp) | missing(pm) | missing(mu)) & is.null(theta))
+    stop("No or not enough parameters supplied")
+  theta0 <- c(alpha, kp, km, rp, rm, pp, pm, mu)
+  if (!is.null(theta) & !is.null(theta0)) {
+    if (!all(theta0 == theta))
+      stop("Parameters do not match")
+  }
+  if (missing(alpha) | missing(kp) | missing(km) | missing(rp) |
+      missing(rm) | missing(pp) | missing(pm) | missing(mu)) {
+    alpha <- theta[1]
+    kp <- theta[2]
+    km <- theta[3]
+    rp <- theta[4]
+    rm <- theta[5]
+    pp <- theta[6]
+    pm <- theta[7]
+    mu <- theta[8]
+  }
+  stopifnot(0 < alpha, alpha < 2, alpha != 1,  0 < kp, 0 < km, 0 < rp,
+            0 < rm, pp > -alpha, pp != -1, pp != 0, pm > -alpha, pm != -1,
+            pm != 0)
+  x <- switch(methodR,
+              AR = 0,
+              SR = 0,
+              TM = 0)
+  return(x)
+}
+
 
 #### Rapidly Decreasing Tempered Stable Distribution ####
 
@@ -640,7 +704,7 @@ charRDTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
 
 dRDTS <- function(x, alpha = NULL, delta = NULL, lambdap = NULL,
                   lambdam = NULL, mu = NULL, theta = NULL, dens_method = "FFT",
-                  a = -130, b = 130, nf = 2048) {
+                  a = -20, b = 20, nf = 64) {
   if ((missing(alpha) | missing(delta) | missing(lambdap) | missing(lambdam) |
        missing(mu)) & is.null(theta))
     stop("No or not enough parameters supplied")
@@ -669,7 +733,6 @@ dRDTS <- function(x, alpha = NULL, delta = NULL, lambdap = NULL,
   return(d)
 
 }
-
 
 pRDTS <- function(p, alpha = NULL, delta = NULL, lambdap = NULL,
                   lambdam = NULL, mu = NULL, theta = NULL, dens_method = "FFT",
@@ -710,6 +773,39 @@ pRDTS <- function(p, alpha = NULL, delta = NULL, lambdap = NULL,
 
 }
 
+rRDTS <- function(n, alpha = NULL, delta = NULL, lambdap = NULL, lambdam = NULL,
+                  mu = NULL, theta = NULL, methodR = "TM", k = 10000){
+  if ((missing(alpha) | missing(delta) | missing(lambdap) | missing(lambdam) |
+       missing(mu)) & is.null(theta))
+    stop("No or not enough parameters supplied")
+  theta0 <- c(alpha, delta, lambdap, lambdam, mu)
+  if (!is.null(theta) & !is.null(theta0)) {
+    if (!all(theta0 == theta))
+      stop("Parameters do not match")
+  }
+  if (missing(alpha) | missing(delta) | missing(lambdap) | missing(lambdam) |
+      missing(mu)) {
+    alpha <- theta[1]
+    delta <- theta[2]
+    lambdap <- theta[3]
+    lambdam <- theta[4]
+    mu <- theta[5]
+  }
+  stopifnot(0 < alpha, alpha < 2, 0 < delta, 0 < lambdap, 0 < lambdam)
+
+  #TODO:Insert other methods
+  if(methodR == "TM" || methodR == "AR"){
+    methodR <- "SR"
+  }
+
+  x <- switch(methodR,
+              AR = 0,
+              SR = rRDTS_SR(n = n, alpha = alpha, delta = delta, lambdap =
+                              lambdap, lambdam = lambdam, mu = mu, k = k),
+              TM = 0)
+  return(x)
+
+}
 
 #Funktioniert für theta(0.5,1,1,1,0). Für weitere Werte mit Alpha <1 probieren.
 # Funktioniert nicht für alpha > 1: In Binachi et al 2010b nachscheun seite77

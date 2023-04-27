@@ -368,7 +368,7 @@ test_that("rNTS_gives_correct_return", {
   expect_equal(length(rNTS(10, 0.5, 1,1,1,1, NULL, "SR", 100)), 10)
 
   expect_error(rNTS(100, 1, 1,1,1,1))
-  expect_error(rNTS(0, 0.5, 1,1,1,1))
+  expect_error(rNTS(0, 0.5, 1,1,1,1, methodR = "AR"))
   expect_error(rNTS(-1, 0.5, 1,1,1,1))
   expect_error(rNTS(10, 0.5, 0,0,1,1))
   expect_error(rNTS(10, 0.5, 0,1,0,1))

@@ -25,7 +25,7 @@ rTSS(
 
 \item{theta}{Parameters stacked as a vector.}
 
-\item{methodR}{A String. Either "AR" or "SR".}
+\item{methodR}{A String. Either "TM", "AR" or "SR".}
 
 \item{k}{integer: the level of truncation, if \code{methodR == "SR"}. 10000
 by default.}
@@ -44,7 +44,7 @@ individually OR provide \code{theta}.
 "AR" stands for the Acceptance-Rejection Method and "SR" for a truncated
 infinite shot noise series representation. "TM" stands for Two Methods as
 two different methods are used depending on which will be faster. In this
-method the function \code{\link[copula:retstable]{copula::retstable()}} is called. "MM" is the standard
+method the function \code{\link[copula:retstable]{copula::retstable()}} is called. "TM" is the standard
 method used. For more details, see references.
 }
 \examples{
@@ -62,5 +62,5 @@ Hofert, M (2011), 'Sampling Exponentially Tilted Stable Distributions'
 \doi{10.1145/2043635.2043638}
 }
 \seealso{
-\code{\link[copula:retstable]{copula::retstable()}}
+\code{\link[copula:retstable]{copula::retstable()}} as "TM" uses this function.
 }

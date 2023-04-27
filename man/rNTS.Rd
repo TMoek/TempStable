@@ -12,7 +12,7 @@ rNTS(
   lambda = NULL,
   mu = NULL,
   theta = NULL,
-  methodR = "AR",
+  methodR = "TM",
   k = 10000
 )
 }
@@ -31,7 +31,7 @@ rNTS(
 
 \item{theta}{A vector of all other arguments.}
 
-\item{methodR}{A String. Either "AR" or "SR". "AR" by default.}
+\item{methodR}{A String. Either "TM","AR" or "SR". "TM" by default.}
 
 \item{k}{integer: the number of replications, if \code{methodR == "SR"}. 10000
 by default.}
@@ -50,7 +50,10 @@ Works by a normal variance-mean mixture with a TSS distribution. Method
 parameter is for the method of simulating the TSS random variable, see the
 \code{\link[=rTSS]{rTSS()}} function.
 "AR" stands for the Acceptance-Rejection Method and "SR" for a truncated
-infinite shot noise series representation. "AR" is the standard method used.
+infinite shot noise series representation. "TM" stands for Two Methods as
+two different methods are used depending on which will be faster. In this
+method the function \code{\link[copula:retstable]{copula::retstable()}} is called. "TM" is the standard
+method used. For more details, see references.
 
 For more details, see references.
 }
@@ -65,7 +68,11 @@ Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 
 Kawai, R & Masuda, H (2011), 'On simulation of tempered stable random
 variates' \doi{10.1016/j.cam.2010.12.014}
+
+Hofert, M (2011), 'Sampling Exponentially Tilted Stable Distributions'
+\doi{10.1145/2043635.2043638}
 }
 \seealso{
 See also the \code{\link[=rTSS]{rTSS()}} function.
+\code{\link[copula:retstable]{copula::retstable()}} as "TM" uses this function.
 }

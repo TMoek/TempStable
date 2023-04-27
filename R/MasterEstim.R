@@ -148,33 +148,35 @@
 #' continuous updated and the iterative GMM proposed by Hansen, Eaton et Yaron
 #' (1996) and adapted to the continuum case. For GMC: \code{"2SGMC", "CueGMC"}.
 #' For Cgmm: \code{"2SCgmm", "CueCgmm", ...}.
-#' @param regularization regularization scheme to be used for moment methods, one of
-#' \code{"Tikhonov"} (Tikhonov), \code{"LF"} (Landweber-Fridmann) and
+#' @param regularization regularization scheme to be used for moment methods,
+#' one of \code{"Tikhonov"} (Tikhonov), \code{"LF"} (Landweber-Fridmann) and
 #' \code{"cut-off"} (spectral cut-off).
 #' @param WeightingMatrix type of weighting matrix used to compute the
-#' objective function for the GMM and GMC methods, one of \code{"OptAsym"} (the optimal asymptotic),
-#' \code{"DataVar"} (the data driven, only for GMM) and \code{"Id"} (the identity matrix).
-#' @param t_scheme scheme used to select the points for the GMM method where the moment conditions
-#' are evaluated, one of \code{"equally"} (equally placed), \code{"NonOptAr"}
-#' (non optimal arithmetic placement), \code{"uniformOpt"}
+#' objective function for the GMM and GMC methods, one of \code{"OptAsym"} (the
+#' optimal asymptotic), \code{"DataVar"} (the data driven, only for GMM) and
+#' \code{"Id"} (the identity matrix).
+#' @param t_scheme scheme used to select the points for the GMM method where the
+#' moment conditions are evaluated, one of \code{"equally"} (equally placed),
+#' \code{"NonOptAr"} (non optimal arithmetic placement), \code{"uniformOpt"}
 #' (uniform optimal placement), \code{"ArithOpt"} (arithmetic optimal
 #' placement), \code{"Var Opt"} (optimal variance placement) and \code{"free"}
 #' (users need to pass their own set of points in ...).
-#' @param alphaReg value of the regularisation parameter; numeric. Example Value could be ==0.01.
+#' @param alphaReg value of the regularisation parameter; numeric. Example Value
+#' could be ==0.01.
 #' @param t_free sequence, if \code{t_scheme=="free"}.
 #' @param subdivisions 	Number of subdivisions used to compute the different
-#' integrals involved in the computation of the objective function for the Cgmm method (to
-#' minimise); numeric.
+#' integrals involved in the computation of the objective function for the Cgmm
+#' method (to minimise); numeric.
 #' @param IntegrationMethod Numerical integration method to be used to
-#' approximate the (vectorial) integrals for the Cgmm method. Users can choose between "Uniform"
-#' discretization or the "Simpson"'s rule (the 3-point Newton-Cotes quadrature
-#' rule).
+#' approximate the (vectorial) integrals for the Cgmm method. Users can choose
+#' between "Uniform" discretization or the "Simpson"'s rule (the 3-point
+#' Newton-Cotes quadrature rule).
 #' @param randomIntegrationLaw Probability measure associated to the Hilbert
 #' space spanned by the moment conditions for the Cgmm method.
 #' @param s_min,s_max Lower and Upper bounds of the interval where the moment
 #' conditions are considered for the Cgmm method; numeric.
-#' @param ncond Integer. Number of moment conditions (until order \code{ncond}) for the GMC method.
-#' Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.
+#' @param ncond Integer. Number of moment conditions (until order \code{ncond})
+#' for the GMC method. Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.
 #' @param IterationControl only used if algo = "IT..." or algo = "Cue..."
 #' to control the iterations. See Details.
 #' @param ... Other arguments to be passed to the estimation function or the
