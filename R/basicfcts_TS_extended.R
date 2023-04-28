@@ -807,18 +807,23 @@ rRDTS <- function(n, alpha = NULL, delta = NULL, lambdap = NULL, lambdam = NULL,
 
 }
 
-#Funktioniert für theta(0.5,1,1,1,0). Für weitere Werte mit Alpha <1 probieren.
-# Funktioniert nicht für alpha > 1: In Binachi et al 2010b nachscheun seite77
-# theorem 4.6 einbauen
+# Function from here: Kim et al 2010 Tempered stable and tempered infinitely
+# divisble GARCH models. BUT, its modified by factor: 1/(1+((1-alpha)/2)), as
+# function gave wrong values before
 rRDTS_SR <- function(n, alpha, delta, lambdap, lambdam, mu, k) {
-  replicate(n = n, rTSS_SR1(alpha = alpha, delta = delta,
-                             lambda = lambdap, k = k) -
+  replicate(n = n, (rTSS_SR1(alpha = alpha, delta = delta,
+                            lambda = lambdap, k = k) -
               rTSS_SR1(alpha = alpha, delta = delta,
-                        lambda = lambdam, k = k)
+                       lambda = lambdam, k = k))
             - (delta*gamma((1-alpha)/2)/(2^((alpha+1)/2)))*
-              (lambdap^(alpha-1)-lambdam^(alpha-1))
+              (lambdap^(alpha-1)-lambdam^(alpha-1))/(1+((1-alpha)/2))
             + mu)
 }
+
+
+
+
+
 
 #### Supportive functions ####
 
