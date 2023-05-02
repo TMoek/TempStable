@@ -301,6 +301,25 @@ rTSS_SR1 <- function(alpha, delta, lambda, k) {
     return(sum(apply(X, 1, FUN = min)))
 }
 
+
+# Test
+rTSS_SRT <- function(n, alpha, delta, lambda, k) {
+  base::replicate(n = n, rTSS_SR2(alpha = alpha, delta = delta,
+                                  lambda = lambda, k = k))
+
+}
+
+# Test
+rTSS_SR2 <- function(alpha, delta, lambda, k) {
+  parrivalslong <- cumsum(stats::rexp(k * 1.1))
+  parrivals <- parrivalslong[parrivalslong <= k]
+  E1 <- stats::rexp(length(parrivals))
+  U <- stats::runif(length(parrivals))
+  X <- cbind((alpha * parrivals/delta)^(-1/alpha), sqrt(2)*E1^(1/2) * U^(1/alpha)/lambda)
+  #return(sum(apply(X, 1, FUN = min)))
+  return(sum(apply(X, 1, FUN = min))/(log(-gamma(-alpha))))
+}
+
 #' Quantile function of the tempered stable subordinator distribution
 #'
 #' The quantile function of the tempered stable

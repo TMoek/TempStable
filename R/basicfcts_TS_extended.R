@@ -704,7 +704,7 @@ charRDTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
 
 dRDTS <- function(x, alpha = NULL, delta = NULL, lambdap = NULL,
                   lambdam = NULL, mu = NULL, theta = NULL, dens_method = "FFT",
-                  a = -20, b = 20, nf = 64) {
+                  a = -20, b = 20, nf = 128) {
   if ((missing(alpha) | missing(delta) | missing(lambdap) | missing(lambdam) |
        missing(mu)) & is.null(theta))
     stop("No or not enough parameters supplied")

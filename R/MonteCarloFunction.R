@@ -694,7 +694,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         }  else if (TemperedType == "KRTS") {
             browser()
         } else if (TemperedType == "RDTS") {
-            browser()
+            x <- rRDTS(n = size, theta = thetaT, methodR = methodR)
         }
 
         #TODO: Different options. For r-values out of density function it would
