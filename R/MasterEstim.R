@@ -797,8 +797,8 @@ CheckParametersRange_MTS <- function(theta) {
   mu <- theta[5]
   checkParams <- list(alpha = checkRange(alpha, -Inf, 1, "alpha"),
                       delta = checkRange(delta, 0, Inf, "delta"),
-                      lambdap = checkRange(lambda, 0, Inf, "lambda+"),
-                      lambdam = checkRange(lambda, 0, Inf, "lambda-"),
+                      lambdap = checkRange(lambdap, 0, Inf, "lambda+"),
+                      lambdam = checkRange(lambdam, 0, Inf, "lambda-"),
                       mu = checkRange(mu, -Inf, Inf, "mu"))
   .printErr <- function(errList) if (!errList$bool)
     stop(errList$msg)
@@ -837,12 +837,12 @@ CheckParametersRange_KRTS <- function(theta) {
   pm <- theta[7]
   mu <- theta[8]
   checkParams <- list(alpha = checkRange(alpha, 0, 2, "alpha"),
-                      kp = checkRange(alpha, 0, 2, "k+"),
-                      km = checkRange(alpha, 0, 2, "k-"),
-                      rp = checkRange(deltap, 0, Inf, "r+"),
-                      rm = checkRange(deltam, 0, Inf, "r-"),
-                      pp = checkRange(lambdap, -alpha, Inf, "p+"),
-                      pm = checkRange(lambdam, -alpha, Inf, "p-"),
+                      kp = checkRange(kp, 0, 2, "k+"),
+                      km = checkRange(km, 0, 2, "k-"),
+                      rp = checkRange(rp, 0, Inf, "r+"),
+                      rm = checkRange(rm, 0, Inf, "r-"),
+                      pp = checkRange(pp, -alpha, Inf, "p+"),
+                      pm = checkRange(pm, -alpha, Inf, "p-"),
                       mu = checkRange(mu, -Inf, Inf, "mu"))
   .printErr <- function(errList) if (!errList$bool)
     stop(errList$msg)
@@ -858,8 +858,8 @@ CheckParametersRange_RDTS <- function(theta) {
   mu <- theta[5]
   checkParams <- list(alpha = checkRange(alpha, 0, 2, "alpha"),
                       delta = checkRange(delta, 0, Inf, "delta"),
-                      lambdap = checkRange(lambda, 0, Inf, "lambda+"),
-                      lambdam = checkRange(lambda, 0, Inf, "lambda-"),
+                      lambdap = checkRange(lambdap, 0, Inf, "lambda+"),
+                      lambdam = checkRange(lambdam, 0, Inf, "lambda-"),
                       mu = checkRange(mu, -Inf, Inf, "mu"))
   .printErr <- function(errList) if (!errList$bool)
     stop(errList$msg)
