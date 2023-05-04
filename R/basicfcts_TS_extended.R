@@ -484,7 +484,7 @@ charKRTS <- function(t, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
 # yKRTS <- dKRTS(xKRTS, alpha,kp,km,rp,rm,pp,pm,mu)
 dKRTS <- function(x, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
                   rm = NULL, pp = NULL, pm = NULL, mu = NULL, theta = NULL,
-                  dens_method = "FFT", a = -20, b = 20, nf = 2048){
+                  dens_method = "FFT", a = -20, b = 20, nf = 128){
   if ((missing(alpha) | missing(kp) | missing(km) | missing(rp) |
        missing(rm) | missing(pp) | missing(pm) | missing(mu)) & is.null(theta))
     stop("No or not enough parameters supplied")
@@ -593,6 +593,55 @@ rKRTS <- function(alpha = NULL, kp = NULL, km = NULL, rp = NULL, rm = NULL,
               TM = 0)
   return(x)
 }
+
+rKRTS_SR <- function(n, alpha, kp, km, rp, rm, pp, pm, mu, k) {
+  replicate(n = n, (rTSS_SR1(alpha = alpha, delta = kp,
+                             lambda = (rp/(pp+1))^(1/(alpha-1)), k = k) -
+                      rTSS_SR1(alpha = alpha, delta = km,
+                               lambda = (rm/(pm+1))^(1/(alpha-1)), k = k))
+            - (gamma(1-alpha)*((kp*rp)/(pp+1)-(km*rm)/(pm+1)))
+            #/(1+((1-alpha)/2))
+            + mu)
+}
+
+# No export.
+rKRTS_SRT <- function(n, alpha, kp, km, rp, rm, pp, pm, mu, k) {
+
+  # Für dKRTS(x,0.5,1,1,1,1,1,1,0) oke
+  # replicate(n = n, rCTS_SRp(alpha = alpha, delta = kp,
+  #                           lambda = (rp/(pp+1))^(1/(alpha-1)), k = k)
+  #           -rCTS_SRp(alpha = alpha, delta = km,
+  #                     lambda = (rm/(pm+1))^(1/(alpha-1)), k = k)
+  #           +mu)
+
+  #Für dKRTS(x,1.1,1.5,2,3,4,5,6,0) top
+  replicate(n = n, rCTS_SRp(alpha = alpha, delta = kp,
+                            lambda = (rp/(pp+1))^(1/(alpha+1)), k = k)
+            -rCTS_SRp(alpha = alpha, delta = km,
+                      lambda = (rm/(pm+1))^(1/(alpha+1)), k = k)
+            +mu)
+
+}
+
+# No export.
+#' @importFrom VGAM zeta
+rKRTS_SRp <- function(alpha, delta, lambda, k) {
+  parrivalslong <- cumsum(stats::rexp(k * 2))
+  parrivals <- parrivalslong[parrivalslong <= k]
+  n <- length(parrivals)
+  E1 <- stats::rexp(n)
+  U <- stats::runif(n)
+  cntr <- ((1:n) * alpha/delta)^(-1/alpha)
+  gam <- (delta/alpha)^(1/alpha) * VGAM::zeta(1/alpha) - gamma(1 - alpha) *
+    delta * lambda^(alpha - 1)
+  xBig <- base::cbind((alpha * parrivals/delta)^(-1/alpha),
+                      E1 * U^(1/alpha)/lambda)
+  jumps <- apply(xBig, 1, FUN = min) - cntr
+  x <- sum(jumps) + gam
+  return(x)
+}
+
+
 
 
 #### Rapidly Decreasing Tempered Stable Distribution ####
