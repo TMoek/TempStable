@@ -753,7 +753,7 @@ charRDTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
 
 dRDTS <- function(x, alpha = NULL, delta = NULL, lambdap = NULL,
                   lambdam = NULL, mu = NULL, theta = NULL, dens_method = "FFT",
-                  a = -20, b = 20, nf = 128) {
+                  a = -20, b = 20, nf = 256) {
   if ((missing(alpha) | missing(delta) | missing(lambdap) | missing(lambdam) |
        missing(mu)) & is.null(theta))
     stop("No or not enough parameters supplied")
@@ -860,18 +860,14 @@ rRDTS <- function(n, alpha = NULL, delta = NULL, lambdap = NULL, lambdam = NULL,
 # divisble GARCH models. BUT, its modified by factor: 1/(1+((1-alpha)/2)), as
 # function gave wrong values before
 rRDTS_SR <- function(n, alpha, delta, lambdap, lambdam, mu, k) {
-  replicate(n = n, (rTSS_SR1(alpha = alpha, delta = delta,
+  replicate(n = n, (rTSS_SR2(alpha = alpha, delta = delta,
                             lambda = lambdap, k = k) -
-              rTSS_SR1(alpha = alpha, delta = delta,
+              rTSS_SR2(alpha = alpha, delta = delta,
                        lambda = lambdam, k = k))
             - (delta*gamma((1-alpha)/2)/(2^((alpha+1)/2)))*
-              (lambdap^(alpha-1)-lambdam^(alpha-1))/(1+((1-alpha)/2))
+              (lambdap^(alpha-1)-lambdam^(alpha-1))
             + mu)
 }
-
-
-
-
 
 
 #### Supportive functions ####

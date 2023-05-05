@@ -18,7 +18,7 @@ GMMParametersEstim_RDTS <-
            PrintTime = FALSE,
            ...) {
     if (is.null(theta0))
-      theta0 <- MoC_RDTS(x, c(1.5, 1, 1, 1, 0), eps = eps)
+      theta0 <- MoC_RDTS(x, c(0.5, 1, 1, 1, 0), eps = eps)
     algo <- match.arg(algo)
     regularization <- match.arg(regularization)
     WeightingMatrix <- match.arg(WeightingMatrix)

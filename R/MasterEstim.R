@@ -229,7 +229,7 @@ TemperedEstim <- function(TemperedType = c("CTS", "TSS", "NTS", "MTS", "GTS",
         } else if (TemperedType == "KRTS") {
             theta0 <- MoC_KRTS(x <- data, c(1.5, 1, 1, 1, 1, 1, 1, 0))
         } else if (TemperedType == "RDTS") {
-          theta0 <- MoC_RDTS(x <- data, c(1.5, 1, 1, 1, 0))
+          theta0 <- MoC_RDTS(x <- data, c(0.5, 1, 1, 1, 0))
         }
 
       # else {

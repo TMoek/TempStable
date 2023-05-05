@@ -55,6 +55,10 @@ two different methods are used depending on which will be faster. In this
 method the function \code{\link[copula:retstable]{copula::retstable()}} is called. "TM" is the standard
 method used. For more details, see references.
 
+It is recommended to check the generated random numbers once for each
+distribution using the density function. If the random numbers are shifted,
+e.g. for the method "SR", it may be worthwhile to increase k.
+
 For more details, see references.
 }
 \examples{

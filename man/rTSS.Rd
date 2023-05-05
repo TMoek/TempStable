@@ -45,7 +45,13 @@ individually OR provide \code{theta}.
 infinite shot noise series representation. "TM" stands for Two Methods as
 two different methods are used depending on which will be faster. In this
 method the function \code{\link[copula:retstable]{copula::retstable()}} is called. "TM" is the standard
-method used. For more details, see references.
+method used.
+
+It is recommended to check the generated random numbers once for each
+distribution using the density function. If the random numbers are shifted,
+e.g. for the method "SR", it may be worthwhile to increase k.
+
+For more details, see references.
 }
 \examples{
 rTSS(100,0.5,1,1)

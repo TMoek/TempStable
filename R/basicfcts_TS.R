@@ -191,7 +191,13 @@ pTSS <- function(q, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' infinite shot noise series representation. "TM" stands for Two Methods as
 #' two different methods are used depending on which will be faster. In this
 #' method the function [copula::retstable()] is called. "TM" is the standard
-#' method used. For more details, see references.
+#' method used.
+#'
+#' It is recommended to check the generated random numbers once for each
+#' distribution using the density function. If the random numbers are shifted,
+#' e.g. for the method "SR", it may be worthwhile to increase k.
+#'
+#' For more details, see references.
 #'
 #' @param n sample size (integer).
 #' @param alpha Stability parameter. A real number between 0 and 1.
@@ -309,15 +315,17 @@ rTSS_SRT <- function(n, alpha, delta, lambda, k) {
 
 }
 
-# Test
+#This is used for RDTS_SR. Due to Kim et al 2010 Tempered stable and tempered
+# infinitely divisible GARCH models
 rTSS_SR2 <- function(alpha, delta, lambda, k) {
   parrivalslong <- cumsum(stats::rexp(k * 1.1))
   parrivals <- parrivalslong[parrivalslong <= k]
   E1 <- stats::rexp(length(parrivals))
   U <- stats::runif(length(parrivals))
   X <- cbind((alpha * parrivals/delta)^(-1/alpha), sqrt(2)*E1^(1/2) * U^(1/alpha)/lambda)
-  #return(sum(apply(X, 1, FUN = min)))
-  return(sum(apply(X, 1, FUN = min))/(log(-gamma(-alpha))))
+  return(sum(apply(X, 1, FUN = min)))
+  #Only for testreasons this line would return similar results as rTSS_SR1
+  #return(sum(apply(X, 1, FUN = min))/(log(-gamma(-alpha))))
 }
 
 #' Quantile function of the tempered stable subordinator distribution
@@ -692,8 +700,14 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' "AR" stands for the approximate Acceptance-Rejection Method and "SR" for a
 #' truncated infinite shot noise series representation. "TM" stands for Two
 #' Methods as two different methods are used depending on which will be faster.
+#' "TM" works only for [alpha < 1].
 #' In this method the function [copula::retstable()] is called. For [alpha < 1],
 #' "TM" is the default method, while "AR" for [alpha > 1] is the default method.
+#'
+#' It is recommended to check the generated random numbers once for each
+#' distribution using the density function. If the random numbers are shifted,
+#' e.g. for the method "SR", it may be worthwhile to increase k.
+#'
 #' For more details, see references.
 #'
 #' @param n sample size (integer).
@@ -1144,6 +1158,10 @@ pNTS <- function(q, alpha = NULL, beta = NULL, delta = NULL, lambda = NULL,
 #' two different methods are used depending on which will be faster. In this
 #' method the function [copula::retstable()] is called. "TM" is the standard
 #' method used. For more details, see references.
+#'
+#' It is recommended to check the generated random numbers once for each
+#' distribution using the density function. If the random numbers are shifted,
+#' e.g. for the method "SR", it may be worthwhile to increase k.
 #'
 #' For more details, see references.
 #'

@@ -19,7 +19,7 @@ MoCObjective_RDTS <- function(x, parms) {
 }
 
 #' @importFrom rootSolve multiroot
-MoC_RDTS <- function(x, theta0 = c(1.5, 1, 1, 1, 0), eps = 1e-06) {
+MoC_RDTS <- function(x, theta0 = c(0.5, 1, 1, 1, 0), eps = 1e-06) {
     cumulants <- CumFinder_RDTS(x)
     utils::capture.output(parroot <-
         rootSolve::multiroot(MoCObjective_RDTS, theta0, parms = cumulants))

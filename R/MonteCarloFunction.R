@@ -106,6 +106,15 @@
 #'   default = 1e-3.}
 #' }
 #'
+#' \strong{methodR} Random numbers must be generated for each MC study. For
+#' each distribution, different methods are available for this (partly also
+#' depending on alpha). For more information, the documentation of the
+#' respective [r...] distribution can be called up. By default, the fastest
+#' method is selected. Since the deviation error can amplify to the edges of
+#' [alpha] depending on the method, it is recommended to check the generated
+#' random numbers once for each distribution using the density function before
+#' starting the simulation.
+#'
 #' \strong{Parallelization}  Parallelization of the function is possible with
 #' using [parallelizeMCsimulation()]. If someone wants to parallelize the
 #' function manually, the parameter \code{MCparam} must be set to \code{1} and
@@ -679,22 +688,22 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         if (TemperedType == "CTS") {
           x <- rCTS(n = size, alpha = thetaT[1], deltap = thetaT[2],
                     deltam = thetaT[3], lambdap = thetaT[4],
-                    lambdam = thetaT[5], mu = thetaT[6], methodR = methodR)
+                    lambdam = thetaT[5], mu = thetaT[6], methodR = methodR, ...)
         } else if (TemperedType == "TSS") {
           x <- rTSS(n = size, alpha = thetaT[1], delta = thetaT[2],
-                    lambda = thetaT[3], methodR = methodR)
+                    lambda = thetaT[3], methodR = methodR, ...)
         } else if (TemperedType == "NTS") {
           x <- rNTS(n = size, alpha = thetaT[1], beta = thetaT[2],
                     delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5],
-                    methodR = methodR)
+                    methodR = methodR, ...)
         } else if (TemperedType == "MTS") {
             browser()
         } else if (TemperedType == "GTS") {
-            x <- rGTS(n = size, theta = thetaT, methodR = methodR)
+            x <- rGTS(n = size, theta = thetaT, methodR = methodR, ...)
         }  else if (TemperedType == "KRTS") {
             browser()
         } else if (TemperedType == "RDTS") {
-            x <- rRDTS(n = size, theta = thetaT, methodR = methodR)
+            x <- rRDTS(n = size, theta = thetaT, methodR = methodR, ...)
         }
 
         #TODO: Different options. For r-values out of density function it would

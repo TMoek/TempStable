@@ -224,6 +224,15 @@ consecutive estimation steps is smaller than RelativeErrMax;
 default = 1e-3.}
 }
 
+\strong{methodR} Random numbers must be generated for each MC study. For
+each distribution, different methods are available for this (partly also
+depending on alpha). For more information, the documentation of the
+respective \link{r...} distribution can be called up. By default, the fastest
+method is selected. Since the deviation error can amplify to the edges of
+\link{alpha} depending on the method, it is recommended to check the generated
+random numbers once for each distribution using the density function before
+starting the simulation.
+
 \strong{Parallelization}  Parallelization of the function is possible with
 using \code{\link[=parallelizeMCsimulation]{parallelizeMCsimulation()}}. If someone wants to parallelize the
 function manually, the parameter \code{MCparam} must be set to \code{1} and

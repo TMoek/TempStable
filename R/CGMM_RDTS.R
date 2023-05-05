@@ -7,7 +7,7 @@ CgmmParametersEstim_RDTS <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
                                     IterationControl = list(), eps = 1e-06,
                                     PrintTime = FALSE, ...) {
     if (is.null(theta0))
-        theta0 <- MoC_RDTS(x, c(1.5, 1, 1, 1, 0), eps = eps)
+        theta0 <- MoC_RDTS(x, c(0.5, 1, 1, 1, 0), eps = eps)
     algo <- match.arg(algo)
     t_init <- StableEstim::getTime_()
     method <- getCgmmMethodName_RDTS(algo = algo, alphaReg = alphaReg,

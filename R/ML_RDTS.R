@@ -6,7 +6,7 @@ MLParametersEstim_RDTS <-
            ...) {
     t_init <- StableEstim::getTime_()
     if (is.null(theta0))
-      theta0 <- MoC_RDTS(x, c(1.5, 1, 1, 1, 0), eps = eps)
+      theta0 <- MoC_RDTS(x, c(0.5, 1, 1, 1, 0), eps = eps)
     method <- .methodDesML_RDTS()
     dots <- list(...)
     if (is.null(dots$control)) {
