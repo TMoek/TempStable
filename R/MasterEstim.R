@@ -568,12 +568,19 @@ getTempEstimFcts <- function(
                     with this TS.")))
       Output
     } else if (type == "RDTS") {
-      Output <- switch(method, Cgmm = {
+      Output <- switch(method, ML = {
+        list(Params = MLParametersEstim_RDTS,
+             CovarianceMat = .asymptoticVarianceEstimML_RDTS,
+             methodDes = .methodDesML_RDTS)
+      }, GMM = {
+        list(Params = GMMParametersEstim_RDTS,
+             CovarianceMat = .asymptoticVarianceEstimGMM_RDTS,
+             methodDes = getGMMmethodName_RDTS)
+      }, Cgmm = {
         list(Params = CgmmParametersEstim_RDTS,
              CovarianceMat = .asymptoticVarianceEstimCgmm_RDTS,
              methodDes = getCgmmMethodName_RDTS)
-      }, stop(paste(method, " not taken into account ! For now, only Cgmm works
-                    with this TS.")))
+      }, stop(paste(method, " not taken into account !")))
       Output
     }
   # else {
