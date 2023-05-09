@@ -50,6 +50,7 @@ CgmmParametersEstim_RDTS <- function(x, algo = c("2SCgmm", "ITCgmm", "CueCgmm"),
           StableEstim::ComputeDuration(t_init, StableEstim::getTime_()),
           CallingFct)
     }
+    browser()
     list(Estim = Estim, duration = as.numeric(
       StableEstim::ComputeDuration(t_init, StableEstim::getTime_(), TRUE)),
       method = method)

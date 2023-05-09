@@ -721,7 +721,7 @@ charRDTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
                                              lambdam)))
     }
 
-    if (is.nan(nextG) || is.infinite(Re(nextG)) || is.infinite(Im(nextG))){
+    if (is.nan(nextG) || is.null(nextG) || is.infinite(Re(nextG)) || is.infinite(Im(nextG))){
       nextG <- 0 + 0i
     }
 

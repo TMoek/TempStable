@@ -489,7 +489,7 @@ getTempEstimFcts <- function(
     IterationControl,
     x,
     ...){
-    #The extended TS only work with Cgmm.
+
     if (type == "CTS") {
         Output <- switch(method, ML = {
             list(Params = MLParametersEstim_CTS,

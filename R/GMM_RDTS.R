@@ -71,8 +71,7 @@ GMMParametersEstim_RDTS <-
                         eps = eps,
                         ...
                       )
-                    },
-                    stop(paste(algo, " not taken into account !")))
+                    }, stop(paste(algo, " not taken into account !")))
     if (PrintTime) {
       CallingFct <-
         paste("RDTS", "GMMParametersEstim", algo, t_scheme, sep = "_")
@@ -157,7 +156,8 @@ Compute2SGMMParametersEstim_RDTS <-
         ...,
         ProvidedWeightingMatrix = ProvidedWeightingMatrix
       )$OptInfo
-    list(Estim = CurrentEstimOptInfo, tEstim = t)
+
+    return(list(Estim = CurrentEstimOptInfo, tEstim = t))
   }
 
 ComputeITGMMParametersEstim_RDTS <-
