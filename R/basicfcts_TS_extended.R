@@ -118,7 +118,7 @@ charMTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
 # yMTS <- dMTS(x, 0.7,0.005,50,50,0)
 dMTS <- function(x, alpha = NULL, delta = NULL, lambdap = NULL,
                  lambdam = NULL, mu = NULL, theta = NULL, dens_method = "FFT",
-                 a = -20, b = 20, nf = 2048) {
+                 a = -20, b = 20, nf = 256) {
   if ((missing(alpha) | missing(delta) | missing(lambdap) |
        missing(lambdam) | missing(mu)) & is.null(theta))
     stop("No or not enough parameters supplied")
@@ -212,6 +212,17 @@ rMTS <- function(n, alpha = NULL, delta = NULL, lambdap = NULL, lambdam = NULL,
               SR = 0,
               TM = 0)
   return(x)
+}
+
+#in Work
+rMTS_SR <- function(n, alpha, delta, lambdap, lambdam, mu, k) {
+  replicate(n = n, (rTSS_SR2(alpha = alpha, delta = delta,
+                             lambda = lambdap, k = k) -
+                      rTSS_SR2(alpha = alpha, delta = delta,
+                               lambda = lambdam, k = k))
+            + (2^(-alpha-1/2)*delta*gamma((1/2)-alpha)*
+                 (lambdap^(2*alpha-1)-lambdam^(2*alpha-1)))
+            + mu)
 }
 
 #### Generalized Classical Tempered Stable Distribution ####
@@ -600,6 +611,16 @@ rKRTS_SR <- function(n, alpha, kp, km, rp, rm, pp, pm, mu, k) {
                       rTSS_SR1(alpha = alpha, delta = km,
                                lambda = (rm/(pm+1))^(1/(alpha-1)), k = k))
             - (gamma(1-alpha)*((kp*rp)/(pp+1)-(km*rm)/(pm+1)))
+            #/(1+((1-alpha)/2))
+            + mu)
+}
+
+rKRTS_SRT <- function(n, alpha, kp, km, rp, rm, pp, pm, mu, k) {
+  replicate(n = n, (rTSS_SR3(alpha = alpha, delta = 1,
+                             lambda = 1, k = k) -
+                      rTSS_SR3(alpha = alpha, delta = 1,
+                               lambda = 1, k = k))
+            - (alpha* gamma(-alpha)*((kp*rp)/(pp+1)-(km*rm)/(pm+1)))
             #/(1+((1-alpha)/2))
             + mu)
 }
