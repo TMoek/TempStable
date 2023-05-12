@@ -36,7 +36,7 @@ charCTS(
 \item{functionOrigin}{A string. Either "massing", or "kim10".}
 }
 \value{
-The CF of the tempered stable subordinator distribution.
+The CF of the classical tempered stable distribution.
 }
 \description{
 Theoretical characteristic function (CF) of the classical tempered

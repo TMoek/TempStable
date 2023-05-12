@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{dCTS}
 \alias{dCTS}
-\title{Density function of the classic tempered stable (CTS) distribution}
+\title{Density function of the classical tempered stable (CTS) distribution}
 \usage{
 dCTS(
   x,

@@ -44,10 +44,10 @@ by default.}
 1 by default.}
 }
 \value{
-Generates \code{n} random numbers.
+Generates \code{n} random numbers of the CTS distribution.
 }
 \description{
-Generates \code{n} random numbers distributed according to the classic
+Generates \code{n} random numbers distributed according to the classical
 tempered stable (CTS) distribution.
 }
 \details{

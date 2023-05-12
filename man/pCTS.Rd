@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{pCTS}
 \alias{pCTS}
-\title{Cumulative probability function of the classic tempered stable (CTS)
+\title{Cumulative probability function of the classical tempered stable (CTS)
 distribution}
 \usage{
 pCTS(
@@ -53,7 +53,7 @@ As \code{q} is a numeric vector, the return value is also a numeric
 vector of probabilities.
 }
 \description{
-The cumulative probability distribution function (CDF) of the classic
+The cumulative probability distribution function (CDF) of the classical
 tempered stable distribution.
 }
 \details{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS.R
 \name{qCTS}
 \alias{qCTS}
-\title{Quantile function of the classic tempered stable (CTS)}
+\title{Quantile function of the classical tempered stable (CTS)}
 \usage{
 qCTS(
   p,
@@ -46,7 +46,7 @@ As \code{p} is a numeric vector, the return value is also a numeric
 vector of quantiles.
 }
 \description{
-The quantile function of the classic tempered stable (CTS).
+The quantile function of the classical tempered stable (CTS).
 }
 \details{
 \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,

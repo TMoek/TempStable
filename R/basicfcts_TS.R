@@ -473,7 +473,7 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' @param theta Parameters stacked as a vector.
 #' @param functionOrigin A string. Either "massing", or "kim10".
 #'
-#' @return The CF of the tempered stable subordinator distribution.
+#' @return The CF of the classical tempered stable distribution.
 #'
 #' @references
 #' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
@@ -529,7 +529,7 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
     }
 }
 
-#' Density function of the classic tempered stable (CTS) distribution
+#' Density function of the classical tempered stable (CTS) distribution
 #'
 #' The probability density function (PDF) of the classical tempered stable
 #' distributions is not available in closed form.
@@ -638,10 +638,10 @@ dCTS_Conv <- function(x, alpha, deltap, deltam, lambdap, lambdam, mu) {
 
 }
 
-#' Cumulative probability function of the classic tempered stable (CTS)
+#' Cumulative probability function of the classical tempered stable (CTS)
 #' distribution
 #'
-#' The cumulative probability distribution function (CDF) of the classic
+#' The cumulative probability distribution function (CDF) of the classical
 #' tempered stable distribution.
 #'
 #' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
@@ -719,7 +719,7 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 
 #' Function to generate random variates of CTS distribution.
 #'
-#' Generates \code{n} random numbers distributed according to the classic
+#' Generates \code{n} random numbers distributed according to the classical
 #' tempered stable (CTS) distribution.
 #'
 #' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
@@ -752,7 +752,7 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' @param c A real number. Only relevant for \code{methodR == "AR"}.
 #' 1 by default.
 #'
-#' @return Generates \code{n} random numbers.
+#' @return Generates \code{n} random numbers of the CTS distribution.
 #'
 #' @seealso [copula::retstable()] as "TM" uses this function.
 #'
@@ -892,9 +892,9 @@ rCTS_SRp <- function(alpha, delta, lambda, k) {
     return(x)
 }
 
-#' Quantile function of the classic tempered stable (CTS)
+#' Quantile function of the classical tempered stable (CTS)
 #'
-#' The quantile function of the classic tempered stable (CTS).
+#' The quantile function of the classical tempered stable (CTS).
 #'
 #' \code{theta} denotes the parameter vector \code{(alpha, deltap, deltam,
 #' lambdap, lambdam, mu)}. Either provide the parameters individually OR
