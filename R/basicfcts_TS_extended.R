@@ -606,61 +606,85 @@ rKRTS <- function(alpha = NULL, kp = NULL, km = NULL, rp = NULL, rm = NULL,
 }
 
 rKRTS_SR <- function(n, alpha, kp, km, rp, rm, pp, pm, mu, k) {
-  replicate(n = n, (rTSS_SR1(alpha = alpha, delta = kp,
-                             lambda = (rp/(pp+1))^(1/(alpha-1)), k = k) -
-                      rTSS_SR1(alpha = alpha, delta = km,
-                               lambda = (rm/(pm+1))^(1/(alpha-1)), k = k))
-            - (gamma(1-alpha)*((kp*rp)/(pp+1)-(km*rm)/(pm+1)))
-            #/(1+((1-alpha)/2))
-            + mu)
+  if (kp == km && rp == rm && pp == pm){
+    deltap <- (kp*rp^alpha)/(alpha+pp)
+    deltam <- (km*rm^alpha)/(alpha+pm)
+
+    replicate(n = n, (rTSS_SR1(alpha = alpha, delta = deltap,
+                               lambda =
+                                 rKRTS_SR_rVj(1,
+                                              delta = deltap,
+                                              alpha = alpha,
+                                              kp = kp, km = km, rp = rp,
+                                              rm = rm, pp = pp, pm = pm),
+                               k = k) -
+                        rTSS_SR1(alpha = alpha, delta = deltam,
+                                 lambda =
+                                   rKRTS_SR_rVj(1,
+                                                delta = deltam,
+                                                alpha = alpha,
+                                                kp = kp, km = km, rp = rp,
+                                                rm = rm, pp = pp, pm = pm)
+                                   , k = k))
+              - (gamma(1-alpha)*((kp*rp)/(pp+1)-(km*rm)/(pm+1)))
+              + mu)
+  }
 }
 
 rKRTS_SRT <- function(n, alpha, kp, km, rp, rm, pp, pm, mu, k) {
-  replicate(n = n, (rTSS_SR3(alpha = alpha, delta = 1,
-                             lambda = 1, k = k) -
-                      rTSS_SR3(alpha = alpha, delta = 1,
-                               lambda = 1, k = k))
-            - (alpha* gamma(-alpha)*((kp*rp)/(pp+1)-(km*rm)/(pm+1)))
-            #/(1+((1-alpha)/2))
-            + mu)
+  if (kp == km && rp == rm && pp == pm){
+    deltap <- (kp*(rp^alpha))/(alpha+pp)
+    deltam <- (km*(rm^alpha))/(alpha+pm)
+    lambdap <- 1/deltap * (kp*(rp^(-pp)))
+    lambdam <- 1/deltam * (km*(rm^(-pm)))
+
+    replicate(n = n, (rTSS_SR1(alpha = alpha, delta = deltap,
+                               lambda = lambdap,k = k) -
+                        rTSS_SR1(alpha = alpha, delta = deltam,
+                                 lambda = lambdam, k = k))
+              - (gamma(1-alpha)*((kp*rp)/(pp+1)-(km*rm)/(pm+1)))
+              + mu)
+  }
 }
 
-# No export.
-rKRTS_SRT <- function(n, alpha, kp, km, rp, rm, pp, pm, mu, k) {
+rKRTS_SR_dVj <- function(x, delta, alpha, kp, km, rp, rm, pp, pm){
+  returnVec <- NULL
 
-  # Für dKRTS(x,0.5,1,1,1,1,1,1,0) oke
-  # replicate(n = n, rCTS_SRp(alpha = alpha, delta = kp,
-  #                           lambda = (rp/(pp+1))^(1/(alpha-1)), k = k)
-  #           -rCTS_SRp(alpha = alpha, delta = km,
-  #                     lambda = (rm/(pm+1))^(1/(alpha-1)), k = k)
-  #           +mu)
+  for(xi in x){
+    Irp <- 0
+    if (xi>(1/rp)) Irp <- 1
 
-  #Für dKRTS(x,1.1,1.5,2,3,4,5,6,0) top
-  replicate(n = n, rCTS_SRp(alpha = alpha, delta = kp,
-                            lambda = (rp/(pp+1))^(1/(alpha+1)), k = k)
-            -rCTS_SRp(alpha = alpha, delta = km,
-                      lambda = (rm/(pm+1))^(1/(alpha+1)), k = k)
-            +mu)
+    Irm <- 0
+    if (xi<(-1/rm)) Irm <- 1
 
+    if(xi == 0){
+      y <- 0
+    }
+    else {
+      y <- (1/delta * (kp*rp^(-pp)*Irp*(abs(xi)^(-alpha-pp-1)) +
+                         km*rm^(-pm)*Irm*(abs(xi)^(-alpha-pm-1))))
+    }
+    returnVec <- append(returnVec,y)
+  }
+
+  return(returnVec)
 }
 
-# No export.
-#' @importFrom VGAM zeta
-rKRTS_SRp <- function(alpha, delta, lambda, k) {
-  parrivalslong <- cumsum(stats::rexp(k * 2))
-  parrivals <- parrivalslong[parrivalslong <= k]
-  n <- length(parrivals)
-  E1 <- stats::rexp(n)
-  U <- stats::runif(n)
-  cntr <- ((1:n) * alpha/delta)^(-1/alpha)
-  gam <- (delta/alpha)^(1/alpha) * VGAM::zeta(1/alpha) - gamma(1 - alpha) *
-    delta * lambda^(alpha - 1)
-  xBig <- base::cbind((alpha * parrivals/delta)^(-1/alpha),
-                      E1 * U^(1/alpha)/lambda)
-  jumps <- apply(xBig, 1, FUN = min) - cntr
-  x <- sum(jumps) + gam
-  return(x)
+rKRTS_SR_rVj <- function(n, delta, alpha, kp, km, rp, rm, pp, pm){
+  x <- seq(-20,20,0.01)
+  y <- rKRTS_SR_dVj(x, delta, alpha, kp, km, rp, rm, pp, pm)
+  cumY <- cumsum(y)
+  rV <- runif(n, min(cumY), max(cumY))
+
+  returnVector <- NULL
+  for(s in rV){
+    pos <- which.min(abs(cumY - s))
+    returnVector <- append(returnVector, x[pos])
+  }
+
+  return(returnVector)
 }
+
 
 
 
