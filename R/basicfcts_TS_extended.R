@@ -605,49 +605,31 @@ rKRTS <- function(alpha = NULL, kp = NULL, km = NULL, rp = NULL, rm = NULL,
   return(x)
 }
 
-rKRTS_SR <- function(n, alpha, kp, km, rp, rm, pp, pm, mu, k) {
-  if (kp == km && rp == rm && pp == pm){
-    deltap <- (kp*rp^alpha)/(alpha+pp)
-    deltam <- (km*rm^alpha)/(alpha+pm)
-
-    replicate(n = n, (rTSS_SR1(alpha = alpha, delta = deltap,
-                               lambda =
-                                 rKRTS_SR_rVj(1,
-                                              delta = deltap,
-                                              alpha = alpha,
-                                              kp = kp, km = km, rp = rp,
-                                              rm = rm, pp = pp, pm = pm),
-                               k = k) -
-                        rTSS_SR1(alpha = alpha, delta = deltam,
-                                 lambda =
-                                   rKRTS_SR_rVj(1,
-                                                delta = deltam,
-                                                alpha = alpha,
-                                                kp = kp, km = km, rp = rp,
-                                                rm = rm, pp = pp, pm = pm)
-                                   , k = k))
-              - (gamma(1-alpha)*((kp*rp)/(pp+1)-(km*rm)/(pm+1)))
-              + mu)
-  }
+rKRTS_SR <- function(n, alpha, kp, km, rp, rm, pp, pm, mu, k){
+  replicate (n = n, rKRTS_SR_Ro(alpha, kp, km, rp, rm, pp, pm, k) + mu)
 }
 
-rKRTS_SRT <- function(n, alpha, kp, km, rp, rm, pp, pm, mu, k) {
-  if (kp == km && rp == rm && pp == pm){
-    deltap <- (kp*(rp^alpha))/(alpha+pp)
-    deltam <- (km*(rm^alpha))/(alpha+pm)
-    lambdap <- 1/deltap * (kp*(rp^(-pp)))
-    lambdam <- 1/deltam * (km*(rm^(-pm)))
+rKRTS_SR_Ro <- function(alpha, kp, km, rp, rm, pp, pm, k){
+  parrivalslong <- cumsum(stats::rexp(k * 1.1))
+  parrivals <- parrivalslong[parrivalslong <=  k]
+  E1 <- stats::rexp(length(parrivals))
+  U <- stats::runif(length(parrivals))
 
-    replicate(n = n, (rTSS_SR1(alpha = alpha, delta = deltap,
-                               lambda = lambdap,k = k) -
-                        rTSS_SR1(alpha = alpha, delta = deltam,
-                                 lambda = lambdam, k = k))
-              - (gamma(1-alpha)*((kp*rp)/(pp+1)-(km*rm)/(pm+1)))
-              + mu)
-  }
+  sigma <- (kp*(rp^alpha))/(alpha+pp) + (km*(rm^alpha))/(alpha+pm)
+  V <- rKRTS_SR_rVj(length(parrivals), sigma, alpha, kp, km, rp, rm, pp, pm)
+
+  x0 <- sigma^(-1) * ((kp*(rp^alpha))/(alpha+pp) - (km*(rm^alpha))/(alpha+pm))
+  x1 <- (kp*rp)/(pp+1) - (km*rm)/(pm+1)
+  b <- alpha^(-1/alpha) * VGAM::zeta(1/alpha) * (sigma)^(1/alpha) *
+    x0 - gamma(1-alpha) * x1
+  cntr <- sum((alpha*(1:length(parrivals))/(sigma))^(-1/alpha)*x0)
+
+  X <- cbind((alpha * parrivals/(sigma ))^(-1/alpha), E1 * U^(1/alpha)/abs(V))
+  Xreturn <- sum((apply(X, 1, FUN = min)*V/abs(V)))-cntr+b
+  return(Xreturn)
 }
 
-rKRTS_SR_dVj <- function(x, delta, alpha, kp, km, rp, rm, pp, pm){
+rKRTS_SR_dVj <- function(x, sigma, alpha, kp, km, rp, rm, pp, pm){
   returnVec <- NULL
 
   for(xi in x){
@@ -661,7 +643,7 @@ rKRTS_SR_dVj <- function(x, delta, alpha, kp, km, rp, rm, pp, pm){
       y <- 0
     }
     else {
-      y <- (1/delta * (kp*rp^(-pp)*Irp*(abs(xi)^(-alpha-pp-1)) +
+      y <- (1/sigma * (kp*rp^(-pp)*Irp*(abs(xi)^(-alpha-pp-1)) +
                          km*rm^(-pm)*Irm*(abs(xi)^(-alpha-pm-1))))
     }
     returnVec <- append(returnVec,y)
@@ -670,9 +652,9 @@ rKRTS_SR_dVj <- function(x, delta, alpha, kp, km, rp, rm, pp, pm){
   return(returnVec)
 }
 
-rKRTS_SR_rVj <- function(n, delta, alpha, kp, km, rp, rm, pp, pm){
-  x <- seq(-20,20,0.01)
-  y <- rKRTS_SR_dVj(x, delta, alpha, kp, km, rp, rm, pp, pm)
+rKRTS_SR_rVj <- function(n, sigma, alpha, kp, km, rp, rm, pp, pm){
+  x <- seq(-40,40,0.01)
+  y <- rKRTS_SR_dVj(x, sigma, alpha, kp, km, rp, rm, pp, pm)
   cumY <- cumsum(y)
   rV <- runif(n, min(cumY), max(cumY))
 
