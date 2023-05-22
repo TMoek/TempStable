@@ -573,7 +573,7 @@ pKRTS <- function(q, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
   return(p)
 }
 
-rKRTS <- function(alpha = NULL, kp = NULL, km = NULL, rp = NULL, rm = NULL,
+rKRTS <- function(n, alpha = NULL, kp = NULL, km = NULL, rp = NULL, rm = NULL,
                   pp = NULL, pm = NULL, mu = NULL, theta = NULL, methodR = "TM",
                   k = 10000) {
   if ((missing(alpha) | missing(kp) | missing(km) | missing(rp) |
@@ -598,9 +598,15 @@ rKRTS <- function(alpha = NULL, kp = NULL, km = NULL, rp = NULL, rm = NULL,
   stopifnot(0 < alpha, alpha < 2, alpha != 1,  0 < kp, 0 < km, 0 < rp,
             0 < rm, pp > -alpha, pp != -1, pp != 0, pm > -alpha, pm != -1,
             pm != 0)
+
+  #TODO:Insert other methods
+  if(methodR == "TM" || methodR == "AR"){
+    methodR <- "SR"
+  }
+
   x <- switch(methodR,
               AR = 0,
-              SR = 0,
+              SR = rKRTS_SR(n, alpha, kp, km, rp, rm, pp, pm, mu, k),
               TM = 0)
   return(x)
 }
