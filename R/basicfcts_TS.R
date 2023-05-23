@@ -320,41 +320,6 @@ rTSS_SR2 <- function(alpha, delta, lambda, k) {
   #return(sum(apply(X, 1, FUN = min))/(log(-gamma(-alpha))))
 }
 
-rTSS_SR3 <- function(alpha, delta, lambda, k) {
-  parrivalslong <- cumsum(stats::rexp(k * 1.1))
-  parrivals <- parrivalslong[parrivalslong <= k]
-  E1 <- stats::rexp(length(parrivals))
-  U <- stats::runif(length(parrivals))
-  X <- cbind((alpha * parrivals/delta)^(-1/alpha), E1^(-1) * U^(1/alpha)/lambda)
-  return(sum(apply(X, 1, FUN = min)))
-}
-
-rTSS_SR4 <- function(alpha, delta, lambda, k) {
-  parrivalslong <- cumsum(stats::rexp(k * 1.1))
-  parrivals <- parrivalslong[parrivalslong <= k]
-  E1 <- stats::rexp(length(parrivals))
-  U <- stats::runif(length(parrivals))
-  X <- cbind((alpha * parrivals/delta)^(-1/alpha), E1^(2) * U^(1/alpha)/lambda)
-  return(sum(apply(X, 1, FUN = min)))
-}
-
-rTSS_SR5 <- function(alpha, delta, lambda, k) {
-  parrivalslong <- cumsum(stats::rexp(k * 1.1))
-  parrivals <- parrivalslong[parrivalslong <= k]
-  E1 <- stats::rexp(length(parrivals))
-  U <- stats::runif(length(parrivals))
-  X <- cbind((alpha * parrivals/delta)^(-1/alpha), E1^(1/2) * U^(1/alpha)/lambda)
-  return(sum(apply(X, 1, FUN = min)))
-}
-
-rTSS_SR6 <- function(alpha, delta, lambda, k) {
-  parrivalslong <- cumsum(stats::rexp(k * 1.1, 0.5))
-  parrivals <- parrivalslong[parrivalslong <= k]
-  E1 <- stats::rexp(length(parrivals))
-  U <- stats::runif(length(parrivals))
-  X <- cbind((alpha * parrivals/delta)^(-1/alpha), sqrt(2)*E1^(1/2) * U^(1/alpha)/lambda)
-  return(sum(apply(X, 1, FUN = min)))
-}
 
 #' Quantile function of the tempered stable subordinator distribution
 #'

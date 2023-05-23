@@ -560,12 +560,19 @@ getTempEstimFcts <- function(
                     with this TS.")))
       Output
     } else if (type == "KRTS") {
-      Output <- switch(method, Cgmm = {
+      Output <- switch(method, ML = {
+        list(Params = MLParametersEstim_KRTS,
+             CovarianceMat = .asymptoticVarianceEstimML_KRTS,
+             methodDes = .methodDesML_KRTS)
+      }, GMM = {
+        list(Params = GMMParametersEstim_KRTS,
+             CovarianceMat = .asymptoticVarianceEstimGMM_KRTS,
+             methodDes = getGMMmethodName_KRTS)
+      }, Cgmm = {
         list(Params = CgmmParametersEstim_KRTS,
              CovarianceMat = .asymptoticVarianceEstimCgmm_KRTS,
              methodDes = getCgmmMethodName_KRTS)
-      }, stop(paste(method, " not taken into account ! For now, only Cgmm works
-                    with this TS.")))
+      }, stop(paste(method, " not taken into account !")))
       Output
     } else if (type == "RDTS") {
       Output <- switch(method, ML = {

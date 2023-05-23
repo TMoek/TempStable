@@ -12,6 +12,10 @@
 #'   bis 1 gehen. Ausgenommen wird alpha == 1/2.}
 #'   \item{kim08}{Ansatz aus: Kim et al. 2008? Financial market models with
 #'   Levy processes and time-varying volatility.}
+#'   \item{rachev11}{ Ansatz aus: Rachev et al. 2011 Financial Models with Levy
+#'   Processes and time-varying volatility. Rechnerisch gleich wie kim08, sieht
+#'   nur etwas anders aus.
+#'   }
 #' }
 #'
 #'
@@ -21,7 +25,8 @@
 #' @param lambdap,lambdam Tempering parameter. A real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta Parameters stacked as a vector.
-#' @param functionOrigin A string. Either "kim09", or "kim08".
+#' @param functionOrigin A string. Either "kim09", "rachev11" or "kim08".
+#' Default is "kim08".
 #'
 #' @return The CF of the the modified tempered stable distribution.
 #'
@@ -34,7 +39,7 @@
 #' @export
 charMTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
                     lambdam = NULL, mu = NULL, theta = NULL,
-                    functionOrigin = "kim09") {
+                    functionOrigin = "kim08") {
   if ((missing(alpha) | missing(delta) | missing(lambdap) | missing(lambdam) |
        missing(mu)) & is.null(theta))
     stop("No or not enough parameters supplied")
@@ -52,7 +57,7 @@ charMTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
     mu <- theta[5]
   }
 
-  if (functionOrigin == "kim08"){
+  if (functionOrigin == "kim08" || functionOrigin == "rachev11"){
     stopifnot(0 < alpha, alpha < 2, 0 < delta, 0 < lambdap, 0 < lambdam)
   }
   else {
@@ -60,11 +65,26 @@ charMTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
     stopifnot(0.5 != alpha, alpha < 1, 0 < delta, 0 < lambdap, 0 < lambdam)
   }
 
-
   #Ansatz aus: Rachev et al. 2011 Financial Models with Levy Processes...
-  #Leer
+  if(functionOrigin == "rachev11"){
+    subfunctionR <- function(x, alpha, lambda){
+      2^(-(alpha+3)/2) * sqrt(pi) * gamma(-alpha/2) *
+        ((lambda^2+x^2)^(alpha/2) - lambda^alpha)
+    }
 
-  if(functionOrigin == "kim08"){
+    subfunctionI <- function(x, alpha, lambda){
+      2^(-(alpha+1)/2) * gamma((1-alpha)/2) * lambda^(alpha-1) *
+        (modifiedHyperGeoXr(1, (1 - alpha)/2, 3/2, -(x^2)/(lambdam^2)) -1)
+    }
+
+    return(exp(imagN * mu * t +
+                 delta*(subfunctionR(t,alpha,lambdap) +
+                          subfunctionR(t,alpha,lambdam)) +
+                 imagN*t*delta*(subfunctionI(t,alpha,lambdap) -
+                                  subfunctionI(t,alpha,lambdam))))
+  }
+
+  else if(functionOrigin == "kim08"){
     subfunctionR <- function(t, alpha, delta, lambdap, lambdam){
       sqrt(pi) * delta * gamma(-alpha/2) / (2^((alpha + 3) / 2))*
         ((lambdap^2 + t^2)^(alpha/2) - lambdap^alpha +
@@ -214,15 +234,65 @@ rMTS <- function(n, alpha = NULL, delta = NULL, lambdap = NULL, lambdam = NULL,
   return(x)
 }
 
-#in Work
 rMTS_SR <- function(n, alpha, delta, lambdap, lambdam, mu, k) {
-  replicate(n = n, (rTSS_SR2(alpha = alpha, delta = delta,
-                             lambda = lambdap, k = k) -
-                      rTSS_SR2(alpha = alpha, delta = delta,
-                               lambda = lambdam, k = k))
-            + (2^(-alpha-1/2)*delta*gamma((1/2)-alpha)*
-                 (lambdap^(2*alpha-1)-lambdam^(2*alpha-1)))
-            + mu)
+  replicate(n = n,rMTS_SR_Ro(alpha = alpha, delta = delta,
+                             lambdap = lambdap, lambdam = lambdam, k = k) + mu)
+}
+
+rMTS_SR_Ro <- function (alpha, delta, lambdap, lambdam, k){
+  parrivalslong <- cumsum(stats::rexp(k * 1.1))
+  parrivals <- parrivalslong[parrivalslong <=  k]
+  E1 <- stats::rexp(length(parrivals))
+  U <- stats::runif(length(parrivals))
+
+  sigma <- 2^((alpha+1)/2) * delta * gamma(alpha/2 - 1/2)
+  V <- rMTS_SR_rVj(length(parrivals), alpha, delta, lambdap, lambdam, k)
+
+  b <- -2^(-(alpha+1)/2) * delta * gamma((1-alpha)/2) *
+    (lambdap^(alpha-1)-lambdam^(alpha-1))
+
+  X <- cbind((alpha * parrivals / sigma)^(-1/alpha),
+             sqrt(2) * E1^(1/2) * U^(1/alpha)/abs(V))
+  Xreturn <- sum((apply(X, 1, FUN = min)*V/abs(V)))+b
+  return(Xreturn)
+
+}
+
+rMTS_SR_dVj <- function(x, alpha, delta, lambdap, lambdam){
+  returnVec <- NULL
+  for(xi in x){
+
+    Ip <- 0
+    Im <- 0
+
+    if (xi>0){Ip <- 1}
+    else if (xi<0){Im <- 1}
+
+    if(xi == 0){y <- 0}
+    else {
+      y <- 2^(-(alpha+1)/2)/(gamma(alpha/2-1/2)) *
+        (lambdap^(alpha+1) * exp(-(lambdap^2*xi^2)/2) * Ip +
+           lambdam^(alpha+1) * exp(-(lambdam^2*xi^2)/2) * Im )
+    }
+    returnVec <- append(returnVec,y)
+  }
+  return(returnVec)
+}
+
+rMTS_SR_rVj <- function(n, alpha, delta, lambdap, lambdam, k){
+  dX <- (20*2/k)
+  x <- seq(-20,20,dX)
+  y <- rMTS_SR_dVj(x, alpha, delta, lambdap, lambdam)
+  cumY <- cumsum(y)
+  rV <- runif(n, min(cumY), max(cumY))
+
+  returnVector <- NULL
+  for(s in rV){
+    pos <- which.min(abs(cumY - s))
+    returnVector <- append(returnVector, x[pos])
+  }
+
+  return(returnVector)
 }
 
 #### Generalized Classical Tempered Stable Distribution ####
@@ -574,7 +644,7 @@ pKRTS <- function(q, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
 }
 
 rKRTS <- function(n, alpha = NULL, kp = NULL, km = NULL, rp = NULL, rm = NULL,
-                  pp = NULL, pm = NULL, mu = NULL, theta = NULL, methodR = "TM",
+                  pp = NULL, pm = NULL, mu = NULL, theta = NULL, methodR = "SR",
                   k = 10000) {
   if ((missing(alpha) | missing(kp) | missing(km) | missing(rp) |
        missing(rm) | missing(pp) | missing(pm) | missing(mu)) & is.null(theta))
@@ -622,7 +692,7 @@ rKRTS_SR_Ro <- function(alpha, kp, km, rp, rm, pp, pm, k){
   U <- stats::runif(length(parrivals))
 
   sigma <- (kp*(rp^alpha))/(alpha+pp) + (km*(rm^alpha))/(alpha+pm)
-  V <- rKRTS_SR_rVj(length(parrivals), sigma, alpha, kp, km, rp, rm, pp, pm)
+  V <- rKRTS_SR_rVj(length(parrivals), sigma, alpha, kp, km, rp, rm, pp, pm, k)
 
   x0 <- sigma^(-1) * ((kp*(rp^alpha))/(alpha+pp) - (km*(rm^alpha))/(alpha+pm))
   x1 <- (kp*rp)/(pp+1) - (km*rm)/(pm+1)
@@ -658,8 +728,9 @@ rKRTS_SR_dVj <- function(x, sigma, alpha, kp, km, rp, rm, pp, pm){
   return(returnVec)
 }
 
-rKRTS_SR_rVj <- function(n, sigma, alpha, kp, km, rp, rm, pp, pm){
-  x <- seq(-40,40,0.01)
+rKRTS_SR_rVj <- function(n, sigma, alpha, kp, km, rp, rm, pp, pm, k){
+  dX <- (20*2/k)
+  x <- seq(-20,20,dX)
   y <- rKRTS_SR_dVj(x, sigma, alpha, kp, km, rp, rm, pp, pm)
   cumY <- cumsum(y)
   rV <- runif(n, min(cumY), max(cumY))
@@ -672,9 +743,6 @@ rKRTS_SR_rVj <- function(n, sigma, alpha, kp, km, rp, rm, pp, pm){
 
   return(returnVector)
 }
-
-
-
 
 
 #### Rapidly Decreasing Tempered Stable Distribution ####
