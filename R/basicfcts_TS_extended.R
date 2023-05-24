@@ -3,7 +3,13 @@
 
 #' Characteristic function of the modified tempered stable distribution
 #'
-#' gapholder
+#' Theoretical characteristic function (CF) of the modified tempered stable
+#' distribution. Since the parameterisation can be different for this
+#' characteristic function in different approaches, the respective approach can
+#' be selected with [functionOrigin]. For the estimation function
+#' [TemperedEstim] and therefore also the Monte Carlo function
+#' [TemperedEstim_Simulation] and the calculation of the density function
+#' [dMTS], however, only the approach of Kim et al. (2008) or rachev11 can be selected. If you want to use the approach of kim09 for these functions, you have to clone the package from GitHub and adapt the functions accordingly.
 #'
 #' \strong{Origin of functions}
 #' \describe{
@@ -31,7 +37,9 @@
 #' @return The CF of the the modified tempered stable distribution.
 #'
 #' @references
-#' gapholder
+#' Kim, Y. s.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
+#' market models with lévy processes and time-varying volatility'
+#' \doi{10.1016/j.jbankfin.2007.11.004}
 #'
 #' @examples
 #' gapholder
@@ -565,7 +573,7 @@ charKRTS <- function(t, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
 # yKRTS <- dKRTS(xKRTS, alpha,kp,km,rp,rm,pp,pm,mu)
 dKRTS <- function(x, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
                   rm = NULL, pp = NULL, pm = NULL, mu = NULL, theta = NULL,
-                  dens_method = "FFT", a = -20, b = 20, nf = 128){
+                  dens_method = "FFT", a = -20, b = 20, nf = 256){
   if ((missing(alpha) | missing(kp) | missing(km) | missing(rp) |
        missing(rm) | missing(pp) | missing(pm) | missing(mu)) & is.null(theta))
     stop("No or not enough parameters supplied")
@@ -822,7 +830,8 @@ charRDTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
                                              lambdam)))
     }
 
-    if (is.nan(nextG) || is.null(nextG) || is.infinite(Re(nextG)) || is.infinite(Im(nextG))){
+    if (is.nan(nextG) || is.null(nextG) || is.infinite(Re(nextG)) ||
+        is.infinite(Im(nextG))){
       nextG <- 0 + 0i
     }
 
@@ -833,13 +842,10 @@ charRDTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
       avLast2Re <- mean(c(Re(g),Re(returnVec[length(returnVec)]), Re(nextG)))
       #avLast2Im <- mean(c(Im(g),Im(returnVec[length(returnVec)]), Im(nextG)))
 
+      # Only real numbers must be checked as all errors can be catched with it.
       if (Re(g) != 0 && (avLast2Re/Re(g) < 0.75 || avLast2Re/Re(g) > 1.5)){
         returnVec <- append(returnVec,0 + 0i)
       }
-      # Useless, as all errors can be catched with the real number check
-      # else if (Im(g) != 0 && (avLast2Im/Im(g) < 0.75 || avLast2Im/Im(g) > 1.5)){
-      #   returnVec <- append(returnVec,0 + 0i)
-      # }
       else returnVec <- append(returnVec, g)
     }
     else returnVec <- append(returnVec, g)

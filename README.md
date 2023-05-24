@@ -17,15 +17,15 @@ simulations.
 
 The main function of this package are briefly described below:
 
--   Main function: TemperedEstim() computes all the information about
-    the estimator. It allows the user to choose the preferred method and
-    several related options.
--   Characteristic function, density function, probability function and
-    other functions for every tempered stable distribution mentioned
-    above. E.g. charTSS(), dCTS(), …
--   Monte Carlo simulation: a tool to run a Monte Carlo simulation
-    (TemperedEstim_Simulation()) is provided and can save output files
-    or produce statistical summary.
+- Main function: TemperedEstim() computes all the information about the
+  estimator. It allows the user to choose the preferred method and
+  several related options.
+- Characteristic function, density function, probability function and
+  other functions for every tempered stable distribution mentioned
+  above. E.g. charTSS(), dCTS(), …
+- Monte Carlo simulation: a tool to run a Monte Carlo simulation
+  (TemperedEstim_Simulation()) is provided and can save output files or
+  produce statistical summary.
 
 The package was developed by Till Massing and Cedric Jüssen and is
 structurally based on the “StableEstim” package by Tarak Kharrat and
@@ -34,6 +34,9 @@ Georgi N. Boshnakov.
 <!-- End of my description -->
 
 ## Installation
+
+Since we use the package “copula” and this uses C code, it may be that
+this package has to be installed manually beforehand.
 
 TempStable is now available on CRAN! In R-Studio the package can be
 installed directly with the following command:
@@ -70,25 +73,25 @@ res_CTS_ML_size10 <- TemperedEstim_Simulation(ParameterMatrix = rbind(thetaT),
                                                TemperedType = "CTS", Estimfct = "ML",
                                                saveOutput = FALSE)
 #> ---------------- Alpha=1.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- 
-#> *** Iter 1/10 *** Estimated Remaining Time: 0h1min26sec. *** 
-#> *** Iter 2/10 *** Estimated Remaining Time: 0h1min26sec. *** 
-#> *** Iter 3/10 *** Estimated Remaining Time: 0h2min55sec. *** 
-#> *** Iter 4/10 *** Estimated Remaining Time: 0h2min11sec. ***
+#> *** Iter 1/10 *** Estimated Remaining Time: 0h1min13sec. *** 
+#> *** Iter 2/10 *** Estimated Remaining Time: 0h1min12sec. *** 
+#> *** Iter 3/10 *** Estimated Remaining Time: 0h2min21sec. *** 
+#> *** Iter 4/10 *** Estimated Remaining Time: 0h1min45sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
 
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 5/10 *** Estimated Remaining Time: 0h0min33sec. ***
+#> *** Iter 5/10 *** Estimated Remaining Time: 0h0min26sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 6/10 *** Estimated Remaining Time: 0h0min21sec. *** 
-#> *** Iter 7/10 *** Estimated Remaining Time: 0h0min36sec. ***
+#> *** Iter 6/10 *** Estimated Remaining Time: 0h0min16sec. *** 
+#> *** Iter 7/10 *** Estimated Remaining Time: 0h0min30sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 8/10 *** Estimated Remaining Time: 0h0min11sec. ***
+#> *** Iter 8/10 *** Estimated Remaining Time: 0h0min9sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 9/10 *** Estimated Remaining Time: 0h0min6sec. ***
+#> *** Iter 9/10 *** Estimated Remaining Time: 0h0min4sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
 #> *** Iter 10/10 *** Estimated Remaining Time: 0h0min0sec. ***
 
 colMeans(sweep(res_CTS_ML_size10$outputMat[,9:14],2,thetaT), na.rm = TRUE)
 #>     alphaE    delta+E    delta-E   lambda+E   lambda-E        muE 
-#> -1.3042931  2.6728718  3.5903143  1.2565115  1.5549486  0.4091366
+#> -1.3042931  2.6728708  3.5903234  1.2565026  1.5549668  0.4091464
 ```

@@ -45,6 +45,8 @@ based on the "StableEstim" package by Tarak Kharrat and Georgi N. Boshnakov.
 
 
 ## Installation
+Since we use the package "copula" and this uses C code, it may be that this 
+package has to be installed manually beforehand.
 
 TempStable is now available on CRAN! In R-Studio the package can be installed 
 directly with the following command:
