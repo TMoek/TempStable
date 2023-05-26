@@ -253,20 +253,20 @@ rMTS_SR_Ro <- function (alpha, delta, lambdap, lambdam, k){
   E1 <- stats::rexp(length(parrivals))
   U <- stats::runif(length(parrivals))
 
-  sigma <- 2^((alpha+1)/2) * delta * gamma(alpha/2 - 1/2)
-  V <- rMTS_SR_rVj(length(parrivals), alpha, delta, lambdap, lambdam, k)
-
+  #Im Vergleich zu Rachev11 sind in sigma und damit auch in V + und - vertauscht.
+  # Der rest ist gleich
+  sigma <- 2^((alpha-1)/2) * delta * gamma(alpha/2+1/2)
+  V <- rMTS_SR_rVj(length(parrivals), sigma, alpha, delta, lambdap, lambdam, k)
   b <- -2^(-(alpha+1)/2) * delta * gamma((1-alpha)/2) *
     (lambdap^(alpha-1)-lambdam^(alpha-1))
-
   X <- cbind((alpha * parrivals / sigma)^(-1/alpha),
              sqrt(2) * E1^(1/2) * U^(1/alpha)/abs(V))
   Xreturn <- sum((apply(X, 1, FUN = min)*V/abs(V)))+b
-  return(Xreturn)
 
+  return(Xreturn)
 }
 
-rMTS_SR_dVj <- function(x, alpha, delta, lambdap, lambdam){
+rMTS_SR_dVj <- function(x, sigma, alpha, delta, lambdap, lambdam){
   returnVec <- NULL
   for(xi in x){
 
@@ -278,7 +278,7 @@ rMTS_SR_dVj <- function(x, alpha, delta, lambdap, lambdam){
 
     if(xi == 0){y <- 0}
     else {
-      y <- 2^(-(alpha+1)/2)/(gamma(alpha/2-1/2)) *
+      y <- delta / sigma *
         (lambdap^(alpha+1) * exp(-(lambdap^2*xi^2)/2) * Ip +
            lambdam^(alpha+1) * exp(-(lambdam^2*xi^2)/2) * Im )
     }
@@ -287,10 +287,10 @@ rMTS_SR_dVj <- function(x, alpha, delta, lambdap, lambdam){
   return(returnVec)
 }
 
-rMTS_SR_rVj <- function(n, alpha, delta, lambdap, lambdam, k){
+rMTS_SR_rVj <- function(n, sigma, alpha, delta, lambdap, lambdam, k){
   dX <- (20*2/k)
   x <- seq(-20,20,dX)
-  y <- rMTS_SR_dVj(x, alpha, delta, lambdap, lambdam)
+  y <- rMTS_SR_dVj(x, sigma, alpha, delta, lambdap, lambdam)
   cumY <- cumsum(y)
   rV <- runif(n, min(cumY), max(cumY))
 
