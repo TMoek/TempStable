@@ -355,20 +355,20 @@ ComputeObjective_KRTS <-
 
 
 ##### Sample ECF related functions#####
-sampleRealCFMoment_KRTS <- function(x, t, theta) {
-  ComplexRes <- sampleComplexCFMoment_KRTS(x, t, theta)
+sampleRealCFMoment_KRTS <- function(x, t, theta, ...) {
+  ComplexRes <- sampleComplexCFMoment_KRTS(x, t, theta, ...)
   return(c(Re(ComplexRes), Im(ComplexRes)))
 }
 
-sampleComplexCFMoment_KRTS <- function(x, t, theta) {
+sampleComplexCFMoment_KRTS <- function(x, t, theta, ...) {
   ecf <- function(tt)
     mean(exp(complex(imaginary = tt * x)))
   phiXn <- sapply(t, ecf)
-  phiTheta <- ComplexCF_KRTS(t, theta)
+  phiTheta <- ComplexCF_KRTS(t, theta, ...)
   return(phiXn - phiTheta)
 }
 
-ComplexCF_KRTS <- function(t, theta) {
+ComplexCF_KRTS <- function(t, theta, ...) {
   alpha <- theta[1]
   kp <- theta[2]
   km <- theta[3]
@@ -377,7 +377,7 @@ ComplexCF_KRTS <- function(t, theta) {
   pp <- theta[6]
   pm <- theta[7]
   mu <- theta[8]
-  CheckParametersRange_KRTS(c(alpha, kp, km, rp, rm, pp, pm, mu))
+  CheckParametersRange_KRTS(c(alpha, kp, km, rp, rm, pp, pm, mu), ...)
   charKRTS(t, alpha, kp, km, rp, rm, pp, pm, mu)
 }
 
@@ -390,10 +390,10 @@ ComputeWeightingMatrix_KRTS <-
     switch(
       WeightingMatrix,
       OptAsym = {
-        K <- asymVarRealCFMoment_KRTS(t = t, theta = theta)
+        K <- asymVarRealCFMoment_KRTS(t = t, theta = theta, ...)
       },
       DataVar = {
-        K <- DataVarRealCFMoment_KRTS(t = t, theta = theta, x = x)
+        K <- DataVarRealCFMoment_KRTS(t = t, theta = theta, x = x, ...)
       },
       Id = {
         K <- diag(nrow = 2 * length(t), ncol = 2 * length(t))
@@ -409,14 +409,14 @@ ComputeWeightingMatrix_KRTS <-
     K
   }
 
-asymVarRealCFMoment_KRTS <- function(t, theta) {
+asymVarRealCFMoment_KRTS <- function(t, theta, ...) {
   m <- length(t)
   res <- matrix(0, ncol = 2 * m, nrow = 2 * m)
   tiPlustj <- crossSum(t, t)
   tiMenostj <- crossSum(t,-t)
-  phi <- ComplexCF_KRTS(t, theta)
-  phi_tiPlus_tj <- sapply(tiPlustj, ComplexCF_KRTS, theta)
-  phi_tiMenos_tj <- sapply(tiMenostj, ComplexCF_KRTS, theta)
+  phi <- ComplexCF_KRTS(t, theta, ...)
+  phi_tiPlus_tj <- sapply(tiPlustj, ComplexCF_KRTS, theta, ...)
+  phi_tiMenos_tj <- sapply(tiMenostj, ComplexCF_KRTS, theta, ...)
   res[1:m, 1:m] <-
     (0.5 * (Re(phi_tiPlus_tj) + Re(phi_tiMenos_tj)) - Re(phi) %*% t(Re(phi)))
   res[1:m, (m + 1):(2 * m)] <-
@@ -435,12 +435,12 @@ DataVarRealCFMoment_KRTS <- function(t, theta, x) {
   stats::var(gt)
 }
 
-DataMatrixRealCFMomentCondition_KRTS <- function(t, theta, x) {
+DataMatrixRealCFMomentCondition_KRTS <- function(t, theta, x, ...) {
   x <- matrix(c(x), ncol = 1)
   x_comp <- x %*% matrix(t, nrow = 1)
   x_comp <- matrix(complex(imaginary = x_comp), ncol = length(t))
   emp_car <- exp(x_comp)
-  the_car <- ComplexCF_KRTS(t, theta)
+  the_car <- ComplexCF_KRTS(t, theta, ...)
   gt <- t(t(emp_car) - the_car)
   gt <- cbind(Re(gt), Im(gt))
   return(gt)
@@ -824,19 +824,19 @@ GMMasymptoticVarianceEstim_KRTS <-
     crossprod(B, invKcrossB)
   }
 
-jacobianSampleRealCFMoment_KRTS <- function(t, theta) {
-  jac <- jacobianSampleComplexCFMoment_KRTS(t, theta)
+jacobianSampleRealCFMoment_KRTS <- function(t, theta, ...) {
+  jac <- jacobianSampleComplexCFMoment_KRTS(t, theta, ...)
   apply(jac, 2, function(x)
     c(Re(x), Im(x)))
 }
 
-jacobianSampleComplexCFMoment_KRTS <- function(t, theta) {
-  -jacobianComplexCF_KRTS(t, theta)
+jacobianSampleComplexCFMoment_KRTS <- function(t, theta, ...) {
+  -jacobianComplexCF_KRTS(t, theta, ...)
 }
 
-jacobianComplexCF_KRTS <- function(t, theta) {
+jacobianComplexCF_KRTS <- function(t, theta, ...) {
   ComplexCFtoDeriv <- function(th)
-    ComplexCF_KRTS(t, th)
+    ComplexCF_KRTS(t, th, ...)
   NumDeriv_jacobian_KRTS(ComplexCFtoDeriv, theta)
 }
 

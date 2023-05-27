@@ -89,7 +89,12 @@ Compute2SCgmmParametersEstim_KRTS <- function(x, theta0, alphaReg, eps, s_min,
                                       IntegrationMethod = IntegrationMethod,
                                       randomIntegrationLaw =
                                         randomIntegrationLaw,
-                                      subdivisions = subdivisions, ...,
+                                      subdivisions = subdivisions,
+                                      alpha = theta0[1], kp = theta0[2],
+                                      km = theta0[3], rp = theta0[4],
+                                      rm = theta0[5], pp = theta0[6],
+                                      pm = theta0[7], mu = theta0[8],
+                                       ... = ...,
                                       control = control,
                                       lower = c(eps, eps, eps, eps, eps,
                                                 -theta0[1] -eps,
@@ -107,7 +112,12 @@ Compute2SCgmmParametersEstim_KRTS <- function(x, theta0, alphaReg, eps, s_min,
                                       IntegrationMethod = IntegrationMethod,
                                       randomIntegrationLaw =
                                         randomIntegrationLaw,
-                                      subdivisions = subdivisions, ...,
+                                      subdivisions = subdivisions,
+                                      alpha = theta0[1], kp = theta0[2],
+                                      km = theta0[3], rp = theta0[4],
+                                      rm = theta0[5], pp = theta0[6],
+                                      pm = theta0[7], mu = theta0[8],
+                                      ... = ...,
                                       lower = c(eps, eps, eps, eps, eps,
                                                 -theta0[1] -eps,
                                                 -theta0[1] -eps, -Inf),
@@ -118,7 +128,7 @@ Compute2SCgmmParametersEstim_KRTS <- function(x, theta0, alphaReg, eps, s_min,
                             s_max = s_max,
                             IntegrationMethod = IntegrationMethod,
                             randomIntegrationLaw = randomIntegrationLaw,
-                            subdivisions = subdivisions)
+                            subdivisions = subdivisions, alpha0 = theta0[1], ...)
     if (is.null(dots$control)) {
         control <- list(abs.tol = 1e-15, rel.tol = 1e-07, x.tol = 1.5e-05,
                         xf.tol = 2.2e-10)
@@ -127,7 +137,12 @@ Compute2SCgmmParametersEstim_KRTS <- function(x, theta0, alphaReg, eps, s_min,
                       alphaReg = alphaReg, thetaHat = thetaHat, s_min = s_min,
                       s_max = s_max, IntegrationMethod = IntegrationMethod,
                       randomIntegrationLaw = randomIntegrationLaw,
-                      subdivisions = subdivisions, ..., control = control,
+                      subdivisions = subdivisions,
+                      alpha = theta0[1], kp = theta0[2],
+                      km = theta0[3], rp = theta0[4],
+                      rm = theta0[5], pp = theta0[6],
+                      pm = theta0[7], mu = theta0[8], ... = ...,
+                      control = control,
                       lower = c(eps, eps, eps, eps, eps,
                                 -theta0[1] -eps, -theta0[1] -eps, -Inf),
                       upper = c(2 - eps, Inf, Inf, Inf, Inf, Inf, Inf, Inf))
@@ -137,7 +152,11 @@ Compute2SCgmmParametersEstim_KRTS <- function(x, theta0, alphaReg, eps, s_min,
                       alphaReg = alphaReg, thetaHat = thetaHat, s_min = s_min,
                       s_max = s_max, IntegrationMethod = IntegrationMethod,
                       randomIntegrationLaw = randomIntegrationLaw,
-                      subdivisions = subdivisions, ...,
+                      subdivisions = subdivisions,
+                      alpha = theta0[1], kp = theta0[2],
+                      km = theta0[3], rp = theta0[4],
+                      rm = theta0[5], pp = theta0[6],
+                      pm = theta0[7], mu = theta0[8], ... = ...,
                       lower = c(eps, eps, eps, eps, eps,
                                 -theta0[1] -eps, -theta0[1] -eps, -Inf),
                       upper = c(2 - eps, Inf, Inf, Inf, Inf, Inf, Inf, Inf))
@@ -158,7 +177,12 @@ ComputeITCgmmParametersEstim_KRTS <- function(x, theta0, alphaReg, eps,
                                 thetaHat = NULL, s_min = s_min, s_max = s_max,
                                 IntegrationMethod = IntegrationMethod,
                                 randomIntegrationLaw = randomIntegrationLaw,
-                                subdivisions = subdivisions, ...,
+                                subdivisions = subdivisions,
+                                alpha = theta0[1], kp = theta0[2],
+                                km = theta0[3], rp = theta0[4],
+                                rm = theta0[5], pp = theta0[6],
+                                pm = theta0[7], mu = theta0[8],
+                                ... = ...,
                                 lower = c(eps, eps, eps, eps, eps,
                                           -theta0[1] -eps, -theta0[1] -eps,
                                           -Inf),
@@ -183,7 +207,7 @@ ComputeITCgmmParametersEstim_KRTS <- function(x, theta0, alphaReg, eps,
                                 s_min = s_min, s_max = s_max,
                                 IntegrationMethod = IntegrationMethod,
                                 randomIntegrationLaw = randomIntegrationLaw,
-                                subdivisions = subdivisions)
+                                subdivisions = subdivisions, ...)
         dots <- list(...)
         if (is.null(dots$control)) {
             control <- list(abs.tol = 1e-15, rel.tol = 1e-07, x.tol = 1.5e-05,
@@ -197,7 +221,12 @@ ComputeITCgmmParametersEstim_KRTS <- function(x, theta0, alphaReg, eps,
                                           IntegrationMethod = IntegrationMethod,
                                           randomIntegrationLaw =
                                             randomIntegrationLaw,
-                                          subdivisions = subdivisions, ...,
+                                          subdivisions = subdivisions,
+                                          alpha = theta0[1], kp = theta0[2],
+                                          km = theta0[3], rp = theta0[4],
+                                          rm = theta0[5], pp = theta0[6],
+                                          pm = theta0[7], mu = theta0[8],
+                                          ... = ...,
                                           control = control,
                                           lower = c(eps, eps, eps, eps, eps,
                                                     -theta0[1] -eps,
@@ -214,7 +243,12 @@ ComputeITCgmmParametersEstim_KRTS <- function(x, theta0, alphaReg, eps,
                                           IntegrationMethod = IntegrationMethod,
                                           randomIntegrationLaw =
                                             randomIntegrationLaw,
-                                          subdivisions = subdivisions, ...,
+                                          subdivisions = subdivisions,
+                                          alpha = theta0[1], kp = theta0[2],
+                                          km = theta0[3], rp = theta0[4],
+                                          rm = theta0[5], pp = theta0[6],
+                                          pm = theta0[7], mu = theta0[8],
+                                          ... = ...,
                                           lower = c(eps, eps, eps, eps, eps,
                                                     -theta0[1] -eps,
                                                     -theta0[1] -eps, -Inf),
@@ -244,7 +278,12 @@ ComputeCueCgmmParametersEstim_KRTS <- function(x, theta0, alphaReg, eps, s_min,
                                 thetaHat = NULL, s_min = s_min, s_max = s_max,
                                 IntegrationMethod = IntegrationMethod,
                                 randomIntegrationLaw = randomIntegrationLaw,
-                                subdivisions = subdivisions, ...,
+                                subdivisions = subdivisions,
+                                alpha = theta0[1], kp = theta0[2],
+                                km = theta0[3], rp = theta0[4],
+                                rm = theta0[5], pp = theta0[6],
+                                pm = theta0[7], mu = theta0[8],
+                                ... = ...,
                                 lower = c(eps, eps, eps, eps, eps,
                                           -theta0[1] -eps, -theta0[1] -eps,
                                           -Inf),
@@ -278,7 +317,12 @@ ComputeCueCgmmParametersEstim_KRTS <- function(x, theta0, alphaReg, eps, s_min,
                                           IntegrationMethod = IntegrationMethod,
                                           randomIntegrationLaw =
                                             randomIntegrationLaw,
-                                          subdivisions = subdivisions, ...,
+                                          subdivisions = subdivisions,
+                                          alpha = theta0[1], kp = theta0[2],
+                                          km = theta0[3], rp = theta0[4],
+                                          rm = theta0[5], pp = theta0[6],
+                                          pm = theta0[7], mu = theta0[8],
+                                          ... = ...,
                                           control = control,
                                           lower = c(eps, eps, eps, eps, eps,
                                                     -theta0[1] -eps,
@@ -296,7 +340,12 @@ ComputeCueCgmmParametersEstim_KRTS <- function(x, theta0, alphaReg, eps, s_min,
                                           IntegrationMethod = IntegrationMethod,
                                           randomIntegrationLaw =
                                             randomIntegrationLaw,
-                                          subdivisions = subdivisions, ...,
+                                          subdivisions = subdivisions,
+                                          alpha = theta0[1], kp = theta0[2],
+                                          km = theta0[3], rp = theta0[4],
+                                          rm = theta0[5], pp = theta0[6],
+                                          pm = theta0[7], mu = theta0[8],
+                                          ...=...,
                                           lower = c(eps, eps, eps, eps, eps,
                                                     -theta0[1] -eps,
                                                     -theta0[1] -eps,
@@ -322,7 +371,16 @@ ComputeObjectiveCgmm_KRTS <- function(theta, Cmat = NULL, x,
                                      IntegrationMethod =
                                        c("Uniform", "Simpson"),
                                      randomIntegrationLaw = c("norm", "unif"),
+                                     alpha, kp, km, rp, rm, pp, pm, mu,
                                      ...) {
+    # alpha0 <- match.arg(alpha)
+    # kp0 <- match.arg(kp)
+    # km0 <- match.arg(km)
+    # rp0 <- match.arg(rp)
+    # rm0 <- match.arg(rm)
+    # pp0 <- match.arg(pp)
+    # pm0 <- match.arg(pm)
+    # mu0 <- match.arg(mu)
     n <- length(x)
     IntegrationMethod <- match.arg(IntegrationMethod)
     randomIntegrationLaw <- match.arg(randomIntegrationLaw)
@@ -336,7 +394,8 @@ ComputeObjectiveCgmm_KRTS <- function(theta, Cmat = NULL, x,
                                         subdivisions = subdivisions,
                                         IntegrationMethod = IntegrationMethod,
                                         randomIntegrationLaw =
-                                          randomIntegrationLaw, ...)
+                                          randomIntegrationLaw, alpha0 = alpha,
+                                        ...)
     as.numeric(Mod(ObjectiveVal))
 }
 
@@ -346,16 +405,17 @@ ComputeCgmmFcts_KRTS <- function(Fct = c("Objective", "Covariance"), theta,
                                 alphaReg, thetaHat, s_min, s_max,
                                 subdivisions = 50,
                                 IntegrationMethod = c("Uniform", "Simpson"),
-                                randomIntegrationLaw = c("norm", "unif"), ...) {
+                                randomIntegrationLaw = c("norm", "unif"),
+                                alpha0, ...) {
     n <- length(x)
     Fct <- match.arg(Fct)
     IntegrationMethod <- match.arg(IntegrationMethod)
     randomIntegrationLaw <- match.arg(randomIntegrationLaw)
     Weighting <- match.arg(Weighting)
-    ghatBarFctOft <- function(t_var, X){
-      Conj(sampleComplexCFMoment_KRTS(x = X, t = t_var, theta = theta))
+    ghatBarFctOft <- function(t_var, X, ...){
+      Conj(sampleComplexCFMoment_KRTS(x = X, t = t_var, theta = theta, ...))
     }
-    ghatFctOft <- function(t_var, X) Conj(ghatBarFctOft(t_var, X))
+    ghatFctOft <- function(t_var, X, ...) Conj(ghatBarFctOft(t_var, X, ...))
     if (Weighting == "Id") {
         ObjectiveVal <- StableEstim::IntegrateRandomVectorsProduct(
           f_fct = ghatFctOft, X = x, g_fct = ghatBarFctOft, Y = x,
@@ -388,15 +448,15 @@ ComputeV_KRTS <- function(Fct = c("Objective", "Covariance"), theta, thetaHat, X
                          s_min, s_max, IntegrationMethod, randomIntegrationLaw,
                          subdivisions, ...) {
     Fct <- match.arg(Fct)
-    g_hat_fct <- function(s, x) {
-        sampleComplexCFMoment_KRTS(x = x, t = s, theta = theta)
+    g_hat_fct <- function(s, x, ...) {
+        sampleComplexCFMoment_KRTS(x = x, t = s, theta = theta, ...)
     }
     g_bar_fct <- function(s, x) {
         Conj(sapply(X = x, FUN = sampleComplexCFMoment_KRTS, t = s,
-                    theta = thetaHat))
+                    theta = thetaHat, ...))
     }
     Jac_g_hat_fct <- function(s, x) {
-        jacobianSampleComplexCFMoment_KRTS(t = s, theta = theta)
+        jacobianSampleComplexCFMoment_KRTS(t = s, theta = theta, ...)
     }
     if (Fct == "Covariance") {
       res <-
@@ -436,12 +496,13 @@ ComputeV_KRTS <- function(Fct = c("Objective", "Covariance"), theta, thetaHat, X
 
 #' @import StableEstim
 ComputeCmat_KRTS <- function(x, thetaHat, s_min, s_max, IntegrationMethod,
-                            randomIntegrationLaw, subdivisions, ...) {
-    f_fct <- function(s, x) {
-        sapply(X = x, FUN = sampleComplexCFMoment_KRTS, t = s, theta = thetaHat)
+                            randomIntegrationLaw, subdivisions, alpha0, ...) {
+    f_fct <- function(s, x, ...) {
+        sapply(X = x, FUN = sampleComplexCFMoment_KRTS, t = s, theta = thetaHat,
+               ...)
     }
-    f_bar_fct <- function(s, x) {
-        Conj(f_fct(s, x))
+    f_bar_fct <- function(s, x, ...) {
+        Conj(f_fct(s, x, ...))
     }
     StableEstim::IntegrateRandomVectorsProduct(f_fct = f_bar_fct, X = x,
                                                g_fct = f_fct, Y = x,
