@@ -113,7 +113,8 @@ ComputeITGMCParametersEstim_GTS <- function(x, ncond, theta0, alphaReg,
             (RelativeErr[3] > RelativeErrMaxArray[3]) ||
             (RelativeErr[4] > RelativeErrMaxArray[4]) ||
             (RelativeErr[5] > RelativeErrMaxArray[5]) ||
-            (RelativeErr[6] > RelativeErrMaxArray[6])
+            (RelativeErr[6] > RelativeErrMaxArray[6]) ||
+            (RelativeErr[7] > RelativeErrMaxArray[7])
            )) {
         ProvidedWeightingMatrix <-
           ComputeGMCWeightingMatrix_GTS(theta = PrevEstimParVal, x = x,
@@ -163,7 +164,8 @@ ComputeCueGMCParametersEstim_GTS <-
             (RelativeErr[3] > RelativeErrMaxArray[3]) ||
             (RelativeErr[4] > RelativeErrMaxArray[4]) ||
             (RelativeErr[5] > RelativeErrMaxArray[5]) ||
-            (RelativeErr[6] > RelativeErrMaxArray[6])
+            (RelativeErr[6] > RelativeErrMaxArray[6]) ||
+            (RelativeErr[7] > RelativeErrMaxArray[7])
            )) {
       AllCurrentEstim <-
         ComputeCurrentGMC_GTS(
@@ -210,9 +212,9 @@ ComputeCurrentGMC_GTS <-
         WeightingMatrix = WeightingMatrix,
         eps = eps,
         ...,
-        lower = c(eps,
+        lower = c(eps, eps,
                   eps, eps, eps, eps,-Inf),
-        upper = c(2 - eps, Inf, Inf, Inf, Inf, Inf)
+        upper = c(2 - eps, 2 - eps, Inf, Inf, Inf, Inf, Inf)
       )
     list(OptInfo = optOutput)
   }
@@ -263,13 +265,15 @@ empiricalCumulants_GTS <- function(x, ncond) {
 }
 
 theoreticalCumulants_GTS <- function(ncond, theta) {
-  alpha <- theta[1]
-  deltap <- theta[2]
-  deltam <- theta[3]
-  lambdap <- theta[4]
-  lambdam <- theta[5]
-  mu <- theta[6]
-  CheckParametersRange_GTS(c(alpha, deltap, deltam, lambdap, lambdam, mu))
+  alphap <- theta[1]
+  alpham <- theta[2]
+  deltap <- theta[3]
+  deltam <- theta[4]
+  lambdap <- theta[5]
+  lambdam <- theta[6]
+  mu <- theta[7]
+  CheckParametersRange_GTS(c(alphap, alpham, deltap, deltam, lambdap, lambdam,
+                             mu))
   theoretical <- numeric(ncond)
   X <- 1:ncond
   theoretical <-
@@ -279,10 +283,10 @@ theoreticalCumulants_GTS <- function(ncond, theta) {
 
 jththeoreticalCumulant_GTS <- function(j, theta) {
   ifelse(j == 1,
-         theta[6],
-         gamma(j - theta[1]) *
-           (theta[2] / theta[4] ^ (j - theta[1]) +
-              (-1) ^ j * theta[3] / theta[5] ^ (j - theta[1])))
+         theta[7],
+         gamma(j - theta[1]) * theta[3] / theta[5] ^ (j - theta[1]) +
+           (-1) ^ j * gamma(j - theta[2]) * theta[4] /
+           theta[6] ^ (j - theta[2]))
 }
 
 

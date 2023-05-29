@@ -8,16 +8,15 @@ CumFinder_MTS <- function(x, jmax = 5) {
 MoCObjective_MTS <- function(x, parms) {
 
   c(F1 = x[5] + 2^(1-(x[1]+3)/2)*factorial((1-1)/2)*x[2]*gamma((1-x[1])/2)*
-      (x[3]^(x[1]-1) - x[4]^(x[1]-1)),
+      (x[3]^(x[1]-1) - x[4]^(x[1]-1)) - parms[1],
     F2 = 2^(-(x[1]+3)/2)*sqrt(pi)*factorial(2)/factorial(2/2)*x[2]*
-      gamma(2-x[1]/2)*(x[3]^(x[1]-2) - x[4]^(x[1]-2)),
+      gamma(2-x[1]/2)*(x[3]^(x[1]-2) - x[4]^(x[1]-2)) - parms[2],
     F3 = 2^(3-(x[1]+3)/2)*factorial((3-1)/2)*x[2]*gamma((3-x[1])/2)*
-      (x[3]^(x[1]-3) - x[4]^(x[1]-3)),
+      (x[3]^(x[1]-3) - x[4]^(x[1]-3)) - parms[3],
     F4 = 2^(-(x[1]+3)/2)*sqrt(pi)*factorial(4)/factorial(4/2)*x[2]*
-      gamma(4-x[1]/2)*(x[3]^(x[1]-4) - x[4]^(x[1]-4)),
+      gamma(4-x[1]/2)*(x[3]^(x[1]-4) - x[4]^(x[1]-4)) - parms[4],
     F5 = 2^(5-(x[1]+3)/2)*factorial((5-1)/2)*x[2]*gamma((5-x[1])/2)*
-      (x[3]^(x[1]-5) - x[4]^(x[1]-5))
-
+      (x[3]^(x[1]-5) - x[4]^(x[1]-5)) - parms[5]
   )
 }
 

@@ -279,8 +279,8 @@ rMTS_SR_dVj <- function(x, sigma, alpha, delta, lambdap, lambdam){
     if(xi == 0){y <- 0}
     else {
       y <- delta / sigma *
-        (lambdap^(alpha+1) * exp(-(lambdap^2*xi^2)/2) * Ip +
-           lambdam^(alpha+1) * exp(-(lambdam^2*xi^2)/2) * Im )
+        (lambdap^(alpha-1) * exp(-(lambdap^2*xi^2)/2) * Ip +
+           lambdam^(alpha-1) * exp(-(lambdam^2*xi^2)/2) * Im )
     }
     returnVec <- append(returnVec,y)
   }
@@ -289,7 +289,7 @@ rMTS_SR_dVj <- function(x, sigma, alpha, delta, lambdap, lambdam){
 
 rMTS_SR_rVj <- function(n, sigma, alpha, delta, lambdap, lambdam, k){
   dX <- (20*2/k)
-  x <- seq(-20,20,dX)
+  x <- seq(-5,5,dX)
   y <- rMTS_SR_dVj(x, sigma, alpha, delta, lambdap, lambdam)
   cumY <- cumsum(y)
   rV <- runif(n, min(cumY), max(cumY))
@@ -536,8 +536,9 @@ charKRTS <- function(t, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
     pm <- theta[7]
     mu <- theta[8]
   }
+  #TODO: pm > alpha kann aus CGMM Gründen nicht verwendet werden
   stopifnot(0 < alpha, alpha < 2, alpha != 1,  0 < kp, 0 < km, 0 < rp,
-            0 < rm, pp > -alpha, pp != -1, pp != 0, pm > -alpha, pm != -1,
+            0 < rm, pp > -0.5, pp != -1, pp != 0, pm > -0.5, pm != -1,
             pm != 0)
 
   # Ansatz 1: Rachev et al. 2011 S.74

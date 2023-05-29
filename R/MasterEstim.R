@@ -558,12 +558,23 @@ getTempEstimFcts <- function(
                     with this TS.")))
       Output
     } else if (type == "GTS") {
-      Output <- switch(method, Cgmm = {
+      Output <- switch(method, ML = {
+        list(Params = MLParametersEstim_GTS,
+             CovarianceMat = .asymptoticVarianceEstimML_GTS,
+             methodDes = .methodDesML_GTS)
+      }, GMM = {
+        list(Params = GMMParametersEstim_GTS,
+             CovarianceMat = .asymptoticVarianceEstimGMM_GTS,
+             methodDes = getGMMmethodName_GTS)
+      }, Cgmm = {
         list(Params = CgmmParametersEstim_GTS,
              CovarianceMat = .asymptoticVarianceEstimCgmm_GTS,
              methodDes = getCgmmMethodName_GTS)
-      }, stop(paste(method, " not taken into account ! For now, only Cgmm works
-                    with this TS.")))
+      }, GMC = {
+        list(Params = GMCParametersEstim_GTS
+             , CovarianceMat = .asymptoticVarianceEstimGMC_GTS,
+             methodDes = getGMCmethodName_GTS)
+      }, stop(paste(method, " not taken into account !")))
       Output
     } else if (type == "KRTS") {
       Output <- switch(method, ML = {
@@ -860,8 +871,8 @@ CheckParametersRange_KRTS <- function(theta, alpha0, ...) {
   #TODO: eigentlich sollte der alpha0 kennen. Es klappt aber einfach nicht...
   # Händisch 0.5 eingesetzt
   checkParams <- list(alpha = checkRange(alpha, 0, 2, "alpha"),
-                      kp = checkRange(kp, 0, 2, "k+"),
-                      km = checkRange(km, 0, 2, "k-"),
+                      kp = checkRange(kp, 0, Inf, "k+"),
+                      km = checkRange(km, 0, Inf, "k-"),
                       rp = checkRange(rp, 0, Inf, "r+"),
                       rm = checkRange(rm, 0, Inf, "r-"),
                       pp = checkRange(pp, -0.5, Inf, "p+"),
