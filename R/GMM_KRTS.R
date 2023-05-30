@@ -315,7 +315,7 @@ ComputeCurrentEstim_KRTS <-
         eps = eps,
         ...,
         lower = c(eps, eps, eps, eps, eps,
-                  -theta0[1] -eps, -theta0[1] -eps, -Inf),
+                  -theta0[1] +eps, -theta0[1] +eps, -Inf),
         upper = c(2 - eps, Inf, Inf, Inf, Inf, Inf, Inf, Inf)
       )
     list(OptInfo = optOutput, t = t)
@@ -377,6 +377,11 @@ ComplexCF_KRTS <- function(t, theta, ...) {
   pp <- theta[6]
   pm <- theta[7]
   mu <- theta[8]
+
+  #pp&&pm > -alpha
+  if (pp <= -alpha) pp <- -alpha + 0.00001
+  if (pm <= -alpha) pm <- -alpha + 0.00001
+
   CheckParametersRange_KRTS(c(alpha, kp, km, rp, rm, pp, pm, mu), ...)
   charKRTS(t, alpha, kp, km, rp, rm, pp, pm, mu)
 }

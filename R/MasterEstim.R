@@ -868,15 +868,13 @@ CheckParametersRange_KRTS <- function(theta, alpha0, ...) {
   pm <- theta[7]
   mu <- theta[8]
 
-  #TODO: eigentlich sollte der alpha0 kennen. Es klappt aber einfach nicht...
-  # Händisch 0.5 eingesetzt
   checkParams <- list(alpha = checkRange(alpha, 0, 2, "alpha"),
                       kp = checkRange(kp, 0, Inf, "k+"),
                       km = checkRange(km, 0, Inf, "k-"),
                       rp = checkRange(rp, 0, Inf, "r+"),
                       rm = checkRange(rm, 0, Inf, "r-"),
-                      pp = checkRange(pp, -0.5, Inf, "p+"),
-                      pm = checkRange(pm, -0.5, Inf, "p-"),
+                      pp = checkRange(pp, -alpha, Inf, "p+"),
+                      pm = checkRange(pm, -alpha, Inf, "p-"),
                       mu = checkRange(mu, -Inf, Inf, "mu"))
   .printErr <- function(errList) if (!errList$bool)
     stop(errList$msg)

@@ -536,9 +536,16 @@ charKRTS <- function(t, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
     pm <- theta[7]
     mu <- theta[8]
   }
-  #TODO: pm > alpha kann aus CGMM Gründen nicht verwendet werden
+
+  #In GMM kam es vor, dass pp == 0 ist für eine Simulation.
+  #Deswegen die Anpassung
+  if(pp == 0) pp <- 0.0001
+  if(pm == 0) pm <- 0.0001
+  if(pp == -1) pp <- -0.9999
+  if(pm == -1) pm <- -0.9999
+
   stopifnot(0 < alpha, alpha < 2, alpha != 1,  0 < kp, 0 < km, 0 < rp,
-            0 < rm, pp > -0.5, pp != -1, pp != 0, pm > -0.5, pm != -1,
+            0 < rm, pp > -alpha, pp != -1, pp != 0, pm > -alpha, pm != -1,
             pm != 0)
 
   # Ansatz 1: Rachev et al. 2011 S.74
