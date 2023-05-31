@@ -315,7 +315,7 @@ ComputeCurrentEstim_KRTS <-
         eps = eps,
         ...,
         lower = c(eps, eps, eps, eps, eps,
-                  -theta0[1] +eps, -theta0[1] +eps, -Inf),
+                  -Inf, -Inf, -Inf),
         upper = c(2 - eps, Inf, Inf, Inf, Inf, Inf, Inf, Inf)
       )
     list(OptInfo = optOutput, t = t)

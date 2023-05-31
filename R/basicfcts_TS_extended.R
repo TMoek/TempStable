@@ -354,8 +354,8 @@ charGTS <- function(t, alphap = NULL, alpham = NULL, deltap = NULL,
             0 < deltam, 0 < lambdap, 0 < lambdam)
 
   return(exp(imagN * t * mu
-             - imagN * t * gamma(1 - alphap)*(deltap * lambdap^(alphap-1)
-                                              - deltam * lambdam^(alpham-1))
+             - imagN * t * gamma(1 - alphap)*(deltap * lambdap^(alphap-1))
+             + imagN * t * gamma(1 - alpham)*(deltam * lambdam^(alpham-1))
              + deltap * gamma(-alphap) * ((lambdap - imagN * t)^(alphap) -
                                             lambdap^(alphap))
              + deltam * gamma(-alpham) * ((lambdam + imagN * t)^(alpham) -
@@ -465,8 +465,8 @@ rGTS <- function(n, alphap = NULL, alpham = NULL, deltap = NULL, deltam = NULL,
   stopifnot(0 < alphap, alphap < 2, 0 < alpham, alpham < 2, 0 < deltap,
             0 < deltam, 0 < lambdap, 0 < lambdam)
 
-  #TODO Insert other methods
-  if(methodR == "TM" || methodR == "SR"){
+  #TODO Insert TM
+  if(methodR == "TM"){
     methodR <- "AR"
   }
 
@@ -474,18 +474,35 @@ rGTS <- function(n, alphap = NULL, alpham = NULL, deltap = NULL, deltam = NULL,
               AR = rGTS_aAR(n = n, alphap = alphap, alpham = alpham,
                             deltap = deltap, deltam = deltam,
                             lambdap = lambdap, lambdam = lambdam,
-                            mu = mu, c = c))
+                            mu = mu, c = c),
+              SR = rGTS_SR(n = n, alphap = alphap, alpham = alpham,
+                            deltap = deltap, deltam = deltam,
+                            lambdap = lambdap, lambdam = lambdam,
+                            mu = mu, k = k))
   return(x)
 }
 
-
 rGTS_aAR <- function(n, alphap, alpham, deltap, deltam, lambdap, lambdam, mu, c)
-  {
-  return(mu +
-           rCTS_aARp(n, alpha = alphap, delta = deltap, lambda = lambdap,
-                     c = c) -
-           rCTS_aARp(n, alpha = alpham, delta = deltam, lambda = lambdam,
-                     c = c))
+{
+  reVal <- rCTS_aAR(n/2, alphap,deltap,deltam,lambdap,lambdam,mu,0)
+  reVal <- append(reVal,
+                  rCTS_aAR(n/2, alpham,deltap,deltam,lambdap,lambdam,mu,c))
+  return(reVal)
+}
+
+rGTS_SR <- function(n, alphap, alpham, deltap, deltam, lambdap, lambdam, mu, k) {
+  reVal <- replicate(n = n/2,
+            rCTS_SRp(alpha = alphap, delta = deltap, lambda = lambdap, k = k)
+            -rCTS_SRp(alpha = alphap, delta = deltam, lambda = lambdam, k = k)
+            +mu)
+  reVal <- append(reVal,
+                  replicate(n = n/2,
+                            rCTS_SRp(alpha = alpham, delta = deltap,
+                                     lambda = lambdap, k = k)
+                            -rCTS_SRp(alpha = alpham, delta = deltam,
+                                      lambda = lambdam, k = k)
+                            +mu))
+  return(reVal)
 }
 
 
