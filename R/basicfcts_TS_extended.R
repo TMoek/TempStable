@@ -255,7 +255,7 @@ rMTS_SR_Ro <- function (alpha, delta, lambdap, lambdam, k){
 
   #Im Vergleich zu Rachev11 sind in sigma und damit auch in V + und - vertauscht.
   # Der rest ist gleich
-  sigma <- 2^((alpha-1)/2) * delta * gamma(alpha/2+1/2)
+  sigma <- 2^((alpha+1)/2) * delta * gamma(alpha/2+1/2)
   V <- rMTS_SR_rVj(length(parrivals), sigma, alpha, delta, lambdap, lambdam, k)
   b <- -2^(-(alpha+1)/2) * delta * gamma((1-alpha)/2) *
     (lambdap^(alpha-1)-lambdam^(alpha-1))

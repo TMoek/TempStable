@@ -845,8 +845,8 @@ CheckParametersRange_GTS <- function(theta) {
   lambdap <- theta[5]
   lambdam <- theta[6]
   mu <- theta[7]
-  checkParams <- list(alphap = checkRange(alpha, 0, 2, "alpha+"),
-                      alpham = checkRange(alpha, 0, 2, "alpha-"),
+  checkParams <- list(alphap = checkRange(alphap, 0, 2, "alpha+"),
+                      alpham = checkRange(alpham, 0, 2, "alpha-"),
                       deltap = checkRange(deltap, 0, Inf, "delta+"),
                       deltam = checkRange(deltam, 0, Inf, "delta-"),
                       lambdap = checkRange(lambdap, 0, Inf, "lambda+"),
