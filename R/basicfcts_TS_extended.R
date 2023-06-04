@@ -82,7 +82,7 @@ charMTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
 
     subfunctionI <- function(x, alpha, lambda){
       2^(-(alpha+1)/2) * gamma((1-alpha)/2) * lambda^(alpha-1) *
-        (modifiedHyperGeoXr(1, (1 - alpha)/2, 3/2, -(x^2)/(lambdam^2)) -1)
+        (modifiedHyperGeoXr(1, (1 - alpha)/2, 3/2, -(x^2)/(lambda^2)) -1)
     }
 
     return(exp(imagN * mu * t +
@@ -253,15 +253,26 @@ rMTS_SR_Ro <- function (alpha, delta, lambdap, lambdam, k){
   E1 <- stats::rexp(length(parrivals))
   U <- stats::runif(length(parrivals))
 
-  #Im Vergleich zu Rachev11 sind in sigma und damit auch in V + und - vertauscht.
-  # Der rest ist gleich
+  #Sigma ist falsch in Rachev2011. Mittels Bianchi2010 4.1 angepasst
   sigma <- 2^((alpha+1)/2) * delta * gamma(alpha/2+1/2)
   V <- rMTS_SR_rVj(length(parrivals), sigma, alpha, delta, lambdap, lambdam, k)
+
   b <- -2^(-(alpha+1)/2) * delta * gamma((1-alpha)/2) *
     (lambdap^(alpha-1)-lambdam^(alpha-1))
   X <- cbind((alpha * parrivals / sigma)^(-1/alpha),
              sqrt(2) * E1^(1/2) * U^(1/alpha)/abs(V))
   Xreturn <- sum((apply(X, 1, FUN = min)*V/abs(V)))+b
+
+  #ToDo nach Binachi 2010
+  # x0 <- 2*pi
+  # x1 <- rMTS_SR_x1(alpha, delta, lambdap, lambdam)$value
+  # b <- VGAM::zeta(1/alpha)*alpha^(-1/alpha)*sigma^(1/alpha)*x0 -
+  #   2^(-(1+alpha)/2)*gamma(1/2-alpha/2) * x1
+  # cntr <- sum((alpha*(1:length(parrivals))/(sigma))^(-1/alpha)*x0)
+  #
+  # X <- cbind((alpha * parrivals / sigma)^(-1/alpha),
+  #            sqrt(2) * E1^(1/2) * U^(1/alpha)/abs(V))
+  # Xreturn <- sum((apply(X, 1, FUN = min)*V/abs(V)))-cntr+b
 
   return(Xreturn)
 }
@@ -278,9 +289,21 @@ rMTS_SR_dVj <- function(x, sigma, alpha, delta, lambdap, lambdam){
 
     if(xi == 0){y <- 0}
     else {
-      y <- delta / sigma *
-        (lambdap^(alpha-1) * exp(-(lambdap^2*xi^2)/2) * Ip +
-           lambdam^(alpha-1) * exp(-(lambdam^2*xi^2)/2) * Im )
+
+      # Rachev11 Ansatz
+      # y <- delta / sigma *
+      #   (lambdap^(alpha-1) * exp(-(lambdap^2*xi^2)/2) * Ip +
+      #      lambdam^(alpha-1) * exp(-(lambdam^2*xi^2)/2) * Im )
+
+      #Biachni2010
+      if(xi < 0){
+        y <- 2^((1-alpha)/2)/gamma((alpha+1)/2)*-(-xi)^(-alpha-2)*
+          (exp(-lambdam^2/(2*xi^2))*lambdam^(alpha+1))
+      }
+      else{
+        y <- 2^((1-alpha)/2)/gamma((alpha+1)/2)*xi^(-alpha-2)*
+          (exp(-lambdap^2/(2*xi^2))*lambdap^(alpha+1))
+      }
     }
     returnVec <- append(returnVec,y)
   }
@@ -302,6 +325,34 @@ rMTS_SR_rVj <- function(n, sigma, alpha, delta, lambdap, lambdam, k){
 
   return(returnVector)
 }
+
+rMTS_SR_x1 <- function(alpha, delta, lambdap, lambdam){
+  f <- function(x, alpha, delta, lambdap, lambdam){
+    retVal <- NULL
+    for(xi in x){
+      Ip <- 0
+      Im <- 0
+      if(xi > 0) Ip <- 1
+      if(xi < 0) Im < -1
+
+      retVal <- append(
+        retVal, xi*delta*
+          (lambdap^(alpha+1)*exp(-lambdap^2*xi^2/2)*Ip +
+             lambdam^(alpha+1)*exp(-lambdam^2*xi^2/2)*Im))
+
+      # retVal <- append(
+      #   retVal, -delta*
+      #     (lambdap^(alpha+1)*exp(-lambdap^2*xi^2/2)*lambdap^(-2)*Ip +
+      #        lambdam^(alpha+1)*exp(-lambdam^2*xi^2/2)*lambdam^(-2)*Im))
+    }
+    retVal
+  }
+
+  integrate(f,-Inf,Inf, alpha = alpha, delta = delta, lambdap = lambdap,
+            lambdam = lambdam)
+}
+
+
 
 #### Generalized Classical Tempered Stable Distribution ####
 
