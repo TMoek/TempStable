@@ -21,8 +21,8 @@ MLParametersEstim_KRTS <-
           ...,
           method = "L-BFGS-B",
           lower = c(eps, eps, eps, eps, eps,
-                    -theta0[1] -eps,
-                    -theta0[1] -eps, -Inf),
+                    -theta0[1] +eps,
+                    -theta0[1] +eps, -Inf),
           upper = c(2 - eps, Inf, Inf, Inf, Inf,
                     Inf, Inf, Inf)
         )
@@ -36,8 +36,8 @@ MLParametersEstim_KRTS <-
           ...,
           method = "L-BFGS-B",
           lower = c(eps, eps, eps, eps, eps,
-                    -theta0[1] -eps,
-                    -theta0[1] -eps, -Inf),
+                    -theta0[1] +eps,
+                    -theta0[1] +eps, -Inf),
           upper = c(2 - eps, Inf, Inf, Inf, Inf,
                     Inf, Inf, Inf)
         )
@@ -46,7 +46,7 @@ MLParametersEstim_KRTS <-
       StableEstim::PrintDuration(
         StableEstim::ComputeDuration(t_init, t_final <-
                                        StableEstim::getTime_()),
-        "Classic_MLParametersEstim_KRTS")
+        "MLParametersEstim_KRTS")
     list(
       Estim = Estim,
       duration = StableEstim::ComputeDuration(t_init, StableEstim::getTime_(), TRUE),
@@ -68,7 +68,10 @@ SumLogDensity_KRTS <- function(theta, x, sign = -1, ...) {
       pm <- theta[7],
       mu <- theta[8]
     )
-  sign * sum(log(densis))
+  retVal <- sign * sum(log(densis))
+  #if(is.na(retVal) || is.null(retVal) ||
+  #     is.nan(retVal) || retVal == Inf || retVal == -Inf) browser()
+  retVal
 }
 
 .methodDesML_KRTS <- function(...) {
