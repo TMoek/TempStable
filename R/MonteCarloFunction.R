@@ -699,7 +699,7 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
                     delta = thetaT[3], lambda = thetaT[4], mu = thetaT[5],
                     methodR = methodR, ...)
         } else if (TemperedType == "MTS") {
-            browser()
+            x <- rMTS(n = size, theta = thetaT, methodR = methodR, ...)
         } else if (TemperedType == "GTS") {
             x <- rGTS(n = size, theta = thetaT, methodR = methodR, ...)
         }  else if (TemperedType == "KRTS") {

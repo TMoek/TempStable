@@ -234,10 +234,12 @@ rMTS <- function(n, alpha = NULL, delta = NULL, lambdap = NULL, lambdam = NULL,
   }
   stopifnot(0 < alpha, alpha < 2, 0 < delta, 0 < lambdap, 0 <
               lambdam)
-  #TODO
+
+  if(methodR == "TM" || methodR == "AR") methodR <- "SR"
+
   x <- switch(methodR,
               AR = 0,
-              SR = 0,
+              SR = rMTS_SR(n, alpha, delta, lambdap, lambdam, mu, k),
               TM = 0)
   return(x)
 }
