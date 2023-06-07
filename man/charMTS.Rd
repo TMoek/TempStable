@@ -12,7 +12,7 @@ charMTS(
   lambdam = NULL,
   mu = NULL,
   theta = NULL,
-  functionOrigin = "kim09"
+  functionOrigin = "kim08"
 )
 }
 \arguments{
@@ -28,13 +28,20 @@ charMTS(
 
 \item{theta}{Parameters stacked as a vector.}
 
-\item{functionOrigin}{A string. Either "kim09", or "kim08".}
+\item{functionOrigin}{A string. Either "kim09", "rachev11" or "kim08".
+Default is "kim08".}
 }
 \value{
 The CF of the the modified tempered stable distribution.
 }
 \description{
-gapholder
+Theoretical characteristic function (CF) of the modified tempered stable
+distribution. Since the parameterisation can be different for this
+characteristic function in different approaches, the respective approach can
+be selected with \link{functionOrigin}. For the estimation function
+\link{TemperedEstim} and therefore also the Monte Carlo function
+\link{TemperedEstim_Simulation} and the calculation of the density function
+\link{dMTS}, however, only the approach of Kim et al. (2008) or rachev11 can be selected. If you want to use the approach of kim09 for these functions, you have to clone the package from GitHub and adapt the functions accordingly.
 }
 \details{
 \strong{Origin of functions}
@@ -44,6 +51,10 @@ distribution, GARCH-models and option pricing. Alpha darf hier von -Inf
 bis 1 gehen. Ausgenommen wird alpha == 1/2.}
 \item{kim08}{Ansatz aus: Kim et al. 2008? Financial market models with
 Levy processes and time-varying volatility.}
+\item{rachev11}{ Ansatz aus: Rachev et al. 2011 Financial Models with Levy
+Processes and time-varying volatility. Rechnerisch gleich wie kim08, sieht
+nur etwas anders aus.
+}
 }
 }
 \examples{
@@ -51,5 +62,7 @@ gapholder
 
 }
 \references{
-gapholder
+Kim, Y. s.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
+market models with lévy processes and time-varying volatility'
+\doi{10.1016/j.jbankfin.2007.11.004}
 }

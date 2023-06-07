@@ -18,6 +18,7 @@ TemperedEstim(
   t_scheme = NULL,
   alphaReg = NULL,
   t_free = NULL,
+  nb_t = NULL,
   subdivisions = NULL,
   IntegrationMethod = NULL,
   randomIntegrationLaw = NULL,
