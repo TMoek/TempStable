@@ -8,12 +8,12 @@
 <!-- Start of my description -->
 
 A collection of methods to estimate parameters of different tempered
-stable distributions. Currently, there are three different tempered
+stable distributions. Currently, there are seven different tempered
 stable distributions to choose from: Tempered stable subordinator
-distribution, classical tempered stable distribution, normal tempered
-stable distribution. The package also provides functions to compute
-density and probability functions and tools to run Monte Carlo
-simulations.
+distribution, classical tempered stable distribution (TSD), normal TSD,
+generalized classical TSD, modified TSD, Kim-Rachev TSD, rapidly
+decreasing TSD. The package also provides functions to compute density
+and probability functions and tools to run Monte Carlo simulations.
 
 The main function of this package are briefly described below:
 
@@ -75,17 +75,17 @@ res_CTS_ML_size10 <- TemperedEstim_Simulation(ParameterMatrix = rbind(thetaT),
 #> ---------------- Alpha=1.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- 
 #> *** Iter 1/10 *** Estimated Remaining Time: 0h1min13sec. *** 
 #> *** Iter 2/10 *** Estimated Remaining Time: 0h1min12sec. *** 
-#> *** Iter 3/10 *** Estimated Remaining Time: 0h2min21sec. *** 
-#> *** Iter 4/10 *** Estimated Remaining Time: 0h1min45sec. ***
+#> *** Iter 3/10 *** Estimated Remaining Time: 0h2min23sec. *** 
+#> *** Iter 4/10 *** Estimated Remaining Time: 0h1min44sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
 
 #> Warning in log(densis): NaNs wurden erzeugt
 #> *** Iter 5/10 *** Estimated Remaining Time: 0h0min26sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 6/10 *** Estimated Remaining Time: 0h0min16sec. *** 
+#> *** Iter 6/10 *** Estimated Remaining Time: 0h0min17sec. *** 
 #> *** Iter 7/10 *** Estimated Remaining Time: 0h0min30sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 8/10 *** Estimated Remaining Time: 0h0min9sec. ***
+#> *** Iter 8/10 *** Estimated Remaining Time: 0h0min8sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
 #> *** Iter 9/10 *** Estimated Remaining Time: 0h0min4sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt

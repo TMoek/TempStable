@@ -20,9 +20,10 @@ knitr::opts_chunk$set(
 
 <!-- Start of my description -->
 A collection of methods to estimate parameters of different tempered stable
-distributions. Currently, there are three different tempered stable 
+distributions. Currently, there are seven different tempered stable 
 distributions to choose from: Tempered stable subordinator distribution, 
-classical tempered stable distribution, normal tempered stable distribution.
+classical tempered stable distribution (TSD), normal TSD, generalized classical 
+TSD, modified TSD, Kim-Rachev TSD, rapidly decreasing TSD.
 The package also provides functions to compute density and probability functions
 and tools to run Monte Carlo simulations.
 

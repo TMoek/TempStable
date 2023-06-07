@@ -2,13 +2,16 @@ Package: TempStable
 Type: Package
 Title: A Collection of Methods to Estimate Parameters of Different Tempered 
   Stable Distributions
-Version: 0.1.1
+Version: 0.2.0
 Authors@R: c( person(given = "Till", family = "Massing",
                      email = "till.massing@uni-due.de",
                      role = "aut"),
               person(given = "Cedric Maximilian", family = "Juessen", 
                      email = "cedric.juessen@vwl.uni-due.de",
-                     role = "cre"))
+                     role = c("cre","aut")),
+              person(given = "Mert", family = "Basaran",
+                     email = "mert.basaran@vwl.uni-due.de",
+                     role = "ctb"))
 Description: 
   A collection of methods to estimate parameters of different tempered stable 
   distributions. Currently, there are three different tempered stable 
