@@ -550,12 +550,19 @@ getTempEstimFcts <- function(
         }, stop(paste(method, " not taken into account !")))
         Output
     } else if (type == "MTS") {
-      Output <- switch(method, Cgmm = {
+      Output <- switch(method, ML = {
+        list(Params = MLParametersEstim_MTS,
+             CovarianceMat = .asymptoticVarianceEstimML_MTS,
+             methodDes = .methodDesML_MTS)
+      }, GMM = {
+        list(Params = GMMParametersEstim_MTS,
+             CovarianceMat = .asymptoticVarianceEstimGMM_MTS,
+             methodDes = getGMMmethodName_MTS)
+      }, Cgmm = {
         list(Params = CgmmParametersEstim_MTS,
              CovarianceMat = .asymptoticVarianceEstimCgmm_MTS,
              methodDes = getCgmmMethodName_MTS)
-      }, stop(paste(method, " not taken into account ! For now, only Cgmm works
-                    with this TS.")))
+      }, stop(paste(method, " not taken into account !")))
       Output
     } else if (type == "GTS") {
       Output <- switch(method, ML = {

@@ -259,22 +259,27 @@ rMTS_SR_Ro <- function (alpha, delta, lambdap, lambdam, k){
   sigma <- 2^((alpha+1)/2) * delta * gamma(alpha/2+1/2)
   V <- rMTS_SR_rVj(length(parrivals), sigma, alpha, delta, lambdap, lambdam, k)
 
-  b <- -2^(-(alpha+1)/2) * delta * gamma((1-alpha)/2) *
-    (lambdap^(alpha-1)-lambdam^(alpha-1))
-  X <- cbind((alpha * parrivals / sigma)^(-1/alpha),
-             sqrt(2) * E1^(1/2) * U^(1/alpha)/abs(V))
-  Xreturn <- sum((apply(X, 1, FUN = min)*V/abs(V)))+b
+  if(alpha<1){
 
-  #ToDo nach Binachi 2010
-  # x0 <- 2*pi
-  # x1 <- rMTS_SR_x1(alpha, delta, lambdap, lambdam)$value
-  # b <- VGAM::zeta(1/alpha)*alpha^(-1/alpha)*sigma^(1/alpha)*x0 -
-  #   2^(-(1+alpha)/2)*gamma(1/2-alpha/2) * x1
-  # cntr <- sum((alpha*(1:length(parrivals))/(sigma))^(-1/alpha)*x0)
-  #
-  # X <- cbind((alpha * parrivals / sigma)^(-1/alpha),
-  #            sqrt(2) * E1^(1/2) * U^(1/alpha)/abs(V))
-  # Xreturn <- sum((apply(X, 1, FUN = min)*V/abs(V)))-cntr+b
+    b <- -2^(-(alpha+1)/2) * delta * gamma((1-alpha)/2) *
+      (lambdap^(alpha-1)-lambdam^(alpha-1))
+    X <- cbind((alpha * parrivals / sigma)^(-1/alpha),
+               sqrt(2) * E1^(1/2) * U^(1/alpha)/abs(V))
+    Xreturn <- sum((apply(X, 1, FUN = min)*V/abs(V)))+b
+  }
+
+  if(alpha>1){
+    #ToDo nach Binachi 2010. Still wrong x0 and x1
+    x0 <- 0
+    x1 <- rMTS_SR_x1(alpha, delta, lambdap, lambdam)$value
+    b <- VGAM::zeta(1/alpha)*alpha^(-1/alpha)*sigma^(1/alpha)*x0 -
+      2^(-(1+alpha)/2)*gamma(1/2-alpha/2) * x1
+    cntr <- sum((alpha*(1:length(parrivals))/(sigma))^(-1/alpha)*x0)
+
+    X <- cbind((alpha * parrivals / sigma)^(-1/alpha),
+               sqrt(2) * E1^(1/2) * U^(1/alpha)/abs(V))
+    Xreturn <- sum((apply(X, 1, FUN = min)*V/abs(V)))-cntr+b
+  }
 
   return(Xreturn)
 }
