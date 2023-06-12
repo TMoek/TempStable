@@ -18,7 +18,7 @@ charMTS(
 \arguments{
 \item{t}{A vector of real numbers where the CF is evaluated.}
 
-\item{alpha}{Stability parameter. A real number between 0 and 1.}
+\item{alpha}{Stability parameter. A real number between 0 and 2.}
 
 \item{delta}{Scale parameter. A real number > 0.}
 
@@ -41,9 +41,13 @@ characteristic function in different approaches, the respective approach can
 be selected with \link{functionOrigin}. For the estimation function
 \link{TemperedEstim} and therefore also the Monte Carlo function
 \link{TemperedEstim_Simulation} and the calculation of the density function
-\link{dMTS}, however, only the approach of Kim et al. (2008) or rachev11 can be selected. If you want to use the approach of kim09 for these functions, you have to clone the package from GitHub and adapt the functions accordingly.
+\link{dMTS}, however, only the approach of Kim et al. (2008) or rachev11 can be
+selected. If you want to use the approach of kim09 for these functions, you
+have to clone the package from GitHub and adapt the functions accordingly.
+TODO: File in the right citations and also add them to references
 }
 \details{
+TODO: end this
 \strong{Origin of functions}
 \describe{
 \item{kim09}{Ansatz aus: Kim et al. 2009 The modified tempered stable
@@ -58,7 +62,8 @@ nur etwas anders aus.
 }
 }
 \examples{
-gapholder
+x <- seq(-5,5,0.1)
+y <- charMTS(x, 0.5,1,1,1,0)
 
 }
 \references{

@@ -36,16 +36,22 @@ charKRTS(
 The CF of the the Kim-Rachev tempered stable distribution.
 }
 \description{
-gapholder
+Theoretical characteristic function (CF) of the Kim-Rachev tempered
+stable distribution.
 }
 \details{
-Gapholder. Currently different function with "functionOrigin" is no option,
-as the second is not working.
+The CF of the RDTS distribution is given by (Rachev et
+al. (2011))
+
+TODO: Latex code for cf
 }
 \examples{
-gapholder
+x <- seq(-5,5,0.25)
+y <- charKRTS(x,0.5,1,1,1,1,1,1,0)
 
 }
 \references{
-gapholder
+Rachev, Svetlozar T. & Kim, Young Shin & Bianchi, Michele L. & Fabozzi,
+Frank J. (2011) 'Financial models with Lévy processes and volatility
+clustering' \doi{10.1002/9781118268070}
 }

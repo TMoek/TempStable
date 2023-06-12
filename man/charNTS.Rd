@@ -53,6 +53,7 @@ y <- charNTS(x,0.5,1,1,1,0)
 \references{
 Massing, T. (2022), 'Parametric Estimation of Tempered Stable Laws'
 
-Rachev, S., Kim, Y., Bianchi, M. & Fabozzi, F. (2011), 'Financial Models with
-Levy Processes and Volatility Clustering' \doi{10.1002/9781118268070}
+Rachev, Svetlozar T. & Kim, Young Shin & Bianchi, Michele L. & Fabozzi,
+Frank J. (2011) 'Financial models with Lévy processes and volatility
+clustering' \doi{10.1002/9781118268070}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/basicfcts_TS_extended.R
 \name{charRDTS}
 \alias{charRDTS}
-\title{Characteristic function of the rapidly decreasing tempered stable
+\title{Characteristic function of the rapidly decreasing tempered stable (RDTS)
 distribution}
 \usage{
 charRDTS(
@@ -18,7 +18,7 @@ charRDTS(
 \arguments{
 \item{t}{A vector of real numbers where the CF is evaluated.}
 
-\item{alpha}{Stability parameter. A real number between 0 and 1.}
+\item{alpha}{Stability parameter. A real number between 0 and 2.}
 
 \item{delta}{Scale parameter. A real number > 0.}
 
@@ -32,15 +32,22 @@ charRDTS(
 The CF of the the rapidly decreasing tempered stable distribution.
 }
 \description{
-gapholder
+Theoretical characteristic function (CF) of the rapidly decreasing tempered
+stable distribution.
 }
 \details{
-Gapholder.
+The CF of the RDTS distribution is given by (Rachev et
+al. (2011))
+
+TODO: Latex code for cf
 }
 \examples{
-gapholder
+x <- seq(-5,5,0.25)
+y <- charRDTS(x,0.5,1,1,1,0)
 
 }
 \references{
-gapholder
+Rachev, Svetlozar T. & Kim, Young Shin & Bianchi, Michele L. & Fabozzi,
+Frank J. (2011) 'Financial models with Lévy processes and volatility
+clustering' \doi{10.1002/9781118268070}
 }

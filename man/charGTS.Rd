@@ -2,8 +2,8 @@
 % Please edit documentation in R/basicfcts_TS_extended.R
 \name{charGTS}
 \alias{charGTS}
-\title{Characteristic function of the generalized classical tempered stable
-distribution}
+\title{Characteristic function of the generalized classical tempered stable (GTS)
+distribution.}
 \usage{
 charGTS(
   t,
@@ -20,7 +20,7 @@ charGTS(
 \arguments{
 \item{t}{A vector of real numbers where the CF is evaluated.}
 
-\item{alphap, alpham}{Stability parameter. A real number between 0 and 1.}
+\item{alphap, alpham}{Stability parameter. A real number between 0 and 2.}
 
 \item{deltap, deltam}{Scale parameter. A real number > 0.}
 
@@ -34,15 +34,22 @@ charGTS(
 The CF of the the generalized classical tempered stable distribution.
 }
 \description{
-gapholder
+Theoretical characteristic function (CF) of the generalized classical
+tempered stable distribution. See Rachev et al. (2011) for details. The GTS
+is a more generalized version of the CTS \link{charCTS}, as
+$\alpha =\alpha_p=\alpha_m$ for CTS. The characteristic function is given -
+with a small adjustment - by Rachev et al. (2011):
 }
 \details{
-gapholder
+TODO: Latex code
 }
 \examples{
-gapholder
+x <- seq(-5,5,0.25)
+y <- charGTS(x,0.3,0.2,1,1,1,1,0)
 
 }
 \references{
-gapholder
+Rachev, Svetlozar T. & Kim, Young Shin & Bianchi, Michele L. & Fabozzi,
+Frank J. (2011) 'Financial models with Lévy processes and volatility
+clustering' \doi{10.1002/9781118268070}
 }
