@@ -418,13 +418,24 @@ rMTS_SR_rVj <- function(n, sigma, alpha, delta, lambdap, lambdam, k){
   dX <- (20*2/k)
   x <- seq(-5,5,dX)
   y <- rMTS_SR_dVj(x, sigma, alpha, delta, lambdap, lambdam)
-  cumY <- cumsum(y)
-  rV <- runif(n, min(cumY), max(cumY))
+  cumYmin <- cumsum(y[1:(length(y)/2)])
+  cumYmax <- cumsum(y[(length(y)/2+1):length(y)])
+  rV <- runif(n, min(cumYmin), max(cumYmax))
 
   returnVector <- NULL
   for(s in rV){
-    pos <- which.min(abs(cumY - s))
-    returnVector <- append(returnVector, x[pos])
+
+    if(s < 0){
+      pos <- which.min(abs(cumYmin - s))
+    }
+    else {
+      pos <- length(cumYmin) + which.min(abs(cumYmax - s))
+    }
+
+    if(pos < length(cumYmin) + 1){
+      returnVector <- append(returnVector, -x[pos])
+    }
+    else returnVector <- append(returnVector, -x[pos])
   }
 
   return(returnVector)
