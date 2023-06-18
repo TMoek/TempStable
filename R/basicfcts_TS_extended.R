@@ -401,7 +401,7 @@ rMTS_SR_dVj <- function(x, sigma, alpha, delta, lambdap, lambdam){
 
       #Biachni2010
       if(xi < 0){
-        y <- 2^((1-alpha)/2)/gamma((alpha+1)/2)*-(-xi)^(-alpha-2)*
+        y <- 2^((1-alpha)/2)/gamma((alpha+1)/2)*abs(xi)^(-alpha-2)*
           (exp(-lambdam^2/(2*xi^2))*lambdam^(alpha+1))
       }
       else{
@@ -416,26 +416,15 @@ rMTS_SR_dVj <- function(x, sigma, alpha, delta, lambdap, lambdam){
 
 rMTS_SR_rVj <- function(n, sigma, alpha, delta, lambdap, lambdam, k){
   dX <- (20*2/k)
-  x <- seq(-5,5,dX)
+  x <- seq(-10,10,dX)
   y <- rMTS_SR_dVj(x, sigma, alpha, delta, lambdap, lambdam)
-  cumYmin <- cumsum(y[1:(length(y)/2)])
-  cumYmax <- cumsum(y[(length(y)/2+1):length(y)])
-  rV <- runif(n, min(cumYmin), max(cumYmax))
+  cumY <- cumsum(y)
+  rV <- runif(n, min(cumY), max(cumY))
 
   returnVector <- NULL
   for(s in rV){
-
-    if(s < 0){
-      pos <- which.min(abs(cumYmin - s))
-    }
-    else {
-      pos <- length(cumYmin) + which.min(abs(cumYmax - s))
-    }
-
-    if(pos < length(cumYmin) + 1){
-      returnVector <- append(returnVector, -x[pos])
-    }
-    else returnVector <- append(returnVector, -x[pos])
+    pos <- which.min(abs(cumY - s))
+    returnVector <- append(returnVector, x[pos])
   }
 
   return(returnVector)
