@@ -41,7 +41,22 @@ $\alpha =\alpha_p=\alpha_m$ for CTS. The characteristic function is given -
 with a small adjustment - by Rachev et al. (2011):
 }
 \details{
-TODO: Latex code
+\code{theta} denotes the parameter vector \code{(alphap, alpham, deltap,
+deltam, lambdap, lambdam, mu)}. Either provide the parameters individually OR
+provide \code{theta}. Characteristic function shown here is from Rachev et al.
+(2011).
+\deqn{\varphi_{GTS}(t;\theta):=
+E_{\theta}\left[\mathrm{e}^{\mathrm{i}tX}\right]=
+\exp\left(\mathrm{i}t\mu-\mathrm{i}t\Gamma(1-\alpha_+)
+\left(\delta_+\lambda_+^{\alpha_+-1}\right)\right.\\}
+\deqn{\left. +\mathrm{i}t\Gamma(1-\alpha_-)
+\left(\delta_-\lambda_-^{\alpha_--1}\right)\right.\\}
+\deqn{\left.+\delta_+\Gamma(-\alpha_+)
+\left(\left(\lambda_+-\mathrm{i}t\right)^{\alpha_+}
+-\lambda_+^{\alpha_+}\right) \right.\\}
+\deqn{\left.+\delta_-\Gamma(-\alpha_-)
+\left(\left(\lambda_-+\mathrm{i}t\right)^{\alpha_-}
+-\lambda_-^{\alpha_-}\right)\right)}
 }
 \examples{
 x <- seq(-5,5,0.25)
@@ -49,7 +64,7 @@ y <- charGTS(x,0.3,0.2,1,1,1,1,0)
 
 }
 \references{
-Rachev, Svetlozar T. & Kim, Young Shin & Bianchi, Michele L. & Fabozzi,
-Frank J. (2011) 'Financial models with Lévy processes and volatility
-clustering' \doi{10.1002/9781118268070}
+Rachev, S. T.; Kim, Y. S.; Bianchi, M. L. & Fabozzi, F. J. (2011),
+'Financial models with Lévy processes and volatility clustering'
+\doi{10.1002/9781118268070}
 }

@@ -36,28 +36,54 @@ The CF of the the modified tempered stable distribution.
 }
 \description{
 Theoretical characteristic function (CF) of the modified tempered stable
-distribution. Since the parameterisation can be different for this
-characteristic function in different approaches, the respective approach can
-be selected with \link{functionOrigin}. For the estimation function
-\link{TemperedEstim} and therefore also the Monte Carlo function
-\link{TemperedEstim_Simulation} and the calculation of the density function
-\link{dMTS}, however, only the approach of Kim et al. (2008) or rachev11 can be
-selected. If you want to use the approach of kim09 for these functions, you
-have to clone the package from GitHub and adapt the functions accordingly.
-TODO: File in the right citations and also add them to references
+distribution.
 }
 \details{
-TODO: end this
+\code{theta} denotes the parameter vector \code{(alpha, delta,
+lambdap, lambdam, mu)}. Either provide the parameters individually OR
+provide \code{theta}. Characteristic function shown here is from Kim et al.
+(2008).
+\deqn{\varphi_{MTS}(t;\theta):=
+E_{\theta}\left[\mathrm{e}^{\mathrm{i}tX}\right]=
+\exp\left(\mathrm{i}t\mu+G_R\left(t;\alpha,\delta,\lambda_+,\lambda_-\right)
++G_R\left(t;\alpha,\delta,\lambda_+,\lambda_-\right)\right),}
+where
+\deqn{\left. G_R\left(t;\alpha,\delta,\lambda_+,\lambda_-\right)=
+\frac{\sqrt{\pi}\delta\Gamma(-\frac{\alpha}{2})}
+{2^{\frac{\alpha+3}{2}}}\left((\lambda_+^{2}+t^{2})^{\frac{\alpha}{2}}
+-\lambda_+^{\alpha}+(\lambda_-^{2}+t^{2})^{\frac{\alpha}{2}}
+-\lambda_-^{\alpha} \right)\right.\\}
+\deqn{\left. G_I\left(t;\alpha,\delta,\lambda_+,\lambda_-\right)=
+\frac{\mathrm{i}t\delta\Gamma(\frac{1-\alpha}{2})}
+{2^{\frac{\alpha+1}{2}}}
+\left(\lambda_+^{\alpha-1}
+F\left(1,\frac{1-\alpha}{2};\frac{3}{2};-\frac{t^2}{\lambda_+^2}\right)
+\right. \right. \\}
+\deqn{\left. \left. -\lambda_-^{\alpha-1}
+F\left(1,\frac{1-\alpha}{2};\frac{3}{2};-\frac{t^2}{\lambda_-^2}\right)
+ \right)\right.}
+
+\code{F} is the hypergeometric function.
+
 \strong{Origin of functions}
+Since the parameterisation can be different for this
+characteristic function in different approaches, the respective approach can
+be selected with \code{functionOrigin}. For the estimation function
+\code{TemperedEstim} and therefore also the Monte Carlo function
+\code{TemperedEstim_Simulation} and the calculation of the density function
+\code{dMTS} only the approach of Kim et al. (2008) or Rachev et al.
+(2011) can be selected. If you want to use the approach of Kim et al. (2009)
+for these functions, you have to clone the package from GitHub and adapt the
+functions accordingly.
 \describe{
-\item{kim09}{Ansatz aus: Kim et al. 2009 The modified tempered stable
-distribution, GARCH-models and option pricing. Alpha darf hier von -Inf
-bis 1 gehen. Ausgenommen wird alpha == 1/2.}
-\item{kim08}{Ansatz aus: Kim et al. 2008? Financial market models with
-Levy processes and time-varying volatility.}
-\item{rachev11}{ Ansatz aus: Rachev et al. 2011 Financial Models with Levy
-Processes and time-varying volatility. Rechnerisch gleich wie kim08, sieht
-nur etwas anders aus.
+\item{kim09}{From  Kim et al. (2009) 'The modified tempered stable
+distribution, GARCH-models and option pricing'. Here \code{alpha} is in
+(-Inf,1) except \code{0.5}.}
+\item{kim08}{From Kim et al. (2008) 'Financial market models with
+Levy processes and time-varying volatility'. Without further coding, this
+is the selected function for estimation function from this package.}
+\item{rachev11}{From Rachev et al. (2011) 'Financial Models with Levy
+Processes and time-varying volatility'. Similar to \code{kim08}
 }
 }
 }
@@ -67,7 +93,15 @@ y <- charMTS(x, 0.5,1,1,1,0)
 
 }
 \references{
-Kim, Y. s.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
+Kim, Y. S.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
 market models with lévy processes and time-varying volatility'
 \doi{10.1016/j.jbankfin.2007.11.004}
+
+Kim, Y. S.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2009), 'A New
+Tempered Stable Distribution and Its Application to Finance'
+\doi{0.1007/978-3-7908-2050-8_5}
+
+Rachev, S. T.; Kim, Y. S.; Bianchi, M. L. & Fabozzi, F. J. (2011),
+'Financial models with Lévy processes and volatility clustering'
+\doi{10.1002/9781118268070}
 }

@@ -37,9 +37,21 @@ stable distribution.
 }
 \details{
 The CF of the RDTS distribution is given by (Rachev et
-al. (2011))
-
-TODO: Latex code for cf
+al. (2011)):
+\deqn{\varphi_{RDTS}(t;\theta):=
+E_{\theta}\left[\mathrm{e}^{\mathrm{i}tX}\right]=
+\exp\left(\mathrm{i}t\mu+\delta(G(\mathrm{i}t;\alpha,\lambda_+)
++G(-\mathrm{i}t;\alpha,\lambda_-))\right),}
+where
+\deqn{G\left(x;\alpha,r,\lambda\right)=
+2^{-\frac{\alpha}{2}-1}\lambda^\alpha\Gamma\left(-\frac{\alpha}{2}\right)
+\left(M\left(-\frac{\alpha}{2},\frac{1}{2};\frac{x^2}{2\lambda^2}\right)
+-1\right)\\}
+\deqn{+2^{-\frac{\alpha}{2}-\frac{1}{2}}\lambda^{\alpha-1}x
+\Gamma\left(\frac{1-\alpha}{2}\right)
+\left(M\left(\frac{1-\alpha}{2},\frac{3}{2};\frac{x^2}{2\lambda^2}\right)
+-1\right).}
+\code{M} stands for the confluent hypergeometric function.
 }
 \examples{
 x <- seq(-5,5,0.25)

@@ -4,27 +4,53 @@
 #' Characteristic function of the modified tempered stable distribution
 #'
 #' Theoretical characteristic function (CF) of the modified tempered stable
-#' distribution. Since the parameterisation can be different for this
-#' characteristic function in different approaches, the respective approach can
-#' be selected with [functionOrigin]. For the estimation function
-#' [TemperedEstim] and therefore also the Monte Carlo function
-#' [TemperedEstim_Simulation] and the calculation of the density function
-#' [dMTS], however, only the approach of Kim et al. (2008) or rachev11 can be
-#' selected. If you want to use the approach of kim09 for these functions, you
-#' have to clone the package from GitHub and adapt the functions accordingly.
-#' TODO: File in the right citations and also add them to references
+#' distribution.
 #'
-#' TODO: end this
+#' \code{theta} denotes the parameter vector \code{(alpha, delta,
+#' lambdap, lambdam, mu)}. Either provide the parameters individually OR
+#' provide \code{theta}. Characteristic function shown here is from Kim et al.
+#' (2008).
+#' \deqn{\varphi_{MTS}(t;\theta):=
+#' E_{\theta}\left[\mathrm{e}^{\mathrm{i}tX}\right]=
+#' \exp\left(\mathrm{i}t\mu+G_R\left(t;\alpha,\delta,\lambda_+,\lambda_-\right)
+#' +G_R\left(t;\alpha,\delta,\lambda_+,\lambda_-\right)\right),}
+#' where
+#' \deqn{\left. G_R\left(t;\alpha,\delta,\lambda_+,\lambda_-\right)=
+#' \frac{\sqrt{\pi}\delta\Gamma(-\frac{\alpha}{2})}
+#' {2^{\frac{\alpha+3}{2}}}\left((\lambda_+^{2}+t^{2})^{\frac{\alpha}{2}}
+#' -\lambda_+^{\alpha}+(\lambda_-^{2}+t^{2})^{\frac{\alpha}{2}}
+#' -\lambda_-^{\alpha} \right)\right.\\}
+#' \deqn{\left. G_I\left(t;\alpha,\delta,\lambda_+,\lambda_-\right)=
+#' \frac{\mathrm{i}t\delta\Gamma(\frac{1-\alpha}{2})}
+#' {2^{\frac{\alpha+1}{2}}}
+#' \left(\lambda_+^{\alpha-1}
+#' F\left(1,\frac{1-\alpha}{2};\frac{3}{2};-\frac{t^2}{\lambda_+^2}\right)
+#' \right. \right. \\}
+#' \deqn{\left. \left. -\lambda_-^{\alpha-1}
+#' F\left(1,\frac{1-\alpha}{2};\frac{3}{2};-\frac{t^2}{\lambda_-^2}\right)
+#'  \right)\right.}
+#'
+#' \code{F} is the hypergeometric function.
+#'
 #' \strong{Origin of functions}
+#' Since the parameterisation can be different for this
+#' characteristic function in different approaches, the respective approach can
+#' be selected with \code{functionOrigin}. For the estimation function
+#' \code{TemperedEstim} and therefore also the Monte Carlo function
+#' \code{TemperedEstim_Simulation} and the calculation of the density function
+#' \code{dMTS} only the approach of Kim et al. (2008) or Rachev et al.
+#' (2011) can be selected. If you want to use the approach of Kim et al. (2009)
+#' for these functions, you have to clone the package from GitHub and adapt the
+#' functions accordingly.
 #' \describe{
-#'   \item{kim09}{Ansatz aus: Kim et al. 2009 The modified tempered stable
-#'   distribution, GARCH-models and option pricing. Alpha darf hier von -Inf
-#'   bis 1 gehen. Ausgenommen wird alpha == 1/2.}
-#'   \item{kim08}{Ansatz aus: Kim et al. 2008? Financial market models with
-#'   Levy processes and time-varying volatility.}
-#'   \item{rachev11}{ Ansatz aus: Rachev et al. 2011 Financial Models with Levy
-#'   Processes and time-varying volatility. Rechnerisch gleich wie kim08, sieht
-#'   nur etwas anders aus.
+#'   \item{kim09}{From  Kim et al. (2009) 'The modified tempered stable
+#'   distribution, GARCH-models and option pricing'. Here \code{alpha} is in
+#'   (-Inf,1) except \code{0.5}.}
+#'   \item{kim08}{From Kim et al. (2008) 'Financial market models with
+#'   Levy processes and time-varying volatility'. Without further coding, this
+#'   is the selected function for estimation function from this package.}
+#'   \item{rachev11}{From Rachev et al. (2011) 'Financial Models with Levy
+#'   Processes and time-varying volatility'. Similar to \code{kim08}
 #'   }
 #' }
 #'
@@ -40,9 +66,17 @@
 #' @return The CF of the the modified tempered stable distribution.
 #'
 #' @references
-#' Kim, Y. s.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
+#' Kim, Y. S.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
 #' market models with lévy processes and time-varying volatility'
 #' \doi{10.1016/j.jbankfin.2007.11.004}
+#'
+#' Kim, Y. S.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2009), 'A New
+#' Tempered Stable Distribution and Its Application to Finance'
+#' \doi{0.1007/978-3-7908-2050-8_5}
+#'
+#' Rachev, S. T.; Kim, Y. S.; Bianchi, M. L. & Fabozzi, F. J. (2011),
+#' 'Financial models with Lévy processes and volatility clustering'
+#' \doi{10.1002/9781118268070}
 #'
 #' @examples
 #' x <- seq(-5,5,0.1)
@@ -468,7 +502,22 @@ rMTS_SR_x1 <- function(alpha, delta, lambdap, lambdam){
 #' $\alpha =\alpha_p=\alpha_m$ for CTS. The characteristic function is given -
 #' with a small adjustment - by Rachev et al. (2011):
 #'
-#' TODO: Latex code
+#' \code{theta} denotes the parameter vector \code{(alphap, alpham, deltap,
+#' deltam, lambdap, lambdam, mu)}. Either provide the parameters individually OR
+#' provide \code{theta}. Characteristic function shown here is from Rachev et al.
+#' (2011).
+#' \deqn{\varphi_{GTS}(t;\theta):=
+#' E_{\theta}\left[\mathrm{e}^{\mathrm{i}tX}\right]=
+#' \exp\left(\mathrm{i}t\mu-\mathrm{i}t\Gamma(1-\alpha_+)
+#' \left(\delta_+\lambda_+^{\alpha_+-1}\right)\right.\\}
+#' \deqn{\left. +\mathrm{i}t\Gamma(1-\alpha_-)
+#' \left(\delta_-\lambda_-^{\alpha_--1}\right)\right.\\}
+#' \deqn{\left.+\delta_+\Gamma(-\alpha_+)
+#' \left(\left(\lambda_+-\mathrm{i}t\right)^{\alpha_+}
+#' -\lambda_+^{\alpha_+}\right) \right.\\}
+#' \deqn{\left.+\delta_-\Gamma(-\alpha_-)
+#' \left(\left(\lambda_-+\mathrm{i}t\right)^{\alpha_-}
+#' -\lambda_-^{\alpha_-}\right)\right)}
 #'
 #'
 #' @param t A vector of real numbers where the CF is evaluated.
@@ -481,9 +530,9 @@ rMTS_SR_x1 <- function(alpha, delta, lambdap, lambdam){
 #' @return The CF of the the generalized classical tempered stable distribution.
 #'
 #' @references
-#' Rachev, Svetlozar T. & Kim, Young Shin & Bianchi, Michele L. & Fabozzi,
-#' Frank J. (2011) 'Financial models with Lévy processes and volatility
-#' clustering' \doi{10.1002/9781118268070}
+#' Rachev, S. T.; Kim, Y. S.; Bianchi, M. L. & Fabozzi, F. J. (2011),
+#' 'Financial models with Lévy processes and volatility clustering'
+#' \doi{10.1002/9781118268070}
 #'
 #' @examples
 #' x <- seq(-5,5,0.25)
@@ -756,14 +805,23 @@ rGTS_SR <- function(n, alphap, alpham, deltap, deltam, lambdap, lambdam, mu, k) 
 #' The CF of the RDTS distribution is given by (Rachev et
 #' al. (2011))
 #'
-#' TODO: Latex code for cf
+#' \deqn{\varphi_{KRTS}(t;\theta):=
+#' E_{\theta}\left[\mathrm{e}^{\mathrm{i}tX}\right]=
+#' \exp\left(\mathrm{i}t\mu-\mathrm{i}t\Gamma(1-\alpha)
+#' \left(\frac{k_+r_+}{p_++1}-\frac{k_-r_-}{p_-+1}\right) \right.\\}
+#' \deqn{\left. +k_+H(\mathrm{i}t;\alpha,r_+,p_+)+k_
+#' -H(-\mathrm{i}t;\alpha,r_-,p_-)\right),}
+#' where
+#' \deqn{\left. H\left(x;\alpha,r,p\right)=
+#' \frac{\Gamma(-\alpha)}{p}\left(F\left(p,-\alpha;1+p;rx\right)-1\right)\right.
+#' }
+#' \code{F} denotes the hypergeometric Function.
 #'
 #'
 #' @param t A vector of real numbers where the CF is evaluated.
 #' @param alpha Stability parameter. A real number between 0 and 1.
-#' @param kp,km Gapholder.
-#' @param rp,rm Gapholder.
-#' @param pp,pm Gapholder.
+#' @param kp,km,rp,rm Parameter of KR-distribution. A real number \code{>0}.
+#' @param pp,pm Parameter of KR-distribution. A real number \code{>-alpha}.
 #' @param mu A location parameter, any real number.
 #' @param theta Parameters stacked as a vector.
 #'
@@ -851,9 +909,8 @@ charKRTS <- function(t, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
 #'
 #' @param x A numeric vector of positive quantiles.
 #' @param alpha Stability parameter. A real number between 0 and 1.
-#' @param kp,km Gapholder.
-#' @param rp,rm Gapholder.
-#' @param pp,pm Gapholder.
+#' @param kp,km,rp,rm Parameter of KR-distribution. A real number \code{>0}.
+#' @param pp,pm Parameter of KR-distribution. A real number \code{>-alpha}.
 #' @param mu A location parameter, any real number.
 #' @param theta Parameters stacked as a vector.
 #' @param dens_method Algorithm for numerical evaluation. Here you can only
@@ -921,9 +978,8 @@ dKRTS <- function(x, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
 #'
 #' @param t A vector of real numbers where the CF is evaluated.
 #' @param alpha Stability parameter. A real number between 0 and 2.
-#' @param kp,km Gapholder.
-#' @param rp,rm Gapholder.
-#' @param pp,pm Gapholder.
+#' @param kp,km,rp,rm Parameter of KR-distribution. A real number \code{>0}.
+#' @param pp,pm Parameter of KR-distribution. A real number \code{>-alpha}.
 #' @param mu A location parameter, any real number.
 #' @param theta Parameters stacked as a vector.
 #' @param a Starting point of FFT, if \code{dens_method == "FFT"}. -40
@@ -1006,9 +1062,8 @@ pKRTS <- function(q, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
 #'
 #' @param n sample size (integer).
 #' @param alpha Stability parameter. A real number between 0 and 2.
-#' @param kp,km Gapholder.
-#' @param rp,rm Gapholder.
-#' @param pp,pm Gapholder.
+#' @param kp,km,rp,rm Parameter of KR-distribution. A real number \code{>0}.
+#' @param pp,pm Parameter of KR-distribution. A real number \code{>-alpha}.
 #' @param mu A location parameter, any real number.
 #' @param theta Parameters stacked as a vector.
 #' @param methodR A String. Only "SR" is available here.
@@ -1135,9 +1190,21 @@ rKRTS_SR_rVj <- function(n, sigma, alpha, kp, km, rp, rm, pp, pm, k){
 #' stable distribution.
 #'
 #' The CF of the RDTS distribution is given by (Rachev et
-#' al. (2011))
-#'
-#' TODO: Latex code for cf
+#' al. (2011)):
+#' \deqn{\varphi_{RDTS}(t;\theta):=
+#' E_{\theta}\left[\mathrm{e}^{\mathrm{i}tX}\right]=
+#' \exp\left(\mathrm{i}t\mu+\delta(G(\mathrm{i}t;\alpha,\lambda_+)
+#' +G(-\mathrm{i}t;\alpha,\lambda_-))\right),}
+#' where
+#' \deqn{G\left(x;\alpha,r,\lambda\right)=
+#' 2^{-\frac{\alpha}{2}-1}\lambda^\alpha\Gamma\left(-\frac{\alpha}{2}\right)
+#' \left(M\left(-\frac{\alpha}{2},\frac{1}{2};\frac{x^2}{2\lambda^2}\right)
+#' -1\right)\\}
+#' \deqn{+2^{-\frac{\alpha}{2}-\frac{1}{2}}\lambda^{\alpha-1}x
+#' \Gamma\left(\frac{1-\alpha}{2}\right)
+#' \left(M\left(\frac{1-\alpha}{2},\frac{3}{2};\frac{x^2}{2\lambda^2}\right)
+#' -1\right).}
+#' \code{M} stands for the confluent hypergeometric function.
 #'
 #' @param t A vector of real numbers where the CF is evaluated.
 #' @param alpha Stability parameter. A real number between 0 and 2.

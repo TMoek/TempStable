@@ -26,11 +26,9 @@ pKRTS(
 \arguments{
 \item{alpha}{Stability parameter. A real number between 0 and 2.}
 
-\item{kp, km}{Gapholder.}
+\item{kp, km, rp, rm}{Parameter of KR-distribution. A real number \code{>0}.}
 
-\item{rp, rm}{Gapholder.}
-
-\item{pp, pm}{Gapholder.}
+\item{pp, pm}{Parameter of KR-distribution. A real number \code{>-alpha}.}
 
 \item{mu}{A location parameter, any real number.}
 

@@ -22,11 +22,9 @@ charKRTS(
 
 \item{alpha}{Stability parameter. A real number between 0 and 1.}
 
-\item{kp, km}{Gapholder.}
+\item{kp, km, rp, rm}{Parameter of KR-distribution. A real number \code{>0}.}
 
-\item{rp, rm}{Gapholder.}
-
-\item{pp, pm}{Gapholder.}
+\item{pp, pm}{Parameter of KR-distribution. A real number \code{>-alpha}.}
 
 \item{mu}{A location parameter, any real number.}
 
@@ -43,7 +41,17 @@ stable distribution.
 The CF of the RDTS distribution is given by (Rachev et
 al. (2011))
 
-TODO: Latex code for cf
+\deqn{\varphi_{KRTS}(t;\theta):=
+E_{\theta}\left[\mathrm{e}^{\mathrm{i}tX}\right]=
+\exp\left(\mathrm{i}t\mu-\mathrm{i}t\Gamma(1-\alpha)
+\left(\frac{k_+r_+}{p_++1}-\frac{k_-r_-}{p_-+1}\right) \right.\\}
+\deqn{\left. +k_+H(\mathrm{i}t;\alpha,r_+,p_+)+k_
+-H(-\mathrm{i}t;\alpha,r_-,p_-)\right),}
+where
+\deqn{\left. H\left(x;\alpha,r,p\right)=
+\frac{\Gamma(-\alpha)}{p}\left(F\left(p,-\alpha;1+p;rx\right)-1\right)\right.
+}
+\code{F} denotes the hypergeometric Function.
 }
 \examples{
 x <- seq(-5,5,0.25)

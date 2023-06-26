@@ -418,13 +418,19 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' \right)}
 #'
 #' \strong{Origin of functions}
-#' TODO: scheinbar unterscheiden sich beide Ansätze kaum. Meistens werden sind
-#' die Werte identisch, werfen aber hier und da für verschiedene Werte mal
-#' andere Werte.
+#' Since the parameterisation can be different for this
+#' characteristic function in different approaches, the respective approach can
+#' be selected with \code{functionOrigin}. For the estimation function
+#' \code{TemperedEstim} and therefore also the Monte Carlo function
+#' \code{TemperedEstim_Simulation} and the calculation of the density function
+#' \code{dMTS} only the approach of Massing (2023) can be selected. If you want
+#' to use the approach of Kim et al. (2010) for these functions, you have to
+#' clone the package from GitHub and adapt the functions accordingly.
 #' \describe{
-#'   \item{massing}{TODO}
-#'   \item{kim10}{Origin of this function in: Kim et al. (2010) Tempered stable
-#'   and tempered infinitely divisible GARCH models.}
+#'   \item{massing}{From Massing, T. (2023), 'Parametric Estimation of
+#'   Tempered Stable Laws'.}
+#'   \item{kim10}{From Kim et al. (2010) 'Tempered stable
+#'   and tempered infinitely divisible GARCH models'.}
 #' }
 #'
 #'
@@ -441,10 +447,14 @@ qTSS <- function(p, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL,
 #' @return The CF of the classical tempered stable distribution.
 #'
 #' @references
-#' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
+#' Kim, Y. S.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J.(2010), 'Tempered
+#' stable and tempered infinitely divisible GARCH models',
+#' \doi{10.1016/j.jbankfin.2010.01.015}
 #'
 #' Kuechler, U. & Tappe, S. (2013), 'Tempered stable distributions and
 #' processes' \doi{10.1016/j.spa.2013.06.012}
+#'
+#' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' @examples
 #' x <- seq(-10,10,0.25)
