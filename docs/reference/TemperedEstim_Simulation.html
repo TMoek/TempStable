@@ -18,7 +18,7 @@ can save results in a file."><meta property="og:image" content="/logo.png"><!-- 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TempStable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
@@ -63,7 +63,7 @@ can save results in a file.</p>
 <span>  <span class="va">ParameterMatrix</span>,</span>
 <span>  SampleSizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">1600</span><span class="op">)</span>,</span>
 <span>  MCparam <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  TemperedType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Classic"</span>, <span class="st">"Subordinator"</span>, <span class="st">"Normal"</span><span class="op">)</span>,</span>
+<span>  TemperedType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CTS"</span>, <span class="st">"TSS"</span>, <span class="st">"NTS"</span>, <span class="st">"MTS"</span>, <span class="st">"GTS"</span>, <span class="st">"KRTS"</span>, <span class="st">"RDTS"</span><span class="op">)</span>,</span>
 <span>  Estimfct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ML"</span>, <span class="st">"GMM"</span>, <span class="st">"Cgmm"</span>, <span class="st">"GMC"</span><span class="op">)</span>,</span>
 <span>  HandleError <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  saveOutput <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -75,6 +75,7 @@ can save results in a file.</p>
 <span>  t_scheme <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  alphaReg <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  t_free <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nb_t <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  subdivisions <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  IntegrationMethod <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  randomIntegrationLaw <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -82,7 +83,7 @@ can save results in a file.</p>
 <span>  s_max <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ncond <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  IterationControl <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  methodR <span class="op">=</span> <span class="st">"AR"</span>,</span>
+<span>  methodR <span class="op">=</span> <span class="st">"TM"</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -106,7 +107,8 @@ default=100; integer</p></dd>
 
 
 <dt>TemperedType</dt>
-<dd><p>A String. Either "Classic", "Subordinator", or "Normal".</p></dd>
+<dd><p>A String. Either "CTS", "TSS", "NTS", "MTS", "GTS",
+"KRTS", "RDTS".</p></dd>
 
 
 <dt>Estimfct</dt>
@@ -143,45 +145,52 @@ For Cgmm: <code>"2SCgmm", "CueCgmm", ...</code>.</p></dd>
 
 
 <dt>regularization</dt>
-<dd><p>regularization scheme to be used for moment methods, one of
-<code>"Tikhonov"</code> (Tikhonov), <code>"LF"</code> (Landweber-Fridmann) and
+<dd><p>regularization scheme to be used for moment methods,
+one of <code>"Tikhonov"</code> (Tikhonov), <code>"LF"</code> (Landweber-Fridmann) and
 <code>"cut-off"</code> (spectral cut-off).</p></dd>
 
 
 <dt>WeightingMatrix</dt>
 <dd><p>type of weighting matrix used to compute the
-objective function for the GMM and GMC methods, one of <code>"OptAsym"</code> (the optimal asymptotic),
-<code>"DataVar"</code> (the data driven, only for GMM) and <code>"Id"</code> (the identity matrix).</p></dd>
+objective function for the GMM and GMC methods, one of <code>"OptAsym"</code> (the
+optimal asymptotic), <code>"DataVar"</code> (the data driven, only for GMM) and
+<code>"Id"</code> (the identity matrix).</p></dd>
 
 
 <dt>t_scheme</dt>
-<dd><p>scheme used to select the points for the GMM method where the moment conditions
-are evaluated, one of <code>"equally"</code> (equally placed), <code>"NonOptAr"</code>
-(non optimal arithmetic placement), <code>"uniformOpt"</code>
-(uniform optimal placement), <code>"ArithOpt"</code> (arithmetic optimal
-placement), <code>"Var Opt"</code> (optimal variance placement) and <code>"free"</code>
-(users need to pass their own set of points in ...).</p></dd>
+<dd><p>scheme used to select the points for the GMM method where the
+moment conditions are evaluated, one of <code>"equally"</code> (equally placed),
+<code>"NonOptAr"</code> (non optimal arithmetic placement), <code>"uniformOpt"</code>
+(uniform optimal placement), <code>"ArithOpt"</code> (arithmetic optimal placement)
+, <code>"Var Opt"</code> (optimal variance placement) and <code>"free"</code> (users need
+to pass their own set of points in ...).</p></dd>
 
 
 <dt>alphaReg</dt>
-<dd><p>value of the regularisation parameter; numeric. Example Value could be ==0.01.</p></dd>
+<dd><p>value of the regularisation parameter; numeric. Example Value
+could be ==0.01.</p></dd>
 
 
 <dt>t_free</dt>
 <dd><p>sequence, if <code>t_scheme=="free"</code>.</p></dd>
 
 
+<dt>nb_t</dt>
+<dd><p>integer, if you set <code>t_scheme &lt;- "equally"</code>. nb_t could be
+== 20 for example.</p></dd>
+
+
 <dt>subdivisions</dt>
 <dd><p>Number of subdivisions used to compute the different
-integrals involved in the computation of the objective function for the Cgmm method (to
-minimise); numeric.</p></dd>
+integrals involved in the computation of the objective function for the Cgmm
+method (to minimise); numeric.</p></dd>
 
 
 <dt>IntegrationMethod</dt>
 <dd><p>Numerical integration method to be used to
-approximate the (vectorial) integrals for the Cgmm method. Users can choose between "Uniform"
-discretization or the "Simpson"'s rule (the 3-point Newton-Cotes quadrature
-rule).</p></dd>
+approximate the (vectorial) integrals for the Cgmm method. Users can choose
+between "Uniform" discretization or the "Simpson"'s rule (the 3-point
+Newton-Cotes quadrature rule).</p></dd>
 
 
 <dt>randomIntegrationLaw</dt>
@@ -195,8 +204,8 @@ conditions are considered for the Cgmm method; numeric.</p></dd>
 
 
 <dt>ncond</dt>
-<dd><p>Integer. Number of moment conditions (until order <code>ncond</code>) for the GMC method.
-Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.</p></dd>
+<dd><p>Integer. Number of moment conditions (until order <code>ncond</code>)
+for the GMC method. Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.</p></dd>
 
 
 <dt>IterationControl</dt>
@@ -205,7 +214,9 @@ to control the iterations. See Details.</p></dd>
 
 
 <dt>methodR</dt>
-<dd><p>A string. It selects the method in rCTS/rNTS/rTSS. "AR" by default.</p></dd>
+<dd><p>A string. Method generates random variates of TS distribution.
+"TM" by default. Switches automatically if the method is not applicable in
+this way.</p></dd>
 
 
 <dt>...</dt>
@@ -222,7 +233,37 @@ saveOutput == TRUE</code>, only a csv file is saved and nothing is returned.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p><strong>Error Handling</strong> It is advisable to set it to TRUE when user is
+    <p><strong>TemperedTyp</strong> With the parameter 'TemperedTyp' you can choose the
+tempered stable distribution you want to use. Here is a list of distribution
+you can choose from:</p><dl><dt>TSS</dt>
+<dd><p>Tempered stabel subordinator: See <code><a href="charTSS.html">charTSS()</a></code> for details.</p></dd>
+
+<dt>CTS</dt>
+<dd><p>Classical tempered stable distribution: See <code><a href="charCTS.html">charCTS()</a></code> for
+details.</p></dd>
+
+<dt>GTS</dt>
+<dd><p>Generalized classical tempered stable distribution: See
+<code><a href="charGTS.html">charGTS()</a></code> for details.</p></dd>
+
+<dt>NTS</dt>
+<dd><p>Normal tempered stable distribution: See <code><a href="charNTS.html">charNTS()</a></code> for
+details.</p></dd>
+
+<dt>MTS</dt>
+<dd><p>Modified tempered stable distribution: See <code><a href="charMTS.html">charMTS()</a></code> for
+details.</p></dd>
+
+<dt>RDTS</dt>
+<dd><p>Rapid decreasing tempered stable distribution: See <code><a href="charRDTS.html">charRDTS()</a></code>
+for details.</p></dd>
+
+<dt>KRTS</dt>
+<dd><p>Kim-Rachev tempered stable distribution: See <code><a href="charKRTS.html">charKRTS()</a></code> for
+details.</p></dd>
+
+
+</dl><p><strong>Error Handling</strong> It is advisable to set it to TRUE when user is
 planning to launch long simulations as it will prevent the procedure to stop
 if an error occurs for one sample data. The estimation function will produce
 a vector of NA as estimated parameters related to this (error generating)
@@ -338,10 +379,18 @@ consecutive estimation steps is smaller than RelativeErrMax;
 default = 1e-3.</p></dd>
 
 
-</dl><p><strong>Parallelization</strong>  Parallelization of the function is possible with
+</dl><p><strong>methodR</strong> Random numbers must be generated for each MC study. For
+each distribution, different methods are available for this (partly also
+depending on alpha). For more information, the documentation of the
+respective <code>r...()</code> distribution can be called up. By default, the fastest
+method is selected. Since the deviation error can amplify to the edges of
+alpha depending on the method, it is recommended to check the generated
+random numbers once for each distribution using the density function before
+starting the simulation.</p>
+<p><strong>Parallelization</strong>  Parallelization of the function is possible with
 using <code><a href="parallelizeMCsimulation.html">parallelizeMCsimulation()</a></code>. If someone wants to parallelize the
-function manually, the parameter <code>MCparam</code> must be set to <code>1</code> and the
-parameter <code>SeedOption</code> must be changed for each iteration.</p>
+function manually, the parameter <code>MCparam</code> must be set to <code>1</code> and
+the parameter <code>SeedOption</code> must be changed for each iteration.</p>
 <p>Since this package is structurally based on the <strong>"StableEstim"
 package by Tarak Kharrat and Georgi N. Boshnakov</strong>, more detailed
 documentation can be found in their documentation.</p>
@@ -376,22 +425,23 @@ characteristic function' <a href="https://doi.org/10.1017/S0266466616000025" cla
 <span class="r-in"><span><span class="fu">TemperedEstim_Simulation</span><span class="op">(</span>ParameterMatrix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.5</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                         SampleSizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, MCparam <span class="op">=</span> <span class="fl">4</span>,</span></span>
-<span class="r-in"><span>                         TemperedType <span class="op">=</span> <span class="st">"Classic"</span>, Estimfct <span class="op">=</span> <span class="st">"ML"</span>,</span></span>
+<span class="r-in"><span>                         TemperedType <span class="op">=</span> <span class="st">"CTS"</span>, Estimfct <span class="op">=</span> <span class="st">"ML"</span>,</span></span>
 <span class="r-in"><span>                         saveOutput <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------- Alpha=1.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/4 *** Estimated Remaining Time: 0h0min5sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/4 *** Estimated Remaining Time: 0h0min4sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/4 *** Estimated Remaining Time: 0h0min8sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/4 *** Estimated Remaining Time: 0h0min5sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/4 *** Estimated Remaining Time: 0h0min1sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/4 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------- Alpha=0.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/4 *** Estimated Remaining Time: 0h0min20sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/4 *** Estimated Remaining Time: 0h0min18sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/4 *** Estimated Remaining Time: 0h0min3sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/4 *** Estimated Remaining Time: 0h0min4sec. *** </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/4 *** Estimated Remaining Time: 0h0min2sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/4 *** Estimated Remaining Time: 0h0min3sec. *** </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/4 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outputMat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      alphaT delta+T delta-T lambda+T lambda-T muT data size seed   alphaE</span>
@@ -399,24 +449,24 @@ characteristic function' <a href="https://doi.org/10.1017/S0266466616000025" cla
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    1.5       1       1        1        1   0         4    3      NaN</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    1.5       1       1        1        1   0         4    5      NaN</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,]    1.5       1       1        1        1   0         4    2 1.956550</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]    0.5       1       1        1        1   0         4    7 1.950688</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]    0.5       1       1        1        1   0         4    7 0.000001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6,]    0.5       1       1        1        1   0         4    3      NaN</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [7,]    0.5       1       1        1        1   0         4    5      NaN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [8,]    0.5       1       1        1        1   0         4    2 1.968876</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         delta+E   delta-E lambda+E lambda-E         muE failure time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]        NaN       NaN      NaN      NaN         NaN       1 0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]        NaN       NaN      NaN      NaN         NaN       1 0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]        NaN       NaN      NaN      NaN         NaN       1 0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.00000100 0.1056321 2.276010 2.144765  0.11268629       0 5.14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.13496994 0.0000010 4.102014 4.312196 -0.03094070       0 6.64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]        NaN       NaN      NaN      NaN         NaN       1 0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [7,]        NaN       NaN      NaN      NaN         NaN       1 0.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [8,] 0.02626966 0.0000010 2.845231 2.683050 -0.03873027       0 6.06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [8,]    0.5       1       1        1        1   0         4    2      NaN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      delta+E   delta-E lambda+E  lambda-E       muE failure time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     NaN       NaN      NaN       NaN       NaN       1 0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]     NaN       NaN      NaN       NaN       NaN       1 0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]     NaN       NaN      NaN       NaN       NaN       1 0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]   1e-06 0.1056321 2.276010 2.1447646 0.1126863       0 3.84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]   1e-06 0.4232668 1.631045 0.7195549 0.1542970       0 6.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]     NaN       NaN      NaN       NaN       NaN       1 0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [7,]     NaN       NaN      NaN       NaN       NaN       1 0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [8,]     NaN       NaN      NaN       NaN       NaN       1 0.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">TemperedEstim_Simulation</span><span class="op">(</span>ParameterMatrix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.5</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                         SampleSizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, MCparam <span class="op">=</span> <span class="fl">4</span>,</span></span>
-<span class="r-in"><span>                         TemperedType <span class="op">=</span> <span class="st">"Classic"</span>, Estimfct <span class="op">=</span> <span class="st">"GMM"</span>,</span></span>
+<span class="r-in"><span>                         TemperedType <span class="op">=</span> <span class="st">"CTS"</span>, Estimfct <span class="op">=</span> <span class="st">"GMM"</span>,</span></span>
 <span class="r-in"><span>                         saveOutput <span class="op">=</span> <span class="cn">FALSE</span>, algo <span class="op">=</span> <span class="st">"2SGMM"</span>,</span></span>
 <span class="r-in"><span>                         regularization <span class="op">=</span> <span class="st">"cut-off"</span>,</span></span>
 <span class="r-in"><span>                         WeightingMatrix <span class="op">=</span> <span class="st">"OptAsym"</span>, t_scheme <span class="op">=</span> <span class="st">"free"</span>,</span></span>
@@ -428,21 +478,21 @@ characteristic function' <a href="https://doi.org/10.1017/S0266466616000025" cla
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/4 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/4 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outputMat</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      alphaT delta+T delta-T lambda+T lambda-T muT data size seed       alphaE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    1.5       1       1        1        1   0         4    7 1.999983e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    1.5       1       1        1        1   0         4    3 1.999996e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    1.5       1       1        1        1   0         4    5 1.000000e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]    1.5       1       1        1        1   0         4    2 1.004986e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      delta+E      delta-E    lambda+E lambda-E         muE failure time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   1e-06 7.482664e-06 3.043942990 3.360218 -0.40351635       0 0.75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   1e-06 1.575318e-06 2.422485351 2.332639  2.02124106       0 0.91</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   1e-06 2.428255e+00 1.683721458 1.618722  0.39031274       0 0.39</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]   1e-06 2.462542e+01 0.002151203 3.036380  0.09273203       0 0.61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      alphaT delta+T delta-T lambda+T lambda-T muT data size seed   alphaE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    1.5       1       1        1        1   0         4    7 1.999962</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    1.5       1       1        1        1   0         4    3 1.999997</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    1.5       1       1        1        1   0         4    5 0.000001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]    1.5       1       1        1        1   0         4    2 0.000001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      delta+E      delta-E   lambda+E lambda-E         muE failure time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   1e-06 1.840697e-05 3.04387129 3.360085 -0.40634237       0 0.72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   1e-06 1.000000e-06 2.42260711 2.332671  2.02124054       0 0.73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   1e-06 2.428255e+00 1.68372146 1.618722  0.39031274       0 0.32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]   1e-06 2.363150e+01 0.02666795 2.972394  0.09177259       0 0.48</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">TemperedEstim_Simulation</span><span class="op">(</span>ParameterMatrix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.45</span>,<span class="fl">0.55</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                         SampleSizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, MCparam <span class="op">=</span> <span class="fl">4</span>,</span></span>
-<span class="r-in"><span>                         TemperedType <span class="op">=</span> <span class="st">"Classic"</span>, Estimfct <span class="op">=</span> <span class="st">"Cgmm"</span>,</span></span>
+<span class="r-in"><span>                         TemperedType <span class="op">=</span> <span class="st">"CTS"</span>, Estimfct <span class="op">=</span> <span class="st">"Cgmm"</span>,</span></span>
 <span class="r-in"><span>                         saveOutput <span class="op">=</span> <span class="cn">FALSE</span>, algo <span class="op">=</span> <span class="st">"2SCgmm"</span>,</span></span>
 <span class="r-in"><span>                         alphaReg <span class="op">=</span> <span class="fl">0.01</span>, subdivisions <span class="op">=</span> <span class="fl">50</span>,</span></span>
 <span class="r-in"><span>                         IntegrationMethod <span class="op">=</span> <span class="st">"Uniform"</span>,</span></span>
@@ -450,44 +500,44 @@ characteristic function' <a href="https://doi.org/10.1017/S0266466616000025" cla
 <span class="r-in"><span>                         s_min <span class="op">=</span> <span class="fl">0</span>, s_max<span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------- Alpha=1.45 *** DeltaP=0.55 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/4 *** Estimated Remaining Time: 0h0min2sec. *** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/4 *** Estimated Remaining Time: 0h0min5sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/4 *** Estimated Remaining Time: 0h0min4sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/4 *** Estimated Remaining Time: 0h0min3sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/4 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outputMat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      alphaT delta+T delta-T lambda+T lambda-T muT data size seed   alphaE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   1.45    0.55       1        1        1   0         4    7 0.542067</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   1.45    0.55       1        1        1   0         4    3 1.301437</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   1.45    0.55       1        1        1   0         4    5 1.777274</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]   1.45    0.55       1        1        1   0         4    2 1.292597</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   1.45    0.55       1        1        1   0         4    3 1.301428</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   1.45    0.55       1        1        1   0         4    5 1.778277</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]   1.45    0.55       1        1        1   0         4    2 1.267287</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        delta+E   delta-E lambda+E lambda-E        muE failure time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.1204020 0.3735694 1.021255 1.306307 -1.0112375       0 0.82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4680792 0.0000010 1.433965 1.658598  0.7931090       0 2.35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1641245 0.0000010 1.661967 1.858982 -0.7489969       0 2.65</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.0000010 2.3544647 1.507313 3.251520 -0.9111893       0 4.83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.1204020 0.3735694 1.021255 1.306307 -1.0112375       0 0.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4680933 0.0000010 1.433996 1.658573  0.7931089       0 2.14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1631001 0.0000010 1.654556 1.861219 -0.7489989       0 2.55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.0000010 2.6181912 1.585889 3.468343 -0.9105200       0 4.42</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">TemperedEstim_Simulation</span><span class="op">(</span>ParameterMatrix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.45</span>,<span class="fl">0.55</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                         SampleSizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, MCparam <span class="op">=</span> <span class="fl">4</span>,</span></span>
-<span class="r-in"><span>                         TemperedType <span class="op">=</span> <span class="st">"Classic"</span>, Estimfct <span class="op">=</span> <span class="st">"GMC"</span>,</span></span>
+<span class="r-in"><span>                         TemperedType <span class="op">=</span> <span class="st">"CTS"</span>, Estimfct <span class="op">=</span> <span class="st">"GMC"</span>,</span></span>
 <span class="r-in"><span>                         saveOutput <span class="op">=</span> <span class="cn">FALSE</span>, algo <span class="op">=</span> <span class="st">"2SGMC"</span>,</span></span>
 <span class="r-in"><span>                         alphaReg <span class="op">=</span> <span class="fl">0.01</span>, WeightingMatrix <span class="op">=</span> <span class="st">"OptAsym"</span>,</span></span>
 <span class="r-in"><span>                         regularization <span class="op">=</span> <span class="st">"cut-off"</span>, ncond <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------- Alpha=1.45 *** DeltaP=0.55 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/4 *** Estimated Remaining Time: 0h0min3sec. *** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 1/4 *** Estimated Remaining Time: 0h0min2sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 2/4 *** Estimated Remaining Time: 0h0min3sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 3/4 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *** Iter 4/4 *** Estimated Remaining Time: 0h0min0sec. *** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outputMat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      alphaT delta+T delta-T lambda+T lambda-T muT data size seed    alphaE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   1.45    0.55       1        1        1   0         4    7 1.0071494</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   1.45    0.55       1        1        1   0         4    3 0.2554630</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   1.45    0.55       1        1        1   0         4    3 0.2555984</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   1.45    0.55       1        1        1   0         4    5 0.9999964</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,]   1.45    0.55       1        1        1   0         4    2 1.6603913</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        delta+E      delta-E  lambda+E  lambda-E         muE failure time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.000001 1.000000e-06 11.093087 10.168951  -0.8131496       0 0.92</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 13.182909 5.849044e+04  2.993486 93.064799 -11.5293848       0 1.57</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.000001 1.000000e-06  6.911297  5.968896  -0.6495758       0 0.40</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]  0.000001 3.237970e-03  1.854717  2.373008  -0.4168512       0 0.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.000001 1.000000e-06 11.093087 10.168951  -0.8131496       0 0.80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 13.088435 5.305584e+04  2.990510 87.780647 -11.5502957       0 1.32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.000001 1.000000e-06  6.911297  5.968896  -0.6495758       0 0.32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]  0.000001 3.237970e-03  1.854717  2.373008  -0.4168512       0 0.11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
@@ -505,7 +555,7 @@ characteristic function' <a href="https://doi.org/10.1017/S0266466616000025" cla
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

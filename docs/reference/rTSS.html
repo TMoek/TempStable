@@ -18,7 +18,7 @@ of the tempered stable subordinator distribution."><meta property="og:image" con
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TempStable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@ of the tempered stable subordinator distribution.</p>
 <span>  delta <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  lambda <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  theta <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  methodR <span class="op">=</span> <span class="st">"AR"</span>,</span>
+<span>  methodR <span class="op">=</span> <span class="st">"TM"</span>,</span>
 <span>  k <span class="op">=</span> <span class="fl">10000</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -93,7 +93,7 @@ of the tempered stable subordinator distribution.</p>
 
 
 <dt>methodR</dt>
-<dd><p>A String. Either "AR" or "SR".</p></dd>
+<dd><p>A String. Either "TM", "AR" or "SR".</p></dd>
 
 
 <dt>k</dt>
@@ -109,53 +109,66 @@ by default.</p></dd>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p><code>theta</code> denotes the parameter vector <code>(alpha, delta, lambda)</code>. Either provide the parameters
-<code>alpha</code>, <code>delta</code>, <code>lambda</code> individually OR provide <code>theta</code>.
-"AR" stands for the Acceptance-Rejection Method and "SR" for a truncated infinite shot
-noise series representation. "AR" is the standard method used.
-For more details, see references.</p>
+    <p><code>theta</code> denotes the parameter vector <code>(alpha, delta, lambda)</code>.
+Either provide the parameters <code>alpha</code>, <code>delta</code>, <code>lambda</code>
+individually OR provide <code>theta</code>.
+"AR" stands for the Acceptance-Rejection Method and "SR" for a truncated
+infinite shot noise series representation. "TM" stands for Two Methods as
+two different methods are used depending on which will be faster. In this
+method the function <code><a href="https://rdrr.io/pkg/copula/man/retstable.html" class="external-link">copula::retstable()</a></code> is called. "TM" is the standard
+method used.</p>
+<p>It is recommended to check the generated random numbers once for each
+distribution using the density function. If the random numbers are shifted,
+e.g. for the method "SR", it may be worthwhile to increase k.</p>
+<p>For more details, see references.</p>
     </div>
     <div id="references">
     <h2>References</h2>
     <p>Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'</p>
 <p>Kawai, R &amp; Masuda, H (2011), 'On simulation of tempered stable random
 variates' <a href="https://doi.org/10.1016/j.cam.2010.12.014" class="external-link">doi:10.1016/j.cam.2010.12.014</a></p>
+<p>Hofert, M (2011), 'Sampling Exponentially Tilted Stable Distributions'
+<a href="https://doi.org/10.1145/2043635.2043638" class="external-link">doi:10.1145/2043635.2043638</a></p>
+    </div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p><code><a href="https://rdrr.io/pkg/copula/man/retstable.html" class="external-link">copula::retstable()</a></code> as "TM" uses this function.</p></div>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">rTSS</span><span class="op">(</span><span class="fl">100</span>,<span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 1.6323375 1.3657765 1.3741514 1.2227996 1.3465096 1.2838966 3.3112045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] 0.8756158 2.9394987 1.1514772 1.5196888 2.0953777 2.1904605 3.1385368</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 1.2494331 1.8208203 0.8997275 1.0083072 0.6908096 2.7667694 4.2208238</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] 1.0849140 1.4726869 2.5995910 2.1797970 1.2732512 1.2950217 4.2934417</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29] 2.0221813 3.2534833 3.6163262 3.1895766 1.6234495 1.3054140 1.1918688</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] 0.9990983 1.4651918 1.8281107 2.7110874 0.8420592 2.7979917 2.7891148</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 1.5923369 0.7069871 1.8114035 1.2486695 1.1281430 1.0035351 0.7614477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50] 1.3307511 2.2895492 2.5972117 0.6709428 1.3416112 1.6154668 0.5231238</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] 2.8053407 0.9654455 1.7162297 1.2398392 1.3808506 1.8596199 0.4692675</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64] 0.7318040 2.8962624 0.8926677 0.6714150 1.7040155 1.2331007 0.5096005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 1.5372797 1.3098870 1.5969980 1.1956747 2.0591018 1.0129906 0.8714762</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 1.6554808 2.5370728 0.9579535 3.0256704 2.4028241 1.9828426 2.0210412</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] 1.5555061 3.7343834 4.5164462 0.9396777 0.7468095 1.6011380 2.2031832</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] 1.1496941 1.2446190 1.3369120 1.6287030 4.2347754 3.8266477 0.6979203</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] 0.9661528 1.7917934</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 1.4583757 1.6632501 2.0656764 1.2373118 2.0895579 1.0724561 1.0713649</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] 0.7705848 1.2440701 1.2822358 0.8628020 1.1125700 3.8362038 1.8056464</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 1.1141210 3.7055805 1.3245349 1.0200101 2.6029855 2.9474003 0.7365623</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] 0.8381082 0.9336746 1.8346164 1.0044904 2.2608675 1.7072663 2.1712484</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29] 4.8933917 4.2509487 1.6992963 1.4520361 3.7884889 3.0800224 2.3211423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] 1.9168192 2.8215049 1.3664914 0.9683763 0.6347859 2.2636707 1.2590925</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 1.7466283 0.5657153 0.8876130 1.7299324 0.3915999 1.7924967 1.2866924</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50] 0.8852168 1.1917650 1.1237519 3.0993917 1.3652135 1.9167521 1.5136316</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] 0.8880191 1.4627200 1.5353104 0.5279576 1.2564876 2.0667096 0.8930116</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64] 1.4466728 1.9880731 0.9297006 1.5119925 0.8877712 0.8393094 0.7725380</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 1.2062304 1.3367447 0.6022954 1.8495038 1.4659997 1.1359290 1.1061656</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 4.1773032 1.2725010 1.2904398 1.3451513 1.3987436 2.2482605 2.4351131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] 0.8353403 0.5176949 1.2182143 0.8437278 1.4045914 0.5175722 2.2379647</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] 2.2267734 2.4220678 0.8774707 1.5773493 0.9838558 1.4611709 2.8334821</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] 0.5986422 1.1726710</span>
 <span class="r-in"><span><span class="fu">rTSS</span><span class="op">(</span><span class="fl">100</span>,<span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="cn">NULL</span>,<span class="st">"SR"</span>,<span class="fl">50</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 1.3236320 1.3048037 2.1447813 0.6482600 1.6651216 2.4083878 2.8412871</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] 0.8562726 1.6700963 0.8443187 0.8020044 1.3336682 2.8107314 1.5770181</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 1.0642019 0.6082546 0.7769458 0.8887385 1.1578725 3.8291804 1.0295676</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] 1.7056403 2.9886254 0.9118317 4.0505410 1.2240291 2.2316639 1.4950632</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29] 1.2659392 3.3347833 1.1193089 3.6525495 5.6081594 0.9160321 0.7780987</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] 3.2566262 1.1924683 3.4626048 3.1984415 2.1582807 3.4992753 2.8789359</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 1.6229291 2.0416731 2.8131133 1.6182803 2.4521452 2.0851543 1.1300764</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50] 1.7181386 2.4129754 1.3703138 0.8039372 1.6892775 1.7705639 1.5236019</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] 2.1074078 1.5553566 0.8501047 2.3527323 0.8752620 1.4009336 1.2408172</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64] 1.8638096 0.8549938 2.3830044 1.3818514 1.0165542 3.2644516 0.7595065</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 1.3326324 0.9264891 2.0447706 1.2664364 1.3196011 2.0355480 5.3254430</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 0.9523190 0.9941440 1.9176517 1.6557198 2.5885717 3.0479015 2.2544515</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] 2.4650600 1.4243663 0.3755334 0.4788290 0.4847847 3.0587743 0.5871691</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] 2.7279908 2.2856408 5.6593852 1.2033259 1.6605924 1.7826664 1.5081666</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] 3.0249609 1.8049881</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 1.9453127 1.8466299 0.6907699 1.6245756 1.5118690 1.1680851 0.9925529</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] 2.0904955 3.2061681 1.9826629 1.5355394 0.4155417 2.2161755 2.6538276</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 1.8136229 1.6907369 2.4287636 1.6759213 0.5248442 1.6338075 2.2772707</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] 4.7125421 0.8870366 0.9620239 2.7521315 1.0373965 1.1336556 2.2620787</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29] 2.5101990 1.4436114 0.9994393 0.8275206 0.8960774 0.9736340 1.1763805</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] 2.2005444 1.5755204 2.4520042 1.2474552 1.7743722 0.9955159 1.2625734</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 3.2333399 0.5506186 2.1172775 4.1561386 1.8415682 2.5729962 1.4417597</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50] 3.1962129 0.7979705 4.7250759 0.2830478 1.3781311 0.5969741 1.1140808</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] 2.7534116 1.4367373 2.1797909 1.1484198 1.1463197 0.5088579 2.4802867</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64] 1.5916848 1.7183683 1.6507296 0.9122264 1.3395311 1.6298262 1.7580876</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 2.1388841 2.5772009 1.7708364 0.7559716 3.4032357 1.0268233 1.4217619</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] 4.1241101 1.2779820 1.6376790 3.2283201 1.7455832 1.5318637 1.0109317</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] 0.8607448 1.1492461 1.1579701 2.2879786 3.4984554 2.1855866 1.7882808</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] 2.9665427 1.3066292 2.1092196 1.9680124 1.8912956 1.5609094 1.6412738</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] 1.7407151 0.9302302</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -171,7 +184,7 @@ variates' <a href="https://doi.org/10.1016/j.cam.2010.12.014" class="external-li
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

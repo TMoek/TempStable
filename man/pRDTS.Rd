@@ -6,7 +6,7 @@
 (RDTS) distribution}
 \usage{
 pRDTS(
-  p,
+  q,
   alpha = NULL,
   delta = NULL,
   lambdap = NULL,
@@ -21,6 +21,8 @@ pRDTS(
 )
 }
 \arguments{
+\item{q}{A numeric vector of quantiles.}
+
 \item{alpha}{Stability parameter. A real number between 0 and 2.}
 
 \item{delta}{Scale parameter for the left tail. A real number > 0.}
@@ -33,6 +35,9 @@ pRDTS(
 
 \item{theta}{Parameters stacked as a vector.}
 
+\item{dens_method}{Algorithm for numerical evaluation. Currently, only \code{
+"FFT"} available.}
+
 \item{a}{Starting point of FFT, if \code{dens_method == "FFT"}. -20
 by default.}
 
@@ -43,8 +48,6 @@ by default.}
 size.}
 
 \item{...}{Possibility to modify \code{stats::integrate()}.}
-
-\item{q}{A numeric vector of quantiles.}
 }
 \value{
 As \code{q} is a numeric vector, the return value is also a numeric

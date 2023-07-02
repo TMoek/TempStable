@@ -21,6 +21,8 @@ pMTS(
 )
 }
 \arguments{
+\item{q}{A vector of real numbers where the CF is evaluated.}
+
 \item{alpha}{Stability parameter. A real number between 0 and 2.}
 
 \item{delta}{Scale parameter. A real number > 0.}
@@ -44,8 +46,6 @@ by default.}
 size.}
 
 \item{...}{Possibility to modify \code{stats::integrate()}.}
-
-\item{t}{A vector of real numbers where the CF is evaluated.}
 }
 \value{
 As \code{q} is a numeric vector, the return value is also a numeric
@@ -60,9 +60,4 @@ tempered stable distribution.
 lambdap, lambdam, mu)}. Either provide the parameters individually OR
 provide \code{theta}.
 The function integrates the PDF numerically with \code{integrate()}.
-}
-\examples{
-#x <- seq(-5,5,0.25)
-#y <- pMTS(x,0.5,1,1,1,0)
-
 }

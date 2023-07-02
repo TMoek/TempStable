@@ -22,7 +22,19 @@
     <loc>/reference/charCTS.html</loc>
   </url>
   <url>
+    <loc>/reference/charGTS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/charKRTS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/charMTS.html</loc>
+  </url>
+  <url>
     <loc>/reference/charNTS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/charRDTS.html</loc>
   </url>
   <url>
     <loc>/reference/charTSS.html</loc>
@@ -31,7 +43,19 @@
     <loc>/reference/dCTS.html</loc>
   </url>
   <url>
+    <loc>/reference/dGTS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dKRTS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dMTS.html</loc>
+  </url>
+  <url>
     <loc>/reference/dNTS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/dRDTS.html</loc>
   </url>
   <url>
     <loc>/reference/dTSS.html</loc>
@@ -46,7 +70,19 @@
     <loc>/reference/pCTS.html</loc>
   </url>
   <url>
+    <loc>/reference/pGTS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/pKRTS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/pMTS.html</loc>
+  </url>
+  <url>
     <loc>/reference/pNTS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/pRDTS.html</loc>
   </url>
   <url>
     <loc>/reference/pTSS.html</loc>
@@ -64,7 +100,19 @@
     <loc>/reference/rCTS.html</loc>
   </url>
   <url>
+    <loc>/reference/rGTS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rKRTS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rMTS.html</loc>
+  </url>
+  <url>
     <loc>/reference/rNTS.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rRDTS.html</loc>
   </url>
   <url>
     <loc>/reference/rTSS.html</loc>

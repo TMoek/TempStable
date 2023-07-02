@@ -59,9 +59,6 @@ function.
 \code{theta} denotes the parameter vector \code{(alpha, kp, km,
 rp, rm, pp. pm, mu)}. Either provide the parameters individually OR
 provide \code{theta}.
-}
-\examples{
-x <- seq(-5,5,0.25)
-y<- dKRTS(x,0.25,1,1,1,1,1,1,0)
 
+For examples, compare with \code{\link[=dCTS]{dCTS()}}.
 }

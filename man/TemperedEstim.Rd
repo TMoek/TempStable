@@ -76,6 +76,9 @@ could be ==0.01.}
 
 \item{t_free}{sequence, if \code{t_scheme=="free"}.}
 
+\item{nb_t}{integer, if you set \code{t_scheme <- "equally"}. nb_t could be
+== 20 for example.}
+
 \item{subdivisions}{Number of subdivisions used to compute the different
 integrals involved in the computation of the objective function for the Cgmm
 method (to minimise); numeric.}
@@ -104,21 +107,37 @@ asymptotic confidence level.}
 Object of a estim-class. See details for more information.
 }
 \description{
-Main estimation function for the tempered stable subordinator distribution
-(TSS), the classical tempered stable distribution (CTS), and the normal
-tempered stable distribution (NTS). It allows the user to select the
+Main estimation function for the tempered stabled distributions
+offered within this package. It allows the user to select the
 preferred estimation method and several related options.
 }
 \details{
 \strong{TemperedType} Detailed documentation of the individual tempered
 stable distributions can be viewed in the respective characteristic function.
-Use \code{\link[=charTSS]{charTSS()}}, \code{\link[=charCTS]{charCTS()}}, or \code{\link[=charNTS]{charNTS()}}. TODO: For all other
+With the parameter 'TemperedTyp' you can choose the tempered stable
+distribution you want to use. Here is a list of distribution you can choose
+from:
+\describe{
+\item{TSS}{Tempered stabel subordinator: See \code{\link[=charTSS]{charTSS()}} for details.}
+\item{CTS}{Classical tempered stable distribution: See \code{\link[=charCTS]{charCTS()}} for
+details.}
+\item{GTS}{Generalized classical tempered stable distribution: See
+\code{\link[=charGTS]{charGTS()}} for details.}
+\item{NTS}{Normal tempered stable distribution: See \code{\link[=charNTS]{charNTS()}} for
+details.}
+\item{MTS}{Modified tempered stable distribution: See \code{\link[=charMTS]{charMTS()}} for
+details.}
+\item{RDTS}{Rapid decreasing tempered stable distribution: See \code{\link[=charRDTS]{charRDTS()}}
+for details.}
+\item{KRTS}{Kim-Rachev tempered stable distribution: See \code{\link[=charKRTS]{charKRTS()}} for
+details.}
+}
 
 \strong{Estimfct} Additional parameters are needed for different estimation
 functions. These are listed below for each function. The list of additional
 parameters starts after the parameter \code{eps} in the parameter list.
 \describe{
-\item{For ML:}{ See usage of Maximum likelihood estimation in Kim et al.
+\item{For ML:}{See usage of Maximum likelihood estimation in Kim et al.
 (2008). No additional parameters are needed.}
 \item{For GMM:}{Generalized Method of Moments by Feuerverger (1981).
 The parameters \code{algo, alphaReg, regularization, WeightingMatrix, and
@@ -230,7 +249,7 @@ TemperedEstim("TSS", "GMC", rTSS(20, 0.5, 1, 1), algo = "2SGMC",
 Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 
 Kim, Y. s., Rachev, S. T., Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
-market models with lévy processes and time-varying volatility'
+market models with levy processes and time-varying volatility'
 \doi{10.1016/j.jbankfin.2007.11.004}
 
 Hansen, L. P. (1982), 'Large sample properties of generalized method of

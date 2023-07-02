@@ -2,20 +2,36 @@
 
 #' Estimation function
 #'
-#' Main estimation function for the tempered stable subordinator distribution
-#' (TSS), the classical tempered stable distribution (CTS), and the normal
-#' tempered stable distribution (NTS). It allows the user to select the
+#' Main estimation function for the tempered stabled distributions
+#' offered within this package. It allows the user to select the
 #' preferred estimation method and several related options.
 #'
 #' \strong{TemperedType} Detailed documentation of the individual tempered
 #' stable distributions can be viewed in the respective characteristic function.
-#' Use [charTSS()], [charCTS()], or [charNTS()]. TODO: For all other
+#' With the parameter 'TemperedTyp' you can choose the tempered stable
+#' distribution you want to use. Here is a list of distribution you can choose
+#' from:
+#' \describe{
+#'   \item{TSS}{Tempered stabel subordinator: See [charTSS()] for details.}
+#'   \item{CTS}{Classical tempered stable distribution: See [charCTS()] for
+#'   details.}
+#'   \item{GTS}{Generalized classical tempered stable distribution: See
+#'   [charGTS()] for details.}
+#'   \item{NTS}{Normal tempered stable distribution: See [charNTS()] for
+#'   details.}
+#'   \item{MTS}{Modified tempered stable distribution: See [charMTS()] for
+#'   details.}
+#'   \item{RDTS}{Rapid decreasing tempered stable distribution: See [charRDTS()]
+#'   for details.}
+#'   \item{KRTS}{Kim-Rachev tempered stable distribution: See [charKRTS()] for
+#'   details.}
+#' }
 #'
 #' \strong{Estimfct} Additional parameters are needed for different estimation
 #' functions. These are listed below for each function. The list of additional
 #' parameters starts after the parameter \code{eps} in the parameter list.
 #' \describe{
-#'   \item{For ML:}{ See usage of Maximum likelihood estimation in Kim et al.
+#'   \item{For ML:}{See usage of Maximum likelihood estimation in Kim et al.
 #'   (2008). No additional parameters are needed.}
 #'   \item{For GMM:}{Generalized Method of Moments by Feuerverger (1981).
 #'   The parameters \code{algo, alphaReg, regularization, WeightingMatrix, and
@@ -112,7 +128,7 @@
 #' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
 #'
 #' Kim, Y. s., Rachev, S. T., Bianchi, M. L. & Fabozzi, F. J. (2008), 'Financial
-#' market models with lévy processes and time-varying volatility'
+#' market models with levy processes and time-varying volatility'
 #' \doi{10.1016/j.jbankfin.2007.11.004}
 #'
 #' Hansen, L. P. (1982), 'Large sample properties of generalized method of
@@ -179,6 +195,8 @@
 #' for the GMC method. Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.
 #' @param IterationControl only used if algo = "IT..." or algo = "Cue..."
 #' to control the iterations. See Details.
+#' @param nb_t integer, if you set \code{t_scheme <- "equally"}. nb_t could be
+#' == 20 for example.
 #' @param ... Other arguments to be passed to the estimation function or the
 #' asymptotic confidence level.
 #'
@@ -389,90 +407,7 @@ TemperedEstim <- function(TemperedType = c("CTS", "TSS", "NTS", "MTS", "GTS",
     OutputObj
 }
 
-# Function title
-#
-# Gap holder for description.
-#
-# Gap holder for details.
-#
-# @param TemperedType A String. Either "CTS", "TSS", "NTS", or
-# "CGMY".
-# @param EstimMethod A String. Either "ML", "GMM", "Cgmm", or "GMC".
-# @param data A gap holder.
-# @param theta0 A gap holder. \code{NULL} by default.
-# @param ComputeCov A Boolean. \code{FALSE} by default.
-# @param HandleError A Boolean. \code{TRUE} by default.
-# @param eps A gap holder. \code{1e-06} by default.
-#
-# @return Gap holder for return.
-#
-# @export
-# TemperedEstim_v2 <- function(TemperedType = c("CTS", "TSS",
-#                                               "NTS", "CGMY"),
-#                              EstimMethod = c("ML", "GMM", "Cgmm", "GMC"), data,
-#                              theta0 = NULL, ComputeCov = FALSE,
-#                              HandleError = TRUE, eps = 1e-06, ...) {
-#     if (missing(data))
-#         stop("data not provided !")
-#     if (is.null(theta0)) {
-#         if (TemperedType == "CTS") {
-#             theta0 <- MoC_CTS(x = data, c(1.5, 1, 1, 1, 1, 0), eps = eps)
-#         } else if (TemperedType == "TSS") {
-#             theta0 <- MoC_TSS(x = data, c(0.5, 1, 1), eps = eps)
-#         } else if (TemperedType == "NTS") {
-#             theta0 <- MoC_NTS(x = data, c(0.5, 0, 1, 1, 0), eps = eps)
-#         } else {
-#             theta0 <- MoC_CGMY(x = data, c(1, 1, 1, 1.5), eps = eps)
-#         }
-#     }
-#     if (TemperedType == "CTS") {
-#         OutputObj <- list(par = numeric(6), par0 = theta0,
-#                           vcov = matrix(0, 6, 6), confint = matrix(0, 6, 2),
-#                           data = data, failure = 1)
-#     } else if (TemperedType == "TSS") {
-#         OutputObj <- list(par = numeric(3), par0 = theta0,
-#                           vcov = matrix(0, 3, 3), confint = matrix(0, 3, 2),
-#                           data = data, failure = 1)
-#     } else if (TemperedType == "NTS") {
-#         OutputObj <- list(par = numeric(5), par0 = theta0,
-#                           vcov = matrix(0, 5, 5), confint = matrix(0, 5, 2),
-#                           data = data, failure = 1)
-#     } else {
-#         OutputObj <- list(par = numeric(4), par0 = theta0,
-#                           vcov = matrix(0, 4, 4), confint = matrix(0, 4, 2),
-#                           data = data, failure = 1)
-#     }
-#     type <- match.arg(TemperedType)
-#     method <- match.arg(EstimMethod)
-#     EstimFcts <- getTempEstimFcts(type, method)
-#     res <- .initResTemp(type, method)
-#     if (HandleError) {
-#         tr <- tryCatch(EstimFcts$Params(x = data, theta0 = theta0, ...),
-#                        error = function(e) e)
-#         err <- inherits(tr, "error")
-#         if (!err) {
-#             res <- tr
-#             OutputObj$failure <- 0
-#         }
-#     } else {
-#         res <- EstimFcts$Params(x = data, theta0 = theta0, ...)
-#         OutputObj$failure <- 0
-#     }
-#     OutputObj$par <- NameParamsObjectsTemp(res$Estim$par, type)
-#     OutputObj$others <- res$Estim
-#     OutputObj$duration <- as.numeric(res$duration)
-#     OutputObj$method <- res$method
-#     if (ComputeCov) {
-#         OutputObj$vcov <- EstimFcts$CovarianceMat(data = OutputObj$data,
-#                                                   EstimObj = res, ...)
-#         OutputObj$confint <- AsymptoticConfidenceInterval(
-#           thetaEst = OutputObj$par, n_sample = OutputObj$sampleSize,
-#           Cov = OutputObj$vcov, qLaw = qnorm, type = type, ...)
-#     }
-#     OutputObj
-# }
-
-##### auxiliaries#####
+##### auxiliaries #####
 
 # No export.
 getTempEstimFcts <- function(
@@ -658,7 +593,7 @@ getTempEstimFcts <- function(
         npar <- 7
         list(Estim = list(par = rep(NaN, npar)), duration = 0,
               method = paste(type, method, "failed", sep = "_"))
-    } else if (type == "´KRTS") {
+    } else if (type == "KRTS") {
         npar <- 8
         list(Estim = list(par = rep(NaN, npar)), duration = 0,
              method = paste(type, method, "failed", sep = "_"))

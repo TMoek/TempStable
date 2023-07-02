@@ -54,8 +54,6 @@ tempered stable distributions is not available in closed form.
 Relies on fast Fourier transform (FFT) applied to the characteristic
 function.
 }
-\examples{
-x <- seq(-5,5,0.25)
-y <- dMTS(x,0.5,1,1,1,0)
-
+\details{
+For examples, compare with \code{\link[=dCTS]{dCTS()}}.
 }

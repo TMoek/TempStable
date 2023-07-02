@@ -6,7 +6,24 @@
 #' can save results in a file.
 #'
 #' @details
-#' \strong{TemperedTyp} TODO: bulletlist with all different tempered types.
+#' \strong{TemperedTyp} With the parameter 'TemperedTyp' you can choose the
+#' tempered stable distribution you want to use. Here is a list of distribution
+#' you can choose from:
+#' \describe{
+#'   \item{TSS}{Tempered stabel subordinator: See [charTSS()] for details.}
+#'   \item{CTS}{Classical tempered stable distribution: See [charCTS()] for
+#'   details.}
+#'   \item{GTS}{Generalized classical tempered stable distribution: See
+#'   [charGTS()] for details.}
+#'   \item{NTS}{Normal tempered stable distribution: See [charNTS()] for
+#'   details.}
+#'   \item{MTS}{Modified tempered stable distribution: See [charMTS()] for
+#'   details.}
+#'   \item{RDTS}{Rapid decreasing tempered stable distribution: See [charRDTS()]
+#'   for details.}
+#'   \item{KRTS}{Kim-Rachev tempered stable distribution: See [charKRTS()] for
+#'   details.}
+#' }
 #'
 #' \strong{Error Handling} It is advisable to set it to TRUE when user is
 #' planning to launch long simulations as it will prevent the procedure to stop
@@ -109,9 +126,9 @@
 #' \strong{methodR} Random numbers must be generated for each MC study. For
 #' each distribution, different methods are available for this (partly also
 #' depending on alpha). For more information, the documentation of the
-#' respective [r...] distribution can be called up. By default, the fastest
+#' respective \code{r...()} distribution can be called up. By default, the fastest
 #' method is selected. Since the deviation error can amplify to the edges of
-#' [alpha] depending on the method, it is recommended to check the generated
+#' alpha depending on the method, it is recommended to check the generated
 #' random numbers once for each distribution using the density function before
 #' starting the simulation.
 #'
@@ -205,6 +222,8 @@
 #' for the GMC method. Must not be less than 3 for TSS, 6 for CTS, 5 for NTS.
 #' @param IterationControl only used if algo = "IT..." or algo = "Cue..."
 #' to control the iterations. See Details.
+#' @param nb_t integer, if you set \code{t_scheme <- "equally"}. nb_t could be
+#' == 20 for example.
 #' @param methodR A string. Method generates random variates of TS distribution.
 #' "TM" by default. Switches automatically if the method is not applicable in
 #' this way.
@@ -709,10 +728,6 @@ ComputeMCSimForTempered <- function(thetaT, MCparam, SampleSizes, SeedVector,
         } else if (TemperedType == "RDTS") {
             x <- rRDTS(n = size, theta = thetaT, methodR = methodR, ...)
         }
-
-        #TODO: Different options. For r-values out of density function it would
-        # make sense to create this funtion befor MC
-
         # else {
         #     x <- rCGMY(n = size, C = thetaT[1], M = thetaT[2],
         #                G = thetaT[3], Y = thetaT[4])

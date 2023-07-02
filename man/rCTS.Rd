@@ -57,9 +57,10 @@ provide \code{theta}.
 "AR" stands for the approximate Acceptance-Rejection Method and "SR" for a
 truncated infinite shot noise series representation. "TM" stands for Two
 Methods as two different methods are used depending on which will be faster.
-"TM" works only for \link{alpha < 1}.
-In this method the function \code{\link[copula:retstable]{copula::retstable()}} is called. For \link{alpha < 1},
-"TM" is the default method, while "AR" for \link{alpha > 1} is the default method.
+"TM" works only for \code{alpha < 1}.
+In this method the function \code{\link[copula:retstable]{copula::retstable()}} is called. For
+\code{alpha < 1}, "TM" is the default method, while "AR" for \code{alpha > 1}
+is the default method.
 
 It is recommended to check the generated random numbers once for each
 distribution using the density function. If the random numbers are shifted,

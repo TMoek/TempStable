@@ -99,7 +99,7 @@ market models with lévy processes and time-varying volatility'
 
 Kim, Y. S.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2009), 'A New
 Tempered Stable Distribution and Its Application to Finance'
-\doi{0.1007/978-3-7908-2050-8_5}
+\doi{10.1007/978-3-7908-2050-8_5}
 
 Rachev, S. T.; Kim, Y. S.; Bianchi, M. L. & Fabozzi, F. J. (2011),
 'Financial models with Lévy processes and volatility clustering'

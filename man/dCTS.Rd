@@ -48,6 +48,8 @@ by default.}
 
 \item{nf}{Pieces the transformation is divided in. Limited to power-of-two
 size. 2048 by default.}
+
+\item{...}{Possibility to modify \code{\link[=charCTS]{charCTS()}}.}
 }
 \value{
 As \code{x} is a numeric vector, the return value is also a numeric

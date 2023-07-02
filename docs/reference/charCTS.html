@@ -18,7 +18,7 @@ stable distribution. See Kuechler &amp;amp; Tappe (2013) for details."><meta pro
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TempStable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
@@ -67,7 +67,8 @@ stable distribution. See Kuechler &amp; Tappe (2013) for details.</p>
 <span>  lambdap <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  lambdam <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  mu <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  theta <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  theta <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  functionOrigin <span class="op">=</span> <span class="st">"massing"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -104,18 +105,23 @@ stable distribution. See Kuechler &amp; Tappe (2013) for details.</p>
 <dt>theta</dt>
 <dd><p>Parameters stacked as a vector.</p></dd>
 
+
+<dt>functionOrigin</dt>
+<dd><p>A string. Either "massing", or "kim10".</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>The CF of the tempered stable subordinator distribution.</p>
+<p>The CF of the classical tempered stable distribution.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p><code>theta</code> denotes the parameter vector <code>(alpha, deltap, deltam,
 lambdap, lambdam, mu)</code>. Either provide the parameters individually OR
-provide <code>theta</code>.
+provide <code>theta</code>. Characteristic function shown here is from Massing
+(2023).
 $$\varphi_{CTS}(t;\theta):=
 E_{\theta}\left[
 \mathrm{e}^{\mathrm{i}tX}\right]=
@@ -126,12 +132,32 @@ $$\left. +\delta_-\Gamma(-\alpha)
 \left((\lambda_-+\mathrm{i}t)^{\alpha}-\lambda_-^{\alpha}-\mathrm{i}t\alpha
 \lambda_-^{\alpha-1}\right)
 \right)$$</p>
-    </div>
+<p><strong>Origin of functions</strong>
+Since the parameterisation can be different for this
+characteristic function in different approaches, the respective approach can
+be selected with <code>functionOrigin</code>. For the estimation function
+<code>TemperedEstim</code> and therefore also the Monte Carlo function
+<code>TemperedEstim_Simulation</code> and the calculation of the density function
+<code>dMTS</code> only the approach of Massing (2023) can be selected. If you want
+to use the approach of Kim et al. (2010) for these functions, you have to
+clone the package from GitHub and adapt the functions accordingly.</p><dl><dt>massing</dt>
+<dd><p>From Massing, T. (2023), 'Parametric Estimation of
+Tempered Stable Laws'.</p></dd>
+
+<dt>kim10</dt>
+<dd><p>From Kim et al. (2010) 'Tempered stable
+and tempered infinitely divisible GARCH models'.</p></dd>
+
+
+</dl></div>
     <div id="references">
     <h2>References</h2>
-    <p>Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'</p>
+    <p>Kim, Y. S.; Rachev, S. T.; Bianchi, M. L. &amp; Fabozzi, F. J.(2010), 'Tempered
+stable and tempered infinitely divisible GARCH models',
+<a href="https://doi.org/10.1016/j.jbankfin.2010.01.015" class="external-link">doi:10.1016/j.jbankfin.2010.01.015</a></p>
 <p>Kuechler, U. &amp; Tappe, S. (2013), 'Tempered stable distributions and
 processes' <a href="https://doi.org/10.1016/j.spa.2013.06.012" class="external-link">doi:10.1016/j.spa.2013.06.012</a></p>
+<p>Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'</p>
     </div>
 
     <div id="ref-examples">
@@ -153,7 +179,7 @@ processes' <a href="https://doi.org/10.1016/j.spa.2013.06.012" class="external-l
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -14,8 +14,7 @@ MoCObjective_RDTS <- function(x, parms) {
       F4 = 2^((4-x[1]-2)/2) * x[2] * gamma((4-x[1])/2) *
         (x[3]^(x[1]-4)+x[4]^(x[1]-4)) - parms[4],
       F5 = 2^((5-x[1]-2)/2) * x[2] * gamma((5-x[1])/2) *
-        (x[3]^(x[1]-5)-x[4]^(x[1]-5)) - parms[5],
-        )
+        (x[3]^(x[1]-5)-x[4]^(x[1]-5)) - parms[5])
 }
 
 #' @importFrom rootSolve multiroot

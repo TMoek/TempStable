@@ -60,13 +60,8 @@ function.
 lambdap, lambdam, mu)}. Either provide the parameters individually OR
 provide \code{theta}. Methods include only the the Fast Fourier Transform
 (FFT).
-}
-\examples{
-\donttest{
-x <- seq(-5,5,0.4)
-y <- dRDTS(x,0.6,1,1,1,0,NULL,"FFT",-20,20,128)
-}
 
+For examples, compare with \code{\link[=dCTS]{dCTS()}}.
 }
 \references{
 Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'

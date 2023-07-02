@@ -72,7 +72,7 @@
 #'
 #' Kim, Y. S.; Rachev, S. T.; Bianchi, M. L. & Fabozzi, F. J. (2009), 'A New
 #' Tempered Stable Distribution and Its Application to Finance'
-#' \doi{0.1007/978-3-7908-2050-8_5}
+#' \doi{10.1007/978-3-7908-2050-8_5}
 #'
 #' Rachev, S. T.; Kim, Y. S.; Bianchi, M. L. & Fabozzi, F. J. (2011),
 #' 'Financial models with Lévy processes and volatility clustering'
@@ -113,21 +113,21 @@ charMTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
 
   #Ansatz aus: Rachev et al. 2011 Financial Models with Levy Processes...
   if(functionOrigin == "rachev11"){
-    subfunctionR <- function(x, alpha, lambda){
+    subfunctionRr11 <- function(x, alpha, lambda){
       2^(-(alpha+3)/2) * sqrt(pi) * gamma(-alpha/2) *
         ((lambda^2+x^2)^(alpha/2) - lambda^alpha)
     }
 
-    subfunctionI <- function(x, alpha, lambda){
+    subfunctionIr11 <- function(x, alpha, lambda){
       2^(-(alpha+1)/2) * gamma((1-alpha)/2) * lambda^(alpha-1) *
         (modifiedHyperGeoXr(1, (1 - alpha)/2, 3/2, -(x^2)/(lambda^2)) -1)
     }
 
     return(exp(imagN * mu * t +
-                 delta*(subfunctionR(t,alpha,lambdap) +
-                          subfunctionR(t,alpha,lambdam)) +
-                 imagN*t*delta*(subfunctionI(t,alpha,lambdap) -
-                                  subfunctionI(t,alpha,lambdam))))
+                 delta*(subfunctionRr11(t,alpha,lambdap) +
+                          subfunctionRr11(t,alpha,lambdam)) +
+                 imagN*t*delta*(subfunctionIr11(t,alpha,lambdap) -
+                                  subfunctionIr11(t,alpha,lambdam))))
   }
 
   else if(functionOrigin == "kim08"){
@@ -152,7 +152,7 @@ charMTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
 
   else{
     #Function from: Kim et al. 2009 The modified tempered stable distribution ..
-    subfunctionR <- function(t, alpha, delta, lambdap, lambdam){
+    subfunctionRk09 <- function(t, alpha, delta, lambdap, lambdam){
       if(alpha == 0){
         sqrt(pi)*2^(3/2)*delta*
           (log((lambdap^2)/((lambdap^2)+(t^2)))+
@@ -165,7 +165,7 @@ charMTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
       }
     }
 
-    subfunctionI <- function(t, alpha, delta, lambdap, lambdam){
+    subfunctionIk09 <- function(t, alpha, delta, lambdap, lambdam){
       (imagN * t * delta * gamma(1/2 - alpha)) / (2^(alpha + (1/2))) *
         (lambdap^(2*alpha-1) *
            modifiedHyperGeoXr(1, (1/2)-alpha, 3/2, - (t^2)/(lambdap^2)) -
@@ -174,8 +174,8 @@ charMTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
         )
     }
 
-    return(exp(imagN * mu * t + subfunctionR(t, alpha, delta, lambdap, lambdam)
-               + subfunctionI(t, alpha, delta, lambdap, lambdam)))
+    return(exp(imagN * mu * t + subfunctionRk09(t, alpha, delta, lambdap, lambdam)
+               + subfunctionIk09(t, alpha, delta, lambdap, lambdam)))
   }
 }
 
@@ -187,6 +187,8 @@ charMTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
 #' tempered stable distributions is not available in closed form.
 #' Relies on fast Fourier transform (FFT) applied to the characteristic
 #' function.
+#'
+#' For examples, compare with [dCTS()].
 #'
 #' @param x  A numeric vector of quantiles.
 #' @param alpha Stability parameter. A real number between 0 and 2.
@@ -205,10 +207,6 @@ charMTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
 #'
 #' @return As \code{x} is a numeric vector, the return value is also a numeric
 #' vector of densities.
-#'
-#' @examples
-#' x <- seq(-5,5,0.25)
-#' y <- dMTS(x,0.5,1,1,1,0)
 #'
 #' @export
 dMTS <- function(x, alpha = NULL, delta = NULL, lambdap = NULL,
@@ -254,7 +252,7 @@ dMTS <- function(x, alpha = NULL, delta = NULL, lambdap = NULL,
 #' provide \code{theta}.
 #' The function integrates the PDF numerically with \code{integrate()}.
 #'
-#' @param t A vector of real numbers where the CF is evaluated.
+#' @param q A vector of real numbers where the CF is evaluated.
 #' @param alpha Stability parameter. A real number between 0 and 2.
 #' @param delta Scale parameter. A real number > 0.
 #' @param lambdap,lambdam Tempering parameter. A real number > 0.
@@ -272,10 +270,6 @@ dMTS <- function(x, alpha = NULL, delta = NULL, lambdap = NULL,
 #'
 #' @return As \code{q} is a numeric vector, the return value is also a numeric
 #' vector of probabilities.
-#'
-#' @examples
-#' #x <- seq(-5,5,0.25)
-#' #y <- pMTS(x,0.5,1,1,1,0)
 #'
 #' @export
 pMTS <- function(q, alpha = NULL, delta = NULL, lambdap = NULL,
@@ -321,7 +315,8 @@ pMTS <- function(q, alpha = NULL, delta = NULL, lambdap = NULL,
 #' Generates \code{n} random numbers distributed according to the modified
 #' tempered stable (MTS) distribution.
 #'
-#' Todo: describe the different methods to generate random numbers.
+#' Currently, random variants can only be generated using the series
+#' representation given by Bianchi et al. (2011).
 #'
 #' It is recommended to check the generated random numbers once for each
 #' distribution using the density function. If the random numbers are shifted,
@@ -333,21 +328,23 @@ pMTS <- function(q, alpha = NULL, delta = NULL, lambdap = NULL,
 #' @param lambdap,lambdam Tempering parameter. A real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta Parameters stacked as a vector.
-#' @param mehodR A String. Either "TM", "AR" or "SR".
+#' @param methodR A String. Either "TM", "AR" or "SR".
 #' @param k integer: the level of truncation, if \code{methodR == "SR"}.
 #' 10000 by default.
 #'
 #' @return Generates \code{n} random numbers of the CTS distribution.
 #'
 #' @references
-#' Todo
+#' Bianchi, M. L.; Rachev, S. T.; Kim, Y. S. & Fabozzi, F. J. (2011), 'Tempered
+#' infinitely divisible distributions and processes'
+#' \doi{10.1137/S0040585X97984632}
 #'
 #' @examples
 #' rMTS(2,0.5,1,1,1,0,NULL,"SR")
 #'
 #' @export
 rMTS <- function(n, alpha = NULL, delta = NULL, lambdap = NULL, lambdam = NULL,
-                 mu = NULL, theta = NULL, methodR = "TM", k = 10000) {
+                 mu = NULL, theta = NULL, methodR = "SR", k = 10000) {
   if ((missing(alpha) | missing(delta) | missing(lambdap) |
        missing(lambdam) | missing(mu)) & is.null(theta))
     stop("No or not enough parameters supplied")
@@ -453,7 +450,7 @@ rMTS_SR_rVj <- function(n, sigma, alpha, delta, lambdap, lambdam, k){
   x <- seq(-10,10,dX)
   y <- rMTS_SR_dVj(x, sigma, alpha, delta, lambdap, lambdam)
   cumY <- cumsum(y)
-  rV <- runif(n, min(cumY), max(cumY))
+  rV <- stats::runif(n, min(cumY), max(cumY))
 
   returnVector <- NULL
   for(s in rV){
@@ -486,7 +483,7 @@ rMTS_SR_x1 <- function(alpha, delta, lambdap, lambdam){
     retVal
   }
 
-  integrate(f,-Inf,Inf, alpha = alpha, delta = delta, lambdap = lambdap,
+  stats::integrate(f,-Inf,Inf, alpha = alpha, delta = delta, lambdap = lambdap,
             lambdam = lambdam)
 }
 
@@ -499,7 +496,7 @@ rMTS_SR_x1 <- function(alpha, delta, lambdap, lambdam){
 #' Theoretical characteristic function (CF) of the generalized classical
 #' tempered stable distribution. See Rachev et al. (2011) for details. The GTS
 #' is a more generalized version of the CTS [charCTS], as
-#' $\alpha =\alpha_p=\alpha_m$ for CTS. The characteristic function is given -
+#' alpha = alphap = alpham for CTS. The characteristic function is given -
 #' with a small adjustment - by Rachev et al. (2011):
 #'
 #' \code{theta} denotes the parameter vector \code{(alphap, alpham, deltap,
@@ -518,7 +515,6 @@ rMTS_SR_x1 <- function(alpha, delta, lambdap, lambdam){
 #' \deqn{\left.+\delta_-\Gamma(-\alpha_-)
 #' \left(\left(\lambda_-+\mathrm{i}t\right)^{\alpha_-}
 #' -\lambda_-^{\alpha_-}\right)\right)}
-#'
 #'
 #' @param t A vector of real numbers where the CF is evaluated.
 #' @param alphap,alpham Stability parameter. A real number between 0 and 2.
@@ -638,7 +634,48 @@ dGTS <- function(x, alphap = NULL, alpham = NULL, deltap = NULL,
   return(d)
 }
 
-
+#' Cumulative probability function of the generalized classical tempered stable
+#' (GTS) distribution
+#'
+#' The cumulative probability distribution function (CDF) of the generalized
+#' classical tempered stable distribution.
+#'
+#' \code{theta} denotes the parameter vector \code{(alphap, alpham, deltap,
+#' deltam, lambdap, lambdam, mu)}. Either provide the parameters individually OR
+#' provide \code{theta}.
+#' The function integrates the PDF numerically with \code{integrate()}.
+#'
+#' @param q A numeric vector of quantiles.
+#' @param alphap,alpham Stability parameter. A real number between 0 and 2.
+#' @param deltap Scale parameter for the right tail. A real number > 0.
+#' @param deltam  Scale parameter for the left tail. A real number > 0.
+#' @param lambdap Tempering parameter for the right tail. A real number > 0.
+#' @param lambdam Tempering parameter for the left tail. A real number > 0.
+#' @param mu A location parameter, any real number.
+#' @param theta Parameters stacked as a vector.
+#' @param dens_method A method to get the density function. Here, only "FFT" is
+#' available.
+#' @param a Starting point of FFT, if \code{dens_method == "FFT"}. -20
+#' by default.
+#' @param b Ending point of FFT, if \code{dens_method == "FFT"}. 20
+#' by default.
+#' @param nf Pieces the transformation is divided in. Limited to power-of-two
+#' size.
+#' @param ... Possibility to modify \code{stats::integrate()}.
+#'
+#' @return As \code{q} is a numeric vector, the return value is also a numeric
+#' vector of probabilities.
+#'
+#' @seealso
+#' See also the [dGTS()] density-function.
+#'
+#' @examples
+#' \donttest{
+#' x <- seq(-1,1,1)
+#' y <- pGTS(x,0.5,1.5,1,1,1,1,1)
+#' }
+#'
+#' @export
 pGTS <- function(q, alphap = NULL, alpham = NULL, deltap = NULL,
                  deltam = NULL, lambdap = NULL, lambdam = NULL, mu = NULL,
                  theta = NULL, dens_method = "FFT",
@@ -754,7 +791,7 @@ rGTS <- function(n, alphap = NULL, alpham = NULL, deltap = NULL, deltam = NULL,
   stopifnot(0 < alphap, alphap < 2, 0 < alpham, alpham < 2, 0 < deltap,
             0 < deltam, 0 < lambdap, 0 < lambdam)
 
-  #TODO Insert TM
+  #The other methods could also be inserted. See CTS.
   if(methodR == "TM"){
     methodR <- "AR"
   }
@@ -907,6 +944,8 @@ charKRTS <- function(t, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
 #' rp, rm, pp. pm, mu)}. Either provide the parameters individually OR
 #' provide \code{theta}.
 #'
+#' For examples, compare with [dCTS()].
+#'
 #' @param x A numeric vector of positive quantiles.
 #' @param alpha Stability parameter. A real number between 0 and 1.
 #' @param kp,km,rp,rm Parameter of KR-distribution. A real number \code{>0}.
@@ -923,10 +962,6 @@ charKRTS <- function(t, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
 #' size. 256 by default.
 #'
 #' @return The CF of the the Kim-Rachev tempered stable distribution.
-#'
-#' @examples
-#' x <- seq(-5,5,0.25)
-#' y<- dKRTS(x,0.25,1,1,1,1,1,1,0)
 #'
 #' @export
 dKRTS <- function(x, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
@@ -976,12 +1011,14 @@ dKRTS <- function(x, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
 #' provide \code{theta}.
 #' The function integrates the PDF numerically with \code{integrate()}.
 #'
-#' @param t A vector of real numbers where the CF is evaluated.
+#' @param q A vector of real numbers where the CF is evaluated.
 #' @param alpha Stability parameter. A real number between 0 and 2.
 #' @param kp,km,rp,rm Parameter of KR-distribution. A real number \code{>0}.
 #' @param pp,pm Parameter of KR-distribution. A real number \code{>-alpha}.
 #' @param mu A location parameter, any real number.
 #' @param theta Parameters stacked as a vector.
+#' @param dens_method Algorithm for numerical evaluation. Currently, only \code{
+#' "FFT"} available.
 #' @param a Starting point of FFT, if \code{dens_method == "FFT"}. -40
 #' by default.
 #' @param b Ending point of FFT, if \code{dens_method == "FFT"}. 40
@@ -995,10 +1032,6 @@ dKRTS <- function(x, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
 #'
 #' @seealso
 #' See also the [dKRTS()] density-function.
-#'
-#' @examples
-#' x <-seq(-5,5,0.25)
-#' y <- pKRTS(x,0.25,1,1,1,1,1,1,0)
 #'
 pKRTS <- function(q, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
                      rm = NULL, pp = NULL, pm = NULL, mu = NULL, theta = NULL,
@@ -1053,6 +1086,8 @@ pKRTS <- function(q, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
 #' rp, rm, pp. pm, mu)}. Either provide the parameters individually OR
 #' provide \code{theta}.
 #' "SR" stands for a truncated infinite shot noise series representation.
+#' Currently, this method is the only implemented to generate random variates.
+#' The series representation is given by Bianchi et a. (2010).
 #'
 #' It is recommended to check the generated random numbers once for each
 #' distribution using the density function. If the random numbers are shifted,
@@ -1073,7 +1108,9 @@ pKRTS <- function(q, alpha = NULL, kp = NULL, km = NULL, rp = NULL,
 #' @return Generates \code{n} random numbers of the KRTS distribution.
 #'
 #' @references
-#' TODO
+#' Bianchi, M. L.; Rachev, S. T.; Kim, Y. S. & Fabozzi, F. J. (2010), 'Tempered
+#' stable distributions and processes in finance: Numerical analysis'
+#' \doi{10.1007/978-88-470-1481-7}
 #'
 #' @examples
 #' rKRTS(1,0.5,1,1,1,1,1,1,0,NULL,"SR")
@@ -1105,7 +1142,6 @@ rKRTS <- function(n, alpha = NULL, kp = NULL, km = NULL, rp = NULL, rm = NULL,
             0 < rm, pp > -alpha, pp != -1, pp != 0, pm > -alpha, pm != -1,
             pm != 0)
 
-  #TODO:Insert other methods
   if(methodR == "TM" || methodR == "AR"){
     methodR <- "SR"
   }
@@ -1169,7 +1205,7 @@ rKRTS_SR_rVj <- function(n, sigma, alpha, kp, km, rp, rm, pp, pm, k){
   x <- seq(-20,20,dX)
   y <- rKRTS_SR_dVj(x, sigma, alpha, kp, km, rp, rm, pp, pm)
   cumY <- cumsum(y)
-  rV <- runif(n, min(cumY), max(cumY))
+  rV <- stats::runif(n, min(cumY), max(cumY))
 
   returnVector <- NULL
   for(s in rV){
@@ -1316,6 +1352,8 @@ charRDTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
 #' provide \code{theta}. Methods include only the the Fast Fourier Transform
 #' (FFT).
 #'
+#' For examples, compare with [dCTS()].
+#'
 #' @param x A numeric vector of quantiles.
 #' @param alpha Stability parameter. A real number between 0 and 2.
 #' @param delta  Scale parameter for the left tail. A real number > 0.
@@ -1337,12 +1375,6 @@ charRDTS <- function(t, alpha = NULL, delta = NULL, lambdap = NULL,
 #'
 #' @references
 #' Massing, T. (2023), 'Parametric Estimation of Tempered Stable Laws'
-#'
-#' @examples
-#' \donttest{
-#' x <- seq(-5,5,0.4)
-#' y <- dRDTS(x,0.6,1,1,1,0,NULL,"FFT",-20,20,128)
-#' }
 #'
 #' @export
 dRDTS <- function(x, alpha = NULL, delta = NULL, lambdap = NULL,
@@ -1395,6 +1427,8 @@ dRDTS <- function(x, alpha = NULL, delta = NULL, lambdap = NULL,
 #' @param lambdam Tempering parameter for the left tail. A real number > 0.
 #' @param mu A location parameter, any real number.
 #' @param theta Parameters stacked as a vector.
+#' @param dens_method Algorithm for numerical evaluation. Currently, only \code{
+#' "FFT"} available.
 #' @param a Starting point of FFT, if \code{dens_method == "FFT"}. -20
 #' by default.
 #' @param b Ending point of FFT, if \code{dens_method == "FFT"}. 20
@@ -1410,7 +1444,7 @@ dRDTS <- function(x, alpha = NULL, delta = NULL, lambdap = NULL,
 #' See also the [dRDTS()] density-function.
 #'
 #' @export
-pRDTS <- function(p, alpha = NULL, delta = NULL, lambdap = NULL,
+pRDTS <- function(q, alpha = NULL, delta = NULL, lambdap = NULL,
                   lambdam = NULL, mu = NULL, theta = NULL, dens_method = "FFT",
                   a = -130, b = 130, nf = 2048, ...) {
   if ((missing(alpha) | missing(delta) | missing(lambdap) | missing(lambdam) |
@@ -1509,7 +1543,6 @@ rRDTS <- function(n, alpha = NULL, delta = NULL, lambdap = NULL, lambdam = NULL,
   }
   stopifnot(0 < alpha, alpha < 2, 0 < delta, 0 < lambdap, 0 < lambdam)
 
-  #TODO:Insert other methods
   if(methodR == "TM" || methodR == "AR"){
     methodR <- "SR"
   }
@@ -1654,7 +1687,7 @@ modifiedGenHyperGeo <- function(a, c, x){
 rVariantesTS <- function(n, densityFunction, x, theta, ...){
   y <- densityFunction(x = x, theta = theta, ...)
   cumY <- cumsum(y)
-  rV <- runif(n, min(cumY), max(cumY))
+  rV <- stats::runif(n, min(cumY), max(cumY))
 
   returnVector <- NULL
   for(s in rV){

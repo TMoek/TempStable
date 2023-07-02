@@ -32,12 +32,17 @@
   The following references form the theoretical background for various functions
   in this package. References for each function are explicitly listed in its 
   documentation:
+  Bianchi et al. (2010) &lt;doi:10.1007/978-88-470-1481-7_4&gt;
+  Bianchi et al. (2011) &lt;doi:10.1137/S0040585X97984632&gt;
   Carrasco (2017) &lt;doi:10.1017/S0266466616000025&gt;
   Feuerverger (1981) &lt;doi:10.1111/j.2517-6161.1981.tb01143.x&gt;
   Hansen et al. (1996) &lt;doi:10.1080/07350015.1996.10524656&gt;
   Hansen (1982) &lt;doi:10.2307/1912775&gt;
+  Hofert (2011) &lt;doi:10.1145/2043635.2043638&gt;
   Kawai &amp; Masuda (2011) &lt;doi:10.1016/j.cam.2010.12.014&gt;
   Kim et al. (2008) &lt;doi:10.1016/j.jbankfin.2007.11.004&gt;
+  Kim et al. (2009) &lt;doi:10.1007/978-3-7908-2050-8_5&gt;
+  Kim et al. (2010) &lt;doi:10.1016/j.jbankfin.2010.01.015&gt;
   Kuechler &amp; Tappe (2013) &lt;doi:10.1016/j.spa.2013.06.012&gt;
   Rachev et al. (2011) &lt;doi:10.1002/9781118268070&gt;.">
 <meta property="og:image" content="/logo.png">
@@ -61,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">TempStable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
@@ -101,7 +106,10 @@
 <div class="section level1">
 <div class="page-header"><h1 id="tempstable-">TempStable <img src="reference/figures/logo.png" align="right" width="120"><a class="anchor" aria-label="anchor" href="#tempstable-"></a>
 </h1></div>
-<!-- badges: start --><!-- badges: end --><!-- Start of my description --><p>A collection of methods to estimate parameters of different tempered stable distributions. Currently, there are three different tempered stable distributions to choose from: Tempered stable subordinator distribution, classical tempered stable distribution, normal tempered stable distribution. The package also provides functions to compute density and probability functions and tools to run Monte Carlo simulations.</p>
+<!-- badges: start -->
+<!-- badges: end -->
+<!-- Start of my description -->
+<p>A collection of methods to estimate parameters of different tempered stable distributions. Currently, there are seven different tempered stable distributions to choose from: Tempered stable subordinator distribution, classical tempered stable distribution (TSD), normal TSD, generalized classical TSD, modified TSD, Kim-Rachev TSD, rapidly decreasing TSD. The package also provides functions to compute density and probability functions and tools to run Monte Carlo simulations.</p>
 <p>The main function of this package are briefly described below:</p>
 <ul>
 <li>Main function: TemperedEstim() computes all the information about the estimator. It allows the user to choose the preferred method and several related options.</li>
@@ -109,9 +117,11 @@
 <li>Monte Carlo simulation: a tool to run a Monte Carlo simulation (TemperedEstim_Simulation()) is provided and can save output files or produce statistical summary.</li>
 </ul>
 <p>The package was developed by Till Massing and Cedric Jüssen and is structurally based on the “StableEstim” package by Tarak Kharrat and Georgi N. Boshnakov.</p>
-<!-- End of my description --><div class="section level2">
+<!-- End of my description -->
+<div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
+<p>Since we use the package “copula” and this uses C code, it may be that this package has to be installed manually beforehand.</p>
 <p>TempStable is now available on CRAN! In R-Studio the package can be installed directly with the following command:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"TempStable"</span><span class="op">)</span></span></code></pre></div>
@@ -137,30 +147,30 @@
 <span><span class="va">thetaT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.5</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">res_CTS_ML_size10</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TemperedEstim_Simulation.html">TemperedEstim_Simulation</a></span><span class="op">(</span>ParameterMatrix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">thetaT</span><span class="op">)</span>,</span>
 <span>                                               SampleSizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, MCparam <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>                                               TemperedType <span class="op">=</span> <span class="st">"Classic"</span>, Estimfct <span class="op">=</span> <span class="st">"ML"</span>,</span>
+<span>                                               TemperedType <span class="op">=</span> <span class="st">"CTS"</span>, Estimfct <span class="op">=</span> <span class="st">"ML"</span>,</span>
 <span>                                               saveOutput <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ---------------- Alpha=1.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 --------------- </span></span>
-<span><span class="co">#&gt; *** Iter 1/10 *** Estimated Remaining Time: 0h2min2sec. *** </span></span>
-<span><span class="co">#&gt; *** Iter 2/10 *** Estimated Remaining Time: 0h2min1sec. *** </span></span>
-<span><span class="co">#&gt; *** Iter 3/10 *** Estimated Remaining Time: 0h4min9sec. *** </span></span>
-<span><span class="co">#&gt; *** Iter 4/10 *** Estimated Remaining Time: 0h3min12sec. ***</span></span>
+<span><span class="co">#&gt; *** Iter 1/10 *** Estimated Remaining Time: 0h1min26sec. *** </span></span>
+<span><span class="co">#&gt; *** Iter 2/10 *** Estimated Remaining Time: 0h1min26sec. *** </span></span>
+<span><span class="co">#&gt; *** Iter 3/10 *** Estimated Remaining Time: 0h2min55sec. *** </span></span>
+<span><span class="co">#&gt; *** Iter 4/10 *** Estimated Remaining Time: 0h2min11sec. ***</span></span>
 <span><span class="co">#&gt; Warning in log(densis): NaNs wurden erzeugt</span></span>
 <span></span>
 <span><span class="co">#&gt; Warning in log(densis): NaNs wurden erzeugt</span></span>
-<span><span class="co">#&gt; *** Iter 5/10 *** Estimated Remaining Time: 0h0min50sec. ***</span></span>
+<span><span class="co">#&gt; *** Iter 5/10 *** Estimated Remaining Time: 0h0min32sec. ***</span></span>
 <span><span class="co">#&gt; Warning in log(densis): NaNs wurden erzeugt</span></span>
-<span><span class="co">#&gt; *** Iter 6/10 *** Estimated Remaining Time: 0h0min31sec. *** </span></span>
-<span><span class="co">#&gt; *** Iter 7/10 *** Estimated Remaining Time: 0h1min0sec. ***</span></span>
+<span><span class="co">#&gt; *** Iter 6/10 *** Estimated Remaining Time: 0h0min21sec. *** </span></span>
+<span><span class="co">#&gt; *** Iter 7/10 *** Estimated Remaining Time: 0h0min36sec. ***</span></span>
 <span><span class="co">#&gt; Warning in log(densis): NaNs wurden erzeugt</span></span>
-<span><span class="co">#&gt; *** Iter 8/10 *** Estimated Remaining Time: 0h0min15sec. ***</span></span>
+<span><span class="co">#&gt; *** Iter 8/10 *** Estimated Remaining Time: 0h0min11sec. ***</span></span>
 <span><span class="co">#&gt; Warning in log(densis): NaNs wurden erzeugt</span></span>
-<span><span class="co">#&gt; *** Iter 9/10 *** Estimated Remaining Time: 0h0min8sec. ***</span></span>
+<span><span class="co">#&gt; *** Iter 9/10 *** Estimated Remaining Time: 0h0min5sec. ***</span></span>
 <span><span class="co">#&gt; Warning in log(densis): NaNs wurden erzeugt</span></span>
 <span><span class="co">#&gt; *** Iter 10/10 *** Estimated Remaining Time: 0h0min0sec. ***</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sweep.html" class="external-link">sweep</a></span><span class="op">(</span><span class="va">res_CTS_ML_size10</span><span class="op">$</span><span class="va">outputMat</span><span class="op">[</span>,<span class="fl">9</span><span class="op">:</span><span class="fl">14</span><span class="op">]</span>,<span class="fl">2</span>,<span class="va">thetaT</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     alphaE    delta+E    delta-E   lambda+E   lambda-E        muE </span></span>
-<span><span class="co">#&gt; -1.3042931  2.6728708  3.5903234  1.2565026  1.5549668  0.4091464</span></span></code></pre></div>
+<span><span class="co">#&gt; -1.3042931  2.6728718  3.5903143  1.2565115  1.5549486  0.4091366</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -192,7 +202,8 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Till Massing <br><small class="roles"> Author </small>  </li>
-<li>Cedric Maximilian Juessen <br><small class="roles"> Maintainer </small>  </li>
+<li>Cedric Maximilian Juessen <br><small class="roles"> Maintainer, author </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
@@ -209,7 +220,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

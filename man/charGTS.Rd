@@ -37,7 +37,7 @@ The CF of the the generalized classical tempered stable distribution.
 Theoretical characteristic function (CF) of the generalized classical
 tempered stable distribution. See Rachev et al. (2011) for details. The GTS
 is a more generalized version of the CTS \link{charCTS}, as
-$\alpha =\alpha_p=\alpha_m$ for CTS. The characteristic function is given -
+alpha = alphap = alpham for CTS. The characteristic function is given -
 with a small adjustment - by Rachev et al. (2011):
 }
 \details{

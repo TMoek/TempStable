@@ -81,7 +81,7 @@ invFisherMatrix_GTS <- function(theta, subdivisions = 100) {
 
 VectorialDensity_GTS <- function(theta, xi) {
     dGTS(xi, theta[1], theta[2], theta[3], theta[4], theta[5], theta[6],
-         theat[7])
+         theta[7])
 }
 
 jacVectorialDensity_GTS <- function(theta, xi) {

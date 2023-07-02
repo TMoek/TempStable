@@ -20,8 +20,7 @@ MoCObjective_KRTS <- function(x, parms) {
       F7 = gamma(7-x[1]) * ((x[2]*(x[4]^7))/(x[6]+7) - (x[3]*(x[5]^7))/(x[7]+7))
         - parms[7],
       F8 = gamma(8-x[1]) * ((x[2]*(x[4]^8))/(x[6]+8) + (x[3]*(x[5]^8))/(x[7]+8))
-        - parms[8],
-        )
+        - parms[8])
 }
 
 #' @importFrom rootSolve multiroot

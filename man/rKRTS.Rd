@@ -49,6 +49,8 @@ tempered stable (KRTS) distribution.
 rp, rm, pp. pm, mu)}. Either provide the parameters individually OR
 provide \code{theta}.
 "SR" stands for a truncated infinite shot noise series representation.
+Currently, this method is the only implemented to generate random variates.
+The series representation is given by Bianchi et a. (2010).
 
 It is recommended to check the generated random numbers once for each
 distribution using the density function. If the random numbers are shifted,
@@ -61,5 +63,7 @@ rKRTS(1,0.5,1,1,1,1,1,1,0,NULL,"SR")
 
 }
 \references{
-TODO
+Bianchi, M. L.; Rachev, S. T.; Kim, Y. S. & Fabozzi, F. J. (2010), 'Tempered
+stable distributions and processes in finance: Numerical analysis'
+\doi{10.1007/978-88-470-1481-7}
 }

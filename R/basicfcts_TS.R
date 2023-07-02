@@ -536,6 +536,7 @@ charCTS <- function(t, alpha = NULL, deltap = NULL, deltam = NULL,
 #' by default.
 #' @param nf Pieces the transformation is divided in. Limited to power-of-two
 #' size. 2048 by default.
+#' @param ... Possibility to modify [charCTS()].
 #'
 #' @return As \code{x} is a numeric vector, the return value is also a numeric
 #' vector of densities.
@@ -703,9 +704,10 @@ pCTS <- function(q, alpha = NULL, deltap = NULL, deltam = NULL, lambdap = NULL,
 #' "AR" stands for the approximate Acceptance-Rejection Method and "SR" for a
 #' truncated infinite shot noise series representation. "TM" stands for Two
 #' Methods as two different methods are used depending on which will be faster.
-#' "TM" works only for [alpha < 1].
-#' In this method the function [copula::retstable()] is called. For [alpha < 1],
-#' "TM" is the default method, while "AR" for [alpha > 1] is the default method.
+#' "TM" works only for \code{alpha < 1}.
+#' In this method the function [copula::retstable()] is called. For
+#' \code{alpha < 1}, "TM" is the default method, while "AR" for \code{alpha > 1}
+#' is the default method.
 #'
 #' It is recommended to check the generated random numbers once for each
 #' distribution using the density function. If the random numbers are shifted,

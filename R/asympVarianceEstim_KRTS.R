@@ -197,54 +197,54 @@ ComputeCovarianceCgmm_KRTS <- function(theta, Cmat = NULL, x, alphaReg,
 }
 
 ##### GMC#####
-.asymptoticVarianceEstimGMC_KRTS <- function(data, EstimObj,
-                                            type = "KRTS", eps,
-                                            algo,
-                                            regularization,
-                                            WeightingMatrix,
-                                            t_scheme,
-                                            alphaReg,
-                                            t_free,
-                                            subdivisions,
-                                            IntegrationMethod,
-                                            randomIntegrationLaw,
-                                            s_min,
-                                            s_max,
-                                            ncond,
-                                            IterationControl,
-                                            ...) {
-    V <- solve(GMCasymptoticVarianceEstim_KRTS(theta = EstimObj$Estim$par,
-                                              ncond = EstimObj$ncond, x = data,
-                                              eps = eps,
-                                              algo = algo,
-                                              regularization = regularization,
-                                              WeightingMatrix =
-                                                WeightingMatrix,
-                                              t_scheme = t_scheme,
-                                              alphaReg = alphaReg,
-                                              t_free = t_free,
-                                              subdivisions = subdivisions,
-                                              IntegrationMethod =
-                                                IntegrationMethod,
-                                              randomIntegrationLaw =
-                                                randomIntegrationLaw,
-                                              s_min = s_min,
-                                              s_max = s_max,
-                                              IterationControl =
-                                                IterationControl,
-                                              ...))/length(data)
-    NameParamsObjects(V, type = type)
-}
-
-GMCasymptoticVarianceEstim_KRTS <- function(..., theta, x, ncond,
-                                           WeightingMatrix, alphaReg = 0.01,
-                                           regularization = "Tikhonov", eps) {
-    K <- ComputeGMCWeightingMatrix_KRTS(theta = theta, x = x, ncond = ncond,
-                                       WeightingMatrix = WeightingMatrix, ...)
-    B <- jacobianSampleRealCFMoment_KRTS(t, theta)
-    fct <- function(G) ComputeInvKbyG_KRTS(K = K, G = G, alphaReg = alphaReg,
-                                          regularization = regularization,
-                                          eps = eps)
-    invKcrossB <- apply(X = B, MARGIN = 2, FUN = fct)
-    crossprod(B, invKcrossB)
-}
+# .asymptoticVarianceEstimGMC_KRTS <- function(data, EstimObj,
+#                                             type = "KRTS", eps,
+#                                             algo,
+#                                             regularization,
+#                                             WeightingMatrix,
+#                                             t_scheme,
+#                                             alphaReg,
+#                                             t_free,
+#                                             subdivisions,
+#                                             IntegrationMethod,
+#                                             randomIntegrationLaw,
+#                                             s_min,
+#                                             s_max,
+#                                             ncond,
+#                                             IterationControl,
+#                                             ...) {
+#     V <- solve(GMCasymptoticVarianceEstim_KRTS(theta = EstimObj$Estim$par,
+#                                               ncond = EstimObj$ncond, x = data,
+#                                               eps = eps,
+#                                               algo = algo,
+#                                               regularization = regularization,
+#                                               WeightingMatrix =
+#                                                 WeightingMatrix,
+#                                               t_scheme = t_scheme,
+#                                               alphaReg = alphaReg,
+#                                               t_free = t_free,
+#                                               subdivisions = subdivisions,
+#                                               IntegrationMethod =
+#                                                 IntegrationMethod,
+#                                               randomIntegrationLaw =
+#                                                 randomIntegrationLaw,
+#                                               s_min = s_min,
+#                                               s_max = s_max,
+#                                               IterationControl =
+#                                                 IterationControl,
+#                                               ...))/length(data)
+#     NameParamsObjects(V, type = type)
+# }
+#
+# GMCasymptoticVarianceEstim_KRTS <- function(..., theta, x, ncond,
+#                                            WeightingMatrix, alphaReg = 0.01,
+#                                            regularization = "Tikhonov", eps) {
+#     K <- ComputeGMCWeightingMatrix_KRTS(theta = theta, x = x, ncond = ncond,
+#                                        WeightingMatrix = WeightingMatrix, ...)
+#     B <- jacobianSampleRealCFMoment_KRTS(t, theta)
+#     fct <- function(G) ComputeInvKbyG_KRTS(K = K, G = G, alphaReg = alphaReg,
+#                                           regularization = regularization,
+#                                           eps = eps)
+#     invKcrossB <- apply(X = B, MARGIN = 2, FUN = fct)
+#     crossprod(B, invKcrossB)
+# }

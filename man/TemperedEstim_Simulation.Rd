@@ -88,6 +88,9 @@ could be ==0.01.}
 
 \item{t_free}{sequence, if \code{t_scheme=="free"}.}
 
+\item{nb_t}{integer, if you set \code{t_scheme <- "equally"}. nb_t could be
+== 20 for example.}
+
 \item{subdivisions}{Number of subdivisions used to compute the different
 integrals involved in the computation of the objective function for the Cgmm
 method (to minimise); numeric.}
@@ -125,7 +128,24 @@ Runs Monte Carlo simulation for a selected estimation method. The function
 can save results in a file.
 }
 \details{
-\strong{TemperedTyp} TODO: bulletlist with all different tempered types.
+\strong{TemperedTyp} With the parameter 'TemperedTyp' you can choose the
+tempered stable distribution you want to use. Here is a list of distribution
+you can choose from:
+\describe{
+\item{TSS}{Tempered stabel subordinator: See \code{\link[=charTSS]{charTSS()}} for details.}
+\item{CTS}{Classical tempered stable distribution: See \code{\link[=charCTS]{charCTS()}} for
+details.}
+\item{GTS}{Generalized classical tempered stable distribution: See
+\code{\link[=charGTS]{charGTS()}} for details.}
+\item{NTS}{Normal tempered stable distribution: See \code{\link[=charNTS]{charNTS()}} for
+details.}
+\item{MTS}{Modified tempered stable distribution: See \code{\link[=charMTS]{charMTS()}} for
+details.}
+\item{RDTS}{Rapid decreasing tempered stable distribution: See \code{\link[=charRDTS]{charRDTS()}}
+for details.}
+\item{KRTS}{Kim-Rachev tempered stable distribution: See \code{\link[=charKRTS]{charKRTS()}} for
+details.}
+}
 
 \strong{Error Handling} It is advisable to set it to TRUE when user is
 planning to launch long simulations as it will prevent the procedure to stop
@@ -228,9 +248,9 @@ default = 1e-3.}
 \strong{methodR} Random numbers must be generated for each MC study. For
 each distribution, different methods are available for this (partly also
 depending on alpha). For more information, the documentation of the
-respective \link{r...} distribution can be called up. By default, the fastest
+respective \code{r...()} distribution can be called up. By default, the fastest
 method is selected. Since the deviation error can amplify to the edges of
-\link{alpha} depending on the method, it is recommended to check the generated
+alpha depending on the method, it is recommended to check the generated
 random numbers once for each distribution using the density function before
 starting the simulation.
 

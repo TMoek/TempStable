@@ -79,7 +79,7 @@ library(TempStable)
 # SampleSize could be, for example, 1000 and MCParam also 1000.
 thetaT <- c(1.5,1,1,1,1,0)
 res_CTS_ML_size10 <- TemperedEstim_Simulation(ParameterMatrix = rbind(thetaT),
-                                               SampleSizes = c(10), MCparam = 10,
+                                               SampleSizes = c(10), MCparam = 3,
                                                TemperedType = "CTS", Estimfct = "ML",
                                                saveOutput = FALSE)
 

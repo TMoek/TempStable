@@ -24,6 +24,8 @@ pKRTS(
 )
 }
 \arguments{
+\item{q}{A vector of real numbers where the CF is evaluated.}
+
 \item{alpha}{Stability parameter. A real number between 0 and 2.}
 
 \item{kp, km, rp, rm}{Parameter of KR-distribution. A real number \code{>0}.}
@@ -33,6 +35,9 @@ pKRTS(
 \item{mu}{A location parameter, any real number.}
 
 \item{theta}{Parameters stacked as a vector.}
+
+\item{dens_method}{Algorithm for numerical evaluation. Currently, only \code{
+"FFT"} available.}
 
 \item{a}{Starting point of FFT, if \code{dens_method == "FFT"}. -40
 by default.}
@@ -44,8 +49,6 @@ by default.}
 size.}
 
 \item{...}{Possibility to modify \code{stats::integrate()}.}
-
-\item{t}{A vector of real numbers where the CF is evaluated.}
 }
 \value{
 As \code{q} is a numeric vector, the return value is also a numeric
@@ -60,11 +63,6 @@ tempered stable distribution.
 rp, rm, pp. pm, mu))}. Either provide the parameters individually OR
 provide \code{theta}.
 The function integrates the PDF numerically with \code{integrate()}.
-}
-\examples{
-x <-seq(-5,5,0.25)
-y <- pKRTS(x,0.25,1,1,1,1,1,1,0)
-
 }
 \seealso{
 See also the \code{\link[=dKRTS]{dKRTS()}} density-function.

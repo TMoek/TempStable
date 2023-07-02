@@ -12,7 +12,7 @@ rMTS(
   lambdam = NULL,
   mu = NULL,
   theta = NULL,
-  methodR = "TM",
+  methodR = "SR",
   k = 10000
 )
 }
@@ -29,10 +29,10 @@ rMTS(
 
 \item{theta}{Parameters stacked as a vector.}
 
+\item{methodR}{A String. Either "TM", "AR" or "SR".}
+
 \item{k}{integer: the level of truncation, if \code{methodR == "SR"}.
 10000 by default.}
-
-\item{mehodR}{A String. Either "TM", "AR" or "SR".}
 }
 \value{
 Generates \code{n} random numbers of the CTS distribution.
@@ -42,7 +42,8 @@ Generates \code{n} random numbers distributed according to the modified
 tempered stable (MTS) distribution.
 }
 \details{
-Todo: describe the different methods to generate random numbers.
+Currently, random variants can only be generated using the series
+representation given by Bianchi et al. (2011).
 
 It is recommended to check the generated random numbers once for each
 distribution using the density function. If the random numbers are shifted,
@@ -53,5 +54,7 @@ rMTS(2,0.5,1,1,1,0,NULL,"SR")
 
 }
 \references{
-Todo
+Bianchi, M. L.; Rachev, S. T.; Kim, Y. S. & Fabozzi, F. J. (2011), 'Tempered
+infinitely divisible distributions and processes'
+\doi{10.1137/S0040585X97984632}
 }
