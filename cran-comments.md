@@ -1,3 +1,62 @@
+#### Update TempStable 0.2.0
+
+## Test environment
+* local Windows 8.1, R 4.3.0 || Windows 8.1 R 4.2.2
+* using devtools::check_win_release()
+* using devtools::check_win_oldrelease()
+* using devtools::check_win_devel(), R 4.4
+* using devtools::check_mac_release()
+* using devtools::check_rhub(), which uses 3 different engines: 1 windows and 2
+  linux.
+
+## R CMD check results
+There were no ERRORs or WARNINGs.
+
+There were 2 new NOTEs:
+
+* checking CRAN incoming feasibility ... [8s/28s] NOTE
+  Maintainer: ‘Cedric Maximilian Juessen <cedric.juessen@vwl.uni-due.de>’
+  Possibly misspelled words in DESCRIPTION:
+  Bianchi (27:3, 28:3)
+  Hofert (33:3)
+  
+  Those words are names.
+  
+* checking for non-standard things in the check directory ... NOTE
+  Found the following files/directories: ''NULL''
+  
+  This note only appears with Windows. I did not find anything about it on the 
+  internet and could not fix it.
+  
+  
+There were 3 NOTEs, that have been there also with the previous versions:
+
+* checking HTML version of manual ... NOTE
+  Skipping checking HTML validation: no command 'tidy' found
+  
+  This Note occurs only for Fedora Linux, R-devel, clang, gfortran. 
+  The internet says that this note is due to a package being missing on the 
+  virtual machine.
+
+* checking for detritus in the temp directory ... NOTE
+  Found the following files/directories:
+  'lastMiKTeXException'
+  
+  This note appears only for devtools::check_rhub() (only on Windows, not Linux).
+  This note seems common on rhub windows (based on Github search which
+  turns up many cran-comments mentioning this).
+  Once, I had this error with devtools::check_mac_release(), too. Then I deleted
+  the function “\mathbb” in “\deqn” in my documentation for charTSS() and
+  charCTS() and the note was gone. This notes seems to be related to using 
+  mathematical functions in the documentation.
+  
+## Downstream dependencies
+
+There are no downstream dependencies yet (07.07.2023). 
+Used tools::dependsOnPkgs(c("TempStable"), "all").
+
+#### Update TempStable 0.1.1
+
 ## The basis of this submission is a request for amendment by CRAN with a due date of 06.04.23
 The following points were criticised in TempStable 0.1.0, which I have dealt 
 with as follows:
@@ -16,6 +75,8 @@ with as follows:
 
   Moved to "Depends"
 
+
+#### New submission 0.1.0
 
 ## Test environment
 * local Windows 8.1, R 4.2.2
