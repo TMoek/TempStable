@@ -17,15 +17,15 @@ and probability functions and tools to run Monte Carlo simulations.
 
 The main function of this package are briefly described below:
 
--   Main function: TemperedEstim() computes all the information about
-    the estimator. It allows the user to choose the preferred method and
-    several related options.
--   Characteristic function, density function, probability function and
-    other functions for every tempered stable distribution mentioned
-    above. E.g. charTSS(), dCTS(), …
--   Monte Carlo simulation: a tool to run a Monte Carlo simulation
-    (TemperedEstim_Simulation()) is provided and can save output files
-    or produce statistical summary.
+- Main function: TemperedEstim() computes all the information about the
+  estimator. It allows the user to choose the preferred method and
+  several related options.
+- Characteristic function, density function, probability function and
+  other functions for every tempered stable distribution mentioned
+  above. E.g. charTSS(), dCTS(), …
+- Monte Carlo simulation: a tool to run a Monte Carlo simulation
+  (TemperedEstim_Simulation()) is provided and can save output files or
+  produce statistical summary.
 
 The package was developed by Till Massing and Cedric Jüssen and is
 structurally based on the “StableEstim” package by Tarak Kharrat and
@@ -50,7 +50,7 @@ You can install the development version of TempStable from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("cedricjuessen/TempStable")
+devtools::install_github("TMoek/TempStable")
 ```
 
 ## Example
@@ -59,6 +59,7 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(TempStable)
+#> Warning: Paket 'TempStable' wurde unter R Version 4.3.1 erstellt
 ## basic example code
 # Such a simulation can take a very long time. Therefore, it can make sense to 
 # parallelise after Monte Carlo runs. Parallelisation of the simulation is not 
@@ -74,8 +75,8 @@ res_CTS_ML_size10 <- TemperedEstim_Simulation(ParameterMatrix = rbind(thetaT),
                                                saveOutput = FALSE)
 #> ---------------- Alpha=1.5 *** DeltaP=1 *** DeltaM=1 *** LambdaP=1 *** LambdaM=1 *** mu=0 ---------------
 #> Warning in log(densis): NaNs wurden erzeugt
-#> *** Iter 1/3 *** Estimated Remaining Time: 0h0min11sec. *** 
-#> *** Iter 2/3 *** Estimated Remaining Time: 0h0min11sec. ***
+#> *** Iter 1/3 *** Estimated Remaining Time: 0h0min12sec. *** 
+#> *** Iter 2/3 *** Estimated Remaining Time: 0h0min12sec. ***
 #> Warning in log(densis): NaNs wurden erzeugt
 #> *** Iter 3/3 *** Estimated Remaining Time: 0h0min0sec. ***
 
