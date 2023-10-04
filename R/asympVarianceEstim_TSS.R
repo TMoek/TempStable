@@ -67,10 +67,12 @@ invFisherMatrix_TSS <- function(theta, subdivisions = 100) {
         invf <- 1/VectorialDensity_TSS(theta, x)
         df <- jacVectorialDensity_TSS(theta, x)
         y <- invf * df[, i] * df[, j]
+        y[!is.finite(y)] <- 0 # when x tends to 0 or Inf the function value also goes to zero. In practice, it will attain NaN value. This line ensures integrability
+        return(y)
     }
     for (i in 1:3) {
         for (j in 1:i) {
-            mat[i, j] <- stats::integrate(f = integrand, lower = -Inf,
+            mat[i, j] <- stats::integrate(f = integrand, lower = 0,
                                           upper = Inf, i = i, j = j,
                                           subdivisions = subdivisions)$value
             mat[j, i] <- mat[i, j]
