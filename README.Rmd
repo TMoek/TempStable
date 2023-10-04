@@ -60,7 +60,7 @@ You can install the development version of TempStable from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("cedricjuessen/TempStable")
+devtools::install_github("TMoek/TempStable")
 ```
 
 ## Example
