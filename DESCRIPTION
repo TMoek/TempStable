@@ -5,13 +5,11 @@ Title: A Collection of Methods to Estimate Parameters of Different Tempered
 Version: 0.2.0
 Authors@R: c( person(given = "Till", family = "Massing",
                      email = "till.massing@uni-due.de",
-                     role = "aut"),
+                     role = c("cre","aut")),
               person(given = "Cedric Maximilian", family = "Juessen", 
                      email = "cedric.juessen@vwl.uni-due.de",
-                     role = c("cre","aut")),
-              person(given = "Mert", family = "Basaran",
-                     email = "mert.basaran@vwl.uni-due.de",
-                     role = "ctb"))
+                     role = "aut"))
+                     
 Description: 
   A collection of methods to estimate parameters of different tempered stable 
   distributions (TSD). Currently, there are seven different tempered stable 
@@ -38,7 +36,7 @@ Description:
   Kim et al. (2010) <doi:10.1016/j.jbankfin.2010.01.015>
   Kuechler & Tappe (2013) <doi:10.1016/j.spa.2013.06.012>
   Rachev et al. (2011) <doi:10.1002/9781118268070>.
-URL: https://cedricjuessen.github.io/TempStable/
+URL: https://github.com/TMoek/TempStable
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
