@@ -1,6 +1,10 @@
 # TempStable 0.2.1
 
-## Small patch due to CRAN request 
+## Breaking changes
+
+* Package moved on GitHub from cedricjuessen to TMoek
+
+## Minor improvements and fixes 
 
 * @aliases TempStable-package added in documentation
 
