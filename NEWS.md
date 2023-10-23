@@ -8,8 +8,6 @@
 
 * @aliases TempStable-package added in documentation
 
-* Package moved on GitHub from CedricJuessen to TMoek
-
 * Fisher Information for TSS patched
 
 # TempStable 0.2.0
