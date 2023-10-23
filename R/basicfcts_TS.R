@@ -51,8 +51,10 @@ charTSS <- function(t, alpha = NULL, delta = NULL, lambda = NULL, theta = NULL){
       lambda <- theta[3]
     }
     stopifnot(0 < alpha, alpha < 1, 0 < delta, 0 < lambda)
-    return(exp(delta * gamma(-alpha) *
-                 ((lambda - t * imagN)^alpha - lambda^alpha)))
+    cf  <- exp(delta * gamma(-alpha) *
+                 ((lambda - t * imagN)^alpha - lambda^alpha))
+    if(!is.finite(cf)){cf <- 0+0i}
+    return(cf)
 }
 
 #' Density function of the tempered stable subordinator (TSS) distribution
