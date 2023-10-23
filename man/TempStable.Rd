@@ -3,6 +3,7 @@
 \docType{package}
 \name{TempStable}
 \alias{TempStable}
+\alias{TempStable-package}
 \title{TempStable: A collection of methods to estimate parameters of different
 tempered stable distributions.}
 \description{
