@@ -9,7 +9,6 @@ Authors@R: c( person(given = "Till", family = "Massing",
               person(given = "Cedric Maximilian", family = "Juessen", 
                      email = "cedric.juessen@vwl.uni-due.de",
                      role = "aut"))
-                     
 Description: 
   A collection of methods to estimate parameters of different tempered stable 
   distributions (TSD). Currently, there are seven different tempered stable 
