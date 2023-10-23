@@ -59,7 +59,6 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(TempStable)
-#> Warning: Paket 'TempStable' wurde unter R Version 4.3.1 erstellt
 ## basic example code
 # Such a simulation can take a very long time. Therefore, it can make sense to 
 # parallelise after Monte Carlo runs. Parallelisation of the simulation is not 
