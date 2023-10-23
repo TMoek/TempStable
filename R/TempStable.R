@@ -52,4 +52,5 @@
 #'
 #' @docType package
 #' @name TempStable
+#' @aliases TempStable-package
 NULL
