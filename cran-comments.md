@@ -1,3 +1,42 @@
+#### Update TempStable 0.2.1
+
+## Test environment
+
+* local Windows 11, R 4.3.0
+* using devtools::check(remote = TRUE, manual = TRUE)
+* using devtools::check_win_devel(), R 4.4
+* using revdepcheck::revdep_check(num_workers = 4)
+
+## R CMD check results
+There were no ERRORs or WARNINGs.
+
+There was 1 new NOTE:
+
+*   Maintainer: 'Till Massing <till.massing@uni-due.de>'
+  
+  New maintainer:
+    Till Massing <till.massing@uni-due.de>
+  Old maintainer(s):
+    Cedric Maximilian Juessen <cedric.juessen@vwl.uni-due.de>
+  
+  Package has a VignetteBuilder field but no prebuilt vignette index.
+  
+This is due to the change of maintainer and was expected.
+
+There was 1 NOTE, that has been there also with the previous versions:
+
+* checking for detritus in the temp directory ... NOTE
+  Found the following files/directories:
+  'lastMiKTeXException'
+
+## revdepcheck results
+
+We checked 0 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+
+ * We saw 0 new problems
+ * We failed to check 0 packages
+
+
 #### Update TempStable 0.2.0
 
 ## Test environment
