@@ -1,4 +1,4 @@
-# TempStable 0.2.1
+# TempStable 0.2.2
 
 ## Breaking changes
 
