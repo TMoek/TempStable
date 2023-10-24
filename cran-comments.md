@@ -1,3 +1,11 @@
+#### Update TempStable 0.2.2
+## Resubmission
+This is a resubmission of 0.2.1. In this version I have:
+
+* Deleted the VignetteBuilder from the DESCRIPTION file.
+
+* Everything else remains unchanged
+
 #### Update TempStable 0.2.1
 
 ## Test environment
